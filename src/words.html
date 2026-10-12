@@ -1,0 +1,290 @@
+<title>판다 탐험대 단어장</title>
+<style>
+  /* Layout: single reading column; sticky lesson chips on top; one section per 차시 with a word table and a culture note */
+  :root {
+    --bg: #f5f8f4;
+    --surface: #ffffff;
+    --ink: #1d2738;
+    --ink-soft: #56657a;
+    --line: #d7e2da;
+    --jade: #1f8a63;
+    --jade-soft: #e1f2ea;
+    --lantern: #d8434a;
+    --gold-soft: #fff4d1;
+    --font-display: "Jua", "Gowun Dodum", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    --font-body: "Gowun Dodum", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    --font-pinyin: "Nunito", "Segoe UI", Arial, sans-serif;
+    --font-han: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #12201c; --surface: #1a2b26; --ink: #e8f1ec; --ink-soft: #a5b8ae; --line: #2c4139;
+      --jade: #5fd0a2; --jade-soft: #1f3a31; --lantern: #ff7a7f; --gold-soft: #3a3320; color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #12201c; --surface: #1a2b26; --ink: #e8f1ec; --ink-soft: #a5b8ae; --line: #2c4139;
+    --jade: #5fd0a2; --jade-soft: #1f3a31; --lantern: #ff7a7f; --gold-soft: #3a3320; color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.6; }
+  .wrap { max-width: 920px; margin: 0 auto; padding-block: 24px 48px; padding-inline: 16px; display: flex; flex-direction: column; gap: 22px; }
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 400; margin: 0; text-wrap: balance; }
+  h1 { font-size: clamp(28px, 5vw, 38px); }
+  header p { margin: 6px 0 0; color: var(--ink-soft); max-width: 65ch; }
+  .check { background: var(--gold-soft); border-radius: 12px; padding: 12px 16px; font-size: 14px; }
+  .check b { font-family: var(--font-display); font-weight: 400; font-size: 16px; }
+  .check ul { margin: 6px 0 0; padding-left: 20px; }
+  .voice { font-size: 13px; color: var(--ink-soft); }
+
+  nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); padding-block: 8px; display: flex; gap: 6px; overflow-x: auto; scrollbar-width: thin; }
+  nav a { flex: none; text-decoration: none; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 99px; padding: 3px 12px 4px; font-family: var(--font-display); font-size: 14px; }
+  nav a:hover, nav a:focus-visible { border-color: var(--jade); color: var(--jade); outline: none; }
+
+  .day { display: flex; flex-direction: column; gap: 14px; }
+  .dayhead { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; border-bottom: 2px solid var(--ink); padding-bottom: 6px; }
+  .dayhead h2 { font-size: 22px; }
+  .dayhead span { color: var(--ink-soft); font-size: 14px; }
+  .dayhead .zone { margin-left: auto; font-family: var(--font-display); font-size: 14px; color: var(--jade); }
+
+  section.lesson { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 12px; scroll-margin-top: 56px; min-width: 0; }
+  .lhead { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .lhead .no { font-family: var(--font-display); color: var(--surface); background: var(--ink); border-radius: 6px; padding: 0 8px 1px; font-size: 14px; }
+  .lhead h3 { font-size: 20px; }
+  .tablebox { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; min-width: 560px; }
+  th { text-align: left; font-family: var(--font-display); font-weight: 400; font-size: 13px; color: var(--ink-soft); border-bottom: 1px solid var(--line); padding: 4px 8px; }
+  td { border-bottom: 1px solid var(--line); padding: 8px; vertical-align: middle; }
+  tr:last-child td { border-bottom: 0; }
+  tr.sent td { background: var(--jade-soft); }
+  tr.sent td:first-child { border-radius: 8px 0 0 8px; } tr.sent td:last-child { border-radius: 0 8px 8px 0; }
+  .han { font-family: var(--font-han); font-weight: 700; font-size: 22px; white-space: nowrap; }
+  tr.sent .han { font-size: 18px; white-space: normal; }
+  .py { font-family: var(--font-pinyin); font-weight: 800; font-size: 16px; color: var(--jade); }
+  .ko { font-size: 15px; }
+  .note { font-size: 13px; color: var(--ink-soft); }
+  .say { border: 1px solid var(--line); background: var(--bg); color: var(--ink); border-radius: 8px; padding: 3px 10px 4px; font-family: var(--font-display); font-size: 13px; cursor: pointer; white-space: nowrap; }
+  .say:hover:not(:disabled) { border-color: var(--jade); color: var(--jade); }
+  .say:focus-visible { outline: 2px solid var(--jade); outline-offset: 2px; }
+  .say:disabled { opacity: .45; cursor: not-allowed; }
+  .culture { border-left: 4px solid var(--lantern); padding: 4px 0 4px 12px; font-size: 14px; }
+  .culture b { font-family: var(--font-display); font-weight: 400; color: var(--lantern); margin-right: 6px; }
+  footer { font-size: 13px; color: var(--ink-soft); }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>판다 탐험대 단어장</h1>
+    <p>경기온라인학교 초3~4 중국어 실시간 강좌 12차시에 맞춰 게임에 넣을 단어와 문장 초안입니다. 수업일 하루(2차시)가 게임의 지역 하나가 됩니다.</p>
+  </header>
+
+  <div class="check">
+    <b>선생님께 확인 부탁드려요</b>
+    <ul>
+      <li>빼고 싶은 단어, 더 넣고 싶은 단어가 있는지</li>
+      <li>사용하시는 교재와 다른 표현이 있는지 (예: 교재가 再见 대신 拜拜를 쓰는 경우)</li>
+      <li>가능하면 원어민 선생님께 병음과 뜻을 한 번 확인받기</li>
+    </ul>
+  </div>
+  <p class="voice" id="voiceNote"></p>
+
+  <nav id="nav" aria-label="차시 바로가기"></nav>
+  <main id="list" style="display:flex;flex-direction:column;gap:28px"></main>
+
+  <footer>표기 기준: 중국 표준어(普通话)와 간체자. 성조가 바뀌어 읽히는 경우(성조 변화)는 참고 칸에 적었습니다. 발음 듣기는 이 기기에 들어 있는 중국어 음성을 사용합니다.</footer>
+</div>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&family=Nunito:wght@800&family=Noto+Sans+SC:wght@700&display=swap">
+<script>
+(() => {
+  const DAYS = [
+    { date: '11/3 (화)', zone: '1지역 · 대나무 언덕', lessons: [1, 2] },
+    { date: '11/5 (목)', zone: '2지역 · 이름표 마을', lessons: [3, 4] },
+    { date: '11/10 (화)', zone: '3지역 · 숫자 계곡', lessons: [5, 6] },
+    { date: '11/12 (목)', zone: '4지역 · 판다네 집', lessons: [7, 8] },
+    { date: '11/17 (화)', zone: '5지역 · 만두 시장', lessons: [9, 10] },
+    { date: '11/19 (목)', zone: '6지역 · 탐험대 축제', lessons: [11, 12] },
+  ];
+  // s: true = 문장
+  const LESSONS = {
+    1: { title: '니하오! 중국어와 첫 만남', items: [
+      ['你好', 'nǐ hǎo', '안녕(하세요)', '3성 + 3성이 이어지면 앞 글자는 2성처럼 읽어요 → ní hǎo'],
+      ['你们好', 'nǐmen hǎo', '여러분, 안녕하세요'],
+      ['老师好', 'lǎoshī hǎo', '선생님, 안녕하세요'],
+      ['同学们好', 'tóngxuémen hǎo', '학생 여러분, 안녕하세요'],
+      ['中国', 'Zhōngguó', '중국'],
+      ['汉语', 'Hànyǔ', '중국어'],
+      ['妈 / 麻 / 马 / 骂', 'mā / má / mǎ / mà', '엄마 / 삼(식물), 저리다 / 말(동물) / 꾸짖다', '4성조 연습용 (게임 1지역에 이미 들어 있음)'],
+    ], culture: '중국의 수도는 北京 Běijīng(베이징)이에요. 판다는 중국 쓰촨성 등의 산속 대나무 숲에 사는, 중국을 대표하는 동물이에요.' },
+    2: { title: '여러 가지 인사말', items: [
+      ['谢谢', 'xièxie', '고마워요', '뒤의 xie는 가볍고 짧게 읽어요 (경성)'],
+      ['不客气', 'bú kèqi', '천만에요', '不는 원래 4성(bù)이지만 4성 앞에서는 2성(bú)으로 읽어요'],
+      ['对不起', 'duìbuqǐ', '미안해요'],
+      ['没关系', 'méi guānxi', '괜찮아요'],
+      ['再见', 'zàijiàn', '잘 가요, 안녕히 계세요'],
+      ['早上好', 'zǎoshang hǎo', '좋은 아침이에요 (아침 인사)'],
+      ['晚安', 'wǎn’ān', '잘 자요'],
+      ['明天见', 'míngtiān jiàn', '내일 만나요'],
+    ], culture: '예전부터 중국에서는 "吃饭了吗? Chī fàn le ma?(밥 먹었어요?)"라고 인사하기도 해요. 정말 밥을 먹었는지 묻는다기보다 반갑게 건네는 인사예요.' },
+    3: { title: '내 이름 알려주기', items: [
+      ['我', 'wǒ', '나'],
+      ['你', 'nǐ', '너'],
+      ['叫', 'jiào', '(이름을) ~라고 하다'],
+      ['什么', 'shénme', '무엇'],
+      ['名字', 'míngzi', '이름'],
+      ['你叫什么名字？', 'Nǐ jiào shénme míngzi?', '이름이 뭐예요?', '', true],
+      ['我叫……。', 'Wǒ jiào …….', '제 이름은 ……예요.', '', true],
+      ['认识你很高兴。', 'Rènshi nǐ hěn gāoxìng.', '만나서 반가워요.', '', true],
+    ], culture: '중국 사람 이름도 한국처럼 성이 먼저 와요. 王 Wáng(왕), 李 Lǐ(이), 张 Zhāng(장)은 중국에 아주 많은 성씨예요.' },
+    4: { title: '나라와 국적 소개하기', items: [
+      ['是', 'shì', '~이다'],
+      ['人', 'rén', '사람'],
+      ['哪', 'nǎ', '어느'],
+      ['韩国', 'Hánguó', '한국'],
+      ['美国', 'Měiguó', '미국'],
+      ['日本', 'Rìběn', '일본'],
+      ['你是哪国人？', 'Nǐ shì nǎ guó rén?', '너는 어느 나라 사람이야?', '', true],
+      ['我是韩国人。', 'Wǒ shì Hánguórén.', '나는 한국 사람이야.', '', true],
+    ], culture: '중국 국기는 빨간 바탕에 노란 별 다섯 개가 있는 五星红旗 wǔxīng hóngqí(오성홍기)예요. 중국어는 중국뿐 아니라 싱가포르 등 여러 곳에서 쓰여요.' },
+    5: { title: '중국어 숫자 표현', items: [
+      ['零', 'líng', '0'],
+      ['一', 'yī', '1', '뒤에 오는 글자에 따라 yí, yì로 바뀌어 읽히기도 해요'],
+      ['二', 'èr', '2'],
+      ['三', 'sān', '3'],
+      ['四', 'sì', '4'],
+      ['五', 'wǔ', '5'],
+      ['六', 'liù', '6'],
+      ['七', 'qī', '7'],
+      ['八', 'bā', '8'],
+      ['九', 'jiǔ', '9'],
+      ['十', 'shí', '10'],
+    ], culture: '중국에는 한 손으로 6~10을 나타내는 손가락 신호가 있어요. 八 bā는 "돈을 벌다(发 fā)"와 소리가 비슷해서 좋아하는 숫자이고, 四 sì는 "죽다(死 sǐ)"와 소리가 비슷해서 피하는 숫자예요.' },
+    6: { title: '생일 축하합니다!', items: [
+      ['生日', 'shēngrì', '생일'],
+      ['快乐', 'kuàilè', '즐겁다'],
+      ['几', 'jǐ', '몇'],
+      ['岁', 'suì', '살 (나이)'],
+      ['蛋糕', 'dàngāo', '케이크'],
+      ['礼物', 'lǐwù', '선물'],
+      ['生日快乐！', 'Shēngrì kuàilè!', '생일 축하해!', '', true],
+      ['你几岁？', 'Nǐ jǐ suì?', '너 몇 살이야?', '', true],
+      ['我十岁。', 'Wǒ shí suì.', '나는 열 살이야.', '숫자를 바꿔서 연습 (九岁, 十岁…)', true],
+    ], culture: '중국에서는 생일에 오래오래 건강하게 살라는 뜻으로 긴 국수 长寿面 chángshòumiàn(장수면)을 먹어요.' },
+    7: { title: '우리 가족 소개하기', items: [
+      ['爸爸', 'bàba', '아빠'],
+      ['妈妈', 'māma', '엄마'],
+      ['哥哥', 'gēge', '형, 오빠'],
+      ['姐姐', 'jiějie', '누나, 언니'],
+      ['弟弟', 'dìdi', '남동생'],
+      ['妹妹', 'mèimei', '여동생'],
+      ['爷爷', 'yéye', '할아버지 (아빠의 아버지)'],
+      ['奶奶', 'nǎinai', '할머니 (아빠의 어머니)'],
+      ['这是我爸爸。', 'Zhè shì wǒ bàba.', '이분은 우리 아빠예요.', '', true],
+      ['你家有几口人？', 'Nǐ jiā yǒu jǐ kǒu rén?', '가족이 몇 명이에요?', '', true],
+      ['我家有四口人。', 'Wǒ jiā yǒu sì kǒu rén.', '우리 가족은 네 명이에요.', '', true],
+    ], culture: '중국의 설날인 春节 Chūnjié(춘절)에는 온 가족이 모여 饺子 jiǎozi(교자)를 먹고, 어른들이 빨간 봉투 红包 hóngbāo에 세뱃돈을 넣어 줘요.' },
+    8: { title: '내가 좋아하는 것 알려주기', items: [
+      ['喜欢', 'xǐhuan', '좋아하다'],
+      ['熊猫', 'xióngmāo', '판다'],
+      ['猫', 'māo', '고양이'],
+      ['狗', 'gǒu', '개'],
+      ['足球', 'zúqiú', '축구'],
+      ['音乐', 'yīnyuè', '음악'],
+      ['你喜欢什么？', 'Nǐ xǐhuan shénme?', '너는 뭘 좋아해?', '', true],
+      ['我喜欢熊猫。', 'Wǒ xǐhuan xióngmāo.', '나는 판다를 좋아해.', '', true],
+      ['我不喜欢狗。', 'Wǒ bù xǐhuan gǒu.', '나는 개를 좋아하지 않아.', '', true],
+    ], culture: '판다는 중국에서 "나라의 보물(国宝 guóbǎo)"이라고 불려요. 중국 공원에서는 아침에 太极拳 tàijíquán(태극권)을 하는 사람들을 볼 수 있어요.' },
+    9: { title: '맛있는 중국 음식', items: [
+      ['饺子', 'jiǎozi', '교자 (만두)'],
+      ['包子', 'bāozi', '바오쯔 (속이 든 찐빵)'],
+      ['面条', 'miàntiáo', '국수'],
+      ['米饭', 'mǐfàn', '밥'],
+      ['炒饭', 'chǎofàn', '볶음밥'],
+      ['北京烤鸭', 'Běijīng kǎoyā', '베이징 오리구이'],
+      ['火锅', 'huǒguō', '훠궈 (중국식 샤부샤부)'],
+      ['糖葫芦', 'tánghúlu', '탕후루'],
+      ['好吃', 'hǎochī', '맛있다'],
+      ['很好吃！', 'Hěn hǎochī!', '정말 맛있어!', '', true],
+    ], culture: '중국 사람들은 젓가락 筷子 kuàizi로 음식을 먹어요. 지역마다 맛이 달라서 쓰촨 음식은 매운 편이고, 광둥 음식은 담백한 편이에요.' },
+    10: { title: '식당에서 음식 주문하기', items: [
+      ['服务员', 'fúwùyuán', '종업원 (부를 때 "여기요!")'],
+      ['菜单', 'càidān', '메뉴판'],
+      ['要', 'yào', '원하다, 주세요'],
+      ['水', 'shuǐ', '물'],
+      ['茶', 'chá', '차'],
+      ['可乐', 'kělè', '콜라'],
+      ['我要饺子。', 'Wǒ yào jiǎozi.', '교자 주세요.', '음식 이름만 바꿔서 연습', true],
+      ['多少钱？', 'Duōshao qián?', '얼마예요?', '', true],
+    ], culture: '중국 돈의 단위는 元 yuán(위안)이고, 말할 때는 块 kuài라고도 해요. 중국 식당에는 여럿이 음식을 나눠 먹기 좋게 가운데가 빙글빙글 돌아가는 원형 테이블이 있는 곳이 많아요.' },
+    11: { title: '오랜만이야! 요즘 어때?', items: [
+      ['最近', 'zuìjìn', '요즘'],
+      ['怎么样', 'zěnmeyàng', '어때'],
+      ['忙', 'máng', '바쁘다'],
+      ['累', 'lèi', '피곤하다'],
+      ['好久不见！', 'Hǎojiǔ bú jiàn!', '오랜만이야!', '不가 4성(见 jiàn) 앞이라 2성 bú로 읽어요', true],
+      ['你好吗？', 'Nǐ hǎo ma?', '잘 지내?', '', true],
+      ['我很好。', 'Wǒ hěn hǎo.', '나는 잘 지내.', '', true],
+      ['最近怎么样？', 'Zuìjìn zěnmeyàng?', '요즘 어때?', '', true],
+      ['还可以。', 'Hái kěyǐ.', '그럭저럭 괜찮아.', '', true],
+      ['你呢？', 'Nǐ ne?', '너는?', '', true],
+    ], culture: '你好吗?는 교과서에 자주 나오지만, 실제로 친한 사이에서는 "最近怎么样?"처럼 묻는 경우가 더 많아요.' },
+    12: { title: '중국어로 말할 수 있다!', items: [
+      ['会', 'huì', '(배워서) ~할 수 있다'],
+      ['说', 'shuō', '말하다'],
+      ['一点儿', 'yìdiǎnr', '조금'],
+      ['我会说一点儿汉语。', 'Wǒ huì shuō yìdiǎnr Hànyǔ.', '나는 중국어를 조금 할 줄 알아.', '', true],
+      ['加油！', 'Jiāyóu!', '힘내! 파이팅!', '', true],
+      ['太棒了！', 'Tài bàng le!', '정말 최고야!', '', true],
+      ['你好！我叫……。我是韩国人。我十岁。我喜欢熊猫。', 'Nǐ hǎo! Wǒ jiào ……. Wǒ shì Hánguórén. Wǒ shí suì. Wǒ xǐhuan xióngmāo.', '안녕! 내 이름은 ……야. 나는 한국 사람이야. 나는 열 살이야. 나는 판다를 좋아해.', '종합 자기소개 (게임 마지막 보스 문제)', true],
+    ], culture: '중국 본토에서는 획을 줄인 简体字 jiǎntǐzì(간체자)를, 대만과 홍콩에서는 繁体字 fántǐzì(번체자)를 써요. 예: 马(간체자) — 馬(번체자).' },
+  };
+
+  function zhVoice() {
+    try {
+      const vs = window.speechSynthesis.getVoices();
+      return vs.find(v => /^zh[-_]CN/i.test(v.lang)) || vs.find(v => /^(zh|cmn)/i.test(v.lang)) || null;
+    } catch (e) { return null; }
+  }
+  function speak(text) {
+    const v = zhVoice(); if (!v) return;
+    const u = new SpeechSynthesisUtterance(text.replace(/……|…|\//g, '，')); u.voice = v; u.lang = v.lang; u.rate = 0.75;
+    window.speechSynthesis.cancel(); window.speechSynthesis.speak(u);
+  }
+  function refreshVoice() {
+    const has = !!zhVoice();
+    document.querySelectorAll('.say').forEach(b => { b.disabled = !has; });
+    document.getElementById('voiceNote').textContent = has
+      ? '‘듣기’ 버튼을 누르면 이 기기의 중국어 음성으로 읽어 줘요. 선생님 수업 준비용으로도 써 보세요.'
+      : '이 기기(브라우저)에는 중국어 음성이 없어서 ‘듣기’ 버튼이 꺼져 있어요. PC 크롬이나 아이패드에서 열면 대부분 들을 수 있어요.';
+  }
+
+  const nav = document.getElementById('nav'), list = document.getElementById('list');
+  DAYS.forEach(d => {
+    const day = document.createElement('div'); day.className = 'day';
+    day.innerHTML = `<div class="dayhead"><h2>${d.date}</h2><span>${d.lessons[0]}~${d.lessons[1]}차시</span><span class="zone">게임 ${d.zone}</span></div>`;
+    d.lessons.forEach(n => {
+      const L = LESSONS[n];
+      nav.insertAdjacentHTML('beforeend', `<a href="#l${n}">${n}차시</a>`);
+      const rows = L.items.map(([h, p, ko, note = '', s = false]) => `
+        <tr class="${s ? 'sent' : ''}">
+          <td class="han">${h}</td><td class="py">${p}</td><td class="ko">${ko}</td>
+          <td><button class="say" data-t="${h}">듣기</button></td>
+          <td class="note">${note}</td>
+        </tr>`).join('');
+      day.insertAdjacentHTML('beforeend', `
+        <section class="lesson" id="l${n}">
+          <div class="lhead"><span class="no">${n}차시</span><h3>${L.title}</h3></div>
+          <div class="tablebox"><table>
+            <thead><tr><th>한자</th><th>병음</th><th>뜻</th><th>발음</th><th>참고</th></tr></thead>
+            <tbody>${rows}</tbody>
+          </table></div>
+          <p class="culture"><b>문화</b>${L.culture}</p>
+        </section>`);
+    });
+    list.appendChild(day);
+  });
+  list.addEventListener('click', e => { const b = e.target.closest('.say'); if (b) speak(b.dataset.t); });
+  if ('speechSynthesis' in window) { try { window.speechSynthesis.onvoiceschanged = refreshVoice; } catch (e) {} }
+  refreshVoice();
+})();
+</script>
