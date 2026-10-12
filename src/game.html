@@ -70,10 +70,15 @@
   kbd { font-family: var(--font-display); font-size: 12px; background: var(--paper); color: var(--ink); border-radius: 5px; padding: 1px 7px 2px; border-bottom: 3px solid #9fb3c8; }
 
   /* touch controls */
-  #touch { position: absolute; inset: auto 0 8px 0; display: none; justify-content: space-between; padding: 0 10px; pointer-events: none; }
-  #touch .grp { display: flex; gap: 10px; pointer-events: auto; }
-  #touch button { width: clamp(48px, 11vw, 70px); aspect-ratio: 1; border-radius: 50%; border: 3px solid var(--ink); background: rgba(243, 250, 246, .82); color: var(--ink); font-size: clamp(14px, 3vw, 20px); touch-action: none; user-select: none; -webkit-user-select: none; }
-  @media (pointer: coarse) { #touch { display: flex; } }
+  #touch { display: none; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 4px 2px; }
+  #touch .grp { display: flex; gap: 12px; }
+  #touch button { width: clamp(64px, 18vw, 92px); height: clamp(56px, 15vw, 76px); border-radius: 16px; border: 3px solid var(--ink); background: var(--paper); color: var(--ink); font-size: clamp(18px, 4.6vw, 24px); box-shadow: 0 4px 0 var(--ink); touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
+  #touch button[data-k="jump"] { width: clamp(96px, 28vw, 140px); background: var(--gold); }
+  #touch button.on { transform: translateY(3px); box-shadow: 0 1px 0 var(--ink); }
+  #rotateHint { display: none; font-size: 12.5px; color: #c9d8ee; text-align: center; padding-top: 6px; }
+  @media (pointer: coarse) { #touch { display: flex; } #guide { display: none; } }
+  button { -webkit-tap-highlight-color: transparent; }
+  @media (pointer: coarse) and (orientation: portrait) { #rotateHint { display: block; } }
 
   /* overlays */
   .overlay { position: fixed; inset: 0; z-index: 20; display: flex; align-items: flex-start; justify-content: center; padding: 20px 16px; overflow-y: auto; background: rgba(9, 17, 31, .74); }
@@ -142,6 +147,7 @@
 
   .han { font-family: var(--font-han); font-weight: 700; }
   .py { font-family: var(--font-pinyin); font-weight: 800; }
+  .t0 { color: var(--jade); }
   .t1 { color: var(--t1); } .t2 { color: var(--t2); } .t3 { color: var(--t3); } .t4 { color: var(--t4); }
 
   /* lesson */
@@ -164,6 +170,41 @@
   .tcard .bt { display: flex; gap: 6px; flex-wrap: wrap; }
   .tcard .count { font-size: 12px; color: var(--jade); font-family: var(--font-display); }
   .lsub { font-size: 19px; margin: 6px 0 8px; }
+  .lsub small { font-family: var(--font-body); font-size: 13px; color: var(--ink-soft); margin-left: 6px; }
+  .gcards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+  .gcard { display: flex; align-items: center; gap: 10px; background: #fff; border: 2px solid var(--ink); border-radius: 12px; padding: 8px 12px; min-width: 0; }
+  .gcard .han { font-size: 26px; white-space: nowrap; }
+  .gcard .py { font-size: 15px; }
+  .gcard .ko { font-family: var(--font-display); font-size: 14px; color: var(--ink-soft); }
+  .gcard .btn { margin-left: auto; flex: none; }
+  .gcard .txt { min-width: 0; }
+
+  /* start: lesson + mode */
+  .today { width: 100%; text-align: left; background: #fff; border: 3px solid var(--ink); border-radius: 14px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
+  .today .tt { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+  .today .tt b { font-family: var(--font-display); font-weight: 400; font-size: 13px; background: var(--ink); color: #fff; border-radius: 6px; padding: 0 8px 1px; }
+  .today .tt span { font-family: var(--font-display); font-size: 19px; }
+  .today .words { font-size: 14px; color: var(--ink-soft); }
+  .zones { display: flex; flex-wrap: wrap; gap: 6px; }
+  .zones span { font-size: 12px; border-radius: 99px; padding: 1px 9px 2px; background: var(--paper-2); color: var(--ink-soft); }
+  .zones span.open { background: var(--jade); color: #fff; }
+  .modes { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; width: 100%; }
+  .modes .btn { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .modes .btn small { font-family: var(--font-body); font-size: 12.5px; opacity: .85; }
+
+  /* result */
+  .result { text-align: center; display: flex; flex-direction: column; gap: 12px; align-items: center; }
+  .result .rtitle { font-size: 26px; }
+  .result .rsub { font-size: 14px; color: var(--ink-soft); }
+  .result .score { font-family: var(--font-display); font-size: 54px; line-height: 1; color: var(--jade); font-variant-numeric: tabular-nums; }
+  .result .score small { font-size: 24px; color: var(--ink-soft); }
+  .rgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: 100%; }
+  .rgrid div { background: var(--paper-2); border-radius: 10px; padding: 8px 4px; display: flex; flex-direction: column; }
+  .rgrid b { font-family: var(--font-display); font-weight: 400; font-size: 22px; font-variant-numeric: tabular-nums; }
+  .rgrid span { font-size: 12px; color: var(--ink-soft); }
+  .result .stamp { font-family: var(--font-display); font-size: 18px; background: var(--gold); border: 3px solid var(--ink); border-radius: 12px; padding: 4px 14px 6px; transform: rotate(-2deg); }
+  .result .shot { font-size: 13px; color: var(--ink-soft); background: var(--paper-2); border-radius: 10px; padding: 8px 12px; }
+  .qprogress { font-family: var(--font-display); font-size: 14px; color: var(--ink-soft); }
   .lnote { font-size: 13px; color: var(--ink-soft); margin-top: 12px !important; }
   .voicenote { font-size: 12.5px; color: var(--ink-soft); text-align: center; }
 
@@ -185,10 +226,6 @@
       <canvas id="game" width="640" height="360"></canvas>
       <div id="mapTag">성조 마을 · 대나무 언덕</div>
       <div id="toast" hidden></div>
-      <div id="touch" aria-hidden="true">
-        <div class="grp"><button data-k="left">◀</button><button data-k="right">▶</button></div>
-        <div class="grp"><button data-k="down">▼</button><button data-k="jump">점프</button></div>
-      </div>
       <div id="focusHint" hidden>화면을 클릭하면 다시 조작할 수 있어요</div>
     </div>
     <div id="status">
@@ -198,10 +235,16 @@
       <div class="bar exp"><label>EXP</label><div class="track"><div class="fill" id="expFill"></div><span id="expText">0 / 35</span></div></div>
       <div class="coins" title="코인"><img id="coinIcon" alt="코인"><span id="coinNum">0</span></div>
       <div class="sbtns">
-        <button class="sbtn" id="btnLesson">성조 교실 (H)</button>
+        <button class="sbtn" id="btnResult">오늘의 결과 (R)</button>
+        <button class="sbtn" id="btnLesson">배움 노트 (H)</button>
         <button class="sbtn" id="btnSound">소리 켬 (M)</button>
       </div>
     </div>
+    <div id="touch" aria-hidden="true">
+      <div class="grp"><button data-k="left">◀</button><button data-k="right">▶</button></div>
+      <div class="grp"><button data-k="down">▼</button><button data-k="jump">점프</button></div>
+    </div>
+    <p id="rotateHint">휴대폰을 가로로 돌리면 게임 화면이 더 크게 보여요.</p>
   </div>
   <div id="guide">
     <span><kbd>←</kbd><kbd>→</kbd> 좌우 이동</span>
@@ -209,7 +252,8 @@
     <span><kbd>↓</kbd>+<kbd>스페이스</kbd> 발판 아래로</span>
     <span>몬스터에 닿으면 <b>중국어 퀴즈</b></span>
     <span><kbd>1</kbd>~<kbd>4</kbd> 답 고르기 · <kbd>Enter</kbd> 계속</span>
-    <span><kbd>H</kbd> 성조 교실</span>
+    <span><kbd>H</kbd> 배움 노트</span>
+    <span><kbd>R</kbd> 오늘의 결과</span>
     <span><kbd>M</kbd> 소리 켜기/끄기</span>
   </div>
 </div>
@@ -221,18 +265,24 @@
       <canvas id="titlePanda" width="16" height="16"></canvas>
       <h1><small>熊猫探险队</small>판다 탐험대</h1>
     </div>
-    <p>대나무 언덕에 <b>성조 젤리</b>와 <b>빵빵 만두</b>가 나타났어요!<br>몬스터를 만나면 중국어 퀴즈가 나와요. 정답을 맞혀서 물리치고 경험치를 모아 보세요.</p>
+    <div class="today">
+      <div class="tt"><b>1차시 · 11/3</b><span>니하오! 중국어와 첫 만남</span></div>
+      <div class="words">배울 표현: 你好 · 你们好 · 老师好 · 同学们好 · 中国 · 汉语 · 4성조 (mā má mǎ mà)</div>
+      <div class="zones" id="zones"></div>
+    </div>
+    <p>대나무 언덕에 <b>성조 젤리</b>와 <b>인사 만두</b>가 나타났어요! 몬스터를 만나면 중국어 퀴즈가 나와요.</p>
     <ul class="howto">
       <li><kbd>←</kbd><kbd>→</kbd> 좌우로 걷기</li>
       <li><kbd>스페이스</kbd> 점프</li>
       <li><kbd>↓</kbd>+<kbd>스페이스</kbd> 발판에서 내려가기</li>
       <li><kbd>1</kbd>~<kbd>4</kbd> 또는 클릭으로 답 고르기</li>
-      <li><kbd>H</kbd> 성조 교실 열기</li>
+      <li><kbd>H</kbd> 배움 노트 열기</li>
       <li><kbd>M</kbd> 소리 켜기/끄기</li>
     </ul>
-    <div class="row">
-      <button class="btn jade" id="btnLearnFirst">성조 먼저 배우기</button>
-      <button class="btn primary" id="btnPlay">모험 시작! (Enter)</button>
+    <div class="modes">
+      <button class="btn jade" id="btnLearnFirst">배움 노트<small>먼저 듣고 배우기</small></button>
+      <button class="btn primary" id="btnPlay">탐험 모드 (Enter)<small>걸어 다니며 몬스터 퀴즈</small></button>
+      <button class="btn" id="btnQuick">빠른 퀴즈<small>10문제 · 휴대폰도 쉬워요</small></button>
     </div>
     <p class="saveinfo" id="saveInfo" hidden></p>
     <button class="linkbtn" id="btnReset" hidden>저장된 기록 지우기</button>
@@ -243,13 +293,13 @@
 <div class="overlay" id="lesson" hidden>
   <div class="card wide" tabindex="-1">
     <div class="lhead">
-      <h2>성조 교실</h2>
+      <h2>배움 노트 · 1차시</h2>
       <button class="btn small" id="btnLessonClose">닫기 (H)</button>
     </div>
     <p class="lintro"><b>병음</b>(拼音 <span class="py">pīnyīn</span>)은 중국어 소리를 알파벳으로 적은 거예요. 모음 위에 붙은 작은 표시가 <b>성조</b>, 즉 소리의 높낮이예요. 똑같은 <span class="py">ma</span>라도 성조가 바뀌면 뜻이 완전히 달라져요!</p>
     <div class="tones" id="toneCards"></div>
-    <h3 class="lsub">같은 소리, 다른 성조 연습: <span class="py">ba</span></h3>
-    <div class="wcards" id="baCards"></div>
+    <h3 class="lsub">1차시 표현<small>‘발음 듣기’로 따라 말해 보세요</small></h3>
+    <div class="gcards" id="greetCards"></div>
     <p class="lnote">그래프는 목소리 높이를 1(가장 낮음)부터 5(가장 높음)까지 나눈 거예요. 3성은 실제 대화에서 끝을 올리지 않고 낮게만 소리 내는 경우가 많아요. ‘음높이 듣기’는 성조 모양을 삐- 소리로 들려주는 것이고, 사람 목소리는 아니에요.</p>
     <p class="voicenote" id="voiceNote"></p>
   </div>
@@ -260,7 +310,7 @@
   <div class="card" tabindex="-1" id="quizCard">
     <div class="qhead">
       <canvas id="qMon" width="14" height="12"></canvas>
-      <div><div class="qname" id="qName"></div><div class="qsub">정답을 맞히면 물리칠 수 있어요!</div></div>
+      <div><div class="qname" id="qName"></div><div class="qsub" id="qSub">정답을 맞히면 물리칠 수 있어요!</div></div>
       <div class="streak" id="qStreak"></div>
     </div>
     <div class="qprompt" id="qPrompt"></div>
@@ -272,6 +322,27 @@
       <div class="wcards" id="qCards"></div>
       <div class="ex" id="qEx"></div>
       <button class="btn primary go" id="btnContinue">계속하기 (Enter)</button>
+    </div>
+  </div>
+</div>
+
+<!-- 결과 -->
+<div class="overlay" id="result" hidden>
+  <div class="card result" tabindex="-1">
+    <div class="rsub" id="rDate"></div>
+    <h2 class="rtitle" id="rTitle">오늘의 탐험 결과</h2>
+    <div class="score" id="rScore">0<small> / 0</small></div>
+    <div class="rsub">맞힌 문제</div>
+    <div class="rgrid">
+      <div><b id="rLv">1</b><span>레벨</span></div>
+      <div><b id="rCoins">0</b><span>코인</span></div>
+      <div><b id="rRate">0%</b><span>정답률</span></div>
+    </div>
+    <div class="stamp" id="rStamp">잘했어요!</div>
+    <p class="shot">이 화면을 캡처해서 수업 채팅방에 올려 주세요!</p>
+    <div class="row">
+      <button class="btn" id="btnRAgain">빠른 퀴즈 다시 하기</button>
+      <button class="btn primary" id="btnRClose">닫기 (Enter)</button>
     </div>
   </div>
 </div>
@@ -300,7 +371,7 @@
 
   // Google Fonts (한자는 필요한 글자만 받아옴)
   (function loadFonts() {
-    const han = '熊猫探险队妈麻马骂八拔把爸拼音';
+    const han = '熊猫探险队妈麻马骂你们好老师同学中国汉语拼音文';
     for (const href of [
       'https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&family=Nunito:wght@800&display=swap',
       'https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@700&display=swap&text=' + encodeURIComponent(han),
@@ -320,13 +391,15 @@
     { id: 'ma3', h: '马', p: 'mǎ', t: 3, ko: '말(동물)', note: '달리는 동물 "말"이에요.' },
     { id: 'ma4', h: '骂', p: 'mà', t: 4, ko: '꾸짖다, 야단치다', note: '누군가를 혼내거나 꾸짖는다는 뜻이에요.' },
   ];
-  const BA = [
-    { id: 'ba1', h: '八', p: 'bā', t: 1, ko: '여덟(8)', note: '숫자 8이에요.' },
-    { id: 'ba2', h: '拔', p: 'bá', t: 2, ko: '뽑다', note: '풀이나 이를 "잡아서 뽑다"라는 뜻이에요.' },
-    { id: 'ba3', h: '把', p: 'bǎ', t: 3, ko: '잡다, 쥐다', note: '손으로 "잡다"라는 뜻이에요. 문장에서 "~을/를"처럼 쓰이기도 해요.' },
-    { id: 'ba4', h: '爸', p: 'bà', t: 4, ko: '아빠', note: '보통 爸爸 bàba처럼 두 번 써서 "아빠"라고 해요.' },
+  // 1차시 표현 (t: 0 = 여러 글자 표현)
+  const GREET = [
+    { id: 'g1', h: '你好', p: 'nǐ hǎo', t: 0, ko: '안녕(하세요)', note: '3성이 두 번 이어지면 앞 글자는 2성처럼 읽어요. 그래서 실제 소리는 ní hǎo예요.', sit: '친구를 만났을 때 하는 인사는?' },
+    { id: 'g2', h: '你们好', p: 'nǐmen hǎo', t: 0, ko: '여러분, 안녕하세요', note: '们 men은 "~들"이라는 뜻이에요. 여러 사람에게 한꺼번에 인사할 때 써요.', sit: '친구 여러 명에게 한꺼번에 인사할 때는?' },
+    { id: 'g3', h: '老师好', p: 'lǎoshī hǎo', t: 0, ko: '선생님, 안녕하세요', note: '老师 lǎoshī는 "선생님"이에요. 선생님께 인사할 때 써요.', sit: '선생님께 인사할 때는?' },
+    { id: 'g4', h: '同学们好', p: 'tóngxuémen hǎo', t: 0, ko: '학생 여러분, 안녕하세요', note: '同学 tóngxué는 "학생, 같은 반 친구"예요. 선생님이 학생들에게 인사할 때 써요.', sit: '선생님이 반 학생들에게 하는 인사는?' },
+    { id: 'g5', h: '中国', p: 'Zhōngguó', t: 0, ko: '중국', note: '中 zhōng은 "가운데", 国 guó는 "나라"라는 뜻이에요.' },
+    { id: 'g6', h: '汉语', p: 'Hànyǔ', t: 0, ko: '중국어', note: '중국어를 汉语 Hànyǔ라고 해요. 中文 Zhōngwén이라고도 해요.' },
   ];
-  const ALL_WORDS = [...MA, ...BA];
 
   // ================= 유틸 =================
   function mulberry32(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
@@ -651,7 +724,7 @@
     // 표지판
     drawSign(g, 120, ['판다 탐험대', '출발! →'], 84);
     drawSign(g, 600, ['몬스터에 닿으면', '중국어 퀴즈!'], 108);
-    drawSign(g, 1560, ['이 앞은', '빵빵 만두 구역'], 100);
+    drawSign(g, 1560, ['이 앞은', '인사 만두 구역'], 100);
     // 다음 지역 문 (패방)
     const gx = 2980;
     g.fillStyle = '#3b2716'; g.fillRect(gx - 2, GY - 124, 14, 124); g.fillRect(gx + 128, GY - 124, 14, 124);
@@ -806,6 +879,7 @@
       return;
     }
     if (mode === 'lesson') { if (c === 'KeyH' || c === 'Escape') closeLesson(); return; }
+    if (mode === 'result') { if ((c === 'Enter' || c === 'NumpadEnter' || c === 'Escape' || c === 'KeyR') && !e.repeat) { e.preventDefault(); closeResult(); } return; }
     if (mode === 'start') { if (c === 'Enter' || c === 'NumpadEnter') { e.preventDefault(); startPlay(); } return; }
     if (mode === 'faint') { if (c === 'Enter' || c === 'NumpadEnter' || c === 'Space') { e.preventDefault(); revive(); } return; }
     if (c === 'ArrowLeft' || c === 'KeyA') keys.left = true;
@@ -813,6 +887,7 @@
     if (c === 'ArrowDown' || c === 'KeyS') keys.down = true;
     if (isJump(e)) { if (!e.repeat) jumpBuffer = 0.14; keys.jumpHeld = true; }
     if (c === 'KeyH' && !e.repeat) openLesson();
+    if (c === 'KeyR' && !e.repeat) showResult(false);
     if (c === 'KeyM' && !e.repeat) toggleSound();
   });
   window.addEventListener('keyup', (e) => {
@@ -832,8 +907,9 @@
   // 터치 버튼
   document.querySelectorAll('#touch button').forEach(b => {
     const k = b.dataset.k;
-    const on = (e) => { e.preventDefault(); audio(); if (k === 'jump') { jumpBuffer = 0.14; keys.jumpHeld = true; } else keys[k] = true; };
-    const off = (e) => { e.preventDefault(); if (k === 'jump') keys.jumpHeld = false; else keys[k] = false; };
+    const on = (e) => { e.preventDefault(); audio(); b.classList.add('on'); if (k === 'jump') { jumpBuffer = 0.14; keys.jumpHeld = true; } else keys[k] = true; };
+    const off = (e) => { e.preventDefault(); b.classList.remove('on'); if (k === 'jump') keys.jumpHeld = false; else keys[k] = false; };
+    b.addEventListener('contextmenu', (e) => e.preventDefault());
     b.addEventListener('pointerdown', on); b.addEventListener('pointerup', off); b.addEventListener('pointercancel', off); b.addEventListener('pointerleave', off);
   });
 
@@ -981,18 +1057,68 @@
     const order = shuffle([0, 1, 2, 3]);
     return { prompt: b.prompt, show: '', options: order.map(i => ({ html: b.opts[i], correct: i === b.ans })), words: b.words, explain: b.explain, key: 'basic' + BASICS.indexOf(b) };
   }
-  function makeQuestion(m) {
-    if (m.type === 'jelly' && Math.random() < 0.15) { const q = basicQuestion(); if (!quiz.last.includes(q.key)) return q; }
-    const set = m.type === 'jelly' ? MA : BA;
+  // 1차시 인사 표현 문제
+  const four = (w) => shuffle([w, ...shuffle(GREET.filter(x => x !== w)).slice(0, 3)]);
+  const gShow = (w) => `${hanHTML(w)}<div class="meta"><span class="py t0">${w.p}</span></div>`;
+  Object.assign(BUILD, {
+    gMeaning: (w) => ({
+      prompt: '이 표현의 뜻은 무엇일까요?', show: gShow(w), say: w,
+      options: four(w).map(x => ({ html: x.ko, correct: x === w })), words: [w],
+      explain: `<b>${w.h} ${w.p}</b> = ‘${w.ko}’<br>${w.note}`,
+    }),
+    gChar: (w) => ({
+      prompt: `‘${w.ko}’, 중국어로 어떻게 말할까요?`, show: '', say: w,
+      options: four(w).map(x => ({ html: `<span class="han">${x.h}</span><span class="py t0">${x.p}</span>`, correct: x === w })), words: [w],
+      explain: `‘${w.ko}’ = <b>${w.h} ${w.p}</b><br>${w.note}`,
+    }),
+    gPinyin: (w) => ({
+      prompt: '이 표현은 어떻게 읽을까요?', show: `${hanHTML(w)}<div class="meta"><span class="ko">${w.ko}</span></div>`, say: w,
+      options: four(w).map(x => ({ html: `<span class="py">${x.p}</span>`, correct: x === w })), words: [w],
+      explain: `<b>${w.h}</b> (${w.ko}) → 읽는 법 <b>${w.p}</b><br>${w.note}`,
+    }),
+    gSit: (w) => ({
+      prompt: w.sit, show: '', say: w,
+      options: shuffle(GREET.filter(x => x.sit)).map(x => ({ html: `<span class="han">${x.h}</span><span class="py t0">${x.p}</span>`, correct: x === w })),
+      words: GREET.filter(x => x.sit), hl: w,
+      explain: `${w.sit.replace(/는\?$/, '')}는 <b>${w.h} ${w.p}</b>라고 해요. (뜻: ${w.ko})<br>${w.note}`,
+    }),
+    gSandhi: (w) => ({
+      prompt: '你好 nǐ hǎo는 실제로 어떻게 소리 낼까요?', show: gShow(w), say: w,
+      options: shuffle(['ní hǎo', 'nǐ hāo', 'nì hào', 'nī háo']).map(x => ({ html: `<span class="py">${x}</span>`, correct: x === 'ní hǎo' })), words: [w],
+      explain: '3성(ˇ) 글자 두 개가 이어지면 앞 글자를 2성(ˊ)처럼 올려서 읽어요. 그래서 你好는 <b>ní hǎo</b>처럼 들려요. 책에는 그대로 nǐ hǎo라고 써요.',
+    }),
+    gListen: (w) => ({
+      prompt: '잘 듣고, 들은 표현을 고르세요.', show: '', listen: w,
+      options: four(w).map(x => ({ html: `<span class="han">${x.h}</span>`, correct: x === w })), words: [w],
+      explain: `들은 표현: <b>${w.h} ${w.p}</b> (${w.ko})<br>${w.note}`,
+    }),
+  });
+  const GREET_KINDS = [['gMeaning', 3], ['gChar', 3], ['gPinyin', 2], ['gSit', 3], ['gSandhi', 1], ['gListen', 2]];
+  function greetQuestion() {
+    const kinds = zhVoice() ? GREET_KINDS : GREET_KINDS.filter(k => k[0] !== 'gListen');
     for (let tries = 0; tries < 8; tries++) {
-      const w = m.type === 'jelly' ? set[m.tone - 1] : pick(set);
+      const kind = weighted(kinds);
+      const w = kind === 'gSandhi' ? GREET[0] : kind === 'gSit' ? pick(GREET.filter(x => x.sit)) : pick(GREET);
+      const key = kind + w.id;
+      if (quiz.last.includes(key) && tries < 7) continue;
+      const q = BUILD[kind](w); q.key = key; q.word = w; return q;
+    }
+  }
+  function makeQuestion(m) {
+    if (m.type === 'bun') return greetQuestion();
+    if (Math.random() < 0.15) { const q = basicQuestion(); if (!quiz.last.includes(q.key)) return q; }
+    const set = MA;
+    for (let tries = 0; tries < 8; tries++) {
+      const w = set[m.tone - 1];
       const kind = weighted(save.level >= 2 ? KINDS_ALL : KINDS_EASY);
       const key = kind + w.id;
       if (quiz.last.includes(key) && tries < 7) continue;
       const q = BUILD[kind](w, set); q.key = key; q.word = w; return q;
     }
   }
-  function monName(m) { return m.type === 'jelly' ? `${m.tone}성 젤리` : '빵빵 만두'; }
+  function monName(m) { return m.type === 'jelly' ? `${m.tone}성 젤리` : '인사 만두'; }
+  const quick = { on: false, n: 0, correct: 0, total: 10 };
+  const sessionStats = { correct: 0, total: 0 };
 
   function openQuiz(m) {
     mode = 'quiz'; clearKeys(); P.vx = 0; SFX.meet();
@@ -1001,7 +1127,8 @@
     quiz.last.push(q.key); if (quiz.last.length > 4) quiz.last.shift();
     // 몬스터 그림
     const qc = $('qMon'), g = qc.getContext('2d'); g.clearRect(0, 0, 14, 12); g.drawImage(m.type === 'jelly' ? JELLY[m.tone] : BUN, 0, 0);
-    $('qName').textContent = `${monName(m)}가 나타났다!`;
+    if (quick.on) { $('qName').textContent = `빠른 퀴즈 ${quick.n} / ${quick.total}`; $('qSub').textContent = `${monName(m)}의 문제`; }
+    else { $('qName').textContent = `${monName(m)}가 나타났다!`; $('qSub').textContent = '정답을 맞히면 물리칠 수 있어요!'; }
     $('qStreak').innerHTML = streak >= 2 ? `연속 정답 ${streak}개!` : '';
     $('qPrompt').textContent = q.prompt;
     $('qShow').innerHTML = q.show; $('qShow').hidden = !q.show;
@@ -1009,8 +1136,9 @@
     $('qOpts').querySelectorAll('.opt').forEach(b => b.addEventListener('click', () => answer(+b.dataset.i)));
     const tools = [];
     if (q.contour) tools.push(`<button class="btn small" data-contour="${q.contour}">음높이 듣기</button>`);
-    if (q.say && !q.contour) tools.push(`<button class="btn small" data-contour="${q.say.t}">음높이 듣기</button>`);
+    if (q.say && !q.contour && q.say.t >= 1) tools.push(`<button class="btn small" data-contour="${q.say.t}">음높이 듣기</button>`);
     if (q.say && q.show) tools.push(`<button class="btn small" data-say="${q.say.h}">발음 듣기</button>`);
+    if (q.listen) { tools.push(`<button class="btn small primary" data-say="${q.listen.h}">다시 듣기</button>`); setTimeout(() => speak(q.listen.h), 350); }
     $('qTools').innerHTML = tools.join(''); $('qTools').hidden = !tools.length;
     bindSoundButtons($('qTools'));
     $('qFb').hidden = true;
@@ -1025,10 +1153,12 @@
     const btns = $('qOpts').querySelectorAll('.opt');
     btns.forEach((b, j) => { b.disabled = true; if (q.options[j].correct) b.classList.add('right'); });
     const w = q.word;
+    sessionStats.total++; if (opt.correct) sessionStats.correct++;
+    if (quick.on && opt.correct) quick.correct++;
     if (opt.correct) {
       SFX.correct(); streak++; save.correct++;
       if (w) save.words[w.id] = (save.words[w.id] || 0) + 1;
-      const m = quiz.mon, exp = m.type === 'bun' ? 15 : 10;
+      const m = quiz.mon, exp = quick.on ? 10 : m.type === 'bun' ? 15 : 10;
       let bonus = '';
       if (streak > 0 && streak % 3 === 0) bonus = `<br>연속 ${streak}개 정답 보너스 코인 +5!`;
       $('qRes').innerHTML = `정답이에요! 경험치 +${exp}${bonus}`;
@@ -1037,9 +1167,9 @@
       SFX.wrong(); streak = 0; save.wrong++;
       btns[i].classList.add('wrong');
       const ri = q.options.findIndex(o => o.correct);
-      $('qRes').innerHTML = `아쉬워요! 정답은 ${ri + 1}번이에요. (HP -20)`;
+      $('qRes').innerHTML = `아쉬워요! 정답은 ${ri + 1}번이에요.${quick.on ? '' : ' (HP -20)'}`;
       $('qFb').className = 'qfb no';
-      P.hp = Math.max(0, P.hp - 20); updateHUD();
+      if (!quick.on) { P.hp = Math.max(0, P.hp - 20); updateHUD(); }
     }
     const hl = q.hl || w;
     $('qCards').innerHTML = (q.words || []).map(x => `<div class="wcard${x === hl ? ' hl' : ''}"><span class="han">${x.h}</span><span class="py t${x.t}">${x.p}</span><span class="ko">${x.ko}</span></div>`).join('');
@@ -1050,6 +1180,11 @@
   }
   function closeQuiz() {
     if (mode !== 'quiz' || !quiz.answered) return;
+    if (quick.on) {
+      $('quiz').hidden = true;
+      if (quiz.correct) { addExp(10); addCoins(2); }
+      nextQuick(); return;
+    }
     $('quiz').hidden = true; mode = 'play'; focusStage();
     const m = quiz.mon;
     if (quiz.correct) {
@@ -1105,8 +1240,8 @@
         <div class="count">${cnt ? `퀴즈에서 ${cnt}번 맞혔어요` : '&nbsp;'}</div>
       </div>`;
     }).join('');
-    $('baCards').innerHTML = BA.map(w => `<div class="wcard"><span class="han">${w.h}</span><span class="py t${w.t}">${w.p}</span><span class="ko">${w.ko}</span></div>`).join('');
-    bindSoundButtons($('toneCards'));
+    $('greetCards').innerHTML = GREET.map(w => `<div class="gcard">${hanHTML(w)}<div class="txt"><div class="py t0">${w.p}</div><div class="ko">${w.ko}</div></div><button class="btn small" data-say="${w.h}">발음 듣기</button></div>`).join('');
+    bindSoundButtons($('toneCards')); bindSoundButtons($('greetCards'));
     refreshVoiceUI();
   }
   function bindSoundButtons(root) {
@@ -1116,7 +1251,7 @@
   }
   let lessonReturn = 'play';
   function openLesson() {
-    if (mode === 'quiz' || mode === 'faint' || mode === 'lesson') return;
+    if (mode === 'quiz' || mode === 'faint' || mode === 'lesson' || mode === 'result') return;
     lessonReturn = mode; mode = 'lesson'; clearKeys(); buildLesson();
     $('lesson').hidden = false; if (lessonReturn === 'start') $('startScreen').hidden = true;
     $('lesson').scrollTop = 0; $('lesson').querySelector('.card').focus({ preventScroll: true });
@@ -1138,6 +1273,47 @@
     if (!startPlay.once) { startPlay.once = true; setTimeout(() => toast('오른쪽으로 가서 성조 젤리를 만나 보세요!', 2400, true), 400); }
   }
   $('btnPlay').addEventListener('click', startPlay);
+
+  // ================= 빠른 퀴즈 · 결과 =================
+  let resultReturn = 'play';
+  function startQuick(from) {
+    audio(); resultReturn = from;
+    $('startScreen').hidden = true; $('result').hidden = true;
+    quick.on = true; quick.n = 0; quick.correct = 0; streak = 0;
+    nextQuick();
+  }
+  function nextQuick() {
+    if (quick.n >= quick.total) { quick.on = false; showResult(true); return; }
+    quick.n++;
+    openQuiz(Math.random() < 0.5 ? { type: 'jelly', tone: 1 + Math.floor(Math.random() * 4) } : { type: 'bun' });
+  }
+  function showResult(isQuick) {
+    if (!isQuick && mode !== 'play') return;
+    if (!isQuick) resultReturn = 'play';
+    mode = 'result'; clearKeys();
+    const c = isQuick ? quick.correct : sessionStats.correct, t = isQuick ? quick.total : sessionStats.total;
+    const rate = t ? Math.round(c / t * 100) : 0;
+    $('rDate').textContent = `1차시 · ${new Date().toLocaleDateString('ko-KR')}`;
+    $('rTitle').textContent = isQuick ? '빠른 퀴즈 결과' : '오늘의 탐험 결과';
+    $('rScore').innerHTML = `${c}<small> / ${t}</small>`;
+    $('rLv').textContent = save.level; $('rCoins').textContent = save.coins; $('rRate').textContent = t ? rate + '%' : '-';
+    $('rStamp').textContent = !t ? '퀴즈를 풀어 보세요!' : rate >= 90 ? '최고예요! 太棒了!' : rate >= 70 ? '잘했어요! 很好!' : rate >= 40 ? '좋아요, 조금만 더!' : '다시 도전! 加油!';
+    $('btnRAgain').textContent = isQuick ? '빠른 퀴즈 다시 하기' : '빠른 퀴즈 하기';
+    if (isQuick && rate >= 70) SFX.level();
+    $('result').hidden = false; $('result').scrollTop = 0; $('result').querySelector('.card').focus({ preventScroll: true });
+  }
+  function closeResult() {
+    if (mode !== 'result') return;
+    $('result').hidden = true;
+    if (resultReturn === 'start') { mode = 'start'; $('startScreen').hidden = false; $('startScreen').querySelector('.card').focus({ preventScroll: true }); }
+    else { mode = 'play'; focusStage(); }
+  }
+  $('btnQuick').addEventListener('click', () => startQuick('start'));
+  $('btnRAgain').addEventListener('click', () => { if (mode === 'result') { $('result').hidden = true; startQuick(resultReturn); } });
+  $('btnRClose').addEventListener('click', closeResult);
+  $('btnResult').addEventListener('click', () => { audio(); showResult(false); });
+  $('zones').innerHTML = [['1지역 대나무 언덕', '11/3', true], ['2지역 이름표 마을', '11/5'], ['3지역 숫자 계곡', '11/10'], ['4지역 판다네 집', '11/12'], ['5지역 만두 시장', '11/17'], ['6지역 탐험대 축제', '11/19']]
+    .map(([n, d, open]) => `<span class="${open ? 'open' : ''}">${n} · ${open ? '열림' : d + ' 준비 중'}</span>`).join('');
   $('btnLearnFirst').addEventListener('click', () => { audio(); openLesson(); });
   let resetArmed = false;
   $('btnReset').addEventListener('click', () => {
