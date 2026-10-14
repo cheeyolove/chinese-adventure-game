@@ -30,7 +30,8 @@
     --right-bg: #dcf5e8;
     --font-display: "Jua", "Gowun Dodum", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
     --font-body: "Gowun Dodum", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
-    --font-pinyin: "Nunito", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    /* 병음: 성조 모음(ā á ǎ à, ǐ ǒ ǔ, ü)이 모두 들어 있는 폰트만 나열 (Noto Sans는 병음 글자만 작게 받아옴) */
+    --font-pinyin: "Noto Sans", -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     --font-han: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", "Source Han Sans SC", sans-serif;
     color-scheme: dark;
   }
@@ -63,6 +64,7 @@
   #missionPanel li.locked { opacity: .6; }
   @media (max-width: 700px) { #missionPanel li:not(.active) { display: none; } }
   @media (max-width: 700px) { #toast { top: auto; bottom: 6px; } }
+  #notice { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); z-index: 60; max-width: calc(100% - 32px); background: var(--ink); color: var(--paper); border: 3px solid var(--gold); border-radius: 12px; padding: 10px 16px 11px; font-family: var(--font-display); font-size: 16px; text-align: center; box-shadow: 0 6px 0 rgba(0,0,0,.3); pointer-events: none; }
   #focusHint { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(19, 34, 58, .55); font-family: var(--font-display); font-size: clamp(14px, 2.4vw, 22px); color: var(--paper); cursor: pointer; }
 
   /* status bar */
@@ -77,7 +79,7 @@
   .fill { position: absolute; inset: 0 auto 0 0; width: 100%; transition: width .35s ease; }
   .hp .fill { background: linear-gradient(#ff7b7f, var(--lantern)); }
   .exp .fill { background: linear-gradient(#ffe48a, #e9ad19); }
-  .track span { position: relative; display: block; text-align: center; font-size: 12px; line-height: 14px; color: #fff; text-shadow: 0 1px 0 #000, 1px 0 0 #000, -1px 0 0 #000, 0 -1px 0 #000; font-variant-numeric: tabular-nums; font-family: var(--font-pinyin); font-weight: 800; }
+  .track span { position: relative; display: block; text-align: center; font-size: 12px; line-height: 14px; color: #fff; text-shadow: 0 1px 0 #000, 1px 0 0 #000, -1px 0 0 #000, 0 -1px 0 #000; font-variant-numeric: tabular-nums; font-family: var(--font-pinyin); font-weight: 700; }
   .coins { display: flex; align-items: center; gap: 6px; font-size: 18px; font-variant-numeric: tabular-nums; }
   .coins img { width: 20px; height: 20px; image-rendering: pixelated; }
   .sbtns { display: flex; gap: 6px; margin-left: auto; }
@@ -146,7 +148,7 @@
   .opt .lbl { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; min-width: 0; }
   .opt .han { font-size: 26px; }
   .opt .py { font-size: 21px; }
-  .opt .mk { font-family: var(--font-pinyin); font-weight: 800; font-size: 22px; }
+  .opt .mk { font-family: var(--font-pinyin); font-weight: 700; font-size: 22px; }
   .opt.right { background: var(--right-bg); border-color: var(--jade); box-shadow: 0 4px 0 var(--jade); }
   .opt.wrong { background: var(--wrong-bg); border-color: var(--t4); box-shadow: 0 4px 0 var(--t4); }
   .opt:disabled { cursor: default; }
@@ -158,7 +160,6 @@
   .qshow .npc .py { font-size: 18px; } .qshow .npc .ko { font-size: 15px; }
   .qhint { margin-top: 12px; background: #fff4d1; border: 2px dashed var(--t3); border-radius: 12px; padding: 10px 12px; font-size: 15px; line-height: 1.6; }
   .qhint b { font-family: var(--font-display); font-weight: 400; color: var(--t3); margin-right: 6px; }
-  .novoice { opacity: .5; }
   .qfb { margin-top: 16px; padding: 14px; border-radius: 12px; display: flex; flex-direction: column; gap: 10px; }
   .qfb.ok { background: var(--right-bg); }
   .qfb.no { background: var(--wrong-bg); }
@@ -176,7 +177,9 @@
   .wcard.hl { border-width: 3px; box-shadow: 0 0 0 3px var(--gold); }
 
   .han { font-family: var(--font-han); font-weight: 700; }
-  .py { font-family: var(--font-pinyin); font-weight: 800; }
+  /* 병음 표시: 한 폰트로 통일, 굵기·높이 일정하게, 가짜 굵게(synthesis) 금지 */
+  .py { font-family: var(--font-pinyin); font-weight: 600; font-style: normal; font-synthesis: none; letter-spacing: .01em; font-variant-ligatures: none; font-feature-settings: "liga" 0; }
+  .py.inl { font-size: 1em; color: inherit; }
   .t0 { color: var(--jade); }
   .t1 { color: var(--t1); } .t2 { color: var(--t2); } .t3 { color: var(--t3); } .t4 { color: var(--t4); }
 
@@ -189,7 +192,7 @@
   .tcard { border: 3px solid var(--ink); border-radius: 14px; padding: 12px; background: #fff; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
   .tcard .top { display: flex; align-items: baseline; justify-content: space-between; }
   .tcard .tname { font-family: var(--font-display); font-size: 22px; }
-  .tcard .chao { font-family: var(--font-pinyin); font-weight: 800; font-size: 13px; color: var(--ink-soft); }
+  .tcard .chao { font-family: var(--font-pinyin); font-weight: 600; font-size: 13px; color: var(--ink-soft); }
   .tcard svg { width: 100%; height: auto; display: block; background: #f6fbf8; border-radius: 8px; }
   .tcard .ex { display: flex; align-items: center; gap: 10px; }
   .tcard .ex .han { font-size: 40px; }
@@ -328,6 +331,8 @@
   </div>
 </div>
 
+<div id="notice" role="status" aria-live="polite" hidden></div>
+
 <!-- 시작 화면 -->
 <div class="overlay" id="startScreen">
   <div class="card start" tabindex="-1">
@@ -390,7 +395,7 @@
     <h3 class="lsub">1차시 표현<small>‘발음 듣기’로 따라 말해 보세요</small></h3>
     <div class="gcards" id="greetCards"></div>
     </div>
-    <p class="lnote" id="lessonNote1">그래프는 목소리 높이를 1(가장 낮음)부터 5(가장 높음)까지 나눈 거예요. 3성은 실제 대화에서 끝을 올리지 않고 낮게만 소리 내는 경우가 많아요. ‘음높이 듣기’는 성조 모양을 삐- 소리로 들려주는 것이고, 사람 목소리는 아니에요.</p>
+    <p class="lnote" id="lessonNote1">그래프는 목소리 높이를 1(가장 낮음)부터 5(가장 높음)까지 나눈 거예요. 3성은 실제 대화에서 끝을 올리지 않고 낮게만 소리 내는 경우가 많아요.</p>
     <p class="voicenote" id="voiceNote"></p>
   </div>
 </div>
@@ -488,8 +493,11 @@
   // Google Fonts (한자는 필요한 글자만 받아옴)
   (function loadFonts() {
     const han = '熊猫探险队妈麻马骂你们好老师同学中国汉语拼音文我叫什么名字。？！';
+    // 병음용: 알파벳·성조 모음·숫자만 받아서 파일이 아주 작음
+    const py = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜüĀÁǍÀĒÉĚÈĪÍǏÌŌÓǑÒŪÚǓÙÜ0123456789 .,?!’\'-/()%…:→ˉˊˇˋ';
     for (const href of [
-      'https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&family=Nunito:wght@800&display=swap',
+      'https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&display=swap',
+      'https://fonts.googleapis.com/css2?family=Noto+Sans:wght@600;700&display=swap&text=' + encodeURIComponent(py),
       'https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@700&display=swap&text=' + encodeURIComponent(han),
     ]) { const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = href; document.head.appendChild(l); }
   })();
@@ -662,49 +670,93 @@
     pop: () => tone(600, 0, 0.12, 'triangle', 0.08, 160),
     meet: () => { tone(440, 0, 0.08, 'square', 0.04); tone(660, 0.08, 0.1, 'square', 0.04); },
   };
-  // 성조 모양을 음높이로 들려주기 (사람 목소리 아님)
-  function playContour(t) {
-    const ac = audio(); if (!ac) return false;
-    const lv = TONES[t].chao;
-    const dur = t === 3 ? 0.8 : 0.6;
-    const lvToHz = (v) => 150 * Math.pow(2, (v - 1) * 2.6 / 12);
-    const N = 48, curve = new Float32Array(N);
-    for (let i = 0; i < N; i++) {
-      const p = i / (N - 1) * (lv.length - 1); const a = Math.floor(p), b = Math.min(lv.length - 1, a + 1);
-      curve[i] = lvToHz(lv[a] + (lv[b] - lv[a]) * (p - a));
-    }
-    const t0 = ac.currentTime + 0.02;
-    const o = ac.createOscillator(), g = ac.createGain(), f = ac.createBiquadFilter();
-    o.type = 'sawtooth'; f.type = 'lowpass'; f.frequency.value = 1200;
-    o.frequency.setValueCurveAtTime(curve, t0, dur);
-    g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(0.12, t0 + 0.05);
-    g.gain.setValueAtTime(0.12, t0 + dur - 0.08); g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
-    o.connect(f).connect(g).connect(ac.destination); o.start(t0); o.stop(t0 + dur + 0.05);
-    return true;
-  }
-  // 브라우저 내장 중국어 음성 (기기에 따라 없을 수 있음)
-  function zhVoice() {
-    try {
-      if (!('speechSynthesis' in window)) return null;
-      const vs = window.speechSynthesis.getVoices();
-      return vs.find(v => /^zh[-_]CN/i.test(v.lang)) || vs.find(v => /^(zh|cmn)/i.test(v.lang)) || null;
-    } catch (e) { return null; }
-  }
-  function speak(text) {
-    const v = zhVoice(); if (!v) return false;
-    try {
-      const u = new SpeechSynthesisUtterance(String(text).replace(/…+/g, '')); u.voice = v; u.lang = v.lang; u.rate = 0.7;
-      window.speechSynthesis.cancel(); window.speechSynthesis.speak(u); return true;
-    } catch (e) { return false; }
-  }
-  if ('speechSynthesis' in window) { try { window.speechSynthesis.onvoiceschanged = () => refreshVoiceUI(); } catch (e) {} }
+  // ================= 중국어 음성 (재생 코드는 여기 한 곳에만) =================
+  // 나중에 실제 녹음 파일로 바꿀 때: AUDIO_FILES에 { '我': 'audio/wo.mp3' }처럼 넣으면 그 파일을 먼저 재생해요.
+  const AUDIO_FILES = {};
   const NO_VOICE = '이 기기에서는 중국어 음성을 사용할 수 없어요.';
+  const Voice = {
+    voices: [], unlocked: false, chk: 0,
+    supported() { try { return !!window.speechSynthesis && typeof window.SpeechSynthesisUtterance === 'function'; } catch (e) { return false; } },
+    load() { try { this.voices = this.supported() ? (window.speechSynthesis.getVoices() || []) : []; } catch (e) { this.voices = []; } return this.voices; },
+    zh() {
+      const vs = this.voices.length ? this.voices : this.load();
+      const lang = (v) => String(v.lang || '').replace('_', '-');
+      return vs.find(v => /^zh-CN/i.test(lang(v))) || vs.find(v => /^(zh|cmn)/i.test(lang(v))) || null;
+    },
+    // 중국어 음성이 확실히 있는지 (듣기 문제를 낼지 정할 때만 사용)
+    ready() { return this.supported() && !!this.zh(); },
+    // iOS Safari: 첫 터치 안에서 소리 없는 문장을 한 번 말해 두어야 이후 재생이 막히지 않음
+    unlock() {
+      if (this.unlocked || !this.supported()) return;
+      this.unlocked = true; this.load();
+      try { const u = new SpeechSynthesisUtterance(' '); u.volume = 0; u.lang = 'zh-CN'; window.speechSynthesis.speak(u); } catch (e) {}
+    },
+    // text: 읽을 중국어. quiet: 자동 재생일 때는 실패해도 안내하지 않음
+    play(text, quiet = false) {
+      text = String(text || '').replace(/…+/g, '').trim(); if (!text) return;
+      const file = AUDIO_FILES[text];
+      if (file) { try { new Audio(file).play().catch(() => this.tts(text, quiet)); return; } catch (e) {} }
+      this.tts(text, quiet);
+    },
+    tts(text, quiet) {
+      const fail = () => { if (!quiet) notice(NO_VOICE); };
+      if (!this.supported()) return fail();
+      const synth = window.speechSynthesis;
+      this.load();
+      const v = this.zh();
+      // 음성 목록을 이미 받았는데 중국어가 없으면 이 기기는 지원하지 않음
+      if (!v && this.voices.length) return fail();
+      let u; try { u = new SpeechSynthesisUtterance(text); } catch (e) { return fail(); }
+      // 목록이 아직 비어 있으면(모바일에서 흔함) 언어만 지정해서 기기의 기본 중국어 음성을 쓰게 함
+      u.lang = v ? String(v.lang).replace('_', '-') : 'zh-CN';
+      if (v) u.voice = v;
+      u.rate = 0.8;
+      let started = false;
+      u.onstart = () => { started = true; };
+      u.onerror = (e) => { if (!started && e && e.error !== 'interrupted' && e.error !== 'canceled') fail(); };
+      const go = () => { try { if (synth.paused) synth.resume(); synth.speak(u); } catch (e) { fail(); } };
+      // 재생 중일 때만 멈춤. 멈춘 직전에 바로 말하면 일부 안드로이드 크롬에서 소리가 안 나서 아주 잠깐 기다림
+      if (synth.speaking || synth.pending) { try { synth.cancel(); } catch (e) {} setTimeout(go, 80); } else go();
+      clearTimeout(this.chk);
+      this.chk = setTimeout(() => { if (!started && !synth.speaking && !synth.pending) fail(); }, 3000);
+    },
+  };
+  if (Voice.supported()) {
+    const onVoices = () => { Voice.load(); refreshVoiceUI(); };
+    try { window.speechSynthesis.addEventListener('voiceschanged', onVoices); } catch (e) { try { window.speechSynthesis.onvoiceschanged = onVoices; } catch (e2) {} }
+    Voice.load();
+  }
+  // 첫 터치/클릭/키 입력 때 음성 준비
+  ['pointerdown', 'touchend', 'keydown'].forEach(ev => window.addEventListener(ev, () => Voice.unlock(), { capture: true, passive: true }));
   function refreshVoiceUI() {
-    const has = !!zhVoice();
-    document.querySelectorAll('[data-say]').forEach(b => { b.classList.toggle('novoice', !has); b.title = has ? '' : NO_VOICE; });
-    $('voiceNote').textContent = has
-      ? '🔊 듣기 버튼은 이 기기에 들어 있는 중국어 음성으로 읽어 줘요.'
-      : NO_VOICE + ' (PC 크롬이나 아이패드에서는 대부분 들을 수 있어요.)';
+    const note = $('voiceNote'); if (!note) return;
+    if (!Voice.supported()) note.textContent = NO_VOICE;
+    else if (Voice.ready()) note.textContent = '🔊 버튼을 누르면 이 기기에 들어 있는 중국어 음성으로 읽어 줘요.';
+    else if (Voice.voices.length) note.textContent = NO_VOICE + ' (PC 크롬이나 아이패드에서는 대부분 들을 수 있어요.)';
+    else note.textContent = '🔊 버튼을 누르면 중국어로 읽어 줘요. 소리가 안 나면 이 기기가 중국어 음성을 지원하지 않는 거예요.';
+  }
+
+  // 병음 글자를 찾아 병음 폰트로 감싸기 (해설·문제 문장 속 병음도 같은 폰트로 보이게)
+  const PY_CH = 'āáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜüĀÁǍÀĒÉĚÈĪÍǏÌŌÓǑÒŪÚǓÙÜ';
+  const PY_RE = new RegExp(`[A-Za-z${PY_CH}]*[${PY_CH}][A-Za-z${PY_CH}]*`, 'g');
+  function wrapPinyin(root) {
+    if (!root) return;
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode: (n) => (!PY_RE.test(n.nodeValue) || (PY_RE.lastIndex = 0, n.parentElement.closest('.py, script, style, textarea, input, canvas'))) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT,
+    });
+    const list = []; while (walker.nextNode()) list.push(walker.currentNode);
+    for (const n of list) {
+      PY_RE.lastIndex = 0;
+      const txt = n.nodeValue, frag = document.createDocumentFragment(); let last = 0, m;
+      while ((m = PY_RE.exec(txt))) {
+        if (m.index > last) frag.appendChild(document.createTextNode(txt.slice(last, m.index)));
+        const sp = document.createElement('span'); sp.className = 'py inl'; sp.textContent = m[0]; frag.appendChild(sp);
+        last = m.index + m[0].length;
+      }
+      if (last < txt.length) frag.appendChild(document.createTextNode(txt.slice(last)));
+      n.parentNode.replaceChild(frag, n);
+    }
+    PY_RE.lastIndex = 0;
   }
 
   // ================= 저장 =================
@@ -874,6 +926,7 @@
   // 월드(땅, 발판, 표지판) 한 장으로 미리 그리기
   const worldC = document.createElement('canvas'); worldC.height = H;
   const SIGN_FONT = '11px Jua, "Noto Sans SC", "Gowun Dodum", sans-serif';
+  const SIGN_PY_FONT = '600 10px "Noto Sans", Arial, sans-serif';
   function drawSign(g, x, lines, w = 92) {
     const h = 14 + lines.length * 13, top = GY - 40 - h;
     g.fillStyle = '#6b4424'; g.fillRect(x + w / 2 - 3, top + h, 6, GY - top - h);
@@ -881,7 +934,7 @@
     g.fillStyle = '#c99561'; g.fillRect(x, top, w, h);
     g.fillStyle = '#b07f4e'; g.fillRect(x, top + h - 3, w, 3);
     g.fillStyle = '#2b1d12'; g.font = SIGN_FONT; g.textAlign = 'center'; g.textBaseline = 'top';
-    lines.forEach((t, i) => g.fillText(t, x + w / 2, top + 7 + i * 13));
+    lines.forEach((t, i) => { g.font = /[āáǎàēéěèīíǐìōóǒòūúǔù]/.test(t) ? SIGN_PY_FONT : SIGN_FONT; g.fillText(t, x + w / 2, top + 7 + i * 13); });
   }
   // 패방(중국식 문). gx = 왼쪽 기둥 위치
   function drawPaifang(g, gx, text) {
@@ -1133,6 +1186,11 @@
     $('expText').textContent = `${save.exp} / ${need} (${Math.floor(save.exp / need * 100)}%)`;
     $('coinNum').textContent = save.coins;
   }
+  let noticeTimer = 0;
+  function notice(msg, ms = 2600) {
+    const n = $('notice'); n.textContent = msg; n.hidden = false;
+    clearTimeout(noticeTimer); noticeTimer = setTimeout(() => { n.hidden = true; }, ms);
+  }
   let toastTimer = 0;
   function toast(msg, ms = 1600, info = false) {
     const t = $('toast'); t.textContent = msg; t.className = info ? 'info' : ''; t.hidden = false;
@@ -1273,7 +1331,7 @@
     }
     // 코인
     for (const c of coins) {
-      if (c.taken) { if (!STAGE.mission) { c.timer += dt; if (c.timer > 25) { c.taken = false; c.timer = 0; } } continue; }
+      if (c.taken) continue;   // 한 번 먹은 동전은 이번 탐험이 끝날 때까지 다시 생기지 않음
       if (Math.abs(P.x + P.w / 2 - c.x) < 16 && P.y < c.y + 20 && P.y + P.h > c.y) { c.taken = true; c.timer = 0; addCoins(1); if (run) run.coins++; SFX.coin(); floatText(c.x, c.y - 4, '+1', '#f6c445'); }
     }
   }
@@ -1323,7 +1381,7 @@
     }),
     contour: (w) => ({
       prompt: `‘${TONES[w.t].desc}’ 소리는 몇 성일까요?`,
-      show: '', options: toneOptions(w.t), words: [w], say: w, contour: w.t,
+      show: '', options: toneOptions(w.t), words: [w], say: w,
       explain: `${TONES[w.t].desc} → <b>${TONES[w.t].name} ${TONES[w.t].mark}</b>이에요. 예: <b>${w.h} ${w.p}</b> (${w.ko})`,
     }),
     meaning: (w, set) => ({
@@ -1397,7 +1455,7 @@
   });
   const GREET_KINDS = [['gMeaning', 3], ['gChar', 3], ['gPinyin', 2], ['gSit', 3], ['gSandhi', 1], ['gListen', 2]];
   function greetQuestion() {
-    const kinds = zhVoice() ? GREET_KINDS : GREET_KINDS.filter(k => k[0] !== 'gListen');
+    const kinds = Voice.ready() ? GREET_KINDS : GREET_KINDS.filter(k => k[0] !== 'gListen');
     for (let tries = 0; tries < 8; tries++) {
       const kind = weighted(kinds);
       const w = kind === 'gSandhi' ? GREET[0] : kind === 'gSit' ? pick(GREET.filter(x => x.sit)) : pick(GREET);
@@ -1515,7 +1573,7 @@
     ['ask_mean', 'ask_zh', M3X, M3X],
     ['b1', 'b4', 'b2', 'b3'],
   ];
-  const canUse = (id) => !LISTEN_IDS.includes(id) || !!zhVoice();
+  const canUse = (id) => !LISTEN_IDS.includes(id) || Voice.ready();
   function nameQuestion(m) {
     let id;
     if (quick.on || m.mission === undefined) {
@@ -1569,14 +1627,13 @@
     $('qOpts').innerHTML = q.options.map((o, i) => `<button class="opt" data-i="${i}"><span class="num">${i + 1}</span><span class="lbl">${o.html}</span></button>`).join('');
     $('qOpts').querySelectorAll('.opt').forEach(b => b.addEventListener('click', () => answer(+b.dataset.i)));
     const tools = [];
-    if (q.contour) tools.push(`<button class="btn small" data-contour="${q.contour}">음높이 듣기</button>`);
-    if (q.say && !q.contour && q.say.t >= 1) tools.push(`<button class="btn small" data-contour="${q.say.t}">음높이 듣기</button>`);
     if (q.say && q.show) tools.push(`<button class="btn small" data-say="${sayText(q.say)}">🔊 발음 듣기</button>`);
-    if (q.listen) { tools.push(`<button class="btn small primary" data-say="${sayText(q.listen)}">🔊 다시 듣기</button>`); setTimeout(() => speak(sayText(q.listen)), 350); }
+    if (q.listen) { tools.push(`<button class="btn small primary" data-say="${sayText(q.listen)}">🔊 다시 듣기</button>`); setTimeout(() => Voice.play(sayText(q.listen), true), 350); }
     $('qTools').innerHTML = tools.join(''); $('qTools').hidden = !tools.length;
     bindSoundButtons($('qTools'));
     $('qHint').hidden = true;
     $('qFb').hidden = true;
+    wrapPinyin($('quizCard'));
     $('quiz').hidden = false;
     $('quizCard').focus({ preventScroll: true });
     $('quiz').scrollTop = 0;
@@ -1591,7 +1648,7 @@
       quiz.tries++; SFX.wrong(); streak = 0; save.wrong++; writeSave();
       btns[i].classList.add('wrong'); btns[i].disabled = true;
       $('qHint').innerHTML = `<b>힌트</b> ${q.hint || '해설을 떠올리며 다시 골라 보세요.'}<br>다시 골라 보세요. 할 수 있어요!`;
-      $('qHint').hidden = false;
+      $('qHint').hidden = false; wrapPinyin($('qHint'));
       if (!quick.on) { P.hp = Math.max(10, P.hp - 5); updateHUD(); }
       return;
     }
@@ -1612,7 +1669,7 @@
       } else {
         const m = quiz.mon, exp = quick.on ? 10 : m.type === 'bun' ? 15 : 10;
         let bonus = '';
-        if (streak > 0 && streak % 3 === 0) bonus = `<br>연속 ${streak}개 정답 보너스 코인 +5!`;
+        if (streak > 0 && streak % 3 === 0 && !m.dropped) bonus = `<br>연속 ${streak}개 정답 보너스 코인 +5!`;
         $('qRes').innerHTML = `정답이에요! 경험치 +${exp}${bonus}`;
       }
       $('qFb').className = 'qfb ok';
@@ -1628,7 +1685,7 @@
     $('qCards').innerHTML = (q.words || []).map(x => `<div class="wcard${x === hl ? ' hl' : ''}"><span class="han">${x.h}</span><span class="py t${x.t}">${x.p}</span><span class="ko">${x.ko}</span><button class="say-mini" data-say="${sayText(x)}" aria-label="${x.h} 듣기">🔊</button></div>`).join('');
     bindSoundButtons($('qCards'));
     $('qEx').innerHTML = q.explain;
-    $('qFb').hidden = false;
+    $('qFb').hidden = false; wrapPinyin($('qFb'));
     writeSave();
     setTimeout(() => { $('qFb').scrollIntoView({ block: 'nearest', behavior: 'smooth' }); $('btnContinue').focus({ preventScroll: true }); }, 30);
   }
@@ -1653,7 +1710,7 @@
     if (mode !== 'quiz' || !quiz.answered) return;
     if (quick.on) {
       $('quiz').hidden = true;
-      if (quiz.correct) { addExp(10); addCoins(2); }
+      if (quiz.correct) addExp(10);
       nextQuick(); return;
     }
     if (STAGE.mission) {
@@ -1681,6 +1738,8 @@
       floatText(m.x, m.y - 40, `+${exp} EXP`, '#fff0a8');
       let n = m.type === 'bun' ? 5 + Math.floor(Math.random() * 3) : 3 + Math.floor(Math.random() * 3);
       if (streak > 0 && streak % 3 === 0) { n += 5; floatText(m.x, m.y - 58, '보너스 코인!', '#f6c445'); }
+      if (m.dropped) n = 0;   // 같은 몬스터가 다시 나타나면 동전 없음 (무한 파밍 방지)
+      m.dropped = true;
       for (let k = 0; k < n; k++) drops.push({ x: m.x, y: m.y - 14, vx: rnd(-110, 110), vy: rnd(-330, -180), age: 0, floor: m.y });
       addExp(exp);
       P.inv = 0.6;
@@ -1709,7 +1768,7 @@
     const lv = TONES[t].chao, X0 = 22, X1 = 190, yOf = (v) => 10 + (5 - v) * 14;
     const pts = lv.map((v, i) => `${X0 + (X1 - X0) * i / (lv.length - 1)},${yOf(v)}`).join(' ');
     let grid = '';
-    for (let v = 1; v <= 5; v++) grid += `<line x1="${X0}" x2="${X1}" y1="${yOf(v)}" y2="${yOf(v)}" stroke="#c9dbd2" stroke-width="1"/><text x="8" y="${yOf(v) + 4}" font-size="10" fill="#52627a" font-family="Nunito, sans-serif" font-weight="800">${v}</text>`;
+    for (let v = 1; v <= 5; v++) grid += `<line x1="${X0}" x2="${X1}" y1="${yOf(v)}" y2="${yOf(v)}" stroke="#c9dbd2" stroke-width="1"/><text x="8" y="${yOf(v) + 4}" font-size="10" fill="#52627a" font-family="Noto Sans, Arial, sans-serif" font-weight="600">${v}</text>`;
     const last = lv.length - 1;
     return `<svg viewBox="0 0 200 76" role="img" aria-label="${TONES[t].name} 높이 그래프 ${TONES[t].chaoText}">${grid}<polyline points="${pts}" fill="none" stroke="${TONES[t].hex}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="${X0 + (X1 - X0)}" cy="${yOf(lv[last])}" r="5" fill="${TONES[t].hex}"/></svg>`;
   }
@@ -1724,7 +1783,7 @@
         if (!save.cards[id]) return `<div class="gcard locked"><span class="han">?</span><div class="txt"><div class="ko">미션 ${mi + 1} (${STAGE.missions[mi].zone})을 해결하면 열려요</div></div></div>`;
         return `<div class="gcard${w.sent ? ' sent' : ''}">${hanHTML(w)}<div class="txt"><div class="py t${w.t}">${w.p}</div><div class="ko">${w.ko}</div></div><button class="btn small" data-say="${sayText(w)}">🔊 듣기</button></div>`;
       }).join('');
-      bindSoundButtons($('nameCards')); bindSoundButtons($('lessonS3'));
+      bindSoundButtons($('nameCards')); bindSoundButtons($('lessonS3')); wrapPinyin($('lesson'));
       refreshVoiceUI();
       return;
     }
@@ -1736,17 +1795,16 @@
         <div class="ex">${hanHTML(w)}<div>${pyHTML(w)}<div class="ko">${w.ko}</div></div></div>
         <div class="desc">${T.desc}.</div>
         <div class="tip">${T.tip}</div>
-        <div class="bt"><button class="btn small" data-contour="${w.t}">음높이 듣기</button><button class="btn small" data-say="${w.h}">발음 듣기</button></div>
+        <div class="bt"><button class="btn small" data-say="${w.h}">🔊 발음 듣기</button></div>
         <div class="count">${cnt ? `퀴즈에서 ${cnt}번 맞혔어요` : '&nbsp;'}</div>
       </div>`;
     }).join('');
     $('greetCards').innerHTML = GREET.map(w => `<div class="gcard">${hanHTML(w)}<div class="txt"><div class="py t0">${w.p}</div><div class="ko">${w.ko}</div></div><button class="btn small" data-say="${w.h}">발음 듣기</button></div>`).join('');
-    bindSoundButtons($('toneCards')); bindSoundButtons($('greetCards'));
+    bindSoundButtons($('toneCards')); bindSoundButtons($('greetCards')); wrapPinyin($('lesson'));
     refreshVoiceUI();
   }
   function bindSoundButtons(root) {
-    root.querySelectorAll('[data-contour]').forEach(b => b.addEventListener('click', () => { if (!soundOn) toast('소리가 꺼져 있어요. M 키로 켜 주세요.', 1600, true); else playContour(+b.dataset.contour); }));
-    root.querySelectorAll('[data-say]').forEach(b => { if (b.dataset.bound) return; b.dataset.bound = '1'; b.addEventListener('click', () => { if (!speak(b.dataset.say)) toast(NO_VOICE, 2400, true); }); });
+    root.querySelectorAll('[data-say]').forEach(b => { if (b.dataset.bound) return; b.dataset.bound = '1'; b.addEventListener('click', () => Voice.play(b.dataset.say)); });
     refreshVoiceUI();
   }
   let lessonReturn = 'play';
@@ -1767,8 +1825,22 @@
   $('btnSound').addEventListener('click', () => { toggleSound(); if (mode === 'play') focusStage(); });
 
   // ================= 지역 불러오기 · 미션 =================
-  function loadStage(id) {
+  // 지역별 진행 상태 보관 (지역을 바꿨다가 돌아와도 먹은 동전은 그대로 사라져 있음)
+  const stageCache = {};
+  function loadStage(id, fresh = false) {
+    if (STAGE && run) stageCache[STAGE.id] = { monsters, coins, gates, run, px: P.x, py: P.y, hp: P.hp, stats: { ...sessionStats } };
     STAGE = STAGES[id]; WORLD_W = STAGE.worldW; PLATFORMS = STAGE.platforms; CHECKPOINTS = STAGE.checkpoints || [STAGE.startX];
+    const c = !fresh && stageCache[id];
+    if (c && !c.run.cleared) {
+      monsters = c.monsters; coins = c.coins; gates = c.gates; run = c.run; drops = []; parts = []; floats = [];
+      Object.assign(sessionStats, c.stats);
+      P.x = c.px; P.y = c.py; P.vx = P.vy = 0; P.inv = 1; P.knock = 0; P.hp = c.hp;
+      cam = clamp(P.x - W * 0.42, 0, WORLD_W - W);
+      buildBackground(); buildWorld();
+      $('mapTag').textContent = STAGE.mapName;
+      updateMissionPanel(); updateHUD();
+      return;
+    }
     initWorldObjects();
     gates = (STAGE.gates || []).map(g => ({ ...g, open: false, openT: 0 }));
     run = {
@@ -1822,7 +1894,7 @@
     $('cpCards').innerHTML = M.cards.map(id => { const w = NW[id]; return `<div class="gcard${w.sent ? ' sent' : ''}">${hanHTML(w)}<div class="txt"><div class="py t${w.t}">${w.p}</div><div class="ko">${w.ko}</div></div><button class="btn small" data-say="${sayText(w)}">🔊 듣기</button></div>`; }).join('');
     bindSoundButtons($('cpCards')); refreshVoiceUI();
     $('btnCardOk').textContent = `따라 말했어요! ${gt.name} 열기 (Enter)`;
-    $('cardPop').hidden = false; $('cardPop').scrollTop = 0; $('cardPop').querySelector('.card').focus({ preventScroll: true });
+    wrapPinyin($('cardPop')); $('cardPop').hidden = false; $('cardPop').scrollTop = 0; $('cardPop').querySelector('.card').focus({ preventScroll: true });
   }
   function closeCardPop() {
     if (mode !== 'card') return;
@@ -1862,7 +1934,7 @@
     speakBoss = m; mode = 'speak';
     const c = $('spBoss'), g = c.getContext('2d'); c.width = BOSS.width; c.height = BOSS.height; g.drawImage(BOSS, 0, 0);
     $('myName').value = ''; updateBlank();
-    $('speak').hidden = false; $('speak').scrollTop = 0; $('speak').querySelector('.card').focus({ preventScroll: true });
+    wrapPinyin($('speak')); $('speak').hidden = false; $('speak').scrollTop = 0; $('speak').querySelector('.card').focus({ preventScroll: true });
     refreshVoiceUI();
   }
   function closeSpeak() {
@@ -1903,7 +1975,8 @@
   }
   function startPlay() {
     audio();
-    if (!run || run.stage !== selStage || run.cleared) loadStage(selStage);
+    if (!run || run.stage !== selStage) loadStage(selStage);
+    if (run.cleared) loadStage(selStage, true);   // 클리어한 지역을 다시 하면 처음부터 (동전도 이때만 다시 생김)
     $('startScreen').hidden = true; mode = 'play'; focusStage();
     startPlay.shown = startPlay.shown || {};
     if (!startPlay.shown[STAGE.id]) {
@@ -2017,9 +2090,9 @@
       $('saveInfo').hidden = false; $('btnReset').hidden = false;
       $('saveInfo').textContent = `이어서 하기: Lv.${save.level} · 코인 ${save.coins}개 · 정답 ${save.correct}개`;
     }
-    renderStagePick(); updateHUD();
+    renderStagePick(); updateHUD(); wrapPinyin(document.body);
     if (document.fonts && document.fonts.load) {
-      Promise.all([document.fonts.load('11px Jua'), document.fonts.load('700 11px "Noto Sans SC"', '我叫什么名字你')]).then(buildWorld).catch(() => {});
+      Promise.all([document.fonts.load('11px Jua'), document.fonts.load('700 11px "Noto Sans SC"', '我叫什么名字你'), document.fonts.load(SIGN_PY_FONT, 'Nǐ jiào shénme míngzi')]).then(buildWorld).catch(() => {});
     }
     let last = performance.now();
     function frame(now) {
