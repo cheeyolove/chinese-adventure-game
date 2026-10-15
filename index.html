@@ -158,6 +158,20 @@
   .qshow .blankq { display: inline-block; min-width: 1.4em; border-bottom: 4px solid var(--t4); color: var(--t4); text-align: center; }
   .qshow .npc { display: flex; flex-direction: column; align-items: center; gap: 2px; background: var(--paper-2); border-radius: 14px; padding: 10px 18px; }
   .qshow .npc .py { font-size: 18px; } .qshow .npc .ko { font-size: 15px; }
+  .numbig { font-family: var(--font-display); font-size: 76px; line-height: 1; color: var(--t1); }
+  .numopt { font-family: var(--font-display); font-size: 28px; }
+  .qshow .py.big { font-size: 48px; }
+  .qshow .seq { letter-spacing: .02em; }
+  .dots { display: grid; grid-template-columns: repeat(5, 22px); gap: 8px; padding: 8px; background: var(--paper-2); border-radius: 12px; }
+  .dots i { width: 22px; height: 22px; border-radius: 50%; background: var(--t4); box-shadow: inset 0 -3px 0 rgba(0,0,0,.2); }
+  .rnums { width: 100%; background: var(--paper-2); border-radius: 12px; padding: 10px; display: flex; flex-direction: column; gap: 8px; align-items: center; }
+  .rnums-title { font-family: var(--font-display); font-size: 15px; }
+  .rnums-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
+  .rnum { width: 46px; height: 50px; border: 2px solid var(--ink); border-radius: 10px; background: #fff; color: var(--ink); box-shadow: 0 3px 0 var(--ink); }
+  .rnum .han { font-size: 26px; }
+  .rnum.on { background: var(--gold); }
+  .rnum-detail { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: center; }
+  .rnum-detail .han { font-size: 40px; } .rnum-detail .py { font-size: 24px; }
   .qhint { margin-top: 12px; background: #fff4d1; border: 2px dashed var(--t3); border-radius: 12px; padding: 10px 12px; font-size: 15px; line-height: 1.6; }
   .qhint b { font-family: var(--font-display); font-weight: 400; color: var(--t3); margin-right: 6px; }
   .qfb { margin-top: 16px; padding: 14px; border-radius: 12px; display: flex; flex-direction: column; gap: 10px; }
@@ -295,7 +309,7 @@
     <div id="stage" tabindex="0" aria-label="게임 화면">
       <canvas id="game" width="640" height="360"></canvas>
       <div id="mapTag">성조 마을 · 대나무 언덕</div>
-      <div id="missionPanel" hidden><div class="mp-title"><span>이름 마을 미션</span><b id="mpCount">0 / 4</b></div><ol id="mpList"></ol></div>
+      <div id="missionPanel" hidden><div class="mp-title"><span id="mpTitle">미션</span><b id="mpCount">0 / 4</b></div><ol id="mpList"></ol></div>
       <div id="toast" hidden></div>
       <div id="focusHint" hidden>화면을 클릭하면 다시 조작할 수 있어요</div>
     </div>
@@ -370,8 +384,8 @@
       <button class="btn small" id="btnLessonClose">닫기 (H)</button>
     </div>
     <div id="lessonS3" hidden>
-      <p class="lintro">이번에는 <b>이름을 묻고 답하는 말</b>을 배워요. 이름 마을의 학습 몬스터를 물리칠 때마다 이름 카드가 하나씩 모여요!</p>
-      <div class="formula">
+      <p class="lintro" id="s3Intro"></p>
+      <div class="formula" id="nameFormula">
         <div class="frow">
           <span class="blk"><span class="han">你</span><small>nǐ · 너</small></span>+
           <span class="blk"><span class="han">叫</span><small>jiào · ~라고 하다</small></span>+
@@ -386,7 +400,7 @@
           <span class="han">。</span><span class="eq">= 제 이름은 ○○예요.</span>
         </div>
       </div>
-      <h3 class="lsub">이름 카드 <small id="cardCount"></small></h3>
+      <h3 class="lsub"><span id="cardTitle">이름 카드</span> <small id="cardCount"></small></h3>
       <div class="gcards" id="nameCards"></div>
     </div>
     <div id="lessonS1">
@@ -433,6 +447,11 @@
     <div class="rgrid" id="rGrid"></div>
     <ul class="rlines" id="rList" hidden></ul>
     <div class="rname" id="rName" hidden></div>
+    <div class="rnums" id="rNums" hidden>
+      <div class="rnums-title">오늘 배운 숫자 · 한자를 눌러 보세요</div>
+      <div class="rnums-row" id="rNumRow"></div>
+      <div class="rnum-detail" id="rNumDetail"></div>
+    </div>
     <div class="stamp" id="rStamp">잘했어요!</div>
     <p class="shot">이 화면을 캡처해서 수업 채팅방에 올려 주세요!</p>
     <div class="row">
@@ -492,7 +511,7 @@
 
   // Google Fonts (한자는 필요한 글자만 받아옴)
   (function loadFonts() {
-    const han = '熊猫探险队妈麻马骂你们好老师同学中国汉语拼音文我叫什么名字。？！';
+    const han = '熊猫探险队妈麻马骂你们好老师同学中国汉语拼音文我叫什么名字。？！一二三四五六七八九十';
     // 병음용: 알파벳·성조 모음·숫자만 받아서 파일이 아주 작음
     const py = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜüĀÁǍÀĒÉĚÈĪÍǏÌŌÓǑÒŪÚǓÙÜ0123456789 .,?!’\'-/()%…:→ˉˊˇˋ';
     for (const href of [
@@ -527,6 +546,17 @@
     ans: { id: 'ans', h: '我叫……。', p: 'Wǒ jiào …….', t: 0, ko: '제 이름은 ……예요.', sent: true, say: '我叫' },
   };
   const NAME_CARDS = ['wo', 'ni', 'jiao', 'shenme', 'mingzi', 'ask', 'ans'];
+  // 숫자 계곡: 숫자 1~10 (t: 성조)
+  const NUMS = [
+    { id: 'num1', h: '一', p: 'yī', t: 1, v: 1 }, { id: 'num2', h: '二', p: 'èr', t: 4, v: 2 },
+    { id: 'num3', h: '三', p: 'sān', t: 1, v: 3 }, { id: 'num4', h: '四', p: 'sì', t: 4, v: 4 },
+    { id: 'num5', h: '五', p: 'wǔ', t: 3, v: 5 }, { id: 'num6', h: '六', p: 'liù', t: 4, v: 6 },
+    { id: 'num7', h: '七', p: 'qī', t: 1, v: 7 }, { id: 'num8', h: '八', p: 'bā', t: 1, v: 8 },
+    { id: 'num9', h: '九', p: 'jiǔ', t: 3, v: 9 }, { id: 'num10', h: '十', p: 'shí', t: 2, v: 10 },
+  ];
+  NUMS.forEach(n => { n.ko = `숫자 ${n.v}`; });
+  const NUMW = Object.fromEntries(NUMS.map(n => [n.id, n]));
+  const numOf = (v) => NUMS[v - 1];
   const GREET = [
     { id: 'g1', h: '你好', p: 'nǐ hǎo', t: 0, ko: '안녕(하세요)', note: '3성이 두 번 이어지면 앞 글자는 2성처럼 읽어요. 그래서 실제 소리는 ní hǎo예요.', sit: '친구를 만났을 때 하는 인사는?' },
     { id: 'g2', h: '你们好', p: 'nǐmen hǎo', t: 0, ko: '여러분, 안녕하세요', note: '们 men은 "~들"이라는 뜻이에요. 여러 사람에게 한꺼번에 인사할 때 써요.', sit: '친구 여러 명에게 한꺼번에 인사할 때는?' },
@@ -773,7 +803,7 @@
   const STAGES = {
     bamboo: {
       id: 'bamboo', lessonNo: '1차시', tag: '1~2차시 · 11/3', title: '1지역 대나무 언덕', mapName: '성조 마을 · 대나무 언덕',
-      words: '你好 · 你们好 · 老师好 · 同学们好 · 中国 · 汉语 · 4성조',
+      pickWords: '你好 · 你们好 · 老师好 · 同学们好 · 中国 · 汉语 · 4성조',
       desc: '대나무 언덕에 <b>성조 젤리</b>와 <b>인사 만두</b>가 나타났어요! 몬스터를 만나면 중국어 퀴즈가 나와요.',
       worldW: 3200, startX: 80, mission: false, checkpoints: [80, 1060, 1900, 2560],
       platforms: [
@@ -801,7 +831,7 @@
     },
     name: {
       id: 'name', lessonNo: '3차시', tag: '3차시 · 11/5', title: '2지역 이름 마을', mapName: '이름 마을', isNew: true,
-      words: '我 · 你 · 叫 · 什么 · 名字 · 你叫什么名字？ · 我叫……。',
+      pickWords: '我 · 你 · 叫 · 什么 · 名字 · 你叫什么名字？ · 我叫……。',
       desc: '이름 마을의 문은 <b>학습 몬스터</b>를 모두 물리쳐야 열려요. 마지막에는 <b>이름 대왕만두</b>가 “你叫什么名字？” 하고 물어봐요!',
       worldW: 3720, startX: 60, mission: true, clearX: 3500, coinStar: 25,
       platforms: [
@@ -842,6 +872,56 @@
         { label: '我叫……。', zone: '이름의 문', cards: ['ans'], boss: true },
       ],
       decorate: decorateName,
+      // 지역별 학습 설정
+      words: NW, cardOrder: NAME_CARDS, cardName: '이름 카드', bossFinale: 'speak',
+      qgen: (m) => nameQuestion(m), makeQueue: (i) => NAME_QUEUES[i],
+      quickMons: [{ type: 'jelly', tone: 3, name: '이름 젤리' }, { type: 'bun', name: '친구 만두' }],
+    },
+    number: {
+      id: 'number', lessonNo: '숫자 1~10', tag: '숫자 1~10', title: '3지역 숫자 계곡', mapName: '숫자 계곡', isNew: true,
+      pickWords: NUMS.map(n => n.h).join(' '),
+      desc: '숫자 계곡의 돌문은 <b>숫자 몬스터</b>를 모두 물리쳐야 열려요. 一(1)부터 十(10)까지 익히고 마지막 <b>숫자 대왕만두</b>에게 도전하세요!',
+      worldW: 3720, startX: 60, mission: true, clearX: 3500, coinStar: 25, theme: 'valley',
+      clearTitle: '숫자 마스터! 1부터 10까지 정복!',
+      platforms: [
+        { x: 300, y: 236, w: 112 },
+        { x: 880, y: 236, w: 144 }, { x: 1050, y: 176, w: 96 },
+        { x: 1400, y: 236, w: 96 }, { x: 1560, y: 236, w: 150 }, { x: 1740, y: 176, w: 100 },
+        { x: 2120, y: 236, w: 96 }, { x: 2260, y: 236, w: 150 }, { x: 2440, y: 176, w: 100 },
+        { x: 2800, y: 236, w: 120 }, { x: 2960, y: 180, w: 100 },
+      ],
+      monsters: [
+        { type: 'jelly', tone: 1, x: 720, min: 640, max: 820, y: GY, mission: 0, name: '숫자 젤리', bubble: 'q' },
+        { type: 'jelly', tone: 1, x: 950, min: 892, max: 1012, y: 236, mission: 0, name: '숫자 젤리', bubble: 'q' },
+        { type: 'jelly', tone: 1, x: 1100, min: 1060, max: 1136, y: 176, mission: 0, name: '꼭대기 젤리', bubble: 'q' },
+        { type: 'jelly', tone: 1, x: 1190, min: 1160, max: 1212, y: GY, mission: 0, name: '문지기 젤리', bubble: 'q' },
+        { type: 'jelly', tone: 2, x: 1380, min: 1300, max: 1460, y: GY, mission: 1, name: '숫자 젤리', bubble: 'q' },
+        { type: 'jelly', tone: 2, x: 1630, min: 1572, max: 1698, y: 236, mission: 1, name: '숫자 젤리', bubble: 'q' },
+        { type: 'jelly', tone: 2, x: 1790, min: 1750, max: 1830, y: 176, mission: 1, name: '꼭대기 젤리', bubble: 'q' },
+        { type: 'jelly', tone: 2, x: 1915, min: 1880, max: 1932, y: GY, mission: 1, name: '문지기 젤리', bubble: 'q' },
+        { type: 'bun', x: 2100, min: 2010, max: 2200, y: GY, mission: 2, name: '숫자 만두' },
+        { type: 'bun', x: 2330, min: 2272, max: 2398, y: 236, mission: 2, name: '숫자 만두' },
+        { type: 'bun', x: 2490, min: 2450, max: 2530, y: 176, mission: 2, name: '꼭대기 만두' },
+        { type: 'bun', x: 2640, min: 2600, max: 2652, y: GY, mission: 2, name: '문지기 만두' },
+        { type: 'boss', x: 3330, min: 3330, max: 3330, y: GY, mission: 3, name: '숫자 대왕만두', hp: 5 },
+      ],
+      groundCoins: [200, 230, 260, 470, 500, 1820, 1850, 2520, 2550, 2860, 2890],
+      gates: [
+        { x: 1240, w: 24, kind: 'castle', mission: 0, name: '첫째 숫자 문', label: '一 二 三' },
+        { x: 1960, w: 24, kind: 'castle', mission: 1, name: '둘째 숫자 문', label: '四 五 六' },
+        { x: 2680, w: 24, kind: 'castle', mission: 2, name: '셋째 숫자 문', label: '七 八 九 十' },
+        { x: 3430, w: 24, kind: 'final', mission: 3, name: '숫자의 문', label: '1 ~ 10' },
+      ],
+      missions: [
+        { label: '一 二 三', zone: '1구역', cards: ['num1', 'num2', 'num3'] },
+        { label: '四 五 六', zone: '2구역', cards: ['num4', 'num5', 'num6'] },
+        { label: '七 八 九 十', zone: '3구역', cards: ['num7', 'num8', 'num9', 'num10'] },
+        { label: '1~10 종합', zone: '보스', cards: [], boss: true },
+      ],
+      decorate: decorateNumber,
+      words: NUMW, cardOrder: NUMS.map(n => n.id), cardName: '숫자 카드', bossFinale: 'none',
+      qgen: (m) => numQuestion(m), makeQueue: (i) => numQueue(i),
+      quickMons: [{ type: 'jelly', tone: 1, name: '숫자 젤리', bubble: 'q' }, { type: 'bun', name: '숫자 만두' }],
     },
   };
   let STAGE = STAGES.bamboo, PLATFORMS = STAGE.platforms, CHECKPOINTS = STAGE.checkpoints, gates = [], run = null;
@@ -894,6 +974,12 @@
       // 작은 정자(대나무 언덕) 또는 마을 집(이름 마을)
       for (let x = 260; x < c.width; x += (STAGE.mission ? 260 : 520) + r() * 300) {
         const hy = 286 - Math.round((34 + Math.sin(x / 90) * 14 + Math.sin(x / 37 + 1) * 6) / 2) * 2;
+        if (STAGE.theme === 'valley') {   // 숫자 계곡: 돌기둥과 작은 석판
+          const hgt = 30 + Math.floor(r() * 30);
+          g.fillStyle = '#8c8798'; g.fillRect(x, hy - hgt, 16, hgt);
+          g.fillStyle = '#a7a2b4'; g.fillRect(x, hy - hgt, 4, hgt); g.fillRect(x - 2, hy - hgt - 4, 20, 4);
+          continue;
+        }
         if (STAGE.mission) {
           g.fillStyle = '#e9d8b4'; g.fillRect(x, hy - 18, 30, 18);
           g.fillStyle = '#a8433b'; g.fillRect(x - 4, hy - 24, 38, 6); g.fillRect(x + 2, hy - 28, 26, 4);
@@ -986,6 +1072,31 @@
     drawSign(g, 2720, ['마지막 구역', '이름의 문'], 92);
     drawPaifang(g, 3430 - 58, '이름의 문');
     drawSign(g, 3560, ['이름 마을', '클리어!'], 84);
+  }
+  // 숫자 석판: 한자 · 병음 · 숫자를 실제 학습 내용으로 보여 줌
+  function drawTablet(g, x, vals) {
+    const w = 104, rowH = 26, h = 14 + vals.length * rowH, top = GY - 18 - h;
+    g.fillStyle = '#4b4658'; g.fillRect(x - 3, top - 3, w + 6, h + 6 + 18);
+    g.fillStyle = '#9d98ad'; g.fillRect(x, top, w, h);
+    g.fillStyle = '#b8b3c8'; g.fillRect(x, top, w, 3);
+    g.fillStyle = '#7e7990'; g.fillRect(x + 8, top + h, w - 16, 18);
+    vals.forEach((v, i) => {
+      const n = numOf(v), y = top + 8 + i * rowH + rowH / 2;
+      g.textBaseline = 'middle';
+      g.fillStyle = '#1d2738'; g.textAlign = 'left'; g.font = '700 19px "Noto Sans SC", "PingFang SC", sans-serif'; g.fillText(n.h, x + 10, y);
+      g.fillStyle = '#23466e'; g.font = SIGN_PY_FONT.replace('10px', '12px'); g.fillText(n.p, x + 38, y);
+      g.fillStyle = '#7a1f2b'; g.textAlign = 'right'; g.font = '16px Jua, sans-serif'; g.fillText(String(v), x + w - 10, y);
+    });
+  }
+  function decorateNumber(g) {
+    drawSign(g, 110, ['숫자 계곡', '어서 와! →'], 84);
+    drawSign(g, 420, ['학습 몬스터를 모두', '물리치면 문이 열려요!'], 132);
+    drawTablet(g, 560, [1, 2, 3]);
+    drawTablet(g, 1280, [4, 5, 6]);
+    drawTablet(g, 2000, [7, 8, 9, 10]);
+    drawSign(g, 2720, ['마지막 구역', '숫자 대왕'], 92);
+    drawPaifang(g, 3430 - 58, '숫자의 문');
+    drawSign(g, 3560, ['숫자 마스터', '클리어!'], 84);
   }
   function buildWorld() {
     worldC.width = WORLD_W;
@@ -1082,7 +1193,8 @@
   }
   function drawSky() {
     const gr = ctx.createLinearGradient(0, 0, 0, H);
-    gr.addColorStop(0, '#4d7fb8'); gr.addColorStop(0.55, '#9cc9dc'); gr.addColorStop(1, '#f6d6a8');
+    const sky = STAGE && STAGE.theme === 'valley' ? ['#5b5ea6', '#b39cd0', '#ffd3a5'] : ['#4d7fb8', '#9cc9dc', '#f6d6a8'];
+    gr.addColorStop(0, sky[0]); gr.addColorStop(0.55, sky[1]); gr.addColorStop(1, sky[2]);
     ctx.fillStyle = gr; ctx.fillRect(0, 0, W, H);
     // 해
     const sx = 470 - cam * 0.03, sy = 70;
@@ -1124,7 +1236,8 @@
     if (m.dir < 0 || boss) ctx.drawImage(spr, x, y, w, h);
     else { ctx.save(); ctx.translate(x + w, y); ctx.scale(-1, 1); ctx.drawImage(spr, 0, 0, w, h); ctx.restore(); }
     if (m.state !== 'dying') {
-      if (m.type === 'jelly') drawToneMark(m.tone, cx, y - 12);
+      if (m.bubble === 'q') drawQMark(cx, y - 12);
+      else if (m.type === 'jelly') drawToneMark(m.tone, cx, y - 12);
       else if (boss) for (let k = 0; k < m.hp; k++) ctx.drawImage(HEART, cx - m.hp * 8 + k * 16 + 1, y - 16, 14, 12);
       else if (m.mission !== undefined) drawQMark(cx, y - 12);
     }
@@ -1339,7 +1452,8 @@
     if (time - lastGateMsg < 2.5 || !run) return;
     lastGateMsg = time;
     const s = run.ms[gt.mission], left = s.need - s.done;
-    toast(STAGE.missions[gt.mission].boss ? '먼저 이름 대왕만두의 질문에 대답해야 해!' : `먼저 학습 몬스터를 물리쳐야 해! (남은 몬스터 ${left}마리)`, 2400, true);
+    const bossName = (monsters.find(m => m.type === 'boss') || {}).name || '보스';
+    toast(STAGE.missions[gt.mission].boss ? `먼저 ${bossName}의 문제를 풀어야 해!` : `먼저 학습 몬스터를 물리쳐야 해! (남은 몬스터 ${left}마리)`, 2400, true);
   }
   function updateFx(dt) {
     for (const d of drops) {
@@ -1588,8 +1702,82 @@
     const q = NQ[id](); q.key = id; return q;
   }
 
+  // ===== 숫자 계곡 문제 =====
+  const NUM_HINT = {
+    1: '가로줄이 하나 → 1', 2: '가로줄이 둘 → 2', 3: '가로줄이 셋 → 3',
+    4: '네모 안에 다리가 있는 모양이에요. sì!', 5: 'wǔ, 손가락을 모두 편 손 하나만큼!', 6: '점 아래에 다리 두 개가 벌어진 모양, liù!',
+    7: '十과 닮았지만 아래가 오른쪽으로 꺾여요. qī!', 8: '두 획이 양쪽으로 벌어진 모양, bā!', 9: '꼬리가 휘어 올라간 모양, jiǔ!', 10: '가로 한 획과 세로 한 획, 열 십(十)자!',
+  };
+  const SIMILAR = { 1: [2, 3], 2: [1, 3], 3: [2, 1], 4: [6, 5], 5: [4, 3], 6: [8, 4], 7: [10, 9], 8: [6, 4], 9: [7, 10], 10: [7, 9] };
+  const EUL = { 1: '을', 2: '를', 3: '을', 4: '를', 5: '를', 6: '을', 7: '을', 8: '을', 9: '를', 10: '을' };
+  const nearTwo = (v) => shuffle(shuffle(NUMS.map(n => n.v).filter(x => x !== v)).sort((a, b) => Math.abs(a - v) - Math.abs(b - v)).slice(0, 4)).slice(0, 2);
+  const hzOpt = (v) => ({ html: `<span class="han">${numOf(v).h}</span>`, v });
+  const nOpt = (v) => ({ html: `<span class="numopt">${v}</span>`, v });
+  const seqHTML = (arr) => `<span class="han sent seq">${arr.map(v => v === '?' ? '<span class="blankq">?</span>' : numOf(v).h).join(' → ')}</span>`;
+  function numQ(kind, v) {
+    if (kind === 'listen' && !Voice.ready()) kind = 'py2n';   // 음성이 없으면 병음 보고 고르기
+    const w = numOf(v), d = nearTwo(v);
+    const card = `<b>${w.h} ${w.p}</b> = ${w.v}`;
+    const q = { key: kind + v, target: v, words: [w], hint: NUM_HINT[v], explain: card };
+    const opts = (make, others) => shuffle([make(v), ...others.map(make)]).map(o => ({ ...o, correct: o.v === v }));
+    switch (kind) {
+      case 'h2n': Object.assign(q, { prompt: '이 한자는 숫자 몇일까요?', show: `<span class="han">${w.h}</span>`, say: w, options: opts(nOpt, d) }); break;
+      case 'n2h': Object.assign(q, { prompt: '이 숫자를 중국어 한자로 쓰면?', show: `<span class="numbig">${v}</span>`, options: opts(hzOpt, d) }); break;
+      case 'listen': Object.assign(q, { prompt: '잘 듣고, 알맞은 숫자를 고르세요.', listen: w, options: opts(nOpt, d), hint: `‘다시 듣기’를 눌러 보세요. 병음으로는 ${w.p}예요.` }); break;
+      case 'py2n': Object.assign(q, { prompt: '병음을 읽고, 알맞은 숫자를 고르세요.', show: `<span class="py big t${w.t}">${w.p}</span>`, say: w, options: opts(nOpt, d), hint: `${w.p}는 한자로 ${w.h}예요. ${NUM_HINT[v]}` }); break;
+      case 'compare': Object.assign(q, { prompt: `헷갈리는 한자! 숫자 ${v}${EUL[v]} 나타내는 한자는?`, show: `<span class="numbig">${v}</span>`, options: opts(hzOpt, SIMILAR[v]), words: [w, ...SIMILAR[v].map(numOf)] }); break;
+      case 'count': {
+        const dots = Array.from({ length: v }, () => '<i></i>').join('');
+        Object.assign(q, { prompt: '점이 몇 개일까요? 알맞은 한자를 고르세요.', show: `<span class="dots">${dots}</span>`, options: opts(hzOpt, d), hint: '하나씩 손가락으로 세어 보세요. 다섯 개씩 끊어서 세면 쉬워요!' });
+        break;
+      }
+      case 'next': case 'missing': {
+        // 앞뒤 숫자를 보여 주고 빈칸 채우기 (v 위치에 ?)
+        let seq;
+        if (kind === 'next' && v >= 3) seq = [v - 2, v - 1, '?'];
+        else if (v === 1) seq = ['?', 2, 3];
+        else if (v === 10) seq = [8, 9, '?'];
+        else if (v >= 3) seq = [v - 2, v - 1, '?', v + 1];
+        else seq = [v - 1, '?', v + 1];
+        Object.assign(q, { prompt: kind === 'next' && seq[seq.length - 1] === '?' ? '다음에 올 한자는 무엇일까요?' : '빈칸에 들어갈 한자는 무엇일까요?', show: seqHTML(seq), options: opts(hzOpt, d), hint: '숫자가 하나씩 커져요! 앞의 숫자부터 차례로 세어 보세요.',
+          explain: seq.map(x => x === '?' ? `<b>${w.h} ${w.p} (${v})</b>` : `${numOf(x).h}(${x})`).join(' → '), words: seq.map(x => x === '?' ? w : numOf(x)) });
+        q.seq = seq;
+        break;
+      }
+      case 'order': {
+        const st = 1 + Math.floor(Math.random() * 8), a = [st, st + 1, st + 2];
+        const as = (arr) => arr.map(x => numOf(x).h).join(' → ');
+        q.key = 'order' + st; q.target = st;
+        Object.assign(q, { prompt: '작은 수부터 차례대로 바르게 놓은 것은?', show: '',
+          options: shuffle([{ html: `<span class="han">${as(a)}</span>`, correct: true, ord: a }, { html: `<span class="han">${as([a[0], a[2], a[1]])}</span>`, correct: false, ord: [a[0], a[2], a[1]] }, { html: `<span class="han">${as([a[1], a[0], a[2]])}</span>`, correct: false, ord: [a[1], a[0], a[2]] }]),
+          hint: '한자를 숫자로 바꿔서 1, 2, 3처럼 커지는지 확인해 보세요.', explain: a.map(x => `${numOf(x).h}(${x})`).join(' → '), words: a.map(numOf) });
+        break;
+      }
+    }
+    return q;
+  }
+  // 미션마다 4문제: 구역의 숫자가 모두 한 번씩 나오도록
+  function numQueue(i) {
+    const sets = [[1, 2, 3], [4, 5, 6], [7, 8, 9, 10]];
+    const kinds = [['h2n', 'n2h', 'count', 'listen'], ['h2n', 'n2h', 'missing', 'listen'], ['h2n', 'compare', 'missing', 'n2h']];
+    if (i === 3) { const vs = shuffle(NUMS.map(n => n.v)); return [['h2n', vs[0]], ['n2h', vs[1]], ['listen', vs[2]], ['order', 1], ['missing', vs[3]]].map(([kind, v]) => ({ kind, v })); }
+    const set = sets[i], vs = shuffle(set);
+    while (vs.length < 4) vs.push(pick(set));
+    const ks = shuffle(kinds[i]);
+    return vs.map((v, k) => ({ kind: ks[k], v }));
+  }
+  function numQuestion(m) {
+    let e;
+    if (quick.on || m.mission === undefined) {
+      for (let t = 0; t < 10; t++) { e = { kind: pick(['h2n', 'n2h', 'listen', 'missing', 'next', 'compare', 'count', 'order']), v: 1 + Math.floor(Math.random() * 10) }; if (!quiz.last.includes(e.kind + e.v)) break; }
+    } else {
+      const s = run.ms[m.mission]; e = s.queue[Math.min(s.qi, s.queue.length - 1)]; s.qi++;
+    }
+    return numQ(e.kind, e.v);
+  }
+
   function makeQuestion(m) {
-    if (STAGE.mission) return nameQuestion(m);
+    if (STAGE.mission) return STAGE.qgen(m);
     if (m.type === 'bun') return greetQuestion();
     if (Math.random() < 0.15) { const q = basicQuestion(); if (!quiz.last.includes(q.key)) return q; }
     const set = MA;
@@ -1618,7 +1806,7 @@
     const g = qc.getContext('2d'); g.clearRect(0, 0, qc.width, qc.height); g.drawImage(spr, 0, 0);
     if (quick.on) { $('qName').textContent = `빠른 퀴즈 ${quick.n} / ${quick.total}`; $('qSub').textContent = `${monName(m)}의 문제`; }
     else if (STAGE.mission && m.type === 'boss') { $('qName').textContent = `${monName(m)}  ♥ ${m.hp}`; $('qSub').textContent = `보스 문제 ${m.maxHp - m.hp + 1} / ${m.maxHp} · 모두 맞히면 마지막 미션이 열려요!`; }
-    else if (STAGE.mission) { $('qName').textContent = `${monName(m)}가 나타났다!`; $('qSub').textContent = `${STAGE.missions[m.mission].label} 미션 · 틀려도 다시 도전할 수 있어요!`; }
+    else if (STAGE.mission && STAGE.missions[m.mission]) { $('qName').textContent = `${monName(m)}가 나타났다!`; $('qSub').textContent = `${STAGE.missions[m.mission].label} 미션 · 틀려도 다시 도전할 수 있어요!`; }
     else { $('qName').textContent = `${monName(m)}가 나타났다!`; $('qSub').textContent = '정답을 맞히면 물리칠 수 있어요!'; }
     $('qStreak').innerHTML = streak >= 2 ? `연속 정답 ${streak}개!` : '';
     $('qPrompt').textContent = q.prompt;
@@ -1721,7 +1909,7 @@
         m.hp--;
         floatText(m.x, m.y - 84, m.hp > 0 ? '♥ -1' : '마지막 미션!', '#ff9fb2');
         mode = 'cut';
-        setTimeout(() => { if (mode !== 'cut') return; if (m.hp > 0) openQuiz(m); else openSpeak(m); }, 900);
+        setTimeout(() => { if (mode !== 'cut') return; if (m.hp > 0) openQuiz(m); else if (STAGE.bossFinale === 'speak') openSpeak(m); else finishBoss(m); }, 900);
         return;
       }
       defeat(m, exp); mode = 'play'; focusStage(); P.inv = 0.8;
@@ -1776,10 +1964,15 @@
     $('lessonTitle').textContent = `배움 노트 · ${STAGE.lessonNo}`;
     $('lessonS1').hidden = !!STAGE.mission; $('lessonS3').hidden = !STAGE.mission; $('lessonNote1').hidden = !!STAGE.mission;
     if (STAGE.mission) {
-      const got = NAME_CARDS.filter(id => save.cards[id]).length;
-      $('cardCount').textContent = `${got} / ${NAME_CARDS.length}장 모음`;
-      $('nameCards').innerHTML = NAME_CARDS.map(id => {
-        const w = NW[id], mi = STAGE.missions.findIndex(M => M.cards.includes(id));
+      const ids = STAGE.cardOrder, isNum = STAGE.id === 'number';
+      $('nameFormula').hidden = isNum;
+      $('s3Intro').innerHTML = isNum ? '중국어 숫자 <b>一(1)부터 十(10)까지</b> 배워요. 숫자 계곡의 학습 몬스터를 물리칠 때마다 숫자 카드가 모여요!'
+        : '이번에는 <b>이름을 묻고 답하는 말</b>을 배워요. 이름 마을의 학습 몬스터를 물리칠 때마다 이름 카드가 하나씩 모여요!';
+      $('cardTitle').textContent = STAGE.cardName;
+      const got = ids.filter(id => save.cards[id]).length;
+      $('cardCount').textContent = `${got} / ${ids.length}장 모음`;
+      $('nameCards').innerHTML = ids.map(id => {
+        const w = STAGE.words[id], mi = STAGE.missions.findIndex(M => M.cards.includes(id));
         if (!save.cards[id]) return `<div class="gcard locked"><span class="han">?</span><div class="txt"><div class="ko">미션 ${mi + 1} (${STAGE.missions[mi].zone})을 해결하면 열려요</div></div></div>`;
         return `<div class="gcard${w.sent ? ' sent' : ''}">${hanHTML(w)}<div class="txt"><div class="py t${w.t}">${w.p}</div><div class="ko">${w.ko}</div></div><button class="btn small" data-say="${sayText(w)}">🔊 듣기</button></div>`;
       }).join('');
@@ -1845,7 +2038,7 @@
     gates = (STAGE.gates || []).map(g => ({ ...g, open: false, openT: 0 }));
     run = {
       stage: id, start: performance.now(), firstTry: 0, asked: 0, coins: 0, cleared: false, name: '',
-      ms: (STAGE.missions || []).map((M, i) => ({ need: STAGE.monsters.filter(d => d.mission === i).length, done: 0, complete: false, qi: 0, used: [], queue: NAME_QUEUES[i] })),
+      ms: (STAGE.missions || []).map((M, i) => ({ need: STAGE.monsters.filter(d => d.mission === i).length, done: 0, complete: false, qi: 0, used: [], queue: STAGE.makeQueue(i) })),
     };
     sessionStats.correct = 0; sessionStats.total = 0;
     P.x = STAGE.startX; P.y = GY - P.h; P.vx = P.vy = 0; P.inv = 0; P.knock = 0; P.face = 1; P.hp = save.maxHp;
@@ -1858,7 +2051,8 @@
     const on = !!STAGE.mission && !!run;
     $('missionPanel').hidden = !on; if (!on) return;
     const done = run.ms.filter(x => x.complete).length, active = run.ms.findIndex(x => !x.complete);
-    $('mpCount').textContent = active < 0 ? '완료! 이름의 문으로 →' : `${done} / ${run.ms.length}`;
+    $('mpTitle').textContent = `${STAGE.mapName} 미션`;
+    $('mpCount').textContent = active < 0 ? `완료! ${gates[gates.length - 1].name}으로 →` : `${done} / ${run.ms.length}`;
     $('mpList').innerHTML = STAGE.missions.map((M, i) => {
       const s = run.ms[i], st = s.complete ? 'done' : i === active ? 'active' : 'locked';
       const chip = st === 'done' ? '완료' : st === 'active' ? (M.boss ? '보스전' : `진행 중 ${s.done}/${s.need}`) : '잠김';
@@ -1876,10 +2070,11 @@
     M.cards.forEach(id => { save.cards[id] = true; }); writeSave();
     const gt = gates.find(g => g.mission === i);
     setTimeout(() => SFX.level(), 300);
-    const cardTxt = M.cards.map(id => NW[id].h).join(' · ');
+    const cardTxt = M.cards.map(id => STAGE.words[id].h).join(' · ');
     if (M.boss) {
       if (gt) { gt.open = true; floatText(gt.x + gt.w / 2, GY - 210, '문이 열려요!', '#fff0a8'); }
-      setTimeout(() => toast(`이름 대왕만두를 물리쳤어요! 카드 획득: ${cardTxt} → 이름의 문으로 가세요!`, 3400, true), 500);
+      const bossName = (monsters.find(m => m.type === 'boss') || {}).name || '보스';
+      setTimeout(() => toast(`${bossName}를 물리쳤어요!${cardTxt ? ` 카드 획득: ${cardTxt}` : ''} → ${gt.name}으로 가세요!`, 3400, true), 500);
       return;
     }
     // 카드 획득 화면에서 따라 말한 뒤 문이 열림
@@ -1890,8 +2085,8 @@
   function openCardPop(i, gt) {
     const M = STAGE.missions[i];
     cardGate = gt; mode = 'card';
-    $('cpTitle').textContent = `미션 ${i + 1} 완료! 이름 카드를 얻었어요`;
-    $('cpCards').innerHTML = M.cards.map(id => { const w = NW[id]; return `<div class="gcard${w.sent ? ' sent' : ''}">${hanHTML(w)}<div class="txt"><div class="py t${w.t}">${w.p}</div><div class="ko">${w.ko}</div></div><button class="btn small" data-say="${sayText(w)}">🔊 듣기</button></div>`; }).join('');
+    $('cpTitle').textContent = `미션 ${i + 1} 완료! ${STAGE.cardName}를 얻었어요`;
+    $('cpCards').innerHTML = M.cards.map(id => { const w = STAGE.words[id]; return `<div class="gcard${w.sent ? ' sent' : ''}">${hanHTML(w)}<div class="txt"><div class="py t${w.t}">${w.p}</div><div class="ko">${w.ko}</div></div><button class="btn small" data-say="${sayText(w)}">🔊 듣기</button></div>`; }).join('');
     bindSoundButtons($('cpCards')); refreshVoiceUI();
     $('btnCardOk').textContent = `따라 말했어요! ${gt.name} 열기 (Enter)`;
     wrapPinyin($('cardPop')); $('cardPop').hidden = false; $('cardPop').scrollTop = 0; $('cardPop').querySelector('.card').focus({ preventScroll: true });
@@ -1907,7 +2102,7 @@
   function calcStars() {
     const rate = run.asked ? run.firstTry / run.asked : 0;
     const list = [
-      [true, '이름 마을 클리어'],
+      [true, `${STAGE.mapName} 클리어`],
       [rate >= 0.7, `한 번에 맞힌 문제 70% 이상 (${Math.round(rate * 100)}%)`],
       [run.coins >= STAGE.coinStar, `보너스 동전 ${STAGE.coinStar}개 이상 (${run.coins}개)`],
     ];
@@ -1937,6 +2132,12 @@
     wrapPinyin($('speak')); $('speak').hidden = false; $('speak').scrollTop = 0; $('speak').querySelector('.card').focus({ preventScroll: true });
     refreshVoiceUI();
   }
+  // 말하기 미션이 없는 지역의 보스 마무리
+  function finishBoss(m) {
+    hitFx(m); defeat(m, 20); addExp(20);
+    mode = 'play'; focusStage(); P.inv = 0.8;
+    missionStep(m.mission);
+  }
   function closeSpeak() {
     if (mode !== 'speak') return;
     run.name = $('myName').value.trim().slice(0, 8);
@@ -1954,6 +2155,7 @@
   function initialStage() {
     const h = (location.hash || '').slice(1).toLowerCase();
     if (h === 'name' || h === 's3' || h === 'lesson3') return 'name';
+    if (h === 'number' || h === 'num' || h === 'numbers') return 'number';
     if (h === 'bamboo' || h === 's1' || h === 'lesson1') return 'bamboo';
     return new Date() >= new Date(2026, 10, 5) ? 'name' : 'bamboo';
   }
@@ -1963,7 +2165,7 @@
       <button class="stagecard${st.id === selStage ? ' sel' : ''}" data-stage="${st.id}" aria-pressed="${st.id === selStage}">
         <span class="sc-top"><span class="sc-tag">${st.tag}</span>${st.isNew ? '<span class="sc-new">NEW</span>' : ''}</span>
         <span class="sc-title">${st.title}</span>
-        <span class="sc-words">${st.words}</span>
+        <span class="sc-words">${st.pickWords}</span>
         ${save.clears[st.id] ? `<span class="sc-clear">클리어 ${'★'.repeat(save.clears[st.id])}${'☆'.repeat(3 - save.clears[st.id])}</span>` : ''}
       </button>`).join('');
     $('stagePick').querySelectorAll('.stagecard').forEach(b => b.addEventListener('click', () => selectStage(b.dataset.stage)));
@@ -2004,13 +2206,13 @@
   function nextQuick() {
     if (quick.n >= quick.total) { quick.on = false; showResult(true); return; }
     quick.n++;
-    if (STAGE.mission) openQuiz(Math.random() < 0.5 ? { type: 'jelly', tone: 3, name: '이름 젤리' } : { type: 'bun', name: '친구 만두' });
+    if (STAGE.mission) openQuiz({ ...pick(STAGE.quickMons) });
     else openQuiz(Math.random() < 0.5 ? { type: 'jelly', tone: 1 + Math.floor(Math.random() * 4) } : { type: 'bun' });
   }
   const fmtTime = (ms) => { const sec = Math.round(ms / 1000); return `${Math.floor(sec / 60)}분 ${sec % 60}초`; };
   function fillGrid(items) { $('rGrid').innerHTML = items.map(([v, l]) => `<div><b>${v}</b><span>${l}</span></div>`).join(''); }
   function resultBase() {
-    $('rStars').hidden = true; $('rList').hidden = true; $('rName').hidden = true;
+    $('rStars').hidden = true; $('rList').hidden = true; $('rName').hidden = true; $('rNums').hidden = true;
     $('rDate').textContent = `${STAGE.lessonNo} · ${new Date().toLocaleDateString('ko-KR')}`;
   }
   function openResultPanel() {
@@ -2040,7 +2242,8 @@
   function showClear(stars) {
     resultKind = 'clear'; resultReturn = 'home';
     mode = 'result'; resultBase();
-    $('rTitle').textContent = `${STAGE.title.replace(/^\d지역 /, '')} 클리어!`;
+    $('rTitle').textContent = STAGE.clearTitle || `${STAGE.title.replace(/^\d지역 /, '')} 클리어!`;
+    if (STAGE.id === 'number') showNumSummary();
     $('rStars').textContent = '★'.repeat(stars.n) + '☆'.repeat(3 - stars.n); $('rStars').hidden = false;
     $('rScore').innerHTML = `${run.firstTry}<small> / ${run.asked}</small>`;
     $('rScoreLabel').textContent = '한 번에 맞힌 문제';
@@ -2051,6 +2254,18 @@
     $('btnRAgain').textContent = '한 번 더 하기';
     $('btnRClose').textContent = '처음 화면으로 (Enter)';
     openResultPanel();
+  }
+  function showNumSummary() {
+    $('rNumRow').innerHTML = NUMS.map(n => `<button class="rnum" data-v="${n.v}" aria-label="${n.h} ${n.p} ${n.v}"><span class="han">${n.h}</span></button>`).join('');
+    const showOne = (v) => {
+      const n = numOf(v);
+      $('rNumRow').querySelectorAll('.rnum').forEach(b => b.classList.toggle('on', +b.dataset.v === v));
+      $('rNumDetail').innerHTML = `<span class="han">${n.h}</span><span class="py t${n.t}">${n.p}</span><span class="numopt">= ${n.v}</span><button class="btn small" data-say="${n.h}">🔊 듣기</button>`;
+      bindSoundButtons($('rNumDetail'));
+    };
+    $('rNumRow').querySelectorAll('.rnum').forEach(b => b.addEventListener('click', () => showOne(+b.dataset.v)));
+    showOne(1);
+    $('rNums').hidden = false;
   }
   function closeResult() {
     if (mode !== 'result') return;
@@ -2067,7 +2282,7 @@
   });
   $('btnRClose').addEventListener('click', closeResult);
   $('btnResult').addEventListener('click', () => { audio(); showResult(false); });
-  $('zones').innerHTML = [['3지역 숫자 계곡', '11/10'], ['4지역 판다네 집', '11/12'], ['5지역 만두 시장', '11/17'], ['6지역 탐험대 축제', '11/19']]
+  $('zones').innerHTML = [['4지역 판다네 집', '11/12'], ['5지역 만두 시장', '11/17'], ['6지역 탐험대 축제', '11/19']]
     .map(([n, d]) => `<span>${n} · ${d} 준비 중</span>`).join('');
   $('btnLearnFirst').addEventListener('click', () => { audio(); openLesson(); });
   let resetArmed = false;
@@ -2092,7 +2307,7 @@
     }
     renderStagePick(); updateHUD(); wrapPinyin(document.body);
     if (document.fonts && document.fonts.load) {
-      Promise.all([document.fonts.load('11px Jua'), document.fonts.load('700 11px "Noto Sans SC"', '我叫什么名字你'), document.fonts.load(SIGN_PY_FONT, 'Nǐ jiào shénme míngzi')]).then(buildWorld).catch(() => {});
+      Promise.all([document.fonts.load('11px Jua'), document.fonts.load('700 19px "Noto Sans SC"', '一二三四五六七八九十'), document.fonts.load('700 11px "Noto Sans SC"', '我叫什么名字你'), document.fonts.load(SIGN_PY_FONT, 'Nǐ jiào shénme míngzi')]).then(buildWorld).catch(() => {});
     }
     let last = performance.now();
     function frame(now) {
@@ -2105,7 +2320,7 @@
     requestAnimationFrame(frame);
     $('startScreen').querySelector('.card').focus({ preventScroll: true });
     window.__panda = {
-      P, save, quiz, quick, NQ, openQuiz, answer, closeQuiz, closeSpeak, selectStage, startPlay, goHome, loadStage,
+      P, save, quiz, quick, NQ, numQ, numQueue, NUMS, openQuiz, answer, closeQuiz, closeSpeak, selectStage, startPlay, goHome, loadStage,
       get mode() { return mode; }, get monsters() { return monsters; }, get coins() { return coins; }, get gates() { return gates; },
       get run() { return run; }, get stage() { return STAGE.id; },
     };
