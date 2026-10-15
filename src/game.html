@@ -57,6 +57,10 @@
   @media (max-width: 700px) { #missionPanel li:not(.active) { display: none; } }
   @media (max-width: 700px) { #toast { top: auto; bottom: 6px; } }
   #notice { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); z-index: 60; max-width: calc(100% - 32px); background: var(--ink); color: var(--paper); border: 3px solid var(--gold); border-radius: 12px; padding: 10px 16px 11px; font-family: var(--font-display); font-size: 16px; text-align: center; box-shadow: 0 6px 0 rgba(0,0,0,.3); pointer-events: none; }
+  #ctrlGuide { position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); display: flex; gap: 8px 14px; flex-wrap: wrap; justify-content: center; align-items: center; max-width: 92%; background: rgba(19, 34, 58, .88); color: var(--paper); border: 3px solid var(--gold); border-radius: 14px; padding: 8px 14px 9px; font-family: var(--font-display); font-size: clamp(12px, 2vw, 17px); pointer-events: none; }
+  #ctrlGuide span { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+  #ctrlGuide kbd { font-size: .85em; }
+  @media (max-width: 700px) { #ctrlGuide { bottom: auto; top: 34px; } }
   #focusHint { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(19, 34, 58, .55); font-family: var(--font-display); font-size: clamp(14px, 2.4vw, 22px); color: var(--paper); cursor: pointer; }
 
   /* status bar */
@@ -142,6 +146,11 @@
   .opt .py { font-size: 21px; }
   .opt .mk { font-family: var(--font-pinyin); font-weight: 700; font-size: 22px; }
   .opt.right { background: var(--right-bg); border-color: var(--jade); box-shadow: 0 4px 0 var(--jade); }
+  .opt.shake { animation: shake .35s; }
+  @keyframes shake { 20% { transform: translateX(-6px); } 40% { transform: translateX(6px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(4px); } }
+  .qopts.reshuffled .opt { animation: pop .35s; }
+  @keyframes pop { from { transform: scale(.94); opacity: .4; } to { transform: none; opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .opt.shake, .qopts.reshuffled .opt { animation: none; } }
   .opt.wrong { background: var(--wrong-bg); border-color: var(--t4); box-shadow: 0 4px 0 var(--t4); }
   .opt:disabled { cursor: default; }
   .qtools { display: flex; justify-content: center; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
@@ -308,6 +317,7 @@
       <div id="mapTag">성조 마을 · 대나무 언덕</div>
       <div id="missionPanel" hidden><div class="mp-title"><span id="mpTitle">미션</span><b id="mpCount">0 / 4</b></div><ol id="mpList"></ol></div>
       <div id="toast" hidden></div>
+      <div id="ctrlGuide" hidden></div>
       <div id="focusHint" hidden>화면을 클릭하면 다시 조작할 수 있어요</div>
     </div>
     <div id="status">
@@ -696,6 +706,7 @@
     wrong: () => { tone(330, 0, 0.18, 'sawtooth', 0.035); tone(233, 0.16, 0.28, 'sawtooth', 0.035); },
     level: () => [523, 659, 784, 1047, 784, 1047, 1319].forEach((f, i) => tone(f, i * 0.09, 0.16, 'square', 0.045)),
     pop: () => tone(600, 0, 0.12, 'triangle', 0.08, 160),
+    gate: () => [784, 988, 1175, 1568].forEach((f, i) => tone(f, i * 0.06, 0.18, 'triangle', 0.07)),
     meet: () => { tone(440, 0, 0.08, 'square', 0.04); tone(660, 0.08, 0.1, 'square', 0.04); },
   };
   // ================= 중국어 음성 (재생 코드는 여기 한 곳에만) =================
@@ -1135,6 +1146,12 @@
 
   // 잠긴 문 (땅 속으로 내려가며 열림)
   function drawGate(gt) {
+    if (gt.flash > 0) {   // 통과할 때 반짝이는 빛기둥
+      const x = Math.round(gt.x - cam), a = Math.min(1, gt.flash / 0.9);
+      ctx.fillStyle = `rgba(255,240,168,${0.55 * a})`; ctx.fillRect(x - 14, 0, gt.w + 28, GY);
+      ctx.fillStyle = `rgba(255,255,255,${0.8 * a})`; ctx.fillRect(x + gt.w / 2 - 3, 0, 6, GY);
+      for (let k = 0; k < 6; k++) { const yy = (k * 53 + time * 300) % GY; ctx.fillRect(x - 8 + (k % 3) * 16, GY - yy, 4, 4); }
+    }
     if (gt.openT >= 1) return;
     const x = Math.round(gt.x - cam);
     if (x < -120 || x > W + 120) return;
@@ -1387,6 +1404,7 @@
     P.inv = Math.max(0, P.inv - dt); P.knock = Math.max(0, P.knock - dt); P.dropT = Math.max(0, P.dropT - dt);
     jumpBuffer = Math.max(0, jumpBuffer - dt); coyote = Math.max(0, coyote - dt);
     const ax = (keys.left ? -1 : 0) + (keys.right ? 1 : 0);
+    if ((ax || jumpBuffer > 0) && !$('ctrlGuide').hidden) { P.movedT = (P.movedT || 0) + dt; if (P.movedT > 1.2) hideCtrlGuide(); }
     if (P.knock <= 0) {
       const target = ax * SPEED, acc = P.onGround ? 1400 : 900;
       if (P.vx < target) P.vx = Math.min(target, P.vx + acc * dt); else if (P.vx > target) P.vx = Math.max(target, P.vx - acc * dt);
@@ -1418,7 +1436,12 @@
     if (P.onGround && !wasGround) dust(P.x + P.w / 2, P.y + P.h);
     if (P.onGround && Math.abs(P.vx) > 20) P.walkT += dt; else P.walkT = 0;
 
-    for (const gt of gates) if (gt.open && gt.openT < 1) gt.openT = Math.min(1, gt.openT + dt * 0.9);
+    for (const gt of gates) {
+      if (gt.open && gt.openT < 1) gt.openT = Math.min(1, gt.openT + dt * 0.9);
+      if (gt.flash > 0) gt.flash = Math.max(0, gt.flash - dt);
+      // 열린 문을 처음 지나갈 때 짧은 성공 연출 (약 1초)
+      if (gt.open && !gt.passed && P.x + P.w / 2 > gt.x + gt.w / 2) passGate(gt);
+    }
     if (!STAGE.mission && !gateNoticeShown && P.x > 2950) { gateNoticeShown = true; toast('2지역 이름 마을은 ‘지역 선택’ 버튼을 눌러 시작 화면에서 고를 수 있어요!', 3200, true); }
     if (STAGE.mission && run && !run.cleared && run.ms[run.ms.length - 1].complete && P.x > STAGE.clearX) { stageClear(); return; }
 
@@ -1447,6 +1470,15 @@
       if (Math.abs(P.x + P.w / 2 - c.x) < 16 && P.y < c.y + 20 && P.y + P.h > c.y) { c.taken = true; c.timer = 0; addCoins(1); if (run) run.coins++; SFX.coin(); floatText(c.x, c.y - 4, '+1', '#f6c445'); }
     }
   }
+  function passGate(gt) {
+    gt.passed = true; gt.flash = 0.9;
+    if (run) run.gatesPassed = (run.gatesPassed || 0) + 1;
+    SFX.gate();
+    const cx = gt.x + gt.w / 2;
+    for (let k = 0; k < 3; k++) burst(cx + rnd(-10, 10), GY - 40 - k * 50, ['#fff0a8', '#f6c445', '#ffffff', '#9fd3f0'], 10, 200);
+    floatText(cx, GY - 120, '★', '#fff0a8');
+    toast('길이 열렸다!', 1100);
+  }
   function gateBlocked(gt) {
     if (time - lastGateMsg < 2.5 || !run) return;
     lastGateMsg = time;
@@ -1471,7 +1503,7 @@
   }
 
   // ================= 퀴즈 =================
-  const quiz = { mon: null, q: null, answered: false, correct: false, last: [] };
+  const quiz = { mon: null, q: null, answered: false, correct: false, last: [], lastPos: [], lock: false };
   let streak = 0;
   const KINDS_EASY = [['tone', 3], ['mark', 2], ['contour', 2], ['meaning', 2]];
   const KINDS_ALL = [['tone', 2], ['mark', 2], ['contour', 1], ['meaning', 3], ['char', 3], ['pinyin', 3]];
@@ -1804,9 +1836,12 @@
     $('qStreak').innerHTML = streak >= 2 ? `연속 정답 ${streak}개!` : '';
     $('qPrompt').textContent = q.prompt;
     $('qShow').innerHTML = q.show; $('qShow').hidden = !q.show;
-    $('qOpts').className = 'qopts' + (q.options.length === 3 ? ' n3' : '');
-    $('qOpts').innerHTML = q.options.map((o, i) => `<button class="opt" data-i="${i}"><span class="num">${i + 1}</span><span class="lbl">${o.html}</span></button>`).join('');
-    $('qOpts').querySelectorAll('.opt').forEach(b => b.addEventListener('click', () => answer(+b.dataset.i)));
+    // 정답 위치가 같은 자리에 연달아 나오지 않게
+    const ci0 = q.options.findIndex(o => o.correct);
+    if (quiz.lastPos.length >= 2 && quiz.lastPos.slice(-2).every(x => x === ci0)) reorderOptions(q, ci0);
+    quiz.lastPos.push(q.options.findIndex(o => o.correct)); if (quiz.lastPos.length > 4) quiz.lastPos.shift();
+    quiz.lock = false;
+    renderOptions(q);
     const tools = [];
     if (q.say && q.show) tools.push(`<button class="btn small" data-say="${sayText(q.say)}">🔊 발음 듣기</button>`);
     if (q.listen) { tools.push(`<button class="btn small primary" data-say="${sayText(q.listen)}">🔊 다시 듣기</button>`); setTimeout(() => Voice.play(sayText(q.listen), true), 350); }
@@ -1819,16 +1854,40 @@
     $('quizCard').focus({ preventScroll: true });
     $('quiz').scrollTop = 0;
   }
+  function renderOptions(q) {
+    $('qOpts').className = 'qopts' + (q.options.length === 3 ? ' n3' : '');
+    $('qOpts').innerHTML = q.options.map((o, i) => `<button class="opt" data-i="${i}"><span class="num">${i + 1}</span><span class="lbl">${o.html}</span></button>`).join('');
+    $('qOpts').querySelectorAll('.opt').forEach(b => b.addEventListener('click', () => answer(+b.dataset.i)));
+    wrapPinyin($('qOpts'));
+  }
+  // 보기 순서를 다시 섞되, 정답이 avoid 자리에 오지 않게
+  function reorderOptions(q, avoid) {
+    for (let t = 0; t < 20; t++) {
+      const o = shuffle(q.options);
+      if (o.findIndex(x => x.correct) !== avoid) { q.options = o; return; }
+    }
+  }
   function answer(i) {
-    if (mode !== 'quiz' || quiz.answered) return;
+    if (mode !== 'quiz' || quiz.answered || quiz.lock) return;
     const q = quiz.q, opt = q.options[i]; if (!opt) return;
     const btns = $('qOpts').querySelectorAll('.opt');
     if (btns[i].disabled) return;
     // 이름 마을: 틀리면 힌트를 보여 주고 다시 고르게 함 (게임오버 없음)
     if (retryMode() && !opt.correct) {
       quiz.tries++; SFX.wrong(); streak = 0; save.wrong++; writeSave();
-      btns[i].classList.add('wrong'); btns[i].disabled = true;
-      $('qHint').innerHTML = `<b>힌트</b> ${q.hint || '해설을 떠올리며 다시 골라 보세요.'}<br>다시 골라 보세요. 할 수 있어요!`;
+      // 틀린 보기는 잠깐만 빨갛게 → 원래대로 돌리고 보기 순서를 다시 섞음 (소거법·위치 외우기 방지)
+      quiz.lock = true;
+      btns[i].classList.add('wrong', 'shake');
+      btns.forEach(b => { b.disabled = true; });
+      const prevCorrect = q.options.findIndex(o => o.correct);
+      setTimeout(() => {
+        if (mode !== 'quiz' || quiz.q !== q || quiz.answered) return;
+        reorderOptions(q, prevCorrect);
+        renderOptions(q);
+        $('qOpts').classList.add('reshuffled'); setTimeout(() => $('qOpts').classList.remove('reshuffled'), 400);
+        quiz.lock = false;
+      }, 700);
+      $('qHint').innerHTML = `<b>힌트</b> ${q.hint || '해설을 떠올리며 다시 골라 보세요.'}<br>보기 순서가 바뀌었어요. 다시 골라 보세요!`;
       $('qHint').hidden = false; wrapPinyin($('qHint'));
       if (!quick.on) { P.hp = Math.max(10, P.hp - 5); updateHUD(); }
       return;
@@ -2028,7 +2087,7 @@
       return;
     }
     initWorldObjects();
-    gates = (STAGE.gates || []).map(g => ({ ...g, open: false, openT: 0 }));
+    gates = (STAGE.gates || []).map(g => ({ ...g, open: false, openT: 0, passed: false, flash: 0 }));
     run = {
       stage: id, start: performance.now(), firstTry: 0, asked: 0, coins: 0, cleared: false, name: '',
       ms: (STAGE.missions || []).map((M, i) => ({ need: STAGE.monsters.filter(d => d.mission === i).length, done: 0, complete: false, qi: 0, used: [], queue: STAGE.makeQueue(i) })),
@@ -2168,15 +2227,36 @@
     selStage = id; renderStagePick();
     if (!run || run.stage !== id) loadStage(id);
   }
+  // 처음 한 번만 짧은 조작 안내 (게임을 막지 않고, 움직이거나 5초가 지나면 사라짐)
+  let guideTimer = 0;
+  function showCtrlGuide() {
+    if (save.guideSeen) return;
+    save.guideSeen = true; writeSave();
+    const touch = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+    $('ctrlGuide').innerHTML = touch
+      ? '<span>◀ ▶ 버튼으로 이동</span><span>점프 버튼으로 점프</span>'
+      : '<span><kbd>←</kbd><kbd>→</kbd> 이동</span><span><kbd>Space</kbd> 점프</span><span><kbd>H</kbd> 배움 노트</span>';
+    $('ctrlGuide').hidden = false;
+    clearTimeout(guideTimer); guideTimer = setTimeout(hideCtrlGuide, 5000);
+  }
+  let afterGuide = null;
+  function hideCtrlGuide() {
+    if ($('ctrlGuide').hidden) return;
+    $('ctrlGuide').hidden = true; clearTimeout(guideTimer);
+    if (afterGuide) { const f = afterGuide; afterGuide = null; setTimeout(f, 200); }
+  }
   function startPlay() {
     audio();
     if (!run || run.stage !== selStage) loadStage(selStage);
     if (run.cleared) loadStage(selStage, true);   // 클리어한 지역을 다시 하면 처음부터 (동전도 이때만 다시 생김)
     $('startScreen').hidden = true; mode = 'play'; focusStage();
+    showCtrlGuide();
     startPlay.shown = startPlay.shown || {};
     if (!startPlay.shown[STAGE.id]) {
       startPlay.shown[STAGE.id] = true;
-      setTimeout(() => toast(STAGE.mission ? '학습 몬스터를 모두 물리쳐야 문이 열려요! 오른쪽으로 출발!' : '오른쪽으로 가서 성조 젤리를 만나 보세요!', 2600, true), 400);
+      const hello = () => toast(STAGE.mission ? '학습 몬스터를 모두 물리쳐야 문이 열려요! 오른쪽으로 출발!' : '오른쪽으로 가서 성조 젤리를 만나 보세요!', 2600, true);
+      // 조작 안내가 떠 있으면 안내가 사라진 뒤에 보여 줌 (겹치지 않게)
+      if (!$('ctrlGuide').hidden) afterGuide = hello; else setTimeout(hello, 400);
     }
   }
   function goHome() {
@@ -2282,7 +2362,7 @@
   $('btnReset').addEventListener('click', () => {
     if (!resetArmed) { resetArmed = true; $('btnReset').textContent = '정말 지울까요? 한 번 더 누르면 지워져요'; return; }
     try { localStorage.removeItem(SAVE_KEY); } catch (e) {}
-    Object.assign(save, { level: 1, exp: 0, coins: 0, maxHp: 100, correct: 0, wrong: 0, words: {}, cards: {}, clears: {} });
+    Object.assign(save, { level: 1, exp: 0, coins: 0, maxHp: 100, correct: 0, wrong: 0, words: {}, cards: {}, clears: {}, guideSeen: false });
     P.hp = 100; updateHUD(); renderStagePick(); $('saveInfo').hidden = true; $('btnReset').hidden = true;
   });
 
