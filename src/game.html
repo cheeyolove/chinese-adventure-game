@@ -153,6 +153,9 @@
   .numbig { font-family: var(--font-display); font-size: 76px; line-height: 1; color: var(--t1); }
   .numopt { font-family: var(--font-display); font-size: 28px; }
   .qshow .py.big { font-size: 48px; }
+  .hun { font-family: var(--font-display); }
+  .qshow .hun { font-size: 40px; color: var(--ink); background: var(--paper-2); border-radius: 14px; padding: 6px 18px 8px; }
+  .rnum-detail .hun { font-size: 20px; color: var(--ink-soft); }
   .qshow .seq { letter-spacing: .02em; }
   .dots { display: grid; grid-template-columns: repeat(5, 22px); gap: 8px; padding: 8px; background: var(--paper-2); border-radius: 12px; }
   .dots i { width: 22px; height: 22px; border-radius: 50%; background: var(--t4); box-shadow: inset 0 -3px 0 rgba(0,0,0,.2); }
@@ -247,6 +250,8 @@
   .formula .blk .han { font-size: 22px; } .formula .blk small { font-size: 11px; color: var(--ink-soft); }
   .formula .blk.name { border-style: dashed; font-family: var(--font-display); justify-content: center; min-height: 52px; }
   .formula .eq { font-family: var(--font-display); font-size: 15px; }
+  .gcards.wide { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+  .gcards.wide .ko { white-space: nowrap; }
   .gcard.locked { opacity: .6; border-style: dashed; }
   .gcard.locked .han { color: var(--ink-soft); }
   .gcard.sent .han { font-size: 20px; white-space: normal; }
@@ -546,7 +551,8 @@
     { id: 'num7', h: '七', p: 'qī', t: 1, v: 7 }, { id: 'num8', h: '八', p: 'bā', t: 1, v: 8 },
     { id: 'num9', h: '九', p: 'jiǔ', t: 3, v: 9 }, { id: 'num10', h: '十', p: 'shí', t: 2, v: 10 },
   ];
-  NUMS.forEach(n => { n.ko = `숫자 ${n.v}`; });
+  const NUM_HUN = ['한 일', '두 이', '석 삼', '넉 사', '다섯 오', '여섯 륙', '일곱 칠', '여덟 팔', '아홉 구', '열 십'];
+  NUMS.forEach(n => { n.hun = NUM_HUN[n.v - 1]; n.ko = `${n.hun} · 숫자 ${n.v}`; });
   const NUMW = Object.fromEntries(NUMS.map(n => [n.id, n]));
   const numOf = (v) => NUMS[v - 1];
   const GREET = [
@@ -872,7 +878,7 @@
     number: {
       id: 'number', lessonNo: '숫자 1~10', tag: '숫자 1~10', title: '3지역 숫자 계곡', mapName: '숫자 계곡', isNew: true,
       pickWords: NUMS.map(n => n.h).join(' '),
-      desc: '숫자 계곡의 돌문은 <b>숫자 몬스터</b>를 모두 물리쳐야 열려요. 一(1)부터 十(10)까지 익히고 마지막 <b>숫자 대왕만두</b>에게 도전하세요!',
+      desc: '숫자 계곡의 돌문은 <b>숫자 몬스터</b>를 모두 물리쳐야 열려요. 一(한 일, 1)부터 十(열 십, 10)까지 한자·병음·훈음으로 익히고 마지막 <b>숫자 대왕만두</b>에게 도전하세요!',
       worldW: 3720, startX: 60, mission: true, clearX: 3500, coinStar: 25, theme: 'valley',
       clearTitle: '숫자 마스터! 1부터 10까지 정복!',
       platforms: [
@@ -1067,7 +1073,7 @@
   }
   // 숫자 석판: 한자 · 병음 · 숫자를 실제 학습 내용으로 보여 줌
   function drawTablet(g, x, vals) {
-    const w = 104, rowH = 26, h = 14 + vals.length * rowH, top = GY - 18 - h;
+    const w = 150, rowH = 26, h = 14 + vals.length * rowH, top = GY - 18 - h;
     g.fillStyle = '#4b4658'; g.fillRect(x - 3, top - 3, w + 6, h + 6 + 18);
     g.fillStyle = '#9d98ad'; g.fillRect(x, top, w, h);
     g.fillStyle = '#b8b3c8'; g.fillRect(x, top, w, 3);
@@ -1076,7 +1082,8 @@
       const n = numOf(v), y = top + 8 + i * rowH + rowH / 2;
       g.textBaseline = 'middle';
       g.fillStyle = '#1d2738'; g.textAlign = 'left'; g.font = '700 19px "Noto Sans SC", "PingFang SC", sans-serif'; g.fillText(n.h, x + 10, y);
-      g.fillStyle = '#23466e'; g.font = SIGN_PY_FONT.replace('10px', '12px'); g.fillText(n.p, x + 38, y);
+      g.fillStyle = '#23466e'; g.font = SIGN_PY_FONT.replace('10px', '12px'); g.fillText(n.p, x + 36, y);
+      g.fillStyle = '#3b2716'; g.font = '11px Jua, "Gowun Dodum", sans-serif'; g.fillText(n.hun, x + 72, y);
       g.fillStyle = '#7a1f2b'; g.textAlign = 'right'; g.font = '16px Jua, sans-serif'; g.fillText(String(v), x + w - 10, y);
     });
   }
@@ -1700,29 +1707,22 @@
     4: '네모 안에 다리가 있는 모양이에요. sì!', 5: 'wǔ, 손가락을 모두 편 손 하나만큼!', 6: '점 아래에 다리 두 개가 벌어진 모양, liù!',
     7: '十과 닮았지만 아래가 오른쪽으로 꺾여요. qī!', 8: '두 획이 양쪽으로 벌어진 모양, bā!', 9: '꼬리가 휘어 올라간 모양, jiǔ!', 10: '가로 한 획과 세로 한 획, 열 십(十)자!',
   };
-  const SIMILAR = { 1: [2, 3], 2: [1, 3], 3: [2, 1], 4: [6, 5], 5: [4, 3], 6: [8, 4], 7: [10, 9], 8: [6, 4], 9: [7, 10], 10: [7, 9] };
-  const EUL = { 1: '을', 2: '를', 3: '을', 4: '를', 5: '를', 6: '을', 7: '을', 8: '을', 9: '를', 10: '을' };
   const nearTwo = (v) => shuffle(shuffle(NUMS.map(n => n.v).filter(x => x !== v)).sort((a, b) => Math.abs(a - v) - Math.abs(b - v)).slice(0, 4)).slice(0, 2);
   const hzOpt = (v) => ({ html: `<span class="han">${numOf(v).h}</span>`, v });
   const nOpt = (v) => ({ html: `<span class="numopt">${v}</span>`, v });
   const seqHTML = (arr) => `<span class="han sent seq">${arr.map(v => v === '?' ? '<span class="blankq">?</span>' : numOf(v).h).join(' → ')}</span>`;
   function numQ(kind, v) {
-    if (kind === 'listen' && !Voice.ready()) kind = 'py2n';   // 음성이 없으면 병음 보고 고르기
     const w = numOf(v), d = nearTwo(v);
-    const card = `<b>${w.h} ${w.p}</b> = ${w.v}`;
+    const card = `<b>${w.h} ${w.p}</b> = ${w.hun} · 숫자 ${w.v}`;
     const q = { key: kind + v, target: v, words: [w], hint: NUM_HINT[v], explain: card };
     const opts = (make, others) => shuffle([make(v), ...others.map(make)]).map(o => ({ ...o, correct: o.v === v }));
     switch (kind) {
       case 'h2n': Object.assign(q, { prompt: '이 한자는 숫자 몇일까요?', show: `<span class="han">${w.h}</span>`, say: w, options: opts(nOpt, d) }); break;
       case 'n2h': Object.assign(q, { prompt: '이 숫자를 중국어 한자로 쓰면?', show: `<span class="numbig">${v}</span>`, options: opts(hzOpt, d) }); break;
-      case 'listen': Object.assign(q, { prompt: '잘 듣고, 알맞은 숫자를 고르세요.', listen: w, options: opts(nOpt, d), hint: `‘다시 듣기’를 눌러 보세요. 병음으로는 ${w.p}예요.` }); break;
-      case 'py2n': Object.assign(q, { prompt: '병음을 읽고, 알맞은 숫자를 고르세요.', show: `<span class="py big t${w.t}">${w.p}</span>`, say: w, options: opts(nOpt, d), hint: `${w.p}는 한자로 ${w.h}예요. ${NUM_HINT[v]}` }); break;
-      case 'compare': Object.assign(q, { prompt: `헷갈리는 한자! 숫자 ${v}${EUL[v]} 나타내는 한자는?`, show: `<span class="numbig">${v}</span>`, options: opts(hzOpt, SIMILAR[v]), words: [w, ...SIMILAR[v].map(numOf)] }); break;
-      case 'count': {
-        const dots = Array.from({ length: v }, () => '<i></i>').join('');
-        Object.assign(q, { prompt: '점이 몇 개일까요? 알맞은 한자를 고르세요.', show: `<span class="dots">${dots}</span>`, options: opts(hzOpt, d), hint: '하나씩 손가락으로 세어 보세요. 다섯 개씩 끊어서 세면 쉬워요!' });
-        break;
-      }
+      case 'py2h': Object.assign(q, { prompt: '이 병음에 맞는 한자는 무엇일까요?', show: `<span class="py big t${w.t}">${w.p}</span>`, options: opts(hzOpt, d),
+        hint: `${w.p}는 숫자 ${v}이에요. ${NUM_HINT[v]}` }); break;
+      case 'hun2h': Object.assign(q, { prompt: '훈음을 보고 알맞은 한자를 고르세요.', show: `<span class="hun">‘${w.hun}’</span>`, options: opts(hzOpt, d),
+        hint: `‘${w.hun}’ → 뜻: ${w.hun.split(' ')[0]} = 숫자 ${v}. ${NUM_HINT[v]}` }); break;
       case 'next': case 'missing': {
         // 앞뒤 숫자를 보여 주고 빈칸 채우기 (v 위치에 ?)
         let seq;
@@ -1732,7 +1732,7 @@
         else if (v >= 3) seq = [v - 2, v - 1, '?', v + 1];
         else seq = [v - 1, '?', v + 1];
         Object.assign(q, { prompt: kind === 'next' && seq[seq.length - 1] === '?' ? '다음에 올 한자는 무엇일까요?' : '빈칸에 들어갈 한자는 무엇일까요?', show: seqHTML(seq), options: opts(hzOpt, d), hint: '숫자가 하나씩 커져요! 앞의 숫자부터 차례로 세어 보세요.',
-          explain: seq.map(x => x === '?' ? `<b>${w.h} ${w.p} (${v})</b>` : `${numOf(x).h}(${x})`).join(' → '), words: seq.map(x => x === '?' ? w : numOf(x)) });
+          explain: seq.map(x => x === '?' ? `<b>${w.h} ${w.p} (${v})</b>` : `${numOf(x).h}(${x})`).join(' → ') + `<br>${w.h} = ${w.hun} · 숫자 ${v}`, words: seq.map(x => x === '?' ? w : numOf(x)) });
         q.seq = seq;
         break;
       }
@@ -1751,8 +1751,9 @@
   // 미션마다 4문제: 구역의 숫자가 모두 한 번씩 나오도록
   function numQueue(i) {
     const sets = [[1, 2, 3], [4, 5, 6], [7, 8, 9, 10]];
-    const kinds = [['h2n', 'n2h', 'count', 'listen'], ['h2n', 'n2h', 'missing', 'listen'], ['h2n', 'compare', 'missing', 'n2h']];
-    if (i === 3) { const vs = shuffle(NUMS.map(n => n.v)); return [['h2n', vs[0]], ['n2h', vs[1]], ['listen', vs[2]], ['order', 1], ['missing', vs[3]]].map(([kind, v]) => ({ kind, v })); }
+    const kinds = [['h2n', 'n2h', 'py2h', 'hun2h'], ['h2n', 'py2h', 'hun2h', 'missing'], ['n2h', 'hun2h', 'missing', 'next']];
+    // 보스: 5문제 종합 (한자→숫자, 병음→한자, 훈음→한자, 순서, 빠진 숫자)
+    if (i === 3) { const vs = shuffle(NUMS.map(n => n.v)); return [['h2n', vs[0]], ['py2h', vs[1]], ['hun2h', vs[2]], ['order', 1], ['missing', vs[3]]].map(([kind, v]) => ({ kind, v })); }
     const set = sets[i], vs = shuffle(set);
     while (vs.length < 4) vs.push(pick(set));
     const ks = shuffle(kinds[i]);
@@ -1761,7 +1762,7 @@
   function numQuestion(m) {
     let e;
     if (quick.on || m.mission === undefined) {
-      for (let t = 0; t < 10; t++) { e = { kind: pick(['h2n', 'n2h', 'listen', 'missing', 'next', 'compare', 'count', 'order']), v: 1 + Math.floor(Math.random() * 10) }; if (!quiz.last.includes(e.kind + e.v)) break; }
+      for (let t = 0; t < 10; t++) { e = { kind: pick(['h2n', 'n2h', 'py2h', 'hun2h', 'missing', 'next', 'order']), v: 1 + Math.floor(Math.random() * 10) }; if (!quiz.last.includes(e.kind + e.v)) break; }
     } else {
       const s = run.ms[m.mission]; e = s.queue[Math.min(s.qi, s.queue.length - 1)]; s.qi++;
     }
@@ -1957,7 +1958,7 @@
     $('lessonS1').hidden = !!STAGE.mission; $('lessonS3').hidden = !STAGE.mission; $('lessonNote1').hidden = !!STAGE.mission;
     if (STAGE.mission) {
       const ids = STAGE.cardOrder, isNum = STAGE.id === 'number';
-      $('nameFormula').hidden = isNum;
+      $('nameFormula').hidden = isNum; $('nameCards').classList.toggle('wide', isNum);
       $('s3Intro').innerHTML = isNum ? '중국어 숫자 <b>一(1)부터 十(10)까지</b> 배워요. 숫자 계곡의 학습 몬스터를 물리칠 때마다 숫자 카드가 모여요!'
         : '이번에는 <b>이름을 묻고 답하는 말</b>을 배워요. 이름 마을의 학습 몬스터를 물리칠 때마다 이름 카드가 하나씩 모여요!';
       $('cardTitle').textContent = STAGE.cardName;
@@ -2079,7 +2080,7 @@
     cardGate = gt; mode = 'card';
     $('cpTitle').textContent = `미션 ${i + 1} 완료! ${STAGE.cardName}를 얻었어요`;
     $('cpCards').innerHTML = M.cards.map(id => { const w = STAGE.words[id]; return `<div class="gcard${w.sent ? ' sent' : ''}">${hanHTML(w)}<div class="txt"><div class="py t${w.t}">${w.p}</div><div class="ko">${w.ko}</div></div><button class="btn small" data-say="${sayText(w)}">🔊 듣기</button></div>`; }).join('');
-    bindSoundButtons($('cpCards')); refreshVoiceUI();
+    $('cpCards').classList.toggle('wide', STAGE.id === 'number'); bindSoundButtons($('cpCards')); refreshVoiceUI();
     $('btnCardOk').textContent = `따라 말했어요! ${gt.name} 열기 (Enter)`;
     wrapPinyin($('cardPop')); $('cardPop').hidden = false; $('cardPop').scrollTop = 0; $('cardPop').querySelector('.card').focus({ preventScroll: true });
   }
@@ -2248,11 +2249,11 @@
     openResultPanel();
   }
   function showNumSummary() {
-    $('rNumRow').innerHTML = NUMS.map(n => `<button class="rnum" data-v="${n.v}" aria-label="${n.h} ${n.p} ${n.v}"><span class="han">${n.h}</span></button>`).join('');
+    $('rNumRow').innerHTML = NUMS.map(n => `<button class="rnum" data-v="${n.v}" aria-label="${n.h} ${n.p} ${n.hun} ${n.v}"><span class="han">${n.h}</span></button>`).join('');
     const showOne = (v) => {
       const n = numOf(v);
       $('rNumRow').querySelectorAll('.rnum').forEach(b => b.classList.toggle('on', +b.dataset.v === v));
-      $('rNumDetail').innerHTML = `<span class="han">${n.h}</span><span class="py t${n.t}">${n.p}</span><span class="numopt">= ${n.v}</span><button class="btn small" data-say="${n.h}">🔊 듣기</button>`;
+      $('rNumDetail').innerHTML = `<span class="han">${n.h}</span><span class="py t${n.t}">${n.p}</span><span class="hun">${n.hun}</span><span class="numopt">= ${n.v}</span><button class="btn small" data-say="${n.h}">🔊 듣기</button>`;
       bindSoundButtons($('rNumDetail'));
     };
     $('rNumRow').querySelectorAll('.rnum').forEach(b => b.addEventListener('click', () => showOne(+b.dataset.v)));
