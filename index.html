@@ -209,6 +209,7 @@
   .rnum.on { background: var(--gold); }
   .rnum-detail { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: center; }
   .rnum-detail .han { font-size: 40px; } .rnum-detail .py { font-size: 24px; }
+  .midprog { display: inline-block; background: var(--ink); color: #fff; border-radius: 99px; padding: 3px 12px 4px; font-size: 16px; }
   .qhint { margin-top: 12px; background: #fff4d1; border: 2px dashed var(--t3); border-radius: 12px; padding: 10px 12px; font-size: 15px; line-height: 1.6; }
   .qhint b { font-family: var(--font-display); font-weight: 400; color: var(--t3); margin-right: 6px; }
   .qfb { margin-top: 16px; padding: 14px; border-radius: 12px; display: flex; flex-direction: column; gap: 10px; }
@@ -394,6 +395,7 @@
     <h2 style="font-size:26px">⚙ 설정</h2>
     <div class="menulist">
       <button class="btn" id="setSound">🔊 소리: 켜짐</button>
+      <button class="btn" id="setMusic">🎵 배경음악: 켜짐</button>
       <button class="btn" id="setHelp">❔ 조작 방법 보기</button>
     </div>
     <ul class="reclist" id="recList"></ul>
@@ -848,6 +850,39 @@
     R(0, 19, 5, 3, K); R(21, 19, 5, 3, K);
     R(6, 21, 5, 5, K); R(15, 21, 5, 5, K); R(7, 21, 3, 4, Sd); R(16, 21, 3, 4, Sd);
   });
+  // ===== 중간보스 (일반 몬스터보다 크고, 최종 보스와 모양이 다름) =====
+  const BSLIME = pixArt(22, 19, (R) => {     // 대나무 수호 슬라임: 대나무 뿔 + 대나무 갑옷 띠
+    const K = '#1d2a17', G = '#6fd06a', Gd = '#3f9442', Gl = '#c8f5b0', B = '#5aa86c', Bd = '#2f6b3a';
+    R(4, 0, 4, 9, K); R(5, 1, 2, 8, B); R(5, 4, 2, 1, Bd); R(14, 0, 4, 9, K); R(15, 1, 2, 8, B); R(15, 4, 2, 1, Bd);
+    R(1, 0, 4, 2, Gd); R(0, 1, 2, 1, Gd); R(17, 0, 4, 2, Gd); R(20, 1, 2, 1, Gd);
+    R(6, 6, 10, 1, K); R(4, 7, 14, 1, K); R(2, 8, 18, 1, K); R(1, 9, 20, 9, K); R(2, 18, 18, 1, K);
+    R(6, 7, 10, 1, G); R(4, 8, 14, 1, G); R(2, 9, 18, 9, G);
+    R(5, 8, 3, 1, Gl); R(3, 9, 2, 3, Gl);
+    R(6, 10, 3, 3, '#ffffff'); R(13, 10, 3, 3, '#ffffff'); R(7, 11, 2, 2, K); R(14, 11, 2, 2, K);
+    R(6, 9, 3, 1, Bd); R(13, 9, 3, 1, Bd);
+    R(10, 13, 2, 1, K); R(4, 13, 2, 1, '#ff9fb2'); R(16, 13, 2, 1, '#ff9fb2');
+    R(2, 15, 18, 3, '#c98c52'); for (let x = 4; x < 20; x += 4) R(x, 15, 1, 3, '#7a4e2a'); R(2, 15, 18, 1, '#e0b07a');
+  });
+  const MSCROLL = pixArt(26, 19, (R) => {    // 마법 두루마리 정령: 옆으로 펼쳐진 두루마리 + 반짝이는 글자
+    const K = '#3b2716', W = '#a8703f', Wl = '#d49a5e', P = '#fbf1d6', I = '#2b2b3a', Y = '#f6c445', Rd = '#e5484d';
+    R(1, 0, 4, 16, K); R(2, 1, 2, 14, W); R(2, 1, 1, 14, Wl); R(21, 0, 4, 16, K); R(22, 1, 2, 14, W); R(22, 1, 1, 14, Wl);
+    R(5, 2, 16, 1, K); R(5, 13, 16, 1, K); R(5, 3, 16, 10, P);
+    R(7, 4, 3, 1, Y); R(8, 3, 1, 3, Y); R(16, 3, 3, 1, Y); R(17, 4, 1, 2, Y); R(16, 5, 3, 1, Y);
+    R(8, 7, 2, 2, I); R(16, 7, 2, 2, I); R(8, 7, 1, 1, '#ffffff'); R(16, 7, 1, 1, '#ffffff');
+    R(11, 10, 4, 1, I); R(6, 9, 2, 1, '#ff9fb2'); R(18, 9, 2, 1, '#ff9fb2'); R(18, 11, 2, 2, Rd);
+    R(2, 16, 2, 3, Rd); R(22, 16, 2, 3, Rd); R(2, 16, 2, 1, Y); R(22, 16, 2, 1, Y);
+  });
+  const CGOLEM = pixArt(22, 21, (R) => {     // 숫자 수정 골렘: 뾰족한 수정 덩어리 몸
+    const K = '#1c1238', P = '#9b7bff', Pl = '#e2d6ff', Pd = '#6a4bd6', C = '#5fd0e6', Cl = '#d4fbff', Cd = '#2e8fb0';
+    const spike = (x, y, h, w, col, hi) => { for (let j = 0; j < h; j++) { const ww = Math.max(1, Math.round(w * (j + 1) / h)); R(x - Math.floor(ww / 2), y + j, ww, 1, col); } R(x, y + 1, 1, Math.max(1, h - 2), hi); };
+    spike(4, 1, 7, 4, Cd, Cl); spike(17, 1, 7, 4, Cd, Cl); spike(11, 0, 6, 4, Pd, Pl);
+    for (let y = 0; y < 13; y++) { const w = y < 6 ? 6 + y * 2 : 6 + (12 - y) * 2; R(11 - w / 2 - 1, 5 + y, w + 2, 1, K); }
+    for (let y = 0; y < 13; y++) { const w = y < 6 ? 6 + y * 2 : 6 + (12 - y) * 2; R(11 - w / 2, 5 + y, w, 1, y < 4 ? Pl : y > 9 ? Pd : P); }
+    R(6, 9, 3, 2, C); R(13, 9, 3, 2, C); R(7, 9, 1, 1, Cl); R(14, 9, 1, 1, Cl);
+    R(9, 13, 4, 1, K); R(5, 12, 1, 1, '#ff9fe0'); R(16, 12, 1, 1, '#ff9fe0');
+    R(0, 10, 4, 5, K); R(1, 11, 2, 3, C); R(18, 10, 4, 5, K); R(19, 11, 2, 3, C);
+    R(6, 17, 4, 4, K); R(12, 17, 4, 4, K); R(7, 17, 2, 3, Pd); R(13, 17, 2, 3, Pd);
+  });
   // skin: 그림 + 터질 때 색 (scale: 화면에 몇 배로 그릴지)
   const SKINS = {
     shoot: { spr: (m) => SHOOT[m.tone || 1], fx: (m) => [JELLY_COLORS[m.tone || 1].C, '#f3dfa0', '#ffffff'] },
@@ -860,10 +895,14 @@
     crystal2: { spr: () => CRYSTAL2, fx: () => ['#5fd0e6', '#d4fbff', '#ffffff'] },
     slab: { spr: () => SLAB, fx: () => ['#b3aec4', '#8a85a0', '#ffffff'] },
     golem: { spr: () => GOLEM, fx: () => ['#5fd0e6', '#9b7bff', '#b3aec4', '#ffffff'], boss: true },
+    bslime: { spr: () => BSLIME, fx: () => ['#6fd06a', '#c8f5b0', '#c98c52', '#ffffff'] },
+    mscroll: { spr: () => MSCROLL, fx: () => ['#fbf1d6', '#f6c445', '#e5484d', '#ffffff'] },
+    cgolem: { spr: () => CGOLEM, fx: () => ['#9b7bff', '#5fd0e6', '#e2d6ff', '#ffffff'] },
   };
+  const isBig = (m) => m.type === 'boss' || m.type === 'mid';
   const skinOf = (m) => SKINS[m.skin] || (m.type === 'boss' ? SKINS.guardian : SKINS.mushroom);
   const sprOf = (m) => skinOf(m).spr(m);
-  const scaleOf = (m) => m.type === 'boss' ? 3 : 2;
+  const scaleOf = (m) => isBig(m) ? 3 : 2;
 
   const COIN = makeSprite([
     '...kkkk...',
@@ -911,7 +950,132 @@
     pop: () => tone(600, 0, 0.12, 'triangle', 0.08, 160),
     gate: () => [784, 988, 1175, 1568].forEach((f, i) => tone(f, i * 0.06, 0.18, 'triangle', 0.07)),
     meet: () => { tone(440, 0, 0.08, 'square', 0.04); tone(660, 0.08, 0.1, 'square', 0.04); },
+    mid: () => [392, 523, 659, 523, 784].forEach((f, i) => tone(f, i * 0.09, 0.14, 'square', 0.05)),
   };
+  // ================= 배경음악 (지역별, 파일 없이 코드로 연주) =================
+  // 한 칸 = 8분음표, 한 마디 = 8칸, 8마디(64칸) 반복. 'E5' 음, '.' 쉼, '_' 앞 음 늘이기
+  // 테마 이름 = 곡 이름 (새 테마를 만들면 곡도 하나 추가)
+  const SONGS = {
+    forest: {
+      bpm: 118,
+      tracks: [
+        { inst: 'flute', vol: 0.11, notes:
+          'E5 G5 A5 G5 E5 _ D5 E5  G5 _ E5 D5 C5 _ D5 _  E5 G5 A5 C6 A5 G5 E5 _  D5 E5 D5 C5 A4 _ C5 _ ' +
+          'G5 A5 C6 _ A5 G5 E5 G5  A5 _ G5 E5 D5 _ E5 _  G5 E5 D5 C5 D5 E5 G5 _  C5 _ G4 A4 C5 _ _ . ' },
+        { inst: 'soft', vol: 0.05, notes:
+          'C4 E4 G4 E4 C4 E4 G4 E4  A3 C4 E4 C4 A3 C4 E4 C4  F3 A3 C4 A3 G3 B3 D4 B3  C4 E4 G4 E4 A3 C4 E4 C4 ' +
+          'C4 E4 G4 E4 F3 A3 C4 A3  C4 E4 G4 E4 G3 B3 D4 B3  A3 C4 E4 C4 F3 A3 C4 A3  G3 B3 D4 B3 C4 E4 G4 E4 ' },
+        { inst: 'bass', vol: 0.12, notes:
+          'C3 . G2 . C3 . G2 .  A2 . E2 . A2 . E2 .  F2 . C3 . G2 . D3 .  C3 . G2 . A2 . E2 . ' +
+          'C3 . G2 . F2 . C3 .  C3 . G2 . G2 . D3 .  A2 . E2 . F2 . C3 .  G2 . D3 . C3 . . . ' },
+      ],
+      drums: { vol: 0.7, bar: 'k t w t k t w t' },
+    },
+    village: {
+      bpm: 138,
+      tracks: [
+        { inst: 'pluck', vol: 0.075, notes:
+          'D5 E5 G5 . E5 D5 B4 .  A4 B4 D5 . B4 A4 G4 .  D5 E5 G5 A5 G5 E5 D5 .  E5 D5 B4 A4 G4 _ _ . ' +
+          'B4 . D5 . E5 . G5 .  A5 G5 E5 D5 E5 _ _ .  D5 B4 A4 G4 A4 B4 D5 .  G4 _ _ . G4 . . . ' },
+        { inst: 'bass', vol: 0.12, notes:
+          'G2 . D3 . G2 . D3 .  E2 . B2 . E2 . B2 .  C3 . G2 . D3 . A2 .  G2 . D3 . G2 . . . ' +
+          'G2 . D3 . E2 . B2 .  C3 . G2 . C3 . G2 .  D3 . A2 . D3 . A2 .  G2 . D3 . G2 . . . ' },
+      ],
+      // 8칸 한 마디의 리듬: k 북, w 목탁, t 작은 소리
+      drums: { vol: 1, bar: 'k t w t k t w w' },
+    },
+    cave: {
+      bpm: 124,
+      echo: true,
+      tracks: [
+        { inst: 'bell', vol: 0.085, send: true, notes:
+          'A4 C5 E5 . D5 C5 A4 .  G4 A4 C5 . D5 _ . .  E5 G5 E5 D5 C5 . A4 .  D5 _ C5 . A4 _ . . ' +
+          'C5 D5 E5 . G5 . E5 D5  C5 D5 E5 . A5 _ . .  G5 E5 D5 C5 D5 . E5 .  A4 _ . . A4 . . . ' },
+        { inst: 'tri', vol: 0.09, notes:
+          'A2 E3 A3 E3 A2 E3 A3 E3  F2 C3 F3 C3 F2 C3 F3 C3  G2 D3 G3 D3 G2 D3 G3 D3  A2 E3 A3 E3 E2 B2 E3 B2 ' +
+          'A2 E3 A3 E3 A2 E3 A3 E3  C3 G3 C4 G3 C3 G3 C4 G3  F2 C3 F3 C3 G2 D3 G3 D3  A2 E3 A3 E3 A2 E3 A3 E3 ' },
+      ],
+      drums: { vol: 0.85, bar: 'k t w t K t w w' },
+    },
+  };
+  const BGM = (() => {
+    const NOTE = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 };
+    const freq = (n) => { const m = /^([A-G])(#?)(\d)$/.exec(n); return 440 * Math.pow(2, (12 * (+m[3] + 1) + NOTE[m[1]] + (m[2] ? 1 : 0) - 69) / 12); };
+    const parse = (str) => { const tok = str.trim().split(/\s+/); return tok.map((t, i) => { if (t === '.' || t === '_') return null; let len = 1; while (tok[i + len] === '_') len++; return { f: freq(t), len }; }); };
+    for (const sg of Object.values(SONGS)) for (const tr of sg.tracks) tr.seq = parse(tr.notes);
+    const STEPS = 64, BASE = 0.8;
+    let out = null, level = null, echoIn = null, delay = null, noiseBuf = null;
+    let cur = null, step = 0, nextT = 0, timer = 0, want = 1;
+    function nodes(ac) {
+      if (out) return;
+      out = ac.createGain(); out.gain.value = 0; level = ac.createGain(); level.gain.value = 1;
+      const comp = ac.createDynamicsCompressor(); out.connect(level).connect(comp).connect(ac.destination);
+      echoIn = ac.createGain(); delay = ac.createDelay(1); const fb = ac.createGain(), wet = ac.createGain(), lp = ac.createBiquadFilter();
+      lp.type = 'lowpass'; lp.frequency.value = 2400; fb.gain.value = 0.38; wet.gain.value = 0.5;
+      echoIn.connect(delay); delay.connect(lp).connect(fb).connect(delay); lp.connect(wet).connect(out);
+      noiseBuf = ac.createBuffer(1, Math.floor(ac.sampleRate * 0.5), ac.sampleRate);
+      const d = noiseBuf.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+    }
+    const env = (g, t, vol, a, hold, rel) => { g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + a); g.gain.setValueAtTime(vol, t + a + hold); g.gain.exponentialRampToValueAtTime(0.0001, t + a + hold + rel); return t + a + hold + rel + 0.05; };
+    const osc = (ac, type, f, t, end, dest, detune = 0) => { const o = ac.createOscillator(); o.type = type; o.frequency.setValueAtTime(f, t); o.detune.value = detune; o.connect(dest); o.start(t); o.stop(end); return o; };
+    const INST = {
+      flute(ac, f, t, dur, vol) {
+        const g = ac.createGain(); g.connect(out); const end = env(g, t, vol, 0.06, Math.max(0.05, dur - 0.12), 0.18);
+        const o = osc(ac, 'triangle', f, t, end, g); const lfo = ac.createOscillator(), lg = ac.createGain(); lfo.frequency.value = 5; lg.gain.value = f * 0.008;
+        lfo.connect(lg).connect(o.frequency); lfo.start(t + 0.15); lfo.stop(end);
+      },
+      soft(ac, f, t, dur, vol) { const g = ac.createGain(); g.connect(out); osc(ac, 'sine', f, t, env(g, t, vol, 0.02, 0.05, 0.4), g); },
+      bass(ac, f, t, dur, vol) { const g = ac.createGain(); g.connect(out); osc(ac, 'sine', f, t, env(g, t, vol, 0.01, Math.max(0.05, dur * 0.6), 0.15), g); osc(ac, 'triangle', f, t, t + dur, g); },
+      tri(ac, f, t, dur, vol) { const g = ac.createGain(); g.connect(out); osc(ac, 'triangle', f, t, env(g, t, vol, 0.005, 0.06, 0.12), g); },
+      pluck(ac, f, t, dur, vol) {
+        const g = ac.createGain(), lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.Q.value = 4;
+        lp.frequency.setValueAtTime(4200, t); lp.frequency.exponentialRampToValueAtTime(900, t + 0.18); lp.connect(g); g.connect(out);
+        const end = env(g, t, vol, 0.005, Math.max(0.03, dur - 0.1), 0.12); osc(ac, 'square', f, t, end, lp); osc(ac, 'square', f, t, end, lp, 7);
+      },
+      bell(ac, f, t, dur, vol) {
+        const g = ac.createGain(); g.connect(out); g.connect(echoIn); const end = env(g, t, vol, 0.004, 0.02, 0.9);
+        osc(ac, 'sine', f, t, end, g); const g2 = ac.createGain(); g2.gain.value = 0.35; g2.connect(g); osc(ac, 'sine', f * 2.76, t, t + 0.4, g2);
+      },
+    };
+    const noise = (ac, t, dur, vol, type, fq) => { const s = ac.createBufferSource(); s.buffer = noiseBuf; const fl = ac.createBiquadFilter(); fl.type = type; fl.frequency.value = fq; const g = ac.createGain(); s.connect(fl).connect(g).connect(out); env(g, t, vol, 0.002, 0.005, dur); s.start(t); s.stop(t + dur + 0.05); };
+    const DRUM = {
+      k: (ac, t, v) => { const g = ac.createGain(); g.connect(out); const o = ac.createOscillator(); o.frequency.setValueAtTime(150, t); o.frequency.exponentialRampToValueAtTime(50, t + 0.15); o.connect(g); env(g, t, 0.22 * v, 0.003, 0.01, 0.18); o.start(t); o.stop(t + 0.25); },
+      K: (ac, t, v) => DRUM.k(ac, t, v * 0.8),
+      w: (ac, t, v) => { const g = ac.createGain(); g.connect(out); const o = ac.createOscillator(); o.frequency.value = 820; o.connect(g); env(g, t, 0.12 * v, 0.002, 0.005, 0.07); o.start(t); o.stop(t + 0.12); },
+      t: (ac, t, v) => noise(ac, t, 0.03, 0.035 * v, 'highpass', 6000),
+    };
+    function tick() {
+      const ac = AC; if (!ac || !cur) return;
+      const sg = SONGS[cur], st = 60 / sg.bpm / 2;
+      if (nextT < ac.currentTime) nextT = ac.currentTime + 0.05;   // 탭이 멈췄다 돌아오면 밀린 음은 건너뜀
+      while (nextT < ac.currentTime + 0.12) {
+        for (const tr of sg.tracks) { const n = tr.seq[step]; if (n) INST[tr.inst](ac, n.f, nextT, n.len * st, tr.vol); }
+        if (sg.drums) { const ch = sg.drums.bar.split(' ')[step % 8]; if (DRUM[ch]) DRUM[ch](ac, nextT, sg.drums.vol); }
+        nextT += st; step = (step + 1) % STEPS;
+      }
+    }
+    function start(id) {
+      const ac = AC; if (!ac || !SONGS[id]) return;
+      nodes(ac); stop(true);
+      cur = id; step = 0; nextT = ac.currentTime + 0.1;
+      if (SONGS[id].echo) delay.delayTime.value = 60 / SONGS[id].bpm * 0.75;
+      out.gain.cancelScheduledValues(ac.currentTime); out.gain.setValueAtTime(0.0001, ac.currentTime); out.gain.linearRampToValueAtTime(BASE, ac.currentTime + 0.4);
+      timer = setInterval(tick, 25); tick();
+    }
+    function stop(now = false) {
+      if (!cur) return;
+      clearInterval(timer); cur = null;
+      const t = AC.currentTime; out.gain.cancelScheduledValues(t); out.gain.setValueAtTime(out.gain.value, t); out.gain.linearRampToValueAtTime(0.0001, t + (now ? 0.05 : 0.5));
+    }
+    // 매 프레임: 지금 나와야 할 곡과 크기를 맞춤 (화면 상태 하나로 정해서 켜고 끄기가 꼬이지 않게)
+    function sync(id, vol) {
+      if (!AC || AC.state !== 'running') id = null;
+      if (id !== cur) { if (id) start(id); else stop(); }
+      if (cur && vol !== want) { want = vol; level.gain.setTargetAtTime(vol, AC.currentTime, 0.12); }
+    }
+    return { sync, get playing() { return cur; }, get level() { return want; } };
+  })();
+
   // ================= 중국어 음성 (재생 코드는 여기 한 곳에만) =================
   // 나중에 실제 녹음 파일로 바꿀 때: AUDIO_FILES에 { '我': 'audio/wo.mp3' }처럼 넣으면 그 파일을 먼저 재생해요.
   const AUDIO_FILES = {};
@@ -1005,7 +1169,7 @@
   const SAVE_KEY = 'panda-explorers-v1';
   // coins: 지금 가진 코인(나중에 상점에서 쓰는 지갑) · totalEarned: 지금까지 모은 코인 합계
   // coinsEver / dropsEver: 지역별로 이미 받은 동전 번호 (새로고침·홈·새 탐험으로 같은 동전을 또 받지 못하게)
-  const SAVE_DEFAULT = () => ({ level: 1, exp: 0, coins: 0, totalEarned: 0, maxHp: 100, correct: 0, wrong: 0, words: {}, cards: {}, clears: {}, coinsEver: {}, dropsEver: {}, helpSeen: false });
+  const SAVE_DEFAULT = () => ({ level: 1, exp: 0, coins: 0, totalEarned: 0, maxHp: 100, correct: 0, wrong: 0, words: {}, cards: {}, clears: {}, coinsEver: {}, dropsEver: {}, helpSeen: false, bgmOn: true });
   const save = SAVE_DEFAULT();
   // 예전 저장(버전 1 초기)에 없던 칸을 안전하게 채움
   function migrateSave() {
@@ -1014,6 +1178,7 @@
     save.coinsEver = obj(save.coinsEver); save.dropsEver = obj(save.dropsEver);
     for (const k of ['level', 'exp', 'coins', 'maxHp', 'correct', 'wrong']) if (typeof save[k] !== 'number' || !isFinite(save[k])) save[k] = SAVE_DEFAULT()[k];
     save.coins = Math.max(0, Math.floor(save.coins));
+    if (typeof save.bgmOn !== 'boolean') save.bgmOn = true;
     save.totalEarned = Math.max(typeof save.totalEarned === 'number' ? save.totalEarned : 0, save.coins);
   }
   function loadSave() {
@@ -1031,7 +1196,7 @@
       ground: { top: '#5ebf57', hi: '#7fd86f', edge: '#3f9442', dirt: '#9b6a43', d1: '#8a5c38', d2: '#b88a5f', deco: 'grass' },
       plat: 'wood', gate: 'bamboo',
       paifang: { pillar: '#c73a3a', hi: '#e8645a', roof: '#1f5f4b', roof2: '#2f8f6a', plate: '#f6c445' },
-      skins: ['shoot', 'mushroom', 'mushroom', 'guardian'],
+      skins: ['shoot', 'mushroom', 'mushroom', 'guardian'], mid: 'bslime',
     },
     village: {
       sky: ['#e9785a', '#f6b26b', '#ffe3b0'], sun: true, clouds: true,
@@ -1039,7 +1204,7 @@
       ground: { top: '#b9b2a4', hi: '#d8d2c4', edge: '#7f796e', dirt: '#7d6a58', d1: '#6b5948', d2: '#937e6a', deco: 'brick' },
       plat: 'eave', gate: 'village',
       paifang: { pillar: '#b8262c', hi: '#e0504f', roof: '#2a2f3d', roof2: '#4a5268', plate: '#f6c445' },
-      skins: ['scroll', 'scroll', 'lantern', 'brush'],
+      skins: ['scroll', 'scroll', 'lantern', 'brush'], mid: 'mscroll',
     },
     cave: {
       sky: ['#120e26', '#2a1f52', '#4b3683'], sun: false, clouds: false,
@@ -1047,7 +1212,7 @@
       ground: { top: '#5a4f78', hi: '#7f73a8', edge: '#3a3258', dirt: '#2e2745', d1: '#241f38', d2: '#3d3460', deco: 'crystal' },
       plat: 'stone', gate: 'crystal',
       paifang: { pillar: '#6f6a86', hi: '#9d98ad', roof: '#3b2f6b', roof2: '#7b5cff', plate: '#5fd0e6' },
-      skins: ['crystal', 'crystal2', 'slab', 'golem'],
+      skins: ['crystal', 'crystal2', 'slab', 'golem'], mid: 'cgolem',
     },
   };
   // 미션 지역 공통 지도: 구역 4개(문 4개) + 보스. 새 지역도 이 배치를 그대로 씀
@@ -1070,10 +1235,15 @@
     [{ x: 2100, min: 2010, max: 2200, y: GY }, { x: 2330, min: 2272, max: 2398, y: 236 }, { x: 2490, min: 2450, max: 2530, y: 176 }, { x: 2640, min: 2600, max: 2652, y: GY }],
   ];
   const GATE_X = [1240, 1960, 2680, 3430];
-  // names: 구역별 몬스터 이름 4개씩, boss: { name, hp }, extra(i, k): 몬스터마다 더할 값
-  function layoutMonsters(names, boss, extra = () => ({})) {
+  // 중간보스: 2구역(지도 한가운데)의 문지기 자리를 대신함. 땅 위에 서 있고 둘째 문 바로 앞이라 건너뛸 수 없음
+  const MID_SPOT = { mission: 1, slot: 3, x: 1905 };
+  // names: 구역별 몬스터 이름 4개씩, boss: { name, hp }, mid: { name }, extra(i, k): 몬스터마다 더할 값
+  function layoutMonsters(names, boss, mid, extra = () => ({})) {
     const list = [];
-    MON_SPOTS.forEach((spots, i) => spots.forEach((sp, k) => list.push({ type: 'mon', ...sp, mission: i, name: names[i][k], ...extra(i, k) })));
+    MON_SPOTS.forEach((spots, i) => spots.forEach((sp, k) => {
+      if (i === MID_SPOT.mission && k === MID_SPOT.slot) list.push({ type: 'mid', x: MID_SPOT.x, min: MID_SPOT.x, max: MID_SPOT.x, y: GY, mission: i, name: mid.name, hp: 2 });
+      else list.push({ type: 'mon', ...sp, mission: i, name: names[i][k], ...extra(i, k) });
+    }));
     list.push({ type: 'boss', x: 3330, min: 3330, max: 3330, y: GY, mission: 3, name: boss.name, hp: boss.hp });
     return list;
   }
@@ -1087,7 +1257,7 @@
         ['1성 죽순', '2성 죽순', '3성 죽순', '4성 죽순'],
         ['인사 버섯', '인사 버섯', '꼭대기 버섯', '문지기 버섯'],
         ['나라 버섯', '나라 버섯', '꼭대기 버섯', '문지기 버섯'],
-      ], { name: '숲의 수호자', hp: 5 }, (i, k) => i === 0 ? { tone: k + 1, bubble: 'tone' } : {}),
+      ], { name: '숲의 수호자', hp: 5 }, { name: '대나무 수호 슬라임' }, (i, k) => i === 0 ? { tone: k + 1, bubble: 'tone' } : {}),
       gates: layoutGates(['죽순 문', '버섯 문', '숲속 문', '수호자의 문']),
       missions: [
         { label: '성조 ˉ ˊ ˇ ˋ', zone: '죽순 길', cards: ['ma1', 'ma2', 'ma3', 'ma4'] },
@@ -1098,6 +1268,8 @@
       finalText: '수호자의 문', decorate: decorateBamboo,
       words: FOREST_WORDS, cardOrder: [...MA, ...GREET].map(w => w.id), cardName: '배움 카드', bossFinale: 'none',
       qgen: (m) => forestQuestion(m), makeQueue: (i) => forestQueue(i),
+      // 중간보스 2문제: 성조 1문제 + 인사 1문제 복습
+      midQ: () => [() => forestBuild({ kind: pick(['tone', 'meaning']), w: pick(MA) }), () => forestBuild({ kind: pick(['gSit', 'gMeaning']), w: pick(GREET.slice(0, 4)) })],
       quickMons: [1, 2, 3, 4].map(t => ({ type: 'mon', skin: 'shoot', tone: t, name: `${t}성 죽순` })).concat([{ type: 'mon', skin: 'mushroom', name: '인사 버섯' }, { type: 'mon', skin: 'mushroom', name: '인사 버섯' }]),
     },
     name: {
@@ -1107,7 +1279,7 @@
         ['글자 두루마리', '글자 두루마리', '꼭대기 두루마리', '문지기 두루마리'],
         ['이름 두루마리', '이름 두루마리', '꼭대기 두루마리', '문지기 두루마리'],
         ['친구 등불', '친구 등불', '꼭대기 등불', '문지기 등불'],
-      ], { name: '붓 대왕', hp: 4 }),
+      ], { name: '붓 대왕', hp: 4 }, { name: '마법 두루마리 정령' }),
       gates: layoutGates(['첫째 문', '둘째 문', '셋째 문', '이름의 문']),
       missions: [
         { label: '我 / 你', zone: '골목길', cards: ['wo', 'ni'] },
@@ -1118,6 +1290,8 @@
       finalText: '이름의 문', decorate: decorateName,
       words: NW, cardOrder: NAME_CARDS, cardName: '이름 카드', bossFinale: 'speak',
       qgen: (m) => nameQuestion(m), makeQueue: (i) => NAME_QUEUES[i],
+      // 중간보스 2문제: 我/你 1문제 + 叫/什么/名字 1문제 복습
+      midQ: () => [() => nameById(pickNew(['ni_mean', 'wo_char', 'wo_py', 'ni_char', 'wo_mean'])), () => nameById(pickNew(['mingzi_char', 'shenme_py', 'jiao_mean', 'shenme_char', 'mingzi_mean']))],
       quickMons: [{ type: 'mon', skin: 'scroll', name: '이름 두루마리' }, { type: 'mon', skin: 'lantern', name: '친구 등불' }],
     },
     number: {
@@ -1128,7 +1302,7 @@
         ['숫자 수정', '숫자 수정', '꼭대기 수정', '문지기 수정'],
         ['하늘 수정', '하늘 수정', '꼭대기 수정', '문지기 수정'],
         ['숫자 석판', '숫자 석판', '꼭대기 석판', '문지기 석판'],
-      ], { name: '숫자 골렘', hp: 5 }),
+      ], { name: '숫자 골렘', hp: 5 }, { name: '숫자 수정 골렘' }),
       gates: layoutGates(['첫째 돌문', '둘째 돌문', '셋째 돌문', '숫자의 문']),
       missions: [
         { label: '一 二 三', zone: '1구역', cards: ['num1', 'num2', 'num3'] },
@@ -1139,6 +1313,8 @@
       finalText: '숫자의 문', decorate: decorateNumber,
       words: NUMW, cardOrder: NUMS.map(n => n.id), cardName: '숫자 카드', bossFinale: 'none',
       qgen: (m) => numQuestion(m), makeQueue: (i) => numQueue(i),
+      // 중간보스 2문제: 一~三 1문제 + 四~六 1문제 복습 (문제 유형은 기존 것 그대로)
+      midQ: () => { const ks = shuffle(['h2n', 'n2h', 'py2h', 'hun2h']); const a = 1 + Math.floor(Math.random() * 3), b = 4 + Math.floor(Math.random() * 3); return [() => numQ(ks[0], a), () => numQ(ks[1], b)]; },
       quickMons: [{ type: 'mon', skin: 'crystal', name: '숫자 수정' }, { type: 'mon', skin: 'slab', name: '숫자 석판' }],
     },
   };
@@ -1152,10 +1328,10 @@
   function initWorldObjects() {
     const ever = new Set(save.coinsEver[STAGE.id] || []);
     monsters = STAGE.monsters.map((d, i) => {
-      const m = { ...d, i, skin: d.skin || THEME.skins[d.mission] || 'mushroom', dir: Math.random() < 0.5 ? -1 : 1, speed: d.type === 'boss' ? 0 : 30, hp: d.hp || 1, maxHp: d.hp || 1,
+      const m = { ...d, i, skin: d.skin || (d.type === 'mid' ? THEME.mid : THEME.skins[d.mission]) || 'mushroom', dir: Math.random() < 0.5 ? -1 : 1, speed: d.type === 'boss' || d.type === 'mid' ? 0 : 30, hp: d.hp || 1, maxHp: d.hp || 1,
         state: 'alive', timer: 0, pause: rnd(0, 2), phase: rnd(0, 6) };
       const spr = sprOf(m), sc = scaleOf(m);
-      m.hw = Math.round(spr.width * sc * (m.type === 'boss' ? 0.36 : 0.4)); m.hh = Math.round(spr.height * sc * 0.85);
+      m.hw = Math.round(spr.width * sc * (isBig(m) ? 0.36 : 0.4)); m.hh = Math.round(spr.height * sc * 0.85);
       return m;
     });
     const spots = [];
@@ -1529,6 +1705,7 @@
     else if (m.state === 'spawn') { alpha = m.timer / 0.6; }
     const ph = time * 6 + m.phase, boss = m.type === 'boss';
     if (boss) { const s = Math.sin(ph * 0.35) * 0.03; sx *= 1 - s; sy *= 1 + s; }
+    else if (m.type === 'mid') bob = Math.round(Math.abs(Math.sin(ph * 0.5)) * -4);
     else bob = Math.round(Math.abs(Math.sin(ph * 0.8)) * -3);
     const spr = sprOf(m), sc = scaleOf(m);
     const w = spr.width * sc * sx, h = spr.height * sc * sy;
@@ -1541,11 +1718,22 @@
     if (m.dir < 0 || boss) ctx.drawImage(spr, x, y, w, h);
     else { ctx.save(); ctx.translate(x + w, y); ctx.scale(-1, 1); ctx.drawImage(spr, 0, 0, w, h); ctx.restore(); }
     if (m.state !== 'dying') {
-      if (boss) for (let k = 0; k < m.hp; k++) ctx.drawImage(HEART, cx - m.hp * 8 + k * 16 + 1, y - 16, 14, 12);
+      if (m.type === 'mid') drawShields(m, cx, y);
+      else if (boss) for (let k = 0; k < m.hp; k++) ctx.drawImage(HEART, cx - m.hp * 8 + k * 16 + 1, y - 16, 14, 12);
       else if (m.bubble === 'tone' && m.tone) drawToneMark(m.tone, cx, y - 12);
       else if (m.mission !== undefined) drawQMark(cx, y - 12);
     }
     ctx.globalAlpha = 1;
+  }
+  // 중간보스 머리 위 방어막 (남은 개수만큼 파랗게, 깨진 것은 회색)
+  function drawShields(m, cx, y) {
+    for (let k = 0; k < m.maxHp; k++) {
+      const x = cx - m.maxHp * 9 + k * 18 + 2, yy = y - 18, on = k < m.hp;
+      ctx.fillStyle = '#1d2738'; ctx.fillRect(x, yy, 14, 12); ctx.fillRect(x + 2, yy + 12, 10, 2); ctx.fillRect(x + 4, yy + 14, 6, 2);
+      ctx.fillStyle = on ? '#5fd0e6' : '#6b7280'; ctx.fillRect(x + 2, yy + 2, 10, 9); ctx.fillRect(x + 4, yy + 11, 6, 2);
+      ctx.fillStyle = on ? '#d4fbff' : '#9ca3af'; ctx.fillRect(x + 3, yy + 3, 2, 5);
+    }
+    if (m.shieldT > 0) { ctx.fillStyle = `rgba(159,233,255,${0.35 * m.shieldT})`; ctx.fillRect(cx - 34, y - 6, 68, m.y - y + 6); }
   }
   function drawPlayer() {
     if (P.inv > 0 && Math.floor(P.inv * 12) % 2 === 0) return;
@@ -1696,6 +1884,16 @@
   function refreshSoundUI() {
     $('btnSound').textContent = soundOn ? '🔊' : '🔇'; $('btnSound').setAttribute('aria-label', soundOn ? '소리 끄기' : '소리 켜기');
     $('setSound').textContent = soundOn ? '🔊 소리: 켜짐' : '🔇 소리: 꺼짐';
+    $('setMusic').textContent = save.bgmOn !== false ? '🎵 배경음악: 켜짐' : '🎵 배경음악: 꺼짐';
+  }
+  // 배경음악: 탐험 중에만, 퀴즈·창이 열리면 작게, 중국어 음성이 나올 때는 더 작게, 🔊 끄면 같이 꺼짐
+  const MUSIC_MODES = ['play', 'cut', 'quiz', 'card', 'speak', 'pause', 'lesson', 'help', 'faint'];
+  function musicWanted() {
+    if (!soundOn || save.bgmOn === false || document.hidden || quick.on || !run || !STAGE || !MUSIC_MODES.includes(mode)) return [null, 1];
+    if ((mode === 'lesson' && lessonReturn === 'start') || (mode === 'help' && helpReturn === 'menu')) return [null, 1];
+    let vol = mode === 'play' || mode === 'cut' ? 1 : 0.3;
+    try { if (window.speechSynthesis && window.speechSynthesis.speaking) vol = Math.min(vol, 0.12); } catch (e) {}
+    return [STAGE.theme, vol];
   }
   // 손을 뗀 상태로 만들기 (창이 바뀌거나 화면이 덮일 때)
   function releaseAll() { clearKeys(); document.querySelectorAll('#touch button.on').forEach(b => b.classList.remove('on')); }
@@ -1765,7 +1963,10 @@
         if (Math.random() < dt * 0.15) m.dir *= -1;
       }
       // 충돌 → 퀴즈
-      if (P.inv <= 0 && P.x + P.w > m.x - m.hw && P.x < m.x + m.hw && P.y + P.h > m.y - m.hh && P.y < m.y) { openQuiz(m); return; }
+      if (P.inv <= 0 && P.x + P.w > m.x - m.hw && P.x < m.x + m.hw && P.y + P.h > m.y - m.hh && P.y < m.y) {
+        if (m.type === 'mid' && !m.met) { midIntro(m); return; }
+        openQuiz(m); return;
+      }
     }
     // 코인
     for (const c of coins) {
@@ -1778,6 +1979,15 @@
         addCoins(1); SFX.coin(); floatText(c.x, c.y - 4, '+1', '#f6c445');
       }
     }
+  }
+  // 중간보스 등장 연출 (약 1초) → 첫 문제
+  function midIntro(m) {
+    m.met = true; mode = 'cut'; clearKeys(); P.vx = 0; P.face = m.x >= P.x + P.w / 2 ? 1 : -1;
+    SFX.mid(); m.shieldT = 1;
+    burst(m.x, m.y - 30, ['#fff0a8', '#f6c445', '#ffffff'], 24, 200);
+    floatText(m.x, m.y - 80, '!', '#fff0a8');
+    toast('중간보스 등장!', 1100, false, true);
+    setTimeout(() => { if (mode === 'cut') openQuiz(m); }, 1000);
   }
   const GATE_ZONE = 8;   // 문 가운데에서 좌우 8px 안이 통과 구역
   function passGate(gt) {
@@ -1795,7 +2005,8 @@
     lastGateMsg = time;
     const s = run.ms[gt.mission], left = s.need - s.done;
     const bossName = (monsters.find(m => m.type === 'boss') || {}).name || '보스';
-    toast(STAGE.missions[gt.mission].boss ? `먼저 ${bossName}의 문제를 풀어야 해!` : `먼저 학습 몬스터를 물리쳐야 해! (남은 몬스터 ${left}마리)`, 2400, true);
+    const mid = monsters.find(m => m.type === 'mid' && m.mission === gt.mission && m.state === 'alive');
+    toast(STAGE.missions[gt.mission].boss ? `먼저 ${bossName}의 문제를 풀어야 해!` : mid && left === 1 ? `먼저 중간보스 ${mid.name}를 물리쳐야 해!` : `먼저 학습 몬스터를 물리쳐야 해! (남은 몬스터 ${left}마리)`, 2400, true);
   }
   function updateFx(dt) {
     for (const d of drops) {
@@ -1807,6 +2018,7 @@
       if (d.age > 0.6 && Math.abs(P.x + P.w / 2 - d.x) < 14 && Math.abs(P.y + P.h / 2 - d.y) < 20) { d.dead = true; addCoins(1); SFX.coin(); }
     }
     drops = drops.filter(d => !d.dead);
+    for (const m of monsters) if (m.shieldT > 0) m.shieldT = Math.max(0, m.shieldT - dt);
     for (const p of parts) { p.life -= dt; p.x += p.vx * dt; p.y += p.vy * dt; p.vy += 400 * dt; }
     parts = parts.filter(p => p.life > 0);
     for (const f of floats) { f.life -= dt; f.y -= 26 * dt; }
@@ -2133,6 +2345,9 @@
   function forestQuestion(m) {
     if (quick.on || m.mission === undefined) return freeQuestion(m);
     const s = run.ms[m.mission], e = s.queue[Math.min(s.qi, s.queue.length - 1)]; s.qi++;
+    return forestBuild(e, m);
+  }
+  function forestBuild(e, m = {}) {
     if (e.kind === 'basic') { const q = basicQuestion(); q.hint = BASIC_HINT[+q.key.slice(5)] || ''; return q; }
     const w = e.w || MA[(m.tone || 1) - 1];
     const q = BUILD[e.kind](w, MA); q.key = e.kind + w.id; q.word = w; q.hint = forestHint(e.kind, w);
@@ -2151,7 +2366,17 @@
     }
   }
 
+  // 이름 마을 문제를 번호로 만들기 / 이번 탐험에서 아직 안 나온 문제 고르기
+  function nameById(id) { const q = NQ[id](); q.key = id; return q; }
+  function pickNew(ids) { const used = (run && run.ms[1] && run.ms[1].used || []).concat(run && run.ms[0] && run.ms[0].used || [], quiz.last); const left = ids.filter(id => !used.includes(id)); return pick(left.length ? left : ids); }
+  // 중간보스: 지역마다 정해 둔 복습 2문제를 차례로
+  function midQuestion(m) {
+    if (!run.midQ || !run.midQ.length) run.midQ = STAGE.midQ();
+    const f = run.midQ[Math.min(run.midI || 0, run.midQ.length - 1)]; run.midI = (run.midI || 0) + 1;
+    return f();
+  }
   function makeQuestion(m) {
+    if (m.type === 'mid' && !quick.on && run) return midQuestion(m);
     if (STAGE.qgen) return STAGE.qgen(m);
     return freeQuestion(m);
   }
@@ -2171,10 +2396,11 @@
     const qc = $('qMon'); qc.width = spr.width; qc.height = spr.height;
     const g = qc.getContext('2d'); g.clearRect(0, 0, qc.width, qc.height); g.drawImage(spr, 0, 0);
     if (quick.on) { $('qName').textContent = `빠른 퀴즈 ${quick.n} / ${quick.total}`; $('qSub').textContent = `${monName(m)}의 문제`; }
+    else if (STAGE.mission && m.type === 'mid') { $('qName').textContent = `중간보스 ${monName(m)}`; $('qSub').textContent = '두 문제를 모두 맞히면 지나갈 수 있어요! 틀려도 다시 도전할 수 있어요.'; }
     else if (STAGE.mission && m.type === 'boss') { $('qName').textContent = `${monName(m)}  ♥ ${m.hp}`; $('qSub').textContent = `보스 문제 ${m.maxHp - m.hp + 1} / ${m.maxHp} · 모두 맞히면 마지막 미션이 열려요!`; }
     else if (STAGE.mission && STAGE.missions[m.mission]) { $('qName').textContent = `${monName(m)}가 나타났다!`; $('qSub').textContent = `${STAGE.missions[m.mission].label} 미션 · 틀려도 다시 도전할 수 있어요!`; }
     else { $('qName').textContent = `${monName(m)}가 나타났다!`; $('qSub').textContent = '정답을 맞히면 물리칠 수 있어요!'; }
-    $('qStreak').innerHTML = streak >= 2 ? `연속 정답 ${streak}개!` : '';
+    $('qStreak').innerHTML = m.type === 'mid' && !quick.on ? `<span class="midprog">🛡 ${m.maxHp - m.hp + 1} / ${m.maxHp}</span>` : streak >= 2 ? `연속 정답 ${streak}개!` : '';
     $('qPrompt').textContent = q.prompt;
     $('qShow').innerHTML = q.show; $('qShow').hidden = !q.show;
     // 정답 위치가 같은 자리에 연달아 나오지 않게
@@ -2274,7 +2500,7 @@
   function hitFx(m) {
     P.face = m.x >= P.x + P.w / 2 ? 1 : -1;
     SFX.pop();
-    const cy = m.y - (m.type === 'boss' ? 44 : 12);
+    const cy = m.y - (m.type === 'boss' ? 44 : m.type === 'mid' ? 30 : 12);
     burst(m.x, cy, ['#ffffff', '#fff0a8', '#f6c445'], 16, 200);
     for (let k = 0; k < 7; k++) parts.push({ x: m.x - 18 + k * 6, y: cy - 18 + k * 6, vx: 0, vy: 0, life: 0.3, max: 0.3, color: '#ffffff', size: 4 });
     floatText(m.x, cy - 26, '펑!', '#ffffff');
@@ -2283,12 +2509,12 @@
     m.state = 'dying'; m.timer = 0;
     const boss = m.type === 'boss';
     burst(m.x, m.y - (boss ? 40 : 12), skinOf(m).fx(m), boss ? 50 : 18, boss ? 280 : 160);
-    floatText(m.x, m.y - (boss ? 100 : 40), `+${exp} EXP`, '#fff0a8');
+    if (exp > 0) floatText(m.x, m.y - (boss ? 100 : 40), `+${exp} EXP`, '#fff0a8');
     // 몬스터 동전은 지역마다 한 번만 (이미 받은 몬스터면 동전 없음)
     const ever = save.dropsEver[STAGE.id] = save.dropsEver[STAGE.id] || [];
     if (ever.includes(m.i)) return;
     ever.push(m.i); writeSave();
-    const n = boss ? 8 : 3;
+    const n = boss ? 8 : m.type === 'mid' ? 5 : 3;
     for (let k = 0; k < n; k++) drops.push({ x: m.x, y: m.y - 14, vx: rnd(-110, 110), vy: rnd(-330, -180), age: 0, floor: m.y });
   }
   function closeQuiz() {
@@ -2302,6 +2528,15 @@
       $('quiz').hidden = true;
       const m = quiz.mon, exp = quiz.tries === 0 ? 15 : 8;
       hitFx(m); addExp(exp);
+      if (m.type === 'mid') {
+        // 방어막 하나가 깨짐 → 남았으면 다음 문제, 다 깨지면 처치
+        m.hp--; m.shieldT = 0.6;
+        burst(m.x, m.y - 74, ['#9fe9ff', '#ffffff', '#f6c445'], 22, 220);
+        floatText(m.x, m.y - 80, m.hp > 0 ? `방어막 깨짐! ${m.maxHp - m.hp} / ${m.maxHp}` : `${m.maxHp} / ${m.maxHp}`, '#9fe9ff');
+        mode = 'cut';
+        setTimeout(() => { if (mode !== 'cut') return; if (m.hp > 0) openQuiz(m); else finishMid(m); }, 900);
+        return;
+      }
       if (m.type === 'boss') {
         m.hp--;
         floatText(m.x, m.y - 104, m.hp > 0 ? '♥ -1' : '마지막 미션!', '#ff9fb2');
@@ -2447,7 +2682,7 @@
     initWorldObjects();
     gates = (STAGE.gates || []).map(g => ({ ...g, kind: g.kind === 'final' ? 'final' : THEME.gate, open: false, openT: 0, passed: false, flash: 0 }));
     run = {
-      stage: id, start: performance.now(), firstTry: 0, asked: 0, coins: 0, cleared: false, name: '', introSeen: false, gatesPassed: 0,
+      stage: id, start: performance.now(), firstTry: 0, asked: 0, coins: 0, cleared: false, name: '', introSeen: false, gatesPassed: 0, midQ: STAGE.midQ ? STAGE.midQ() : [], midI: 0,
       ms: (STAGE.missions || []).map((M, i) => ({ need: STAGE.monsters.filter(d => d.mission === i).length, done: 0, complete: false, qi: 0, used: [], queue: STAGE.makeQueue(i) })),
     };
     sessionStats.correct = 0; sessionStats.total = 0;
@@ -2547,6 +2782,15 @@
     $('myName').value = ''; updateBlank();
     wrapPinyin($('speak')); $('speak').hidden = false; $('speak').scrollTop = 0; $('speak').querySelector('.card').focus({ preventScroll: true });
     refreshVoiceUI();
+  }
+  // 중간보스 처치: 짧은 승리 효과. 보너스(동전 5 + 경험치 10)는 지역마다 처음 한 번만
+  function finishMid(m) {
+    const first = !(save.dropsEver[STAGE.id] || []).includes(m.i);
+    defeat(m, first ? 10 : 0); if (first) addExp(10); SFX.level();
+    for (let k = 0; k < 3; k++) burst(m.x + rnd(-20, 20), m.y - 30 - k * 16, ['#f6c445', '#fff0a8', '#ffffff', '#ff9fb2'], 14, 220);
+    toast('중간보스 처치!', 1300, false, true);
+    mode = 'play'; focusStage(); P.inv = 0.8;
+    missionStep(m.mission);
   }
   // 말하기 미션이 없는 지역의 보스 마무리
   function finishBoss(m) {
@@ -2717,6 +2961,7 @@
   $('btnSettings').addEventListener('click', openSettings);
   $('setClose').addEventListener('click', closeMenus);
   $('setSound').addEventListener('click', toggleSound);
+  $('setMusic').addEventListener('click', () => { save.bgmOn = save.bgmOn === false; writeSave(); refreshSoundUI(); });
   $('setHelp').addEventListener('click', () => { $('settings').hidden = true; openHelp('menu'); });
   $('btnReset').addEventListener('click', () => { $('confirmReset').hidden = false; $('resetNo').focus({ preventScroll: true }); });
   $('resetNo').addEventListener('click', () => { $('confirmReset').hidden = true; $('btnReset').focus({ preventScroll: true }); });
@@ -2836,13 +3081,14 @@
       const dt = Math.min(0.033, (now - last) / 1000); last = now; time += dt;
       if (mode === 'play') { update(dt); updateFx(dt); }
       else if (mode === 'cut') updateFx(dt);
+      const [song, vol] = musicWanted(); BGM.sync(song, vol);
       render();
       requestAnimationFrame(frame);
     }
     requestAnimationFrame(frame);
     $('startScreen').querySelector('.card').focus({ preventScroll: true });
     window.__panda = {
-      P, save, quiz, quick, NQ, numQ, numQueue, NUMS, openQuiz, answer, closeQuiz, closeSpeak, selectStage, startPlay, goHome, askHome, resumeFromPause, loadStage, closeHelp, closeIntro, startNewRun, THEMES, SKINS, STAGES,
+      BGM, P, save, quiz, quick, NQ, numQ, numQueue, NUMS, openQuiz, answer, closeQuiz, closeSpeak, selectStage, startPlay, goHome, askHome, resumeFromPause, loadStage, closeHelp, closeIntro, startNewRun, THEMES, SKINS, STAGES,
       get mode() { return mode; }, get monsters() { return monsters; }, get coins() { return coins; }, get gates() { return gates; },
       get run() { return run; }, get stage() { return STAGE.id; }, get drops() { return drops; }, get selStage() { return selStage; },
     };
