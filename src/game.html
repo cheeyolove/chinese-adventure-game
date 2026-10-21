@@ -1035,17 +1035,20 @@
       drums: { vol: 1, bar: 'k t w t k t w w' },
     },
     cave: {
-      bpm: 124,
+      bpm: 146,
       echo: true,
       tracks: [
         { inst: 'bell', vol: 0.085, send: true, notes:
-          'A4 C5 E5 . D5 C5 A4 .  G4 A4 C5 . D5 _ . .  E5 G5 E5 D5 C5 . A4 .  D5 _ C5 . A4 _ . . ' +
-          'C5 D5 E5 . G5 . E5 D5  C5 D5 E5 . A5 _ . .  G5 E5 D5 C5 D5 . E5 .  A4 _ . . A4 . . . ' },
-        { inst: 'tri', vol: 0.09, notes:
-          'A2 E3 A3 E3 A2 E3 A3 E3  F2 C3 F3 C3 F2 C3 F3 C3  G2 D3 G3 D3 G2 D3 G3 D3  A2 E3 A3 E3 E2 B2 E3 B2 ' +
-          'A2 E3 A3 E3 A2 E3 A3 E3  C3 G3 C4 G3 C3 G3 C4 G3  F2 C3 F3 C3 G2 D3 G3 D3  A2 E3 A3 E3 A2 E3 A3 E3 ' },
+          'D5 F#5 A5 . B5 A5 F#5 .  E5 F#5 A5 . F#5 E5 D5 .  D5 F#5 A5 B5 D6 . B5 A5  B5 A5 F#5 E5 D5 _ _ . ' +
+          'A5 . B5 . D6 . B5 A5  F#5 A5 B5 A5 F#5 . E5 .  D5 E5 F#5 A5 B5 A5 F#5 E5  D5 _ A4 . D5 . . . ' },
+        { inst: 'soft', vol: 0.035, notes:
+          'D4 F#4 A4 F#4 D4 F#4 A4 F#4  C#4 E4 A4 E4 C#4 E4 A4 E4  B3 D4 F#4 D4 B3 D4 F#4 D4  B3 D4 G4 D4 C#4 E4 A4 E4 ' +
+          'D4 F#4 A4 F#4 D4 F#4 A4 F#4  B3 D4 F#4 D4 B3 D4 F#4 D4  B3 D4 G4 D4 C#4 E4 A4 E4  D4 F#4 A4 F#4 D4 . . . ' },
+        { inst: 'bass', vol: 0.12, notes:
+          'D3 . A2 . D3 . A2 .  A2 . E3 . A2 . E3 .  B2 . F#3 . B2 . F#3 .  G2 . D3 . A2 . E3 . ' +
+          'D3 . A2 . D3 . A2 .  B2 . F#3 . B2 . F#3 .  G2 . D3 . A2 . E3 .  D3 . A2 . D3 . . . ' },
       ],
-      drums: { vol: 0.85, bar: 'k t w t K t w w' },
+      drums: { vol: 0.9, bar: 'k t w k k t w t' },
     },
   };
   const BGM = (() => {
