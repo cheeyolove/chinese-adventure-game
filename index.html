@@ -413,7 +413,7 @@
       <button class="btn" id="setSound">🔊 소리: 켜짐</button>
       <button class="btn" id="setMusic">🎵 배경음악: 켜짐</button>
       <button class="btn" id="setHelp">❔ 조작 방법 보기</button>
-      <button class="btn" id="setName">✏️ 내 이름 바꾸기</button>
+      <button class="btn" id="setName">✏️ 닉네임 바꾸기</button>
     </div>
     <ul class="reclist" id="recList"></ul>
     <button class="btn small danger" id="btnReset">🗑 저장된 기록 지우기</button>
@@ -436,13 +436,13 @@
 <!-- 이름 쓰기 (처음 한 번) -->
 <div class="overlay" id="nameAsk" hidden>
   <div class="card start" tabindex="-1">
-    <h2 style="font-size:26px">이름을 써 주세요</h2>
-    <p class="saveinfo">선생님이 탐험 결과를 볼 때 쓰여요.</p>
-    <input id="playerName" maxlength="12" autocomplete="off" placeholder="예: 김민준 3번" style="font-family:var(--font-display);font-size:22px;border:3px solid var(--ink);border-radius:12px;padding:8px 14px;width:min(320px,100%);text-align:center;background:#fff;color:var(--ink)">
+    <h2 style="font-size:26px">닉네임을 정해 주세요</h2>
+    <p class="saveinfo">선생님 화면에 이 닉네임으로 점수가 보여요. 이 기기에 저장돼요.</p>
+    <input id="playerName" maxlength="12" autocomplete="off" placeholder="예: 판다왕" style="font-family:var(--font-display);font-size:22px;border:3px solid var(--ink);border-radius:12px;padding:8px 14px;width:min(320px,100%);text-align:center;background:#fff;color:var(--ink)">
     <div class="row">
       <button class="btn primary big" id="nameOk">확인</button>
     </div>
-    <button class="linkbtn" id="nameSkip">이름 없이 할래요</button>
+    <button class="linkbtn" id="nameSkip">닉네임 없이 할래요</button>
   </div>
 </div>
 
@@ -2883,7 +2883,7 @@
   function report(event, extra = {}) {
     if (!RESULT_URL || !run || PREVIEW) return;
     const body = {
-      time: new Date().toISOString(), name: save.playerName || '(이름 없음)', lesson: `${STAGE.lessonNo} (${STAGE.label || ''})`, stage: STAGE.id, event,
+      time: new Date().toISOString(), name: save.playerName || '(닉네임 없음)', lesson: `${STAGE.lessonNo} (${STAGE.label || ''})`, stage: STAGE.id, event,
       firstTry: run.firstTry, asked: run.asked, wrong: (run.wrongs || []).join(' | '), secs: Math.round((performance.now() - run.start) / 1000),
       level: save.level, device: isTouch() ? '모바일' : 'PC', ...extra,
     };
@@ -3405,7 +3405,7 @@
     mode = 'menu'; refreshSoundUI();
     const cards = Object.keys(save.cards).filter(k => save.cards[k]).length;
     $('recList').innerHTML = [['레벨', `Lv.${save.level}`], ['지금 가진 코인', save.coins], ['지금까지 모은 코인', save.totalEarned || save.coins], ['맞힌 문제', `${save.correct}개`], ['모은 카드', `${cards}장`]]
-      .map(([k, v]) => `<li>${k}<b>${v}</b></li>`).join('') + `<li>이름<b>${save.playerName || '-'}</b></li>`;
+      .map(([k, v]) => `<li>${k}<b>${v}</b></li>`).join('') + `<li>닉네임<b>${save.playerName || '-'}</b></li>`;
     $('settings').hidden = false; $('settings').querySelector('.card').focus({ preventScroll: true });
   }
   function closeMenus() {

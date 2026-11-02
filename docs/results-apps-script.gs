@@ -10,7 +10,7 @@ function sheet_() {
   let sh = ss.getSheetByName(SHEET);
   if (!sh) {
     sh = ss.insertSheet(SHEET);
-    sh.appendRow(['시간', '이름', '차시', '지역', '기록', '미션', '처음 정답', '푼 문제', '별', '처음에 틀린 문제', '걸린 시간(초)', '레벨', '기기']);
+    sh.appendRow(['시간', '닉네임', '차시', '지역', '기록', '미션', '처음 정답', '푼 문제', '별', '처음에 틀린 문제', '걸린 시간(초)', '레벨', '기기']);
     sh.setFrozenRows(1);
   }
   return sh;
@@ -44,21 +44,21 @@ function doGet(e) {
   });
   const esc = (v) => String(v == null ? '' : v).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const t = (d) => d ? Utilities.formatDate(d, TZ, 'HH:mm') : '-';
-  const list = Object.values(by).sort((a, b) => String(a.lesson).localeCompare(String(b.lesson)) || String(a.name).localeCompare(String(b.name)));
+  const list = Object.values(by).sort((a, b) => String(a.lesson).localeCompare(String(b.lesson)) || (b.first - a.first) || String(a.name).localeCompare(String(b.name)));
   const done = list.filter(o => o.clear).length;
   const rate = (o) => o.asked ? Math.round(o.first / o.asked * 100) + '%' : '-';
   const body = list.map(o => `<tr><td>${esc(o.name)}</td><td>${esc(o.lesson)}</td><td>${o.clear ? '✅ 클리어' : '진행 중'} (${esc(o.mission)})</td>` +
     `<td>${o.first}/${o.asked} (${rate(o)})</td><td>${o.stars ? '★'.repeat(Number(o.stars)) : '-'}</td><td class="w">${esc(o.wrong).replace(/ \| /g, '<br>')}</td>` +
     `<td>${t(o.start)}</td><td>${t(o.clear)}</td><td>${esc(o.device)}</td></tr>`).join('');
   const html = `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>판다 탐험대 결과</title>
+<title>판다 탐험대 선생님 화면</title>
 <style>body{font-family:sans-serif;margin:16px;color:#1d2738}h1{font-size:22px}table{border-collapse:collapse;width:100%;font-size:14px}
 th,td{border-bottom:1px solid #d7e2da;padding:6px 8px;text-align:left;vertical-align:top}th{background:#e1f2ea}td.w{font-size:12px;color:#52627a;max-width:420px}
 .sum{display:flex;gap:12px;margin:10px 0}.sum div{background:#f3faf6;border-radius:10px;padding:8px 14px}</style></head><body>
-<h1>🐼 판다 탐험대 결과 · ${esc(day)}</h1>
-<div class="sum"><div>들어온 학생 <b>${list.length}</b></div><div>클리어 <b>${done}</b></div></div>
+<h1>🐼 판다 탐험대 선생님 화면 · 닉네임별 점수 · ${esc(day)}</h1>
+<div class="sum"><div>들어온 닉네임 <b>${list.length}</b></div><div>클리어 <b>${done}</b></div></div>
 <p style="font-size:13px;color:#52627a">새 결과를 보려면 브라우저 새로 고침(F5)을 누르세요. 다른 날: 주소 끝에 ?day=2026-11-03 · 원본은 시트의 '기록' 탭</p>
-<table><thead><tr><th>이름</th><th>차시</th><th>진행</th><th>처음 정답</th><th>별</th><th>처음에 틀린 문제</th><th>시작</th><th>완료</th><th>기기</th></tr></thead>
+<table><thead><tr><th>닉네임</th><th>차시</th><th>진행</th><th>점수 (처음에 맞힌 문제)</th><th>별</th><th>처음에 틀린 문제</th><th>시작</th><th>완료</th><th>기기</th></tr></thead>
 <tbody>${body || '<tr><td colspan="9">아직 기록이 없어요.</td></tr>'}</tbody></table></body></html>`;
-  return HtmlService.createHtmlOutput(html).setTitle('판다 탐험대 결과');
+  return HtmlService.createHtmlOutput(html).setTitle('판다 탐험대 선생님 화면');
 }
