@@ -327,7 +327,7 @@
   .rgrid div { background: var(--paper-2); border-radius: 10px; padding: 8px 4px; display: flex; flex-direction: column; }
   .rgrid b { font-family: var(--font-display); font-weight: 400; font-size: 22px; font-variant-numeric: tabular-nums; }
   .rgrid span { font-size: 12px; color: var(--ink-soft); }
-  .result .stamp { font-family: var(--font-display); font-size: 18px; background: var(--gold); border: 3px solid var(--ink); border-radius: 12px; padding: 4px 14px 6px; transform: rotate(-2deg); }
+  .result .stamp { font-family: var(--font-display); font-size: 18px; background: var(--gold); border: 3px solid var(--ink); border-radius: 12px; padding: 4px 14px 6px; }
   .result .shot { font-size: 13px; color: var(--ink-soft); background: var(--paper-2); border-radius: 10px; padding: 8px 12px; }
   .qprogress { font-family: var(--font-display); font-size: 14px; color: var(--ink-soft); }
   .lnote { font-size: 13px; color: var(--ink-soft); margin-top: 12px !important; }
@@ -3137,7 +3137,7 @@
   function completeMission(i) {
     const s = run.ms[i], M = STAGE.missions[i];
     s.complete = true;
-    celebrate(M.boss ? '보스 처치! 太棒了!' : `미션 ${i + 1} 성공! 太棒了!`);
+    celebrate(M.boss ? '보스 처치!' : `미션 ${i + 1} 성공!`);
     report('mission', { mission: `${i + 1}/${run.ms.length}` });
     M.cards.forEach(id => { save.cards[id] = true; }); writeSave();
     const gt = gates.find(g => g.mission === i);
@@ -3192,7 +3192,7 @@
     const stars = calcStars();
     save.clears[STAGE.id] = Math.max(save.clears[STAGE.id] || 0, stars.n); writeSave();
     SFX.level(); clearKeys();
-    celebrate('지역 클리어! 太棒了!', 3200);
+    celebrate('지역 클리어!', 3200);
     report('clear', { mission: `${run.ms.length}/${run.ms.length}`, stars: stars.n });
     for (let k = 0; k < 4; k++) burst(P.x + rnd(-60, 60), P.y - rnd(0, 60), ['#f6c445', '#fff0a8', '#ffffff', '#62aefc', '#ff9fb2'], 20, 240);
     floatText(P.x + P.w / 2, P.y - 30, '클리어!', '#fff0a8');
