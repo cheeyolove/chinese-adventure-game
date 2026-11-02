@@ -211,6 +211,8 @@
   .rnum.on { background: var(--gold); }
   .rnum-detail { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: center; }
   .rnum-detail .han { font-size: 40px; } .rnum-detail .py { font-size: 24px; }
+  .han.hsmall { font-size: .75em !important; color: var(--ink-soft); margin-left: 6px; }
+  .qshow .han.hsmall { font-size: 26px !important; }
   .midprog { display: inline-block; background: var(--ink); color: #fff; border-radius: 99px; padding: 3px 12px 4px; font-size: 16px; }
   .qhint { margin-top: 12px; background: #fff4d1; border: 2px dashed var(--t3); border-radius: 12px; padding: 10px 12px; font-size: 15px; line-height: 1.6; }
   .qhint b { font-family: var(--font-display); font-weight: 400; color: var(--t3); margin-right: 6px; }
@@ -471,7 +473,7 @@
 <div class="overlay" id="lesson" hidden>
   <div class="card wide" tabindex="-1">
     <div class="lhead">
-      <h2 id="lessonTitle">배움 노트 · 1차시</h2>
+      <h2 id="lessonTitle">배움 노트</h2>
       <button class="btn small" id="btnLessonClose">닫기</button>
     </div>
     <div id="lessonS3" hidden>
@@ -606,7 +608,7 @@
 
   // Google Fonts (한자는 필요한 글자만 받아옴)
   (function loadFonts() {
-    const han = '熊猫探险队妈麻马骂你们好老师同学中国汉语拼音文我叫什么名字谢再见。？！一二三四五六七八九十';
+    const han = '熊猫探险队妈麻马骂你们好老师同学中国汉语拼音文我叫什么名字谢再见不客气对起没关系晚安早上。？！“”一二三四五六七八九十';
     // 병음용: 알파벳·성조 모음·숫자만 받아서 파일이 아주 작음
     const py = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜüĀÁǍÀĒÉĚÈĪÍǏÌŌÓǑÒŪÚǓÙÜ0123456789 .,?!’\'-/()%…:→ˉˊˇˋ';
     for (const href of [
@@ -654,16 +656,23 @@
   const NUMW = Object.fromEntries(NUMS.map(n => [n.id, n]));
   const numOf = (v) => NUMS[v - 1];
   const GREET = [
-    { id: 'g1', h: '你好', p: 'nǐ hǎo', t: 0, ko: '안녕(하세요)', note: '3성이 두 번 이어지면 앞 글자는 2성처럼 읽어요. 그래서 실제 소리는 ní hǎo예요.', sit: '친구를 만났을 때 하는 인사는?' },
-    { id: 'g3', h: '老师好', p: 'lǎoshī hǎo', t: 0, ko: '선생님, 안녕하세요', note: '老师 lǎoshī는 "선생님"이에요. 선생님께 인사할 때 써요.', sit: '선생님께 인사할 때는?' },
-    { id: 'g5', h: '中国', p: 'Zhōngguó', t: 0, ko: '중국', note: '中 zhōng은 "가운데", 国 guó는 "나라"라는 뜻이에요.' },
-    { id: 'g6', h: '汉语', p: 'Hànyǔ', t: 0, ko: '중국어', note: '중국어를 汉语 Hànyǔ라고 해요. 中文 Zhōngwén이라고도 해요.' },
-    // 2차시 (선생님 확정: 谢谢·再见 추가, 你们好·同学们好 삭제)
-    { id: 'g7', h: '谢谢', p: 'xièxie', t: 0, ko: '고마워요', note: '고마울 때 하는 말이에요. 뒤의 xie는 성조 표시 없이 짧고 가볍게 읽어요(경성).', sit: '친구가 선물을 줬을 때 하는 말은?' },
-    { id: 'g8', h: '再见', p: 'zàijiàn', t: 0, ko: '잘 가요, 안녕히 계세요', note: '헤어질 때 하는 인사예요. 再 zài는 ‘다시’, 见 jiàn은 ‘만나다’라는 뜻이에요.', sit: '친구와 헤어질 때 하는 인사는?' },
+    // 1차시 (11/3 1교시): 기본 인사 + 中文
+    { id: 'g1', h: '你好', p: 'nǐ hǎo', t: 0, ko: '안녕(하세요)', note: '3성이 두 번 이어지면 앞 글자는 2성처럼 읽어요. 그래서 실제 소리는 ní hǎo예요.', sit: '친구를 만났을 때 하는 인사는?', hint: '만났을 때 하는 가장 기본 인사, nǐ hǎo!' },
+    { id: 'g2', h: '你们好', p: 'nǐmen hǎo', t: 0, ko: '여러분, 안녕하세요', note: '们 men은 ‘~들’이라는 뜻이에요. 가운데 men은 짧고 가볍게 읽어요(경성).', sit: '친구 여러 명에게 한꺼번에 인사할 때는?', hint: '여러 명에게는 가운데에 men이 들어가요.', syl: ['nǐ', 'men', 'hǎo'], light: 1 },
+    { id: 'g3', h: '老师好', p: 'lǎoshī hǎo', t: 0, ko: '선생님, 안녕하세요', note: '老师 lǎoshī는 ‘선생님’이에요. 선생님께 인사할 때 써요.', sit: '선생님께 인사할 때는?', hint: 'lǎoshī는 ‘선생님’이에요.' },
+    { id: 'g10', h: '中文', p: 'Zhōngwén', t: 0, ko: '중국어', note: '중국어를 中文 Zhōngwén이라고 해요. 큰 소리로 Zhōngwén! 하고 말해 보세요.', hint: 'Zhōng은 ‘중’, wén은 ‘글, 말’이에요.' },
+    // 2차시 (11/3 2교시): 고마워 · 천만에 · 미안해 · 괜찮아 · 잘 가 · 잘 자 · 좋은 아침
+    { id: 'g7', h: '谢谢', p: 'xièxie', t: 0, ko: '고마워', note: '고마울 때 하는 말이에요. 뒤의 xie는 짧고 가볍게 읽어요(경성).', sit: '친구가 선물을 줬을 때 하는 말은?', hint: '고마울 때, xièxie!', syl: ['xiè', 'xie'], light: 1 },
+    { id: 'g11', h: '不客气', p: 'bú kèqi', t: 0, ko: '천만에', note: '‘谢谢’에 대답하는 말이에요. 끝의 qi는 짧고 가볍게 읽어요.', sit: '친구가 “谢谢!”라고 했을 때 대답하는 말은?', hint: '‘고마워’에 대답할 때, bú kèqi!', syl: ['bú', 'kè', 'qi'], light: 2 },
+    { id: 'g12', h: '对不起', p: 'duìbuqǐ', t: 0, ko: '미안해', note: '미안할 때 하는 말이에요. 가운데 bu는 짧고 가볍게 읽어요.', sit: '친구 발을 실수로 밟았을 때 하는 말은?', hint: '미안할 때, duìbuqǐ!', syl: ['duì', 'bu', 'qǐ'], light: 1 },
+    { id: 'g13', h: '没关系', p: 'méi guānxi', t: 0, ko: '괜찮아', note: '‘对不起’에 대답하는 말이에요. 끝의 xi는 짧고 가볍게 읽어요.', sit: '친구가 “对不起!”라고 했을 때 대답하는 말은?', hint: '‘미안해’에 대답할 때, méi guānxi!', syl: ['méi', 'guān', 'xi'], light: 2 },
+    { id: 'g8', h: '再见', p: 'zàijiàn', t: 0, ko: '잘 가', note: '헤어질 때 하는 인사예요. 再 zài는 ‘다시’, 见 jiàn은 ‘만나다’라는 뜻이에요.', sit: '친구와 헤어질 때 하는 인사는?', hint: '헤어질 때, zàijiàn!' },
+    { id: 'g14', h: '晚安', p: 'wǎn’ān', t: 0, ko: '잘 자', note: '밤에 자기 전에 하는 인사예요. 晚 wǎn은 ‘밤’, 安 ān은 ‘편안하다’라는 뜻이에요.', sit: '밤에 자러 갈 때 하는 인사는?', hint: '잠자기 전에, wǎn’ān!' },
+    { id: 'g15', h: '早上好', p: 'zǎoshang hǎo', t: 0, ko: '좋은 아침(굿모닝)', note: '아침에 하는 인사예요. 早上 zǎoshang은 ‘아침’이에요. 가운데 shang은 짧고 가볍게 읽어요.', sit: '아침에 만났을 때 하는 인사는?', hint: '아침에, zǎoshang hǎo!', syl: ['zǎo', 'shang', 'hǎo'], light: 1 },
   ];
   const GW = Object.fromEntries(GREET.map(w => [w.id, w]));
-  const LESSON2 = ['g1', 'g3', 'g7', 'g8'].map(id => GW[id]);
+  const LESSON1 = ['g1', 'g2', 'g3', 'g10'].map(id => GW[id]);
+  const LESSON2 = ['g7', 'g11', 'g12', 'g13', 'g8', 'g14', 'g15'].map(id => GW[id]);
 
   // ================= 유틸 =================
   function mulberry32(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
@@ -717,7 +726,7 @@
   const josa = (word, pair) => `${word}${pp(word, pair)}`;
   // 숫자가 아닌 한자의 소리 (게임에 나오는 글자)
   const HAN_PY = { '妈': 'mā', '麻': 'má', '马': 'mǎ', '骂': 'mà', '我': 'wǒ', '你': 'nǐ', '叫': 'jiào', '什': 'shén', '么': 'me', '名': 'míng', '字': 'zi',
-    '们': 'men', '好': 'hǎo', '老': 'lǎo', '师': 'shī', '同': 'tóng', '学': 'xué', '中': 'zhōng', '国': 'guó', '汉': 'hàn', '语': 'yǔ', '文': 'wén', '拼': 'pīn', '音': 'yīn', '谢': 'xiè', '再': 'zài', '见': 'jiàn' };
+    '们': 'men', '好': 'hǎo', '老': 'lǎo', '师': 'shī', '同': 'tóng', '学': 'xué', '中': 'zhōng', '国': 'guó', '汉': 'hàn', '语': 'yǔ', '文': 'wén', '拼': 'pīn', '音': 'yīn', '谢': 'xiè', '再': 'zài', '见': 'jiàn', '不': 'bù', '客': 'kè', '气': 'qi', '对': 'duì', '起': 'qǐ', '没': 'méi', '关': 'guān', '系': 'xi', '晚': 'wǎn', '安': 'ān', '早': 'zǎo', '上': 'shang' };
   const pyHTML = (w) => `<span class="py t${w.t}">${w.p}</span>`;
   const hanHTML = (w) => `<span class="han">${w.h}</span>`;
 
@@ -1412,55 +1421,55 @@
   const FOREST_WORDS = Object.fromEntries([...MA, ...GREET].map(w => [w.id, w]));
   const STAGES = {
     bamboo: {
-      id: 'bamboo', status: 'ready', lessonNo: '1차시', title: '1차시 대나무 언덕', short: '대나무 언덕', topic: '중국 · 중국어 · 성조', mapName: '대나무 언덕', theme: 'forest', lessonView: 's1',
+      id: 'bamboo', status: 'ready', lessonNo: '1차시', label: '11월 3일 1교시', title: '대나무 언덕', short: '대나무 언덕', topic: '성조 · 첫 인사', pinyinFirst: true, mapName: '대나무 언덕', theme: 'forest', lessonView: 's1',
       ...LAYOUT,
       monsters: layoutMonsters([
-        ['1성 죽순', '2성 죽순', '3성 죽순', '4성 죽순'],
+        ['노래 죽순', '노래 죽순', '꼭대기 죽순', '문지기 죽순'],
         ['성조 버섯', '성조 버섯', '꼭대기 버섯', '문지기 버섯'],
-        ['나라 버섯', '나라 버섯', '꼭대기 버섯', '문지기 버섯'],
-      ], { name: '숲의 수호자', hp: 5 }, { name: '대나무 수호 슬라임' }, (i, k) => i === 0 ? { tone: k + 1, bubble: 'tone' } : {}),
+        ['인사 버섯', '인사 버섯', '꼭대기 버섯', '문지기 버섯'],
+      ], { name: '숲의 수호자', hp: 5 }, { name: '대나무 수호 슬라임' }, (i, k) => i === 0 ? { tone: k + 1 } : {}),   // 성조는 문제로만 (머리 위에는 ? 표시)
       gates: layoutGates(['죽순 문', '버섯 문', '숲속 문', '수호자의 문']),
       missions: [
         { label: '성조 ˉ ˊ ˇ ˋ', zone: '죽순 길', cards: ['ma1', 'ma2', 'ma3', 'ma4'] },
         { label: '성조 · 경성', zone: '성조 숲', cards: [] },
-        { label: '中国 · 汉语', zone: '나라 숲', cards: ['g5', 'g6'] },
+        { label: '你好 · 你们好 · 老师好 · 中文', zone: '인사 숲', cards: ['g1', 'g2', 'g3', 'g10'] },
         { label: '숲의 수호자', zone: '수호자의 문', cards: [], boss: true },
       ],
       finalText: '수호자의 문', decorate: decorateBamboo,
-      words: FOREST_WORDS, cardOrder: ['ma1', 'ma2', 'ma3', 'ma4', 'g5', 'g6'], cardName: '배움 카드', bossFinale: 'none',
-      noteWords: [GW.g5, GW.g6], noteWordsTitle: '중국과 중국어',
-      pool: [GW.g5, GW.g6, ...MA],
+      words: FOREST_WORDS, cardOrder: ['ma1', 'ma2', 'ma3', 'ma4', 'g1', 'g2', 'g3', 'g10'], cardName: '배움 카드', bossFinale: 'none',
+      noteWords: LESSON1, noteWordsTitle: '첫 인사와 中文', lightExample: { h: '你们好', p: 'nǐ<b>men</b> hǎo', say: '你们好', ko: '가운데 men이 경성이에요' },
+      pool: LESSON1,
       qgen: (m) => forestQuestion(m), makeQueue: (i) => lesson1Queue(i),
-      // 중간보스 2문제: 경성 1 + 성조 1
-      midQ: () => [() => forestBuild({ kind: pick(['n2', 'n3']) }), () => forestBuild({ kind: pick(['tone', 'meaning']), w: pick(MA) })],
+      // 중간보스 2문제: 경성 1 + 성조 듣기·읽기 1
+      midQ: () => [() => forestBuild({ kind: pick(['n2', 'n3']) }), () => forestBuild({ kind: pick(['tListen', 'tPy']), w: pick(MA) })],
       quickMons: [1, 2, 3, 4].map(t => ({ type: 'mon', skin: 'shoot', tone: t, name: `${t}성 죽순` })),
     },
     greet: {
-      id: 'greet', status: 'ready', lessonNo: '2차시', title: '2차시 인사 꽃밭', short: '인사 꽃밭', topic: '인사말', mapName: '인사 꽃밭', theme: 'garden',
+      id: 'greet', status: 'ready', lessonNo: '2차시', label: '11월 3일 2교시', title: '인사 꽃밭', short: '인사 꽃밭', topic: '고마워 · 미안해 · 잘 자', mapName: '인사 꽃밭', theme: 'garden',
       ...LAYOUT,
       monsters: layoutMonsters([
-        ['인사 꽃봉오리', '인사 꽃봉오리', '꼭대기 꽃봉오리', '문지기 꽃봉오리'],
-        ['고마움 꿀벌', '고마움 꿀벌', '꼭대기 꿀벌', '문지기 꿀벌'],
-        ['꽃밭 꽃봉오리', '꽃밭 꽃봉오리', '꼭대기 꽃봉오리', '문지기 꽃봉오리'],
+        ['고마움 꽃봉오리', '고마움 꽃봉오리', '꼭대기 꽃봉오리', '문지기 꽃봉오리'],
+        ['미안해 꿀벌', '미안해 꿀벌', '꼭대기 꿀벌', '문지기 꿀벌'],
+        ['하루 인사 꽃봉오리', '하루 인사 꽃봉오리', '꼭대기 꽃봉오리', '문지기 꽃봉오리'],
       ], { name: '꽃의 여왕', hp: 5 }, { name: '인사 달팽이' }),
       gates: layoutGates(['꽃봉오리 문', '꿀벌 문', '꽃밭 문', '여왕의 문']),
       missions: [
-        { label: '你好 · 老师好', zone: '만남 길', cards: ['g1', 'g3'] },
-        { label: '谢谢 · 再见', zone: '고마움 숲', cards: ['g7', 'g8'] },
-        { label: '인사 모두', zone: '꽃밭 광장', cards: [] },
+        { label: '谢谢 · 不客气', zone: '고마움 길', cards: ['g7', 'g11'] },
+        { label: '对不起 · 没关系', zone: '미안해 숲', cards: ['g12', 'g13'] },
+        { label: '再见 · 晚安 · 早上好', zone: '하루 인사 광장', cards: ['g8', 'g14', 'g15'] },
         { label: '꽃의 여왕', zone: '여왕의 문', cards: [], boss: true },
       ],
       finalText: '여왕의 문', decorate: decorateGarden,
-      words: GW, cardOrder: ['g1', 'g3', 'g7', 'g8'], cardName: '인사 카드', bossFinale: 'none',
-      noteIntro: '2차시에는 <b>인사말</b>을 배워요. 谢谢 xièxie의 뒤 글자처럼 성조 표시가 없는 소리는 <b>짧고 가볍게</b> 읽어요(경성).',
+      words: GW, cardOrder: LESSON2.map(w => w.id), cardName: '인사 카드', bossFinale: 'none',
+      noteIntro: '여러 가지 인사말을 배워요. 谢谢 xièxie의 뒤 글자처럼 성조 표시가 없는 소리는 <b>짧고 가볍게</b> 읽어요(경성). 카드의 🔊를 누르고 큰 소리로 따라 말해 보세요!',
       pool: LESSON2,
       qgen: (m) => forestQuestion(m), makeQueue: (i) => lesson2Queue(i),
-      // 중간보스 2문제: 경성 1 + 인사(谢谢·再见) 1
-      midQ: () => [() => forestBuild({ kind: pick(['n1', 'n4']) }), () => forestBuild({ kind: pick(['gSit', 'gMeaning']), w: pick([GW.g7, GW.g8]) })],
+      // 중간보스 2문제: 경성(가볍게 읽는 글자) 1 + 앞에서 배운 인사 1
+      midQ: () => [() => forestBuild({ kind: 'nlight', w: pick([GW.g7, GW.g11, GW.g12, GW.g13]) }), () => forestBuild({ kind: pick(['gSit', 'gMeaning']), w: pick([GW.g7, GW.g11, GW.g12, GW.g13]) })],
       quickMons: [{ type: 'mon', skin: 'bud', name: '인사 꽃봉오리' }],
     },
     name: {
-      id: 'name', status: 'draft', lessonNo: '3차시', title: '2지역 이름 마을', short: '이름 마을', topic: '이름 묻고 답하기', mapName: '이름 마을', isNew: true, theme: 'village',
+      id: 'name', status: 'draft', lessonNo: '3차시', label: '11월 5일 1교시', title: '이름 마을', short: '이름 마을', topic: '이름 묻고 답하기', mapName: '이름 마을', isNew: true, theme: 'village',
       ...LAYOUT,
       monsters: layoutMonsters([
         ['글자 두루마리', '글자 두루마리', '꼭대기 두루마리', '문지기 두루마리'],
@@ -1482,7 +1491,7 @@
       quickMons: [{ type: 'mon', skin: 'scroll', name: '이름 두루마리' }, { type: 'mon', skin: 'lantern', name: '친구 등불' }],
     },
     number: {
-      id: 'number', status: 'draft', lessonNo: '5차시', title: '3지역 숫자 계곡', short: '숫자 계곡', topic: '숫자 一 ~ 十', mapName: '숫자 계곡', isNew: true, theme: 'cave',
+      id: 'number', status: 'draft', lessonNo: '5차시', label: '11월 10일 1교시', title: '숫자 계곡', short: '숫자 계곡', topic: '숫자 一 ~ 十', mapName: '숫자 계곡', isNew: true, theme: 'cave',
       clearTitle: '숫자 마스터! 1부터 10까지 정복!',
       ...LAYOUT,
       monsters: layoutMonsters([
@@ -2353,7 +2362,10 @@
   // 보기는 그 차시에서 배운 말(STAGE.pool) 안에서만 골라요
   const poolOf = () => (STAGE && STAGE.pool) || GREET;
   const four = (w) => shuffle([w, ...shuffle(poolOf().filter(x => x !== w)).slice(0, 3)]);
-  const gShow = (w) => `${hanHTML(w)}<div class="meta"><span class="py t0">${w.p}</span></div>`;
+  // 1차시(pinyinFirst)는 병음을 크게, 한자는 작게: 한자 외우기보다 소리 내어 말하기에 집중
+  const pyFirst = () => !!(STAGE && STAGE.pinyinFirst);
+  const gShow = (w) => pyFirst() ? `<span class="py big t0">${w.p}</span><div class="meta"><span class="han hsmall">${w.h}</span></div>` : `${hanHTML(w)}<div class="meta"><span class="py t0">${w.p}</span></div>`;
+  const wOpt = (x) => pyFirst() ? `<span class="py">${x.p}</span><span class="han hsmall">${x.h}</span>` : `<span class="han">${x.h}</span><span class="py t0">${x.p}</span>`;
   Object.assign(BUILD, {
     gMeaning: (w) => ({
       prompt: '이 표현의 뜻은 무엇일까요?', show: gShow(w), say: w,
@@ -2362,7 +2374,7 @@
     }),
     gChar: (w) => ({
       prompt: `‘${w.ko}’, 중국어로 어떻게 말할까요?`, show: '', say: w,
-      options: four(w).map(x => ({ html: `<span class="han">${x.h}</span><span class="py t0">${x.p}</span>`, correct: x === w })), words: [w],
+      options: four(w).map(x => ({ html: wOpt(x), correct: x === w })), words: [w],
       explain: `‘${w.ko}’ = <b>${w.h} ${w.p}</b><br>${w.note}`,
     }),
     gPinyin: (w) => ({
@@ -2372,8 +2384,8 @@
     }),
     gSit: (w) => ({
       prompt: w.sit, show: '', say: w,
-      options: shuffle(poolOf().filter(x => x.sit)).map(x => ({ html: `<span class="han">${x.h}</span><span class="py t0">${x.p}</span>`, correct: x === w })),
-      words: poolOf().filter(x => x.sit), hl: w,
+      options: shuffle([w, ...shuffle(poolOf().filter(x => x.sit && x !== w)).slice(0, 3)]).map(x => ({ html: wOpt(x), correct: x === w })),
+      words: [w], hl: w,
       explain: `${w.sit.replace(/\?$/, '')} <b>${w.h} ${w.p}</b>${pp(w.p, '이에요/예요')}. (뜻: ${w.ko})<br>${w.note}`,
     }),
     gSandhi: (w) => ({
@@ -2383,26 +2395,45 @@
     }),
     gListen: (w) => ({
       prompt: '잘 듣고, 들은 표현을 고르세요.', show: '', listen: w,
-      options: four(w).map(x => ({ html: `<span class="han">${x.h}</span>`, correct: x === w })), words: [w],
+      options: four(w).map(x => ({ html: pyFirst() ? `<span class="py">${x.ko}</span>` : `<span class="han">${x.h}</span>`, correct: x === w })), words: [w],
       explain: `들은 표현: <b>${w.h} ${w.p}</b> (${w.ko})<br>${w.note}`,
     }),
   });
   // 경성 문제 (docs/draft-zone1-v2.md 초안). 1차시는 N2·N3, 2차시는 N1·N4
-  const QS = GW.g7;
   const opt = (html, correct = false) => ({ html, correct });
+  // 경성 문제: n2·n3 개념, nlight는 단어 속에서 짧고 가볍게 읽는 글자 찾기(你们好·谢谢·不客气·对不起·没关系·早上好)
   const NEUTRAL = {
-    n1: () => ({ prompt: '이 소리에서 짧고 가볍게 읽는 글자는?', show: gShow(QS), say: QS,
-      options: shuffle([opt('앞 글자 <span class="py">xiè</span>'), opt('뒤 글자 <span class="py">xie</span>', true), opt('두 글자 모두 똑같이 세게')]),
-      hint: '성조 표시가 없는 쪽을 찾아보세요.', explain: 'xièxie의 뒤 글자 xie에는 성조 표시가 없어요. 이렇게 짧고 가볍게 읽는 소리를 경성이라고 해요.', words: [QS] }),
+    nlight: (w) => ({ prompt: '이 말에서 짧고 가볍게 읽는 글자는?', show: gShow(w), say: w,
+      options: shuffle(w.syl.map((sy, i) => opt(`<span class="py">${sy}</span>`, i === w.light))),
+      readPrompt: '이 말에서 짧고 가볍게 읽는 글자는?',
+      hint: '성조 표시(ˉ ˊ ˇ ˋ)가 없는 글자를 찾아보세요.', explain: `${w.p}에서 <b>${w.syl[w.light]}</b>에는 성조 표시가 없어요. 이렇게 짧고 가볍게 읽는 소리를 경성이라고 해요.`, words: [w] }),
     n2: () => ({ prompt: '성조 표시가 없고 짧고 가볍게 읽는 소리를 무엇이라고 할까요?', show: '',
       options: shuffle([opt('경성', true), opt('1성'), opt('3성'), opt('4성')]),
-      hint: '‘가벼울 경(輕)’ 자를 써서 ○성이라고 해요.', explain: '성조 표시가 없는 소리는 경성이에요. 짧고 가볍게 읽어요. 예: 谢谢 xièxie', words: [] }),
+      hint: '‘가벼울 경(輕)’ 자를 써서 ○성이라고 해요.', explain: '성조 표시가 없는 소리는 경성이에요. 짧고 가볍게 읽어요. 예: nǐmen hǎo의 men', words: [] }),
     n3: () => ({ prompt: '경성은 어떻게 읽을까요?', show: '',
       options: shuffle([opt('짧고 가볍게', true), opt('높게 쭉 길게'), opt('내려갔다가 올라가게'), opt('높은 데서 뚝 떨어지게')]),
       hint: '표시가 없으니 힘을 빼고 살짝!', explain: '경성은 짧고 가볍게 읽어요. ‘높게 쭉 길게’는 1성, ‘내려갔다가 올라가게’는 3성, ‘높은 데서 뚝 떨어지게’는 4성이에요.', words: [] }),
-    n4: () => ({ prompt: '경성이 들어 있는 말은 어느 것일까요?', show: '',
-      options: shuffle([GW.g7, GW.g5, GW.g6, GW.g8].map(x => opt(`<span class="han">${x.h}</span><span class="py t0">${x.p}</span>`, x === QS))),
-      hint: '성조 표시가 없는 글자가 있는 말을 찾아보세요.', explain: '谢谢 xièxie의 뒤 글자 xie에는 성조 표시가 없어요. 그래서 경성이에요.', words: [QS] }),
+  };
+  // 1차시 성조 연습: 뜻과 한자는 묻지 않고 '소리 → 몇 성'만 (같은 ma라도 성조가 다르면 다른 말이 된다는 것을 느끼기)
+  const TONE_LABEL = (n) => n ? `<span class="mk t${n}">${TONES[n].mark}</span> ${TONES[n].name}` : '<span class="mk t0">·</span> 경성';
+  const toneOpts5 = (ans) => shuffle([ans, ...shuffle([0, 1, 2, 3, 4].filter(n => n !== ans)).slice(0, 3)]).map(n => ({ html: TONE_LABEL(n), correct: n === ans }));
+  const MA0 = { id: 'ma0', h: '', p: 'ma', t: 0 };   // 표시 없는 ma (경성)
+  const TONE_HINT = '모음 위 표시를 보세요! ˉ 1성 · ˊ 2성 · ˇ 3성 · ˋ 4성 · 표시 없으면 경성';
+  const TONEQ = {
+    tPy: (w) => ({ prompt: '이 소리는 몇 성일까요?', show: `<span class="py big">${w.p}</span>`, options: toneOpts5(w.t), words: [],
+      hint: TONE_HINT, explain: w.t ? `<b>${w.p}</b>의 표시는 <b>${TONES[w.t].mark}</b>, ${TONES[w.t].name}이에요. ${TONES[w.t].name}은 ${TONES[w.t].desc}.` : '<b>ma</b>에는 성조 표시가 없어요. 짧고 가볍게 읽는 경성이에요.' }),
+    tListen: (w) => ({ prompt: '잘 듣고, 몇 성인지 고르세요.', show: '', listen: w, readPrompt: '이 소리는 몇 성일까요?', plainRead: true, options: toneOpts5(w.t), words: [],
+      hint: '손가락으로 소리의 높낮이를 그려 보세요! 쭉 평평? 올라감? 내려갔다 올라감? 뚝 떨어짐?', explain: `들은 소리: <b>${w.p}</b> → ${TONES[w.t].name} ${TONES[w.t].mark}. ${TONES[w.t].name}은 ${TONES[w.t].desc}.` }),
+    tMark: (w) => ({ prompt: `${TONES[w.t].name} 표시가 붙은 소리는 어느 것일까요?`, show: '', options: shuffle(MA).map(x => ({ html: `<span class="py">${x.p}</span>`, correct: x === w })), words: [],
+      hint: `${TONES[w.t].name}은 ${TONES[w.t].desc}. 그 모양과 닮은 표시를 찾아보세요.`, explain: `${TONES[w.t].name} 표시는 <b>${TONES[w.t].mark}</b> 모양이에요. 그래서 정답은 <b>${w.p}</b>예요.` }),
+    tContour: (w) => ({ prompt: `‘${TONES[w.t].desc}’ 소리는 몇 성일까요?`, show: '', options: toneOpts5(w.t), words: [],
+      hint: '손가락으로 소리의 높낮이를 그려 보세요!', explain: `${TONES[w.t].desc} → 정답은 <b>${TONES[w.t].name}(${TONES[w.t].mark})</b>이에요. 예: <b>${w.p}</b>` }),
+    tOrder: () => {
+      const right = MA.map(x => x.p), wrongs = shuffle([[1, 0, 2, 3], [0, 2, 1, 3], [3, 2, 1, 0], [0, 1, 3, 2], [2, 0, 1, 3]]).slice(0, 3).map(o => o.map(i => right[i]));
+      return { prompt: '1성부터 4성까지 순서대로 바르게 놓은 것은?', show: '', words: [],
+        options: shuffle([opt(`<span class="py">${right.join(' → ')}</span>`, true), ...wrongs.map(o => opt(`<span class="py">${o.join(' → ')}</span>`))]),
+        hint: 'ˉ(1성) → ˊ(2성) → ˇ(3성) → ˋ(4성) 순서예요.', explain: `1성부터 차례대로: <b>${right.join(' → ')}</b> (ˉ ˊ ˇ ˋ)` };
+    },
   };
   const GREET_KINDS = [['gMeaning', 3], ['gChar', 3], ['gPinyin', 2], ['gSit', 3], ['gSandhi', 1], ['gListen', 2]];
   function greetQuestion() {
@@ -2432,7 +2463,7 @@
       hint: '자기 자신을 가리킬 때 쓰는 말이에요. 손가락으로 나를 가리키며 wǒ!',
       explain: '<b>我 wǒ</b> = 나<br>나 자신을 말할 때 써요. 我叫……。는 ‘제 이름은 ……예요’라는 뜻이에요.', words: [NW.wo] }),
     ni_char: () => nq({ prompt: '‘너’는 중국어로 무엇일까요?', say: NW.ni, right: zh(NW.ni), wrong: [zh(NW.wo), zh(NW.mingzi)],
-      hint: '1차시에 배운 인사 你好 nǐ hǎo의 첫 글자를 떠올려 보세요!',
+      hint: '앞에서 배운 인사 你好 nǐ hǎo의 첫 글자를 떠올려 보세요!',
       explain: '<b>你 nǐ</b> = 너<br>你好 nǐ hǎo도 ‘너(你) + 좋다(好)’가 합쳐진 인사예요.', words: [NW.ni] }),
     ni_mean: () => nq({ prompt: '‘你’의 뜻은 무엇일까요?', show: showW(NW.ni), say: NW.ni, right: '너', wrong: ['나', '무엇'],
       hint: '你好 nǐ hǎo는 친구에게 하는 인사였죠? 그 친구를 부르는 말이에요.',
@@ -2610,7 +2641,7 @@
   }
 
   // ===== 대나무 언덕 문제 (1~2차시: 성조 · 인사말 · 中国/汉语) =====
-  const GREET_GLOSS = '你好 = 만났을 때 · 老师好 = 선생님께 · 谢谢 = 고마울 때 · 再见 = 헤어질 때';
+  const GREET_GLOSS = '언제 하는 말인지 떠올려 보세요. 소리 내어 읽어 보면 더 잘 떠올라요!';
   const NATION_GLOSS = '中国 Zhōngguó는 나라 이름(중국), 汉语 Hànyǔ는 말 이름(중국어)이에요.';
   const BASIC_HINT = ['중국어 소리를 알파벳으로 쓴 것, pīnyīn이라고 읽어요.', 'ˉ ˊ ˇ ˋ 표시를 세어 보세요.', '네 병음의 글자(m, a)는 모두 똑같아요. 다른 건 모음 위 표시뿐!', 'mā를 보세요. 표시가 a 위에 있어요.'];
   function forestHint(kind, w) {
@@ -2618,21 +2649,22 @@
     if (kind === 'mark') return `${josa(TONES[w.t].name, '은/는')} ${TONES[w.t].desc}. 그 모양과 닮은 표시를 찾아보세요.`;
     if (kind === 'meaning') return `${josa(w.p, '은/는')} ${josa(TONES[w.t].name, '이에요/예요')}. 배움 노트의 ma 네 친구(mā 엄마 · má 삼 · mǎ 말 · mà 꾸짖다)를 떠올려 보세요.`;
     if (kind === 'gSandhi') return '3성 + 3성이 이어지면 앞 글자는 2성처럼 올려 읽어요.';
-    return w.id === 'g5' || w.id === 'g6' ? NATION_GLOSS : GREET_GLOSS;
+    return (w && w.hint) || GREET_GLOSS;
   }
-  // 1차시: 중국과 중국어 소개 + 성조(+경성). 미션마다 4문제(보스 5문제). 성조 미션은 만난 죽순의 성조로 문제를 냄
+  // 1차시 (11/3 1교시): 4성 + 경성 + 你好 · 你们好 · 老师好 · 中文. 미션마다 4문제(보스 5문제). 죽순 미션은 만난 죽순의 성조로 문제를 냄
+  const LIGHT1 = () => GW.g2;   // 1차시 경성 예시: 你们好의 men
   function lesson1Queue(i) {
-    if (i === 0) return shuffle(['tone', 'mark', 'meaning', 'contour']).map(kind => ({ kind }));
-    if (i === 1) return shuffle([{ kind: 'char', w: pick(MA) }, { kind: 'pinyin', w: pick(MA) }, { kind: 'tone', w: pick(MA) }, { kind: 'meaning', w: pick(MA) }]);
-    if (i === 2) return shuffle([{ kind: 'gMeaning', w: GW.g5 }, { kind: 'gChar', w: GW.g6 }, { kind: 'gPinyin', w: pick([GW.g5, GW.g6]) }, { kind: 'basic' }]);
-    return [{ kind: 'tone', w: pick(MA) }, { kind: 'contour', w: pick(MA) }, { kind: 'basic' }, { kind: pick(['n2', 'n3']) }, { kind: 'gChar', w: pick([GW.g5, GW.g6]) }];
+    if (i === 0) return shuffle(['tPy', 'tListen', 'tMark', 'tContour']).map(kind => ({ kind }));
+    if (i === 1) return shuffle([{ kind: 'tOrder' }, { kind: 'tListen', w: pick(MA) }, { kind: 'tPy', neutral: true }, { kind: 'tPy', w: pick(MA) }]);
+    if (i === 2) { const ks = shuffle(['gMeaning', 'gChar', 'gSit', 'gListen']); return shuffle(LESSON1).map((w, k) => ({ kind: ks[k] === 'gSit' && !w.sit ? 'gChar' : ks[k], w })); }
+    return [{ kind: 'tListen', w: pick(MA) }, { kind: 'tOrder' }, { kind: 'gSit', w: pick(LESSON1.filter(x => x.sit)) }, { kind: 'nlight', w: LIGHT1() }, { kind: 'gChar', w: GW.g10 }];
   }
-  // 2차시: 你好 · 老师好 · 谢谢 · 再见 (+경성)
+  // 2차시 (11/3 2교시): 谢谢 · 不客气 · 对不起 · 没关系 · 再见 · 晚安 · 早上好
+  const LIGHT2 = () => pick(LESSON2.filter(x => x.syl));
   function lesson2Queue(i) {
-    const [a, b2] = i === 0 ? [GW.g1, GW.g3] : [GW.g7, GW.g8];
-    if (i < 2) return shuffle([{ kind: 'gMeaning', w: a }, { kind: 'gChar', w: b2 }, { kind: 'gSit', w: pick([a, b2]) }, { kind: 'gPinyin', w: pick([a, b2]) }]);
-    if (i === 2) return shuffle([{ kind: 'gSit', w: pick(LESSON2) }, { kind: 'gSandhi', w: GW.g1 }, { kind: 'gListen', w: pick(LESSON2) }, { kind: 'gChar', w: pick(LESSON2) }]);
-    return [{ kind: 'gSit', w: pick(LESSON2) }, { kind: 'gMeaning', w: pick(LESSON2) }, { kind: pick(['n1', 'n4']) }, { kind: 'gListen', w: pick(LESSON2) }, { kind: 'gChar', w: pick(LESSON2) }];
+    const set = i === 0 ? [GW.g7, GW.g11] : i === 1 ? [GW.g12, GW.g13] : i === 2 ? [GW.g8, GW.g14, GW.g15] : LESSON2;
+    if (i < 3) { const ks = shuffle(['gMeaning', 'gChar', 'gSit', 'gListen']); return ks.map((kind, k) => ({ kind, w: set[k % set.length] })); }
+    return [{ kind: 'gSit', w: pick(LESSON2) }, { kind: 'gMeaning', w: pick(LESSON2) }, { kind: 'nlight', w: LIGHT2() }, { kind: 'gListen', w: pick(LESSON2) }, { kind: 'gChar', w: pick(LESSON2) }];
   }
   function forestQuestion(m) {
     if (quick.on || m.mission === undefined) return freeQuestion(m);
@@ -2641,7 +2673,8 @@
   }
   function forestBuild(e, m = {}) {
     if (e.kind === 'basic') { const q = basicQuestion(); q.hint = BASIC_HINT[+q.key.slice(5)] || ''; return q; }
-    if (NEUTRAL[e.kind]) { const q = NEUTRAL[e.kind](); q.key = e.kind; return q; }
+    if (NEUTRAL[e.kind]) { const q = NEUTRAL[e.kind](e.w); q.key = e.kind + (e.w ? e.w.id : ''); q.word = e.w; return q; }
+    if (TONEQ[e.kind]) { const w = e.w || (e.neutral ? MA0 : MA[(m.tone || 1) - 1]); const q = TONEQ[e.kind](w); q.key = e.kind + w.id; return q; }
     const w = e.w || MA[(m.tone || 1) - 1];
     const q = BUILD[e.kind](w, MA); q.key = e.kind + w.id; q.word = w; q.hint = forestHint(e.kind, w);
     return q;
@@ -2724,8 +2757,8 @@
     if (quiz.q !== q) return;
     q.readMode = on;
     const w = q.listen;
-    $('qPrompt').textContent = on ? '이 병음에 맞는 표현을 고르세요.' : q.listenPrompt;
-    $('qShow').innerHTML = on ? `<span class="py big t${w.t}">${w.p}</span>` : ''; $('qShow').hidden = !on;
+    $('qPrompt').textContent = on ? (q.readPrompt || '이 병음에 맞는 표현을 고르세요.') : q.listenPrompt;
+    $('qShow').innerHTML = on ? `<span class="py big${q.plainRead ? '' : ` t${w.t}`}">${w.p}</span>` : ''; $('qShow').hidden = !on;
     $('btnListenAgain').hidden = on;
     $('btnReadMode').textContent = on ? '🔊 듣고 풀기로 바꾸기' : '📖 소리가 안 들려요 → 읽고 풀기';
     wrapPinyin($('qShow'));
@@ -2795,6 +2828,7 @@
         $('qRes').innerHTML = `정답이에요! 경험치 +${exp}${bonus}`;
       }
       $('qFb').className = 'qfb ok';
+      if (pyFirst() && w && w.p) $('qRes').innerHTML += `<br>🗣 큰 소리로 따라 말해 보세요: <span class="py">${w.p}</span>!`;
       if (canSkill()) $('qRes').innerHTML += '<br>⚡ 대나무 번개를 쓸 수 있어요!';
     } else {
       SFX.wrong(); streak = 0; save.wrong++;
@@ -2841,7 +2875,7 @@
   function report(event, extra = {}) {
     if (!RESULT_URL || !run || PREVIEW) return;
     const body = {
-      time: new Date().toISOString(), name: save.playerName || '(이름 없음)', lesson: STAGE.lessonNo, stage: STAGE.id, event,
+      time: new Date().toISOString(), name: save.playerName || '(이름 없음)', lesson: `${STAGE.lessonNo} (${STAGE.label || ''})`, stage: STAGE.id, event,
       firstTry: run.firstTry, asked: run.asked, wrong: (run.wrongs || []).join(' | '), secs: Math.round((performance.now() - run.start) / 1000),
       level: save.level, device: isTouch() ? '모바일' : 'PC', ...extra,
     };
@@ -2963,8 +2997,9 @@
     const last = lv.length - 1;
     return `<svg viewBox="0 0 200 76" role="img" aria-label="${TONES[t].name} 높이 그래프 ${TONES[t].chaoText}">${grid}<polyline points="${pts}" fill="none" stroke="${TONES[t].hex}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="${X0 + (X1 - X0)}" cy="${yOf(lv[last])}" r="5" fill="${TONES[t].hex}"/></svg>`;
   }
+  const LX = { h: '谢谢', p: 'xiè<b>xie</b>', say: '谢谢', ko: '뒤의 xie가 경성이에요' };
   function buildLesson() {
-    $('lessonTitle').textContent = `배움 노트 · ${STAGE.lessonNo}`;
+    $('lessonTitle').textContent = `배움 노트 · ${STAGE.label || STAGE.lessonNo}`;
     const s1 = STAGE.lessonView === 's1';
     $('lessonS1').hidden = !s1; $('lessonS3').hidden = s1; $('lessonNote1').hidden = !s1;
     if (!s1) {
@@ -2998,8 +3033,8 @@
     }).join('') + `<div class="tcard">
         <div class="top"><span class="tname t0">경성</span><span class="chao">표시 없음</span></div>
         <div class="desc">성조 표시가 없는 소리예요. <b>짧고 가볍게</b> 읽어요.</div>
-        <div class="ex"><span class="han" style="white-space:nowrap">谢谢</span><div><span class="py t0">xiè<b>xie</b></span><div class="ko">뒤의 xie가 경성이에요</div></div></div>
-        <div class="bt"><button class="btn small" data-say="谢谢">🔊 발음 듣기</button></div>
+        <div class="ex"><span class="han" style="white-space:nowrap">${(STAGE.lightExample || LX).h}</span><div><span class="py t0">${(STAGE.lightExample || LX).p}</span><div class="ko">${(STAGE.lightExample || LX).ko}</div></div></div>
+        <div class="bt"><button class="btn small" data-say="${(STAGE.lightExample || LX).say}">🔊 발음 듣기</button></div>
       </div>`;
     $('lessonS1Sub').textContent = STAGE.noteWordsTitle || '표현';
     $('greetCards').innerHTML = (STAGE.noteWords || GREET).map(w => `<div class="gcard">${hanHTML(w)}<div class="txt"><div class="py t0">${w.p}</div><div class="ko">${w.ko}</div></div><button class="btn small" data-say="${w.h}">발음 듣기</button></div>`).join('');
@@ -3218,12 +3253,12 @@
       return `<button class="stagecard${id === selStage ? ' sel' : ''}" data-stage="${id}" aria-pressed="${id === selStage}">
         ${st.isNew && !stars ? '<span class="sc-new">NEW</span>' : ''}
         <canvas width="16" height="16" data-ico="${id}"></canvas>
-        <span class="sc-num">${st.lessonNo}${st.status !== 'ready' ? ' · 미리보기' : ''}</span>
+        <span class="sc-num">${st.label || st.lessonNo}${st.status !== 'ready' ? ` · 미리보기(${st.lessonNo})` : ''}</span>
         <span class="sc-title">${st.short}</span>
         <span class="sc-topic">${st.topic}</span>
         <span class="sc-stars" aria-label="별 ${stars}개">${'★'.repeat(stars)}<span class="off">${'★'.repeat(3 - stars)}</span></span>
       </button>`;
-    }).join('') + (PREVIEW ? '' : '<div class="stagecard locked" aria-disabled="true"><span class="sc-lock">🔒</span><span class="sc-title">다음 차시</span><span class="sc-topic">준비 중이에요</span></div>');
+    }).join('') + (PREVIEW ? '' : '<div class="stagecard locked" aria-disabled="true"><span class="sc-lock">🔒</span><span class="sc-title">다음 수업</span><span class="sc-topic">준비 중이에요</span></div>');
     $('stagePick').querySelectorAll('canvas[data-ico]').forEach(c => {
       const T = THEMES[STAGES[c.dataset.ico].theme], spr = SKINS[T.skins[0]].spr({ tone: 1 });
       c.width = spr.width; c.height = spr.height; c.getContext('2d').drawImage(spr, 0, 0);
@@ -3404,7 +3439,7 @@
   function fillGrid(items) { $('rGrid').innerHTML = items.map(([v, l]) => `<div><b>${v}</b><span>${l}</span></div>`).join(''); }
   function resultBase() {
     $('rStars').hidden = true; $('rList').hidden = true; $('rName').hidden = true; $('rNums').hidden = true; $('rWrong').hidden = true;
-    $('rDate').textContent = `${save.playerName ? save.playerName + ' · ' : ''}${STAGE.lessonNo} · ${new Date().toLocaleDateString('ko-KR')}`;
+    $('rDate').textContent = `${save.playerName ? save.playerName + ' · ' : ''}${STAGE.label || STAGE.lessonNo}`;
   }
   function openResultPanel() {
     $('result').hidden = false; $('result').scrollTop = 0; $('result').querySelector('.card').focus({ preventScroll: true });
