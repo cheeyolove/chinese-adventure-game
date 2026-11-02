@@ -85,6 +85,10 @@
   .exp .fill { background: linear-gradient(#ffe48a, #e9ad19); }
   .track span { position: relative; display: block; text-align: center; font-size: 11px; line-height: 12px; color: #fff; text-shadow: 0 1px 0 #000, 1px 0 0 #000, -1px 0 0 #000, 0 -1px 0 #000; font-variant-numeric: tabular-nums; font-family: var(--font-pinyin); font-weight: 700; }
   .mp-rec .sbtn { align-self: flex-start; margin-top: 2px; background: var(--night-3); color: var(--paper); border: 2px solid #3d5a8a; border-radius: 8px; padding: 3px 10px 4px; font-size: 13px; }
+  #fireworks { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 65; pointer-events: none; }
+  #cheer { position: fixed; left: 50%; top: 22%; transform: translate(-50%, -50%); z-index: 66; pointer-events: none; font-family: var(--font-display); font-size: clamp(30px, 7vw, 64px); color: #fff; text-shadow: 0 4px 0 var(--ink), 0 0 18px rgba(246,196,69,.8); white-space: nowrap; animation: cheerpop .5s ease-out; }
+  @keyframes cheerpop { from { transform: translate(-50%, -50%) scale(.4); opacity: 0; } to { transform: translate(-50%, -50%) scale(1); opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { #cheer { animation: none; } }
   #notice { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); z-index: 60; max-width: calc(100% - 32px); background: var(--ink); color: var(--paper); border: 3px solid var(--gold); border-radius: 12px; padding: 10px 16px 11px; font-family: var(--font-display); font-size: 16px; text-align: center; box-shadow: 0 6px 0 rgba(0,0,0,.3); pointer-events: none; }
   #focusHint { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(19, 34, 58, .55); font-family: var(--font-display); font-size: clamp(14px, 2.4vw, 22px); color: var(--paper); cursor: pointer; }
 
@@ -271,6 +275,8 @@
   .stagecard .sc-topic { font-size: 14px; color: var(--ink-soft); }
   .stagecard .sc-stars { font-size: 18px; letter-spacing: 2px; color: var(--gold); text-shadow: 0 1px 0 var(--ink); }
   .stagecard .sc-stars .off { color: #cfd8d3; text-shadow: none; }
+  .stagecard.locked { background: var(--paper-2); color: var(--ink-soft); border-style: dashed; box-shadow: none; justify-content: center; cursor: default; }
+  .stagecard .sc-lock { font-size: 30px; line-height: 46px; }
   .stagecard.sel { background: var(--jade-soft); border-color: var(--jade); box-shadow: 0 4px 0 var(--jade), 0 0 0 3px var(--jade); }
   .formula { display: flex; flex-direction: column; gap: 8px; background: var(--paper-2); border-radius: 12px; padding: 12px 14px; margin: 12px 0; }
   .formula .frow { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
@@ -368,12 +374,14 @@
 </div>
 
 <div id="notice" role="status" aria-live="polite" hidden></div>
+<canvas id="fireworks" aria-hidden="true"></canvas>
+<div id="cheer" role="status" hidden></div>
 
 <!-- 시작 화면: "어느 지역을 탐험할까?" 하나만 -->
 <div class="overlay" id="startScreen">
   <div class="card start" tabindex="-1">
     <div class="st-top">
-      <div class="profile" title="내 판다"><canvas id="titlePanda" width="16" height="16"></canvas><span>Lv.<b id="pfLv">1</b></span><span><img id="pfCoinIcon" alt="코인"><b id="pfCoin">0</b></span></div>
+      <div class="profile" title="내 판다"><canvas id="titlePanda" width="16" height="16"></canvas><b id="pfName"></b><span>Lv.<b id="pfLv">1</b></span><span><img id="pfCoinIcon" alt="코인"><b id="pfCoin">0</b></span></div>
       <button class="iconbtn" id="btnSettings" aria-label="설정" title="설정">⚙</button>
     </div>
     <h1><small>熊猫探险队</small>판다 탐험대</h1>
@@ -383,7 +391,6 @@
     <button class="linkbtn" id="btnNewRun" hidden>처음부터 새 탐험</button>
     <div class="submodes">
       <button class="btn small" id="btnLearnFirst">📖 배움 노트</button>
-      <button class="btn small" id="btnQuick">⚡ 빠른 퀴즈</button>
     </div>
   </div>
 </div>
@@ -396,6 +403,7 @@
       <button class="btn" id="setSound">🔊 소리: 켜짐</button>
       <button class="btn" id="setMusic">🎵 배경음악: 켜짐</button>
       <button class="btn" id="setHelp">❔ 조작 방법 보기</button>
+      <button class="btn" id="setName">✏️ 내 이름 바꾸기</button>
     </div>
     <ul class="reclist" id="recList"></ul>
     <button class="btn small danger" id="btnReset">🗑 저장된 기록 지우기</button>
@@ -412,6 +420,19 @@
       <button class="btn primary" id="resetNo">아니요, 그대로 둘래요</button>
       <button class="btn red" id="resetYes">네, 지울게요</button>
     </div>
+  </div>
+</div>
+
+<!-- 이름 쓰기 (처음 한 번) -->
+<div class="overlay" id="nameAsk" hidden>
+  <div class="card start" tabindex="-1">
+    <h2 style="font-size:26px">이름을 써 주세요</h2>
+    <p class="saveinfo">선생님이 탐험 결과를 볼 때 쓰여요.</p>
+    <input id="playerName" maxlength="12" autocomplete="off" placeholder="예: 김민준 3번" style="font-family:var(--font-display);font-size:22px;border:3px solid var(--ink);border-radius:12px;padding:8px 14px;width:min(320px,100%);text-align:center;background:#fff;color:var(--ink)">
+    <div class="row">
+      <button class="btn primary big" id="nameOk">확인</button>
+    </div>
+    <button class="linkbtn" id="nameSkip">이름 없이 할래요</button>
   </div>
 </div>
 
@@ -476,7 +497,7 @@
     <div id="lessonS1">
     <p class="lintro"><b>병음</b>(拼音 <span class="py">pīnyīn</span>)은 중국어 소리를 알파벳으로 적은 거예요. 모음 위에 붙은 작은 표시가 <b>성조</b>, 즉 소리의 높낮이예요. 똑같은 <span class="py">ma</span>라도 성조가 바뀌면 뜻이 완전히 달라져요!</p>
     <div class="tones" id="toneCards"></div>
-    <h3 class="lsub">1차시 표현<small>‘발음 듣기’로 따라 말해 보세요</small></h3>
+    <h3 class="lsub"><span id="lessonS1Sub">중국과 중국어</span><small>‘발음 듣기’로 따라 말해 보세요</small></h3>
     <div class="gcards" id="greetCards"></div>
     </div>
     <p class="lnote" id="lessonNote1">그래프는 목소리 높이를 1(가장 낮음)부터 5(가장 높음)까지 나눈 거예요. 3성은 실제 대화에서 끝을 올리지 않고 낮게만 소리 내는 경우가 많아요.</p>
@@ -519,6 +540,7 @@
     <div class="rsub" id="rScoreLabel">맞힌 문제</div>
     <div class="rgrid" id="rGrid"></div>
     <ul class="rlines" id="rList" hidden></ul>
+    <ul class="rlines" id="rWrong" hidden></ul>
     <div class="rname" id="rName" hidden></div>
     <div class="rnums" id="rNums" hidden>
       <div class="rnums-title">오늘 배운 숫자 · 한자를 눌러 보세요</div>
@@ -584,7 +606,7 @@
 
   // Google Fonts (한자는 필요한 글자만 받아옴)
   (function loadFonts() {
-    const han = '熊猫探险队妈麻马骂你们好老师同学中国汉语拼音文我叫什么名字。？！一二三四五六七八九十';
+    const han = '熊猫探险队妈麻马骂你们好老师同学中国汉语拼音文我叫什么名字谢再见。？！一二三四五六七八九十';
     // 병음용: 알파벳·성조 모음·숫자만 받아서 파일이 아주 작음
     const py = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜüĀÁǍÀĒÉĚÈĪÍǏÌŌÓǑÒŪÚǓÙÜ0123456789 .,?!’\'-/()%…:→ˉˊˇˋ';
     for (const href of [
@@ -633,12 +655,15 @@
   const numOf = (v) => NUMS[v - 1];
   const GREET = [
     { id: 'g1', h: '你好', p: 'nǐ hǎo', t: 0, ko: '안녕(하세요)', note: '3성이 두 번 이어지면 앞 글자는 2성처럼 읽어요. 그래서 실제 소리는 ní hǎo예요.', sit: '친구를 만났을 때 하는 인사는?' },
-    { id: 'g2', h: '你们好', p: 'nǐmen hǎo', t: 0, ko: '여러분, 안녕하세요', note: '们 men은 "~들"이라는 뜻이에요. 여러 사람에게 한꺼번에 인사할 때 써요.', sit: '친구 여러 명에게 한꺼번에 인사할 때는?' },
     { id: 'g3', h: '老师好', p: 'lǎoshī hǎo', t: 0, ko: '선생님, 안녕하세요', note: '老师 lǎoshī는 "선생님"이에요. 선생님께 인사할 때 써요.', sit: '선생님께 인사할 때는?' },
-    { id: 'g4', h: '同学们好', p: 'tóngxuémen hǎo', t: 0, ko: '학생 여러분, 안녕하세요', note: '同学 tóngxué는 "학생, 같은 반 친구"예요. 선생님이 학생들에게 인사할 때 써요.', sit: '선생님이 반 학생들에게 하는 인사는?' },
     { id: 'g5', h: '中国', p: 'Zhōngguó', t: 0, ko: '중국', note: '中 zhōng은 "가운데", 国 guó는 "나라"라는 뜻이에요.' },
     { id: 'g6', h: '汉语', p: 'Hànyǔ', t: 0, ko: '중국어', note: '중국어를 汉语 Hànyǔ라고 해요. 中文 Zhōngwén이라고도 해요.' },
+    // 2차시 (선생님 확정: 谢谢·再见 추가, 你们好·同学们好 삭제)
+    { id: 'g7', h: '谢谢', p: 'xièxie', t: 0, ko: '고마워요', note: '고마울 때 하는 말이에요. 뒤의 xie는 성조 표시 없이 짧고 가볍게 읽어요(경성).', sit: '친구가 선물을 줬을 때 하는 말은?' },
+    { id: 'g8', h: '再见', p: 'zàijiàn', t: 0, ko: '잘 가요, 안녕히 계세요', note: '헤어질 때 하는 인사예요. 再 zài는 ‘다시’, 见 jiàn은 ‘만나다’라는 뜻이에요.', sit: '친구와 헤어질 때 하는 인사는?' },
   ];
+  const GW = Object.fromEntries(GREET.map(w => [w.id, w]));
+  const LESSON2 = ['g1', 'g3', 'g7', 'g8'].map(id => GW[id]);
 
   // ================= 유틸 =================
   function mulberry32(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
@@ -692,7 +717,7 @@
   const josa = (word, pair) => `${word}${pp(word, pair)}`;
   // 숫자가 아닌 한자의 소리 (게임에 나오는 글자)
   const HAN_PY = { '妈': 'mā', '麻': 'má', '马': 'mǎ', '骂': 'mà', '我': 'wǒ', '你': 'nǐ', '叫': 'jiào', '什': 'shén', '么': 'me', '名': 'míng', '字': 'zi',
-    '们': 'men', '好': 'hǎo', '老': 'lǎo', '师': 'shī', '同': 'tóng', '学': 'xué', '中': 'zhōng', '国': 'guó', '汉': 'hàn', '语': 'yǔ', '文': 'wén', '拼': 'pīn', '音': 'yīn' };
+    '们': 'men', '好': 'hǎo', '老': 'lǎo', '师': 'shī', '同': 'tóng', '学': 'xué', '中': 'zhōng', '国': 'guó', '汉': 'hàn', '语': 'yǔ', '文': 'wén', '拼': 'pīn', '音': 'yīn', '谢': 'xiè', '再': 'zài', '见': 'jiàn' };
   const pyHTML = (w) => `<span class="py t${w.t}">${w.p}</span>`;
   const hanHTML = (w) => `<span class="han">${w.h}</span>`;
 
@@ -932,6 +957,61 @@
     R(0, 10, 4, 5, K); R(1, 11, 2, 3, C); R(18, 10, 4, 5, K); R(19, 11, 2, 3, C);
     R(6, 17, 4, 4, K); R(12, 17, 4, 4, K); R(7, 17, 2, 3, Pd); R(13, 17, 2, 3, Pd);
   });
+  // 인사 꽃밭(2차시): 꽃봉오리 · 꿀벌 · 중간보스 인사 달팽이 · 보스 꽃의 여왕
+  const BUD = makeSprite([
+    '....kk..kk....',
+    '...kPPkkPPk...',
+    '..kPPPPPPPPk..',
+    '..kPLPPPPPPk..',
+    '.kPPkkPPkkPPk.',
+    '.kPPkePPkePPk.',
+    '.kPpPPkkPPpPk.',
+    '..kPPPPPPPPk..',
+    '...kkPPPPkk...',
+    '.....kGGk.....',
+    '..kGGkkGkkGGk.',
+    '...kGGGGGGk...',
+    '....kkGGkk....',
+    '....kk..kk....',
+  ], { k: '#3a1d2b', P: '#ff8fb8', L: '#ffd1e3', G: '#5ebf57', e: '#ffffff', p: '#ff5d8a' });
+  const BEE = makeSprite([
+    '....k......k....',
+    '.....k....k.....',
+    '....kkkkkkkk....',
+    '.WWkYYYYYYYYkWW.',
+    'WWWkYkkYYkkYkWWW',
+    'WWWkYkeYYkeYkWWW',
+    '.WWkYYYYYYYYkWW.',
+    '...kNNNNNNNNk...',
+    '...kYpYYYYpYk...',
+    '...kNNNNNNNNk...',
+    '....kYYYYYYk....',
+    '.....kkkkkk.....',
+    '.......kk.......',
+  ], { k: '#2b2420', Y: '#ffd23f', N: '#3a2f20', W: '#cfeeff', e: '#ffffff', p: '#ff9fb2' });
+  const SNAIL = pixArt(22, 17, (R) => {      // 인사 달팽이: 등에 꽃을 단 분홍 껍데기
+    const K = '#2b1d2b', B = '#c8e88f', Bd = '#9cc865', S = '#ff8fb8', Sd = '#c2557f', Sl = '#ffd1e3', Y = '#ffd23f';
+    R(1, 12, 20, 4, K); R(2, 12, 18, 3, B); R(2, 14, 18, 1, Bd);
+    R(15, 5, 7, 8, K); R(16, 6, 5, 7, B);
+    R(16, 1, 1, 5, K); R(20, 1, 1, 5, K); R(15, 0, 3, 2, K); R(19, 0, 3, 2, K); R(16, 0, 1, 1, '#ffffff'); R(20, 0, 1, 1, '#ffffff');
+    R(17, 10, 3, 1, K); R(16, 9, 1, 1, '#ff9fb2'); R(20, 9, 1, 1, '#ff9fb2');
+    R(4, 2, 9, 1, K); R(2, 3, 13, 9, K); R(3, 12, 11, 1, K);
+    R(4, 3, 9, 1, S); R(3, 4, 11, 8, S); R(4, 4, 3, 2, Sl);
+    R(6, 6, 5, 1, Sd); R(6, 6, 1, 4, Sd); R(6, 10, 6, 1, Sd); R(11, 7, 1, 4, Sd); R(8, 8, 3, 1, Sd);
+    R(7, 0, 1, 1, Y); R(9, 0, 1, 1, Y); R(8, 1, 1, 1, '#ff5d8a'); R(7, 1, 1, 1, Y); R(9, 1, 1, 1, Y); R(8, 0, 1, 1, Y);
+  });
+  const QUEEN = pixArt(26, 28, (R) => {      // 꽃의 여왕: 금관을 쓴 큰 꽃
+    const K = '#2b1d2b', P = '#ff8fb8', Pd = '#e0608f', Pl = '#ffd1e3', Y = '#ffd23f', Yd = '#e8ac16', G = '#5ebf57', Gd = '#3f9442', Gold = '#f6c445';
+    R(9, 0, 1, 2, Gold); R(12, 0, 2, 2, Gold); R(16, 0, 1, 2, Gold); R(9, 2, 8, 2, Gold); R(8, 3, 10, 1, K);
+    const pet = (x, y, w, h) => { R(x, y, w, h, K); R(x + 1, y + 1, w - 2, h - 2, P); R(x + 1, y + 1, 2, 1, Pl); };
+    pet(9, 3, 8, 5); pet(9, 16, 8, 5); pet(2, 8, 6, 8); pet(18, 8, 6, 8); pet(4, 4, 6, 6); pet(16, 4, 6, 6); pet(4, 14, 6, 6); pet(16, 14, 6, 6);
+    R(7, 6, 12, 12, K); R(8, 7, 10, 10, Y); R(8, 15, 10, 2, Yd);
+    R(9, 9, 3, 3, '#ffffff'); R(14, 9, 3, 3, '#ffffff'); R(10, 10, 2, 2, K); R(15, 10, 2, 2, K);
+    R(11, 14, 4, 1, K); R(9, 13, 1, 1, '#ff5d8a'); R(16, 13, 1, 1, '#ff5d8a');
+    R(12, 21, 2, 5, Gd);
+    R(5, 20, 7, 3, K); R(6, 21, 5, 1, G); R(14, 20, 7, 3, K); R(15, 21, 5, 1, G);
+    R(8, 25, 10, 3, K); R(9, 25, 8, 2, '#c96f3b'); R(9, 25, 8, 1, '#e08a52');
+  });
   // skin: 그림 + 터질 때 색 (scale: 화면에 몇 배로 그릴지)
   const SKINS = {
     shoot: { spr: (m) => SHOOT[m.tone || 1], fx: (m) => [JELLY_COLORS[m.tone || 1].C, '#f3dfa0', '#ffffff'] },
@@ -947,6 +1027,10 @@
     bslime: { spr: () => BSLIME, fx: () => ['#6fd06a', '#c8f5b0', '#c98c52', '#ffffff'] },
     mscroll: { spr: () => MSCROLL, fx: () => ['#fbf1d6', '#f6c445', '#e5484d', '#ffffff'] },
     cgolem: { spr: () => CGOLEM, fx: () => ['#9b7bff', '#5fd0e6', '#e2d6ff', '#ffffff'] },
+    bud: { spr: () => BUD, fx: () => ['#ff8fb8', '#ffd1e3', '#5ebf57', '#ffffff'] },
+    bee: { spr: () => BEE, fx: () => ['#ffd23f', '#cfeeff', '#ffffff'] },
+    snail: { spr: () => SNAIL, fx: () => ['#ff8fb8', '#c8e88f', '#ffd23f', '#ffffff'] },
+    queen: { spr: () => QUEEN, fx: () => ['#ff8fb8', '#ffd23f', '#5ebf57', '#ffffff'], boss: true },
   };
   const isBig = (m) => m.type === 'boss' || m.type === 'mid';
   const skinOf = (m) => SKINS[m.skin] || (m.type === 'boss' ? SKINS.guardian : SKINS.mushroom);
@@ -1033,6 +1117,21 @@
       ],
       // 8칸 한 마디의 리듬: k 북, w 목탁, t 작은 소리
       drums: { vol: 1, bar: 'k t w t k t w w' },
+    },
+    garden: {
+      bpm: 132,
+      tracks: [
+        { inst: 'pluck', vol: 0.075, notes:
+          'C5 D5 F5 . A5 G5 F5 .  D5 F5 G5 . F5 D5 C5 .  A4 C5 D5 F5 G5 . F5 D5  F5 _ D5 C5 A4 _ C5 . ' +
+          'F5 . G5 . A5 . C6 A5  G5 F5 D5 F5 G5 _ . .  A5 G5 F5 D5 C5 D5 F5 G5  F5 _ C5 . F5 . . . ' },
+        { inst: 'soft', vol: 0.04, notes:
+          'F4 A4 C5 A4 F4 A4 C5 A4  A#3 D4 F4 D4 A#3 D4 F4 D4  D4 F4 A4 F4 D4 F4 A4 F4  C4 E4 G4 E4 C4 E4 G4 E4 ' +
+          'F4 A4 C5 A4 F4 A4 C5 A4  A#3 D4 F4 D4 A#3 D4 F4 D4  D4 F4 A4 F4 C4 E4 G4 E4  F4 A4 C5 A4 F4 . . . ' },
+        { inst: 'bass', vol: 0.12, notes:
+          'F2 . C3 . F2 . C3 .  A#2 . F3 . A#2 . F3 .  D3 . A2 . D3 . A2 .  C3 . G2 . C3 . G2 . ' +
+          'F2 . C3 . F2 . C3 .  A#2 . F3 . A#2 . F3 .  D3 . A2 . C3 . G2 .  F2 . C3 . F2 . . . ' },
+      ],
+      drums: { vol: 0.85, bar: 'k t w t k w w t' },
     },
     cave: {
       bpm: 146,
@@ -1222,7 +1321,7 @@
   const SAVE_KEY = 'panda-explorers-v1';
   // coins: 지금 가진 코인(나중에 상점에서 쓰는 지갑) · totalEarned: 지금까지 모은 코인 합계
   // coinsEver / dropsEver: 지역별로 이미 받은 동전 번호 (새로고침·홈·새 탐험으로 같은 동전을 또 받지 못하게)
-  const SAVE_DEFAULT = () => ({ level: 1, exp: 0, coins: 0, totalEarned: 0, maxHp: 100, correct: 0, wrong: 0, words: {}, cards: {}, clears: {}, coinsEver: {}, dropsEver: {}, skillEver: {}, skillTip: false, helpSeen: false, bgmOn: true });
+  const SAVE_DEFAULT = () => ({ level: 1, exp: 0, coins: 0, totalEarned: 0, maxHp: 100, correct: 0, wrong: 0, words: {}, cards: {}, clears: {}, coinsEver: {}, dropsEver: {}, skillEver: {}, skillTip: false, helpSeen: false, bgmOn: true, playerName: '', nameSkipped: false });
   const save = SAVE_DEFAULT();
   // 예전 저장(버전 1 초기)에 없던 칸을 안전하게 채움
   function migrateSave() {
@@ -1232,6 +1331,7 @@
     for (const k of ['level', 'exp', 'coins', 'maxHp', 'correct', 'wrong']) if (typeof save[k] !== 'number' || !isFinite(save[k])) save[k] = SAVE_DEFAULT()[k];
     save.coins = Math.max(0, Math.floor(save.coins));
     if (typeof save.bgmOn !== 'boolean') save.bgmOn = true;
+    save.playerName = typeof save.playerName === 'string' ? save.playerName.replace(/[<>&"]/g, '').slice(0, 12) : '';
     save.totalEarned = Math.max(typeof save.totalEarned === 'number' ? save.totalEarned : 0, save.coins);
   }
   function loadSave() {
@@ -1258,6 +1358,14 @@
       plat: 'eave', gate: 'village',
       paifang: { pillar: '#b8262c', hi: '#e0504f', roof: '#2a2f3d', roof2: '#4a5268', plate: '#f6c445' },
       skins: ['scroll', 'scroll', 'lantern', 'brush'], mid: 'mscroll',
+    },
+    garden: {
+      sky: ['#79b8ec', '#cfe8f7', '#ffe3ee'], sun: true, clouds: true,
+      far: ['#c9dcef', '#b3cde6'], hill: ['#82c784', '#a5dca3'], hills: 'pavilion', near: 'blossom',
+      ground: { top: '#6fcf6a', hi: '#9be58f', edge: '#46a048', dirt: '#a8754d', d1: '#966641', d2: '#c4946a', deco: 'petal' },
+      plat: 'wood', gate: 'hedge',
+      paifang: { pillar: '#e8689a', hi: '#ff9fc3', roof: '#6a3f86', roof2: '#9a6ac0', plate: '#fff0a8' },
+      skins: ['bud', 'bee', 'bud', 'queen'], mid: 'snail',
     },
     cave: {
       sky: ['#120e26', '#2a1f52', '#4b3683'], sun: false, clouds: false,
@@ -1304,29 +1412,55 @@
   const FOREST_WORDS = Object.fromEntries([...MA, ...GREET].map(w => [w.id, w]));
   const STAGES = {
     bamboo: {
-      id: 'bamboo', lessonNo: '1~2차시', title: '1지역 대나무 언덕', short: '대나무 언덕', topic: '성조 · 인사말', mapName: '대나무 언덕', theme: 'forest', lessonView: 's1',
+      id: 'bamboo', status: 'ready', lessonNo: '1차시', title: '1차시 대나무 언덕', short: '대나무 언덕', topic: '중국 · 중국어 · 성조', mapName: '대나무 언덕', theme: 'forest', lessonView: 's1',
       ...LAYOUT,
       monsters: layoutMonsters([
         ['1성 죽순', '2성 죽순', '3성 죽순', '4성 죽순'],
-        ['인사 버섯', '인사 버섯', '꼭대기 버섯', '문지기 버섯'],
+        ['성조 버섯', '성조 버섯', '꼭대기 버섯', '문지기 버섯'],
         ['나라 버섯', '나라 버섯', '꼭대기 버섯', '문지기 버섯'],
       ], { name: '숲의 수호자', hp: 5 }, { name: '대나무 수호 슬라임' }, (i, k) => i === 0 ? { tone: k + 1, bubble: 'tone' } : {}),
       gates: layoutGates(['죽순 문', '버섯 문', '숲속 문', '수호자의 문']),
       missions: [
         { label: '성조 ˉ ˊ ˇ ˋ', zone: '죽순 길', cards: ['ma1', 'ma2', 'ma3', 'ma4'] },
-        { label: '你好 · 老师好', zone: '인사 숲', cards: ['g1', 'g2', 'g3', 'g4'] },
+        { label: '성조 · 경성', zone: '성조 숲', cards: [] },
         { label: '中国 · 汉语', zone: '나라 숲', cards: ['g5', 'g6'] },
         { label: '숲의 수호자', zone: '수호자의 문', cards: [], boss: true },
       ],
       finalText: '수호자의 문', decorate: decorateBamboo,
-      words: FOREST_WORDS, cardOrder: [...MA, ...GREET].map(w => w.id), cardName: '배움 카드', bossFinale: 'none',
-      qgen: (m) => forestQuestion(m), makeQueue: (i) => forestQueue(i),
-      // 중간보스 2문제: 성조 1문제 + 인사 1문제 복습
-      midQ: () => [() => forestBuild({ kind: pick(['tone', 'meaning']), w: pick(MA) }), () => forestBuild({ kind: pick(['gSit', 'gMeaning']), w: pick(GREET.slice(0, 4)) })],
-      quickMons: [1, 2, 3, 4].map(t => ({ type: 'mon', skin: 'shoot', tone: t, name: `${t}성 죽순` })).concat([{ type: 'mon', skin: 'mushroom', name: '인사 버섯' }, { type: 'mon', skin: 'mushroom', name: '인사 버섯' }]),
+      words: FOREST_WORDS, cardOrder: ['ma1', 'ma2', 'ma3', 'ma4', 'g5', 'g6'], cardName: '배움 카드', bossFinale: 'none',
+      noteWords: [GW.g5, GW.g6], noteWordsTitle: '중국과 중국어',
+      pool: [GW.g5, GW.g6, ...MA],
+      qgen: (m) => forestQuestion(m), makeQueue: (i) => lesson1Queue(i),
+      // 중간보스 2문제: 경성 1 + 성조 1
+      midQ: () => [() => forestBuild({ kind: pick(['n2', 'n3']) }), () => forestBuild({ kind: pick(['tone', 'meaning']), w: pick(MA) })],
+      quickMons: [1, 2, 3, 4].map(t => ({ type: 'mon', skin: 'shoot', tone: t, name: `${t}성 죽순` })),
+    },
+    greet: {
+      id: 'greet', status: 'ready', lessonNo: '2차시', title: '2차시 인사 꽃밭', short: '인사 꽃밭', topic: '인사말', mapName: '인사 꽃밭', theme: 'garden',
+      ...LAYOUT,
+      monsters: layoutMonsters([
+        ['인사 꽃봉오리', '인사 꽃봉오리', '꼭대기 꽃봉오리', '문지기 꽃봉오리'],
+        ['고마움 꿀벌', '고마움 꿀벌', '꼭대기 꿀벌', '문지기 꿀벌'],
+        ['꽃밭 꽃봉오리', '꽃밭 꽃봉오리', '꼭대기 꽃봉오리', '문지기 꽃봉오리'],
+      ], { name: '꽃의 여왕', hp: 5 }, { name: '인사 달팽이' }),
+      gates: layoutGates(['꽃봉오리 문', '꿀벌 문', '꽃밭 문', '여왕의 문']),
+      missions: [
+        { label: '你好 · 老师好', zone: '만남 길', cards: ['g1', 'g3'] },
+        { label: '谢谢 · 再见', zone: '고마움 숲', cards: ['g7', 'g8'] },
+        { label: '인사 모두', zone: '꽃밭 광장', cards: [] },
+        { label: '꽃의 여왕', zone: '여왕의 문', cards: [], boss: true },
+      ],
+      finalText: '여왕의 문', decorate: decorateGarden,
+      words: GW, cardOrder: ['g1', 'g3', 'g7', 'g8'], cardName: '인사 카드', bossFinale: 'none',
+      noteIntro: '2차시에는 <b>인사말</b>을 배워요. 谢谢 xièxie의 뒤 글자처럼 성조 표시가 없는 소리는 <b>짧고 가볍게</b> 읽어요(경성).',
+      pool: LESSON2,
+      qgen: (m) => forestQuestion(m), makeQueue: (i) => lesson2Queue(i),
+      // 중간보스 2문제: 경성 1 + 인사(谢谢·再见) 1
+      midQ: () => [() => forestBuild({ kind: pick(['n1', 'n4']) }), () => forestBuild({ kind: pick(['gSit', 'gMeaning']), w: pick([GW.g7, GW.g8]) })],
+      quickMons: [{ type: 'mon', skin: 'bud', name: '인사 꽃봉오리' }],
     },
     name: {
-      id: 'name', lessonNo: '3차시', title: '2지역 이름 마을', short: '이름 마을', topic: '이름 묻고 답하기', mapName: '이름 마을', isNew: true, theme: 'village',
+      id: 'name', status: 'draft', lessonNo: '3차시', title: '2지역 이름 마을', short: '이름 마을', topic: '이름 묻고 답하기', mapName: '이름 마을', isNew: true, theme: 'village',
       ...LAYOUT,
       monsters: layoutMonsters([
         ['글자 두루마리', '글자 두루마리', '꼭대기 두루마리', '문지기 두루마리'],
@@ -1348,7 +1482,7 @@
       quickMons: [{ type: 'mon', skin: 'scroll', name: '이름 두루마리' }, { type: 'mon', skin: 'lantern', name: '친구 등불' }],
     },
     number: {
-      id: 'number', lessonNo: '숫자 1~10', title: '3지역 숫자 계곡', short: '숫자 계곡', topic: '숫자 一 ~ 十', mapName: '숫자 계곡', isNew: true, theme: 'cave',
+      id: 'number', status: 'draft', lessonNo: '5차시', title: '3지역 숫자 계곡', short: '숫자 계곡', topic: '숫자 一 ~ 十', mapName: '숫자 계곡', isNew: true, theme: 'cave',
       clearTitle: '숫자 마스터! 1부터 10까지 정복!',
       ...LAYOUT,
       monsters: layoutMonsters([
@@ -1372,7 +1506,10 @@
     },
   };
   // 지역 순서 (시작 화면에 이 순서대로, 준비 안 된 지역은 아예 넣지 않음)
-  const STAGE_ORDER = ['bamboo', 'name', 'number'];
+  // 학생 화면에는 status: 'ready'만 보여요. 주소 끝에 #preview(또는 #preview-지역이름)를 붙이면 선생님 미리보기로 전부 보여요
+  const PREVIEW = /^#preview/i.test(location.hash || '');
+  const ALL_STAGES = ['bamboo', 'greet', 'name', 'number'];
+  const STAGE_ORDER = ALL_STAGES.filter(id => PREVIEW || STAGES[id].status === 'ready');
   let THEME = THEMES.forest;
   let STAGE = STAGES.bamboo, PLATFORMS = STAGE.platforms, CHECKPOINTS = STAGE.checkpoints, gates = [], run = null;
 
@@ -1474,7 +1611,17 @@
     // 가장 앞 레이어: 대나무 / 등불 줄 / 종유석과 빛나는 수정
     {
       const f = 0.6, c = layerCanvas(f), g = c.getContext('2d'), r = mulberry32(5);
-      if (T.near === 'lanterns') {
+      if (T.near === 'blossom') {   // 벚꽃 나무
+        for (let x = 20; x < c.width; x += 90 + r() * 80) {
+          const top = 110 + Math.floor(r() * 50), cw = 46 + Math.floor(r() * 24);
+          g.fillStyle = '#7a4e3a'; g.fillRect(x + cw / 2 - 4, top + 20, 8, H - top); g.fillStyle = '#946048'; g.fillRect(x + cw / 2 - 4, top + 20, 2, H - top);
+          for (let k = 0; k < 7; k++) {
+            const bx = x + Math.floor(r() * cw) - 10, by = top + Math.floor(r() * 36) - 14, bw = 22 + Math.floor(r() * 16);
+            g.fillStyle = k % 3 ? '#ffb7d0' : '#ff95bb'; g.fillRect(bx, by, bw, 16); g.fillRect(bx + 4, by - 4, bw - 8, 24);
+            g.fillStyle = '#ffe0ec'; g.fillRect(bx + 4, by - 2, 6, 4);
+          }
+        }
+      } else if (T.near === 'lanterns') {
         let px = 30;
         while (px < c.width) {
           const nx = px + 150 + Math.floor(r() * 80), top = 70 + Math.floor(r() * 30);
@@ -1571,6 +1718,13 @@
     drawSign(g, 110, ['대나무 언덕', '출발! →'], 84);
     drawPaifang(g, GATE_X[3] + 12, STAGE.finalText);
   }
+  function decorateGarden(g) {
+    drawSign(g, 110, ['인사 꽃밭', '출발! →'], 84);
+    for (const x of [600, 1320, 2040, 2760]) {   // 작은 꽃밭
+      for (let k = 0; k < 6; k++) { const fx = x + k * 9; g.fillStyle = '#3f9442'; g.fillRect(fx + 1, GY - 7, 1, 7); g.fillStyle = pick(['#ff8fb8', '#ffd23f', '#ffffff', '#b38cff']); g.fillRect(fx, GY - 10, 3, 3); }
+    }
+    drawPaifang(g, GATE_X[3] + 12, STAGE.finalText);
+  }
   function decorateName(g) {
     drawSign(g, 110, ['이름 마을', '출발! →'], 84);
     drawHouse(g, 2030); drawHouse(g, 2450);
@@ -1599,7 +1753,8 @@
       g.fillStyle = G.top; g.fillRect(x, GY, 16, 8);
       g.fillStyle = G.hi; g.fillRect(x, GY, 16, 2);
       g.fillStyle = G.edge; g.fillRect(x, GY + 8, 16, 2);
-      if (G.deco === 'grass') {
+      if (G.deco === 'grass' || G.deco === 'petal') {
+        if (G.deco === 'petal' && r() < 0.45) { g.fillStyle = pick(['#ff9fc3', '#ffd1e3', '#ffffff']); g.fillRect(x + Math.floor(r() * 13), GY + 1 + Math.floor(r() * 5), 3, 2); }
         g.fillRect(x + 4, GY + 10, 4, 2); if (r() < 0.5) g.fillRect(x + 11, GY + 10, 2, 2);
         if (r() < 0.35) { g.fillStyle = G.hi; g.fillRect(x + 6, GY - 4, 2, 4); g.fillRect(x + 9, GY - 2, 2, 2); }
         if (r() < 0.12) { const fx = x + 4 + Math.floor(r() * 8); g.fillStyle = G.edge; g.fillRect(fx + 1, GY - 5, 1, 5); g.fillStyle = pick(['#ff8fb1', '#fff2a8', '#ffffff']); g.fillRect(fx, GY - 8, 3, 3); }
@@ -1672,6 +1827,12 @@
         ctx.fillStyle = '#3d7d4f'; for (let y = 10 + i * 7; y < GY; y += 26) ctx.fillRect(bx, y, 8, 3);
       }
       ctx.fillStyle = '#8a5c38'; for (const y of [60, 150, GY - 50]) ctx.fillRect(x - 3, y, gt.w + 6, 5);
+    } else if (gt.kind === 'hedge') {   // 꽃이 핀 초록 울타리
+      ctx.fillStyle = '#2f6b3a'; ctx.fillRect(x - 2, 0, gt.w + 4, GY);
+      ctx.fillStyle = '#4f9a4f'; ctx.fillRect(x, 0, gt.w, GY);
+      ctx.fillStyle = '#6fcf6a'; for (let y = 6; y < GY; y += 14) for (let k = 2; k < gt.w - 2; k += 8) ctx.fillRect(x + k + ((y / 14) % 2 ? 3 : 0), y, 4, 4);
+      ctx.fillStyle = '#ff8fb8'; for (let y = 22; y < GY; y += 36) { ctx.fillRect(x + 6, y, 4, 4); ctx.fillRect(x + 15, y + 18, 4, 4); }
+      ctx.fillStyle = '#ffd23f'; for (let y = 22; y < GY; y += 36) { ctx.fillRect(x + 7, y + 1, 2, 2); ctx.fillRect(x + 16, y + 19, 2, 2); }
     } else if (gt.kind === 'village') {   // 붉은 나무문 + 금색 못 + 작은 기와 지붕
       ctx.fillStyle = '#2a1d14'; ctx.fillRect(x - 2, 0, gt.w + 4, GY);
       ctx.fillStyle = '#b8262c'; ctx.fillRect(x, 0, gt.w, GY);
@@ -1846,6 +2007,31 @@
     ctx.globalAlpha = 1;
   }
 
+  // ================= 칭찬 폭죽 (미션 성공·지역 클리어) =================
+  const FW = { parts: [], until: 0, raf: 0, next: 0 };
+  function celebrate(text, ms = 2200) {
+    const c = $('fireworks'); c.width = innerWidth; c.height = innerHeight;
+    FW.until = performance.now() + ms; FW.next = 0;
+    $('cheer').textContent = text; $('cheer').hidden = false;
+    clearTimeout(FW.t); FW.t = setTimeout(() => { $('cheer').hidden = true; }, ms);
+    [523, 659, 784, 1047, 1319].forEach((f, i) => tone(f, i * 0.07, 0.18, 'triangle', 0.06));
+    if (!FW.raf) FW.raf = requestAnimationFrame(fwFrame);
+  }
+  function fwFrame(now) {
+    const c = $('fireworks'), g = c.getContext('2d'), reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    g.clearRect(0, 0, c.width, c.height);
+    if (now < FW.until && now > FW.next) {   // 0.25초마다 한 번 펑!
+      FW.next = now + (reduce ? 700 : 250);
+      const x = c.width * (0.15 + Math.random() * 0.7), y = c.height * (0.12 + Math.random() * 0.4);
+      const cols = pick([['#f6c445', '#fff0a8'], ['#ff6f86', '#ffc2cc'], ['#62aefc', '#c4e2ff'], ['#4fd08c', '#bff3d6'], ['#b38cff', '#e2d6ff']]);
+      for (let i = 0; i < (reduce ? 16 : 40); i++) { const a = Math.PI * 2 * i / 40, v = 2.5 + Math.random() * 3.5; FW.parts.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, life: 1, col: pick(cols) }); }
+    }
+    for (const p of FW.parts) { p.x += p.vx; p.y += p.vy; p.vy += 0.06; p.vx *= 0.985; p.life -= 0.016; g.globalAlpha = Math.max(0, p.life); g.fillStyle = p.col; g.fillRect(p.x, p.y, 5, 5); }
+    g.globalAlpha = 1;
+    FW.parts = FW.parts.filter(p => p.life > 0);
+    if (now < FW.until || FW.parts.length) FW.raf = requestAnimationFrame(fwFrame); else { FW.raf = 0; g.clearRect(0, 0, c.width, c.height); }
+  }
+
   // ================= 이펙트 =================
   function burst(x, y, colors, n = 14, speed = 160) {
     for (let i = 0; i < n; i++) { const a = rnd(0, Math.PI * 2), v = rnd(speed * 0.3, speed); parts.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 60, life: rnd(0.4, 0.8), max: 0.8, color: pick(colors), size: pick([2, 2, 4]) }); }
@@ -1866,6 +2052,7 @@
     $('corNum').textContent = save.correct;
     $('jobName').textContent = save.level >= 8 ? '전설의 탐험가' : save.level >= 5 ? '베테랑 탐험가' : save.level >= 3 ? '꼬마 탐험가' : '견습 탐험가';
     $('pfLv').textContent = save.level; $('pfCoin').textContent = save.coins;
+    $('pfName').textContent = save.playerName || '';
   }
   let noticeTimer = 0;
   function notice(msg, ms = 2600) {
@@ -1914,6 +2101,7 @@
     if (mode === 'intro') { if (isEnter(c) && !e.repeat) { e.preventDefault(); closeIntro(); } return; }
     if (mode === 'pause') { if ((c === 'Escape' || isEnter(c)) && !e.repeat) { e.preventDefault(); resumeFromPause(); } return; }
     if (mode === 'menu') { if (c === 'Escape' && !e.repeat) closeMenus(); return; }
+    if (mode === 'name') return;
     if (mode === 'lesson') { if (c === 'KeyH' || c === 'Escape') closeLesson(); return; }
     if (mode === 'result') { if ((isEnter(c) || c === 'Escape' || c === 'KeyR') && !e.repeat) { e.preventDefault(); closeResult(); } return; }
     if (mode === 'start') { if (isEnter(c) && e.target === $('startScreen').querySelector('.card')) { e.preventDefault(); startPlay(); } return; }
@@ -2162,7 +2350,9 @@
     return { prompt: b.prompt, show: '', options: order.map(i => ({ html: b.opts[i], correct: i === b.ans })), words: b.words, explain: b.explain, key: 'basic' + BASICS.indexOf(b) };
   }
   // 1차시 인사 표현 문제
-  const four = (w) => shuffle([w, ...shuffle(GREET.filter(x => x !== w)).slice(0, 3)]);
+  // 보기는 그 차시에서 배운 말(STAGE.pool) 안에서만 골라요
+  const poolOf = () => (STAGE && STAGE.pool) || GREET;
+  const four = (w) => shuffle([w, ...shuffle(poolOf().filter(x => x !== w)).slice(0, 3)]);
   const gShow = (w) => `${hanHTML(w)}<div class="meta"><span class="py t0">${w.p}</span></div>`;
   Object.assign(BUILD, {
     gMeaning: (w) => ({
@@ -2182,8 +2372,8 @@
     }),
     gSit: (w) => ({
       prompt: w.sit, show: '', say: w,
-      options: shuffle(GREET.filter(x => x.sit)).map(x => ({ html: `<span class="han">${x.h}</span><span class="py t0">${x.p}</span>`, correct: x === w })),
-      words: GREET.filter(x => x.sit), hl: w,
+      options: shuffle(poolOf().filter(x => x.sit)).map(x => ({ html: `<span class="han">${x.h}</span><span class="py t0">${x.p}</span>`, correct: x === w })),
+      words: poolOf().filter(x => x.sit), hl: w,
       explain: `${w.sit.replace(/\?$/, '')} <b>${w.h} ${w.p}</b>${pp(w.p, '이에요/예요')}. (뜻: ${w.ko})<br>${w.note}`,
     }),
     gSandhi: (w) => ({
@@ -2197,9 +2387,26 @@
       explain: `들은 표현: <b>${w.h} ${w.p}</b> (${w.ko})<br>${w.note}`,
     }),
   });
+  // 경성 문제 (docs/draft-zone1-v2.md 초안). 1차시는 N2·N3, 2차시는 N1·N4
+  const QS = GW.g7;
+  const opt = (html, correct = false) => ({ html, correct });
+  const NEUTRAL = {
+    n1: () => ({ prompt: '이 소리에서 짧고 가볍게 읽는 글자는?', show: gShow(QS), say: QS,
+      options: shuffle([opt('앞 글자 <span class="py">xiè</span>'), opt('뒤 글자 <span class="py">xie</span>', true), opt('두 글자 모두 똑같이 세게')]),
+      hint: '성조 표시가 없는 쪽을 찾아보세요.', explain: 'xièxie의 뒤 글자 xie에는 성조 표시가 없어요. 이렇게 짧고 가볍게 읽는 소리를 경성이라고 해요.', words: [QS] }),
+    n2: () => ({ prompt: '성조 표시가 없고 짧고 가볍게 읽는 소리를 무엇이라고 할까요?', show: '',
+      options: shuffle([opt('경성', true), opt('1성'), opt('3성'), opt('4성')]),
+      hint: '‘가벼울 경(輕)’ 자를 써서 ○성이라고 해요.', explain: '성조 표시가 없는 소리는 경성이에요. 짧고 가볍게 읽어요. 예: 谢谢 xièxie', words: [] }),
+    n3: () => ({ prompt: '경성은 어떻게 읽을까요?', show: '',
+      options: shuffle([opt('짧고 가볍게', true), opt('높게 쭉 길게'), opt('내려갔다가 올라가게'), opt('높은 데서 뚝 떨어지게')]),
+      hint: '표시가 없으니 힘을 빼고 살짝!', explain: '경성은 짧고 가볍게 읽어요. ‘높게 쭉 길게’는 1성, ‘내려갔다가 올라가게’는 3성, ‘높은 데서 뚝 떨어지게’는 4성이에요.', words: [] }),
+    n4: () => ({ prompt: '경성이 들어 있는 말은 어느 것일까요?', show: '',
+      options: shuffle([GW.g7, GW.g5, GW.g6, GW.g8].map(x => opt(`<span class="han">${x.h}</span><span class="py t0">${x.p}</span>`, x === QS))),
+      hint: '성조 표시가 없는 글자가 있는 말을 찾아보세요.', explain: '谢谢 xièxie의 뒤 글자 xie에는 성조 표시가 없어요. 그래서 경성이에요.', words: [QS] }),
+  };
   const GREET_KINDS = [['gMeaning', 3], ['gChar', 3], ['gPinyin', 2], ['gSit', 3], ['gSandhi', 1], ['gListen', 2]];
   function greetQuestion() {
-    const kinds = Voice.ready() ? GREET_KINDS : GREET_KINDS.filter(k => k[0] !== 'gListen');
+    const kinds = GREET_KINDS;
     for (let tries = 0; tries < 8; tries++) {
       const kind = weighted(kinds);
       const w = kind === 'gSandhi' ? GREET[0] : kind === 'gSit' ? pick(GREET.filter(x => x.sit)) : pick(GREET);
@@ -2317,7 +2524,7 @@
     ['ask_mean', 'ask_zh', M3X, M3X],
     ['b1', 'b4', 'b2', 'b3'],
   ];
-  const canUse = (id) => !LISTEN_IDS.includes(id) || Voice.ready();
+  const canUse = () => true;   // 듣기 문제도 늘 나와요 (소리가 안 나면 문제마다 '읽고 풀기')
   function nameQuestion(m) {
     let id;
     if (quick.on || m.mission === undefined) {
@@ -2403,7 +2610,7 @@
   }
 
   // ===== 대나무 언덕 문제 (1~2차시: 성조 · 인사말 · 中国/汉语) =====
-  const GREET_GLOSS = '你 nǐ = 너 · 们 men = ~들 · 老师 lǎoshī = 선생님 · 同学 tóngxué = 학생 · 好 hǎo = 좋다';
+  const GREET_GLOSS = '你好 = 만났을 때 · 老师好 = 선생님께 · 谢谢 = 고마울 때 · 再见 = 헤어질 때';
   const NATION_GLOSS = '中国 Zhōngguó는 나라 이름(중국), 汉语 Hànyǔ는 말 이름(중국어)이에요.';
   const BASIC_HINT = ['중국어 소리를 알파벳으로 쓴 것, pīnyīn이라고 읽어요.', 'ˉ ˊ ˇ ˋ 표시를 세어 보세요.', '네 병음의 글자(m, a)는 모두 똑같아요. 다른 건 모음 위 표시뿐!', 'mā를 보세요. 표시가 a 위에 있어요.'];
   function forestHint(kind, w) {
@@ -2413,12 +2620,19 @@
     if (kind === 'gSandhi') return '3성 + 3성이 이어지면 앞 글자는 2성처럼 올려 읽어요.';
     return w.id === 'g5' || w.id === 'g6' ? NATION_GLOSS : GREET_GLOSS;
   }
-  // 미션마다 4문제(보스 5문제). 성조 미션은 만난 죽순의 성조로 문제를 냄
-  function forestQueue(i) {
+  // 1차시: 중국과 중국어 소개 + 성조(+경성). 미션마다 4문제(보스 5문제). 성조 미션은 만난 죽순의 성조로 문제를 냄
+  function lesson1Queue(i) {
     if (i === 0) return shuffle(['tone', 'mark', 'meaning', 'contour']).map(kind => ({ kind }));
-    if (i === 1) { const ks = shuffle(['gMeaning', 'gChar', 'gPinyin', 'gSit']); return shuffle(GREET.slice(0, 4)).map((w, k) => ({ kind: ks[k], w })); }
-    if (i === 2) return shuffle([{ kind: 'gMeaning', w: GREET[4] }, { kind: 'gChar', w: GREET[5] }, { kind: 'gPinyin', w: pick(GREET.slice(4, 6)) }, { kind: 'basic' }]);
-    return [{ kind: 'tone', w: pick(MA) }, { kind: 'gSit', w: pick(GREET.slice(0, 4)) }, { kind: 'gSandhi', w: GREET[0] }, { kind: 'meaning', w: pick(MA) }, { kind: 'gChar', w: pick(GREET) }];
+    if (i === 1) return shuffle([{ kind: 'char', w: pick(MA) }, { kind: 'pinyin', w: pick(MA) }, { kind: 'tone', w: pick(MA) }, { kind: 'meaning', w: pick(MA) }]);
+    if (i === 2) return shuffle([{ kind: 'gMeaning', w: GW.g5 }, { kind: 'gChar', w: GW.g6 }, { kind: 'gPinyin', w: pick([GW.g5, GW.g6]) }, { kind: 'basic' }]);
+    return [{ kind: 'tone', w: pick(MA) }, { kind: 'contour', w: pick(MA) }, { kind: 'basic' }, { kind: pick(['n2', 'n3']) }, { kind: 'gChar', w: pick([GW.g5, GW.g6]) }];
+  }
+  // 2차시: 你好 · 老师好 · 谢谢 · 再见 (+경성)
+  function lesson2Queue(i) {
+    const [a, b2] = i === 0 ? [GW.g1, GW.g3] : [GW.g7, GW.g8];
+    if (i < 2) return shuffle([{ kind: 'gMeaning', w: a }, { kind: 'gChar', w: b2 }, { kind: 'gSit', w: pick([a, b2]) }, { kind: 'gPinyin', w: pick([a, b2]) }]);
+    if (i === 2) return shuffle([{ kind: 'gSit', w: pick(LESSON2) }, { kind: 'gSandhi', w: GW.g1 }, { kind: 'gListen', w: pick(LESSON2) }, { kind: 'gChar', w: pick(LESSON2) }]);
+    return [{ kind: 'gSit', w: pick(LESSON2) }, { kind: 'gMeaning', w: pick(LESSON2) }, { kind: pick(['n1', 'n4']) }, { kind: 'gListen', w: pick(LESSON2) }, { kind: 'gChar', w: pick(LESSON2) }];
   }
   function forestQuestion(m) {
     if (quick.on || m.mission === undefined) return freeQuestion(m);
@@ -2427,6 +2641,7 @@
   }
   function forestBuild(e, m = {}) {
     if (e.kind === 'basic') { const q = basicQuestion(); q.hint = BASIC_HINT[+q.key.slice(5)] || ''; return q; }
+    if (NEUTRAL[e.kind]) { const q = NEUTRAL[e.kind](); q.key = e.kind; return q; }
     const w = e.w || MA[(m.tone || 1) - 1];
     const q = BUILD[e.kind](w, MA); q.key = e.kind + w.id; q.word = w; q.hint = forestHint(e.kind, w);
     return q;
@@ -2489,8 +2704,14 @@
     renderOptions(q);
     const tools = [];
     if (q.say && q.show) tools.push(`<button class="btn small" data-say="${sayText(q.say)}">🔊 발음 듣기</button>`);
-    if (q.listen) { tools.push(`<button class="btn small primary" data-say="${sayText(q.listen)}">🔊 다시 듣기</button>`); setTimeout(() => Voice.play(sayText(q.listen), true), 350); }
+    if (q.listen) {
+      // 듣기 문제: 소리가 안 나는 기기도 풀 수 있게, 문제마다 '읽고 풀기'로 바꿀 수 있어요 (다시 '듣고 풀기'로 돌아갈 수도 있어요)
+      q.listenPrompt = q.prompt; q.readMode = !Voice.supported();
+      tools.push(`<button class="btn small primary" id="btnListenAgain" data-say="${sayText(q.listen)}">🔊 다시 듣기</button>`, '<button class="btn small" id="btnReadMode"></button>');
+      if (!q.readMode) setTimeout(() => { if (quiz.q === q && !q.readMode) Voice.play(sayText(q.listen), true); }, 350);
+    }
     $('qTools').innerHTML = tools.join(''); $('qTools').hidden = !tools.length;
+    if (q.listen) { $('btnReadMode').addEventListener('click', () => setReadMode(q, !q.readMode)); setReadMode(q, q.readMode); }
     bindSoundButtons($('qTools'));
     $('qHint').hidden = true;
     $('qFb').hidden = true; $('btnSkill').hidden = true;
@@ -2498,6 +2719,16 @@
     $('quiz').hidden = false;
     $('quizCard').focus({ preventScroll: true });
     $('quiz').scrollTop = 0;
+  }
+  function setReadMode(q, on) {
+    if (quiz.q !== q) return;
+    q.readMode = on;
+    const w = q.listen;
+    $('qPrompt').textContent = on ? '이 병음에 맞는 표현을 고르세요.' : q.listenPrompt;
+    $('qShow').innerHTML = on ? `<span class="py big t${w.t}">${w.p}</span>` : ''; $('qShow').hidden = !on;
+    $('btnListenAgain').hidden = on;
+    $('btnReadMode').textContent = on ? '🔊 듣고 풀기로 바꾸기' : '📖 소리가 안 들려요 → 읽고 풀기';
+    wrapPinyin($('qShow'));
   }
   function renderOptions(q) {
     $('qOpts').className = 'qopts' + (q.options.length === 3 ? ' n3' : '');
@@ -2520,6 +2751,12 @@
     // 이름 마을: 틀리면 힌트를 보여 주고 다시 고르게 함 (게임오버 없음)
     if (retryMode() && !opt.correct) {
       quiz.tries++; SFX.wrong(); streak = 0; save.wrong++; writeSave();
+      if (quiz.tries === 1 && run && !quick.on) {   // 결과 화면·선생님 기록용: 처음에 틀린 문제와 정답
+        const strip = (h) => String(h || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+        const shown = q.listen ? q.listen.h : strip(q.show), right = strip((q.options.find(o => o.correct) || {}).html);
+        run.wrongs = run.wrongs || [];
+        if (run.wrongs.length < 20) run.wrongs.push(`${strip(q.listen && !q.readMode ? q.listenPrompt : q.prompt)}${shown ? ` [${shown}]` : ''} → ${right}`.slice(0, 90));
+      }
       // 틀린 보기는 잠깐만 빨갛게 → 원래대로 돌리고 보기 순서를 다시 섞음 (소거법·위치 외우기 방지)
       quiz.lock = true;
       btns[i].classList.add('wrong', 'shake');
@@ -2597,6 +2834,20 @@
     const n = boss ? 8 : m.type === 'mid' ? 5 : 3;
     for (let k = 0; k < n; k++) drops.push({ x: m.x, y: m.y - 14, vx: rnd(-110, 110), vy: rnd(-330, -180), age: 0, floor: m.y });
   }
+  // ===== 선생님에게 결과 보내기 (Google 시트) =====
+  // 선생님이 만든 Google Apps Script 웹 앱 주소를 넣으면 시작·미션 성공·클리어 때 한 줄씩 기록돼요 (docs/results-guide.md)
+  // 비어 있으면 아무것도 보내지 않아요. 미리보기(#preview)와 Claude 링크(외부 전송 차단)에서는 보내지 않아요.
+  const RESULT_URL = '';
+  function report(event, extra = {}) {
+    if (!RESULT_URL || !run || PREVIEW) return;
+    const body = {
+      time: new Date().toISOString(), name: save.playerName || '(이름 없음)', lesson: STAGE.lessonNo, stage: STAGE.id, event,
+      firstTry: run.firstTry, asked: run.asked, wrong: (run.wrongs || []).join(' | '), secs: Math.round((performance.now() - run.start) / 1000),
+      level: save.level, device: isTouch() ? '모바일' : 'PC', ...extra,
+    };
+    try { fetch(RESULT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(body), keepalive: true }).catch(() => {}); } catch (e) {}
+  }
+
   // ===== 판다 스킬: 대나무 번개 =====
   // 몬스터(중간보스 포함)를 물리칠 때마다 +1, 3칸이 차면 다음 정답 뒤에 한 번 쓸 수 있어요. 최종 보스는 마지막이라 충전 안 함
   // 게이지는 지역마다 이번 탐험(run)에만 있어요: 홈·다른 지역에 다녀와도 그대로, 새로고침·새 탐험·클리어 후 다시 하기는 0부터
@@ -2718,9 +2969,9 @@
     $('lessonS1').hidden = !s1; $('lessonS3').hidden = s1; $('lessonNote1').hidden = !s1;
     if (!s1) {
       const ids = STAGE.cardOrder, isNum = STAGE.id === 'number';
-      $('nameFormula').hidden = isNum; $('nameCards').classList.toggle('wide', isNum);
-      $('s3Intro').innerHTML = isNum ? '중국어 숫자 <b>一(1)부터 十(10)까지</b> 배워요. 숫자 계곡의 학습 몬스터를 물리칠 때마다 숫자 카드가 모여요!'
-        : '이번에는 <b>이름을 묻고 답하는 말</b>을 배워요. 이름 마을의 학습 몬스터를 물리칠 때마다 이름 카드가 하나씩 모여요!';
+      $('nameFormula').hidden = STAGE.id !== 'name'; $('nameCards').classList.toggle('wide', isNum);
+      $('s3Intro').innerHTML = STAGE.noteIntro || (isNum ? '중국어 숫자 <b>一(1)부터 十(10)까지</b> 배워요. 숫자 계곡의 학습 몬스터를 물리칠 때마다 숫자 카드가 모여요!'
+        : '이번에는 <b>이름을 묻고 답하는 말</b>을 배워요. 이름 마을의 학습 몬스터를 물리칠 때마다 이름 카드가 하나씩 모여요!');
       $('cardTitle').textContent = STAGE.cardName;
       const got = ids.filter(id => save.cards[id]).length;
       $('cardCount').textContent = `${got} / ${ids.length}장 모음`;
@@ -2744,8 +2995,14 @@
         <div class="bt"><button class="btn small" data-say="${w.h}">🔊 발음 듣기</button></div>
         <div class="count">${cnt ? `퀴즈에서 ${cnt}번 맞혔어요` : '&nbsp;'}</div>
       </div>`;
-    }).join('');
-    $('greetCards').innerHTML = GREET.map(w => `<div class="gcard">${hanHTML(w)}<div class="txt"><div class="py t0">${w.p}</div><div class="ko">${w.ko}</div></div><button class="btn small" data-say="${w.h}">발음 듣기</button></div>`).join('');
+    }).join('') + `<div class="tcard">
+        <div class="top"><span class="tname t0">경성</span><span class="chao">표시 없음</span></div>
+        <div class="desc">성조 표시가 없는 소리예요. <b>짧고 가볍게</b> 읽어요.</div>
+        <div class="ex"><span class="han" style="white-space:nowrap">谢谢</span><div><span class="py t0">xiè<b>xie</b></span><div class="ko">뒤의 xie가 경성이에요</div></div></div>
+        <div class="bt"><button class="btn small" data-say="谢谢">🔊 발음 듣기</button></div>
+      </div>`;
+    $('lessonS1Sub').textContent = STAGE.noteWordsTitle || '표현';
+    $('greetCards').innerHTML = (STAGE.noteWords || GREET).map(w => `<div class="gcard">${hanHTML(w)}<div class="txt"><div class="py t0">${w.p}</div><div class="ko">${w.ko}</div></div><button class="btn small" data-say="${w.h}">발음 듣기</button></div>`).join('');
     bindSoundButtons($('toneCards')); bindSoundButtons($('greetCards')); wrapPinyin($('lesson'));
     refreshVoiceUI();
   }
@@ -2837,6 +3094,8 @@
   function completeMission(i) {
     const s = run.ms[i], M = STAGE.missions[i];
     s.complete = true;
+    celebrate(M.boss ? '보스 처치! 太棒了!' : `미션 ${i + 1} 성공! 太棒了!`);
+    report('mission', { mission: `${i + 1}/${run.ms.length}` });
     M.cards.forEach(id => { save.cards[id] = true; }); writeSave();
     const gt = gates.find(g => g.mission === i);
     setTimeout(() => SFX.level(), 300);
@@ -2845,6 +3104,11 @@
       if (gt) { gt.open = true; floatText(gt.x + gt.w / 2, GY - 210, '문이 열려요!', '#fff0a8'); }
       const bossName = (monsters.find(m => m.type === 'boss') || {}).name || '보스';
       setTimeout(() => toast(`${josa(bossName, '을/를')} 물리쳤어요!${cardTxt ? ` 카드 획득: ${cardTxt}` : ''} → ${josa(gt.name, '으로/로')} 가세요!`, 3400, true), 500);
+      return;
+    }
+    // 카드가 없는 미션(복습 구역)은 바로 문이 열림
+    if (!M.cards.length) {
+      if (gt) { gt.open = true; floatText(gt.x + gt.w / 2, GY - 210, '문이 열려요!', '#fff0a8'); setTimeout(() => toast(`미션 성공! ${josa(gt.name, '이/가')} 열렸어요 →`, 2400, true), 600); }
       return;
     }
     // 카드 획득 화면에서 따라 말한 뒤 문이 열림
@@ -2885,6 +3149,8 @@
     const stars = calcStars();
     save.clears[STAGE.id] = Math.max(save.clears[STAGE.id] || 0, stars.n); writeSave();
     SFX.level(); clearKeys();
+    celebrate('지역 클리어! 太棒了!', 3200);
+    report('clear', { mission: `${run.ms.length}/${run.ms.length}`, stars: stars.n });
     for (let k = 0; k < 4; k++) burst(P.x + rnd(-60, 60), P.y - rnd(0, 60), ['#f6c445', '#fff0a8', '#ffffff', '#62aefc', '#ff9fb2'], 20, 240);
     floatText(P.x + P.w / 2, P.y - 30, '클리어!', '#fff0a8');
     mode = 'cut';
@@ -2936,11 +3202,11 @@
 
   // ================= 시작 · 지역 선택 =================
   function initialStage() {
-    const h = (location.hash || '').slice(1).toLowerCase();
-    if (h === 'name' || h === 's3' || h === 'lesson3') return 'name';
-    if (h === 'number' || h === 'num' || h === 'numbers') return 'number';
-    if (h === 'bamboo' || h === 's1' || h === 'lesson1') return 'bamboo';
-    return new Date() >= new Date(2026, 10, 5) ? 'name' : 'bamboo';
+    const h = (location.hash || '').slice(1).toLowerCase().replace(/^preview-?/, '');
+    const alias = { s1: 'bamboo', lesson1: 'bamboo', '1': 'bamboo', s2: 'greet', lesson2: 'greet', '2': 'greet', s3: 'name', lesson3: 'name', num: 'number', numbers: 'number' };
+    const id = alias[h] || h;
+    // 준비 중 지역은 학생 주소로 열리지 않아요 → 공개된 첫 지역으로
+    return STAGE_ORDER.includes(id) ? id : STAGE_ORDER[0];
   }
   let selStage = initialStage();
   // 진행 중인(아직 클리어 안 한) 탐험이 있는지
@@ -2952,12 +3218,12 @@
       return `<button class="stagecard${id === selStage ? ' sel' : ''}" data-stage="${id}" aria-pressed="${id === selStage}">
         ${st.isNew && !stars ? '<span class="sc-new">NEW</span>' : ''}
         <canvas width="16" height="16" data-ico="${id}"></canvas>
-        <span class="sc-num">${n + 1}지역</span>
+        <span class="sc-num">${st.lessonNo}${st.status !== 'ready' ? ' · 미리보기' : ''}</span>
         <span class="sc-title">${st.short}</span>
         <span class="sc-topic">${st.topic}</span>
         <span class="sc-stars" aria-label="별 ${stars}개">${'★'.repeat(stars)}<span class="off">${'★'.repeat(3 - stars)}</span></span>
       </button>`;
-    }).join('');
+    }).join('') + (PREVIEW ? '' : '<div class="stagecard locked" aria-disabled="true"><span class="sc-lock">🔒</span><span class="sc-title">다음 차시</span><span class="sc-topic">준비 중이에요</span></div>');
     $('stagePick').querySelectorAll('canvas[data-ico]').forEach(c => {
       const T = THEMES[STAGES[c.dataset.ico].theme], spr = SKINS[T.skins[0]].spr({ tone: 1 });
       c.width = spr.width; c.height = spr.height; c.getContext('2d').drawImage(spr, 0, 0);
@@ -2977,11 +3243,12 @@
     $('startScreen').hidden = false; $('startScreen').querySelector('.card').focus({ preventScroll: true });
   }
   function startPlay() {
-    if (mode !== 'start' && mode !== 'result' && mode !== 'help' && mode !== 'intro') return;
+    if (mode !== 'start' && mode !== 'result' && mode !== 'help' && mode !== 'intro' && mode !== 'name') return;
     audio();
     if (!run || run.stage !== selStage) loadStage(selStage);
     if (run.cleared) loadStage(selStage, true);   // 클리어한 지역을 다시 하면 처음부터
     $('startScreen').hidden = true;
+    if (!save.playerName && !save.nameSkipped) { openNameAsk('first'); return; }   // 처음 한 번: 이름
     if (!save.helpSeen) { openHelp('first'); return; }   // 처음 한 번: 조작 안내
     if (!run.introSeen) { openIntro(); return; }          // 새 탐험: 오늘 배울 말
     enterPlay();
@@ -2994,10 +3261,31 @@
   function enterPlay() {
     mode = 'play'; focusStage();
     run.hello = run.hello || 0;
-    if (!run.hello) { run.hello = 1; setTimeout(() => { if (mode === 'play') toast('몬스터를 모두 물리치면 문이 열려요! 오른쪽으로 출발 →', 2600, true); }, 400); }
+    if (!run.hello) { run.hello = 1; report('start'); setTimeout(() => { if (mode === 'play') toast('몬스터를 모두 물리치면 문이 열려요! 오른쪽으로 출발 →', 2600, true); }, 400); }
   }
   $('btnPlay').addEventListener('click', startPlay);
   $('btnNewRun').addEventListener('click', startNewRun);
+
+  // ----- 이름 쓰기 -----
+  let nameReturn = 'first';
+  function openNameAsk(from) {
+    nameReturn = from; mode = 'name'; releaseAll();
+    $('playerName').value = save.playerName || '';
+    $('nameAsk').hidden = false; setTimeout(() => $('playerName').focus(), 50);
+  }
+  function closeNameAsk(skip) {
+    if (mode !== 'name') return;
+    const v = $('playerName').value.replace(/[<>&"]/g, '').trim().slice(0, 12);
+    if (!skip && !v) { $('playerName').focus(); return; }
+    if (skip) save.nameSkipped = true; else save.playerName = v;
+    writeSave(); $('nameAsk').hidden = true; updateHUD();
+    if (nameReturn === 'menu') { mode = 'start'; openSettings(); return; }
+    mode = 'start'; startPlay();
+  }
+  $('nameOk').addEventListener('click', () => closeNameAsk(false));
+  $('nameSkip').addEventListener('click', () => closeNameAsk(true));
+  $('playerName').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); closeNameAsk(false); } });
+  $('setName').addEventListener('click', () => { $('settings').hidden = true; mode = 'start'; openNameAsk('menu'); });
 
   // ----- 조작 안내 카드 (처음 한 번 + ❔ 버튼) -----
   let helpReturn = 'play';
@@ -3056,7 +3344,7 @@
   }
   // 홈으로: 열린 창·퀴즈·음성·입력을 모두 정리하고 시작 화면으로 (탐험 상태는 지역별로 보관)
   function goHome() {
-    for (const id of ['quiz', 'cardPop', 'speak', 'lesson', 'result', 'help', 'homeAsk', 'intro', 'faint', 'settings', 'confirmReset']) $(id).hidden = true;
+    for (const id of ['quiz', 'cardPop', 'speak', 'lesson', 'result', 'help', 'homeAsk', 'intro', 'faint', 'settings', 'confirmReset', 'nameAsk']) $(id).hidden = true;
     quick.on = false; quiz.lock = false; releaseAll(); closeMissionPanel();
     try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (e) {}
     clearTimeout(Voice.chk); clearTimeout(toastTimer); $('toast').hidden = true; $('focusHint').hidden = true;
@@ -3074,7 +3362,7 @@
     mode = 'menu'; refreshSoundUI();
     const cards = Object.keys(save.cards).filter(k => save.cards[k]).length;
     $('recList').innerHTML = [['레벨', `Lv.${save.level}`], ['지금 가진 코인', save.coins], ['지금까지 모은 코인', save.totalEarned || save.coins], ['맞힌 문제', `${save.correct}개`], ['모은 카드', `${cards}장`]]
-      .map(([k, v]) => `<li>${k}<b>${v}</b></li>`).join('');
+      .map(([k, v]) => `<li>${k}<b>${v}</b></li>`).join('') + `<li>이름<b>${save.playerName || '-'}</b></li>`;
     $('settings').hidden = false; $('settings').querySelector('.card').focus({ preventScroll: true });
   }
   function closeMenus() {
@@ -3115,8 +3403,8 @@
   const fmtTime = (ms) => { const sec = Math.round(ms / 1000); return `${Math.floor(sec / 60)}분 ${sec % 60}초`; };
   function fillGrid(items) { $('rGrid').innerHTML = items.map(([v, l]) => `<div><b>${v}</b><span>${l}</span></div>`).join(''); }
   function resultBase() {
-    $('rStars').hidden = true; $('rList').hidden = true; $('rName').hidden = true; $('rNums').hidden = true;
-    $('rDate').textContent = `${STAGE.lessonNo} · ${new Date().toLocaleDateString('ko-KR')}`;
+    $('rStars').hidden = true; $('rList').hidden = true; $('rName').hidden = true; $('rNums').hidden = true; $('rWrong').hidden = true;
+    $('rDate').textContent = `${save.playerName ? save.playerName + ' · ' : ''}${STAGE.lessonNo} · ${new Date().toLocaleDateString('ko-KR')}`;
   }
   function openResultPanel() {
     $('result').hidden = false; $('result').scrollTop = 0; $('result').querySelector('.card').focus({ preventScroll: true });
@@ -3137,7 +3425,7 @@
       $('rList').hidden = false;
     }
     $('rStamp').textContent = !t ? '퀴즈를 풀어 보세요!' : rate >= 90 ? '최고예요! 太棒了!' : rate >= 70 ? '잘했어요! 很好!' : rate >= 40 ? '좋아요, 조금만 더!' : '다시 도전! 加油!';
-    $('btnRAgain').textContent = isQuick ? '빠른 퀴즈 다시 하기' : '빠른 퀴즈 하기';
+    $('btnRAgain').hidden = true;   // 빠른 퀴즈는 뺐어요 (화면 단순화)
     $('btnRClose').innerHTML = '닫기<span class="kh"> (Enter)</span>';
     if (isQuick && rate >= 70) SFX.level();
     openResultPanel();
@@ -3154,7 +3442,9 @@
     $('rList').innerHTML = stars.list.map(([ok, txt]) => `<li class="${ok ? 'ok' : ''}">${ok ? '★' : '☆'} ${txt}</li>`).join(''); $('rList').hidden = false;
     if (run.name) { $('rName').innerHTML = `<span class="han">我叫${run.name.replace(/[<>&"]/g, '')}。</span><span class="py t0">Wǒ jiào ${run.name.replace(/[<>&"]/g, '')}.</span>`; $('rName').hidden = false; }
     $('rStamp').textContent = stars.n === 3 ? '최고예요! 太棒了!' : stars.n === 2 ? '잘했어요! 很好!' : '해냈어요! 加油!';
-    $('btnRAgain').textContent = '한 번 더 하기';
+    const wr = run.wrongs || [];
+    if (wr.length) { $('rWrong').innerHTML = `<li><b>다시 볼 문제 (처음에 틀렸던 문제)</b></li>` + wr.slice(0, 6).map(t => `<li>· ${t.replace(/[<>&]/g, '')}</li>`).join(''); $('rWrong').hidden = false; }
+    $('btnRAgain').textContent = '한 번 더 하기'; $('btnRAgain').hidden = false;
     $('btnRClose').innerHTML = '처음 화면으로<span class="kh"> (Enter)</span>';
     openResultPanel();
   }
@@ -3176,7 +3466,7 @@
     if (resultReturn === 'start' || resultReturn === 'home') showStart();
     else { mode = 'play'; focusStage(); }
   }
-  $('btnQuick').addEventListener('click', () => startQuick('start'));
+
   $('btnRAgain').addEventListener('click', () => {
     if (mode !== 'result') return;
     $('result').hidden = true;
