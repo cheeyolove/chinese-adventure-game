@@ -2891,7 +2891,7 @@
   // ===== 선생님에게 결과 보내기 (Google 시트) =====
   // 선생님이 만든 Google Apps Script 웹 앱 주소를 넣으면 시작·미션 성공·클리어 때 한 줄씩 기록돼요 (docs/results-guide.md)
   // 비어 있으면 아무것도 보내지 않아요. 미리보기(#preview)와 Claude 링크(외부 전송 차단)에서는 보내지 않아요.
-  const RESULT_URL = '';
+  const RESULT_URL = 'https://script.google.com/macros/s/AKfycbzneKS_tGDulume_qI9513R_niANPNWb73vkCzNMIT87-9TYIS5nUjz4tS4ehZd1AI7mw/exec';
   function report(event, extra = {}) {
     if (!RESULT_URL || !run || PREVIEW) return;
     const body = {
