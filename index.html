@@ -160,6 +160,8 @@
   .hitem .tb.j { background: var(--gold); }
   .hitem canvas { width: 40px; height: auto; image-rendering: pixelated; }
   /* 시작 전 '오늘 배울 말' */
+  .introBonusHead { grid-column: 1 / -1; margin-top: 6px; padding-top: 8px; border-top: 2px dashed #e0c470; font-family: var(--font-display); font-size: 15px; color: #a06a00; }
+  .introBonusHead small { font-size: 12px; color: var(--ink-soft); margin-left: 6px; }
   .introgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 8px; width: 100%; }
   .ichip { display: flex; flex-direction: column; align-items: center; gap: 2px; background: #fff; color: var(--ink); border: 2px solid var(--ink); border-radius: 12px; padding: 8px 6px; font-family: var(--font-body); box-shadow: 0 3px 0 var(--ink); }
   .ichip .han { font-size: 30px; line-height: 1.15; }
@@ -3387,10 +3389,11 @@
   function openIntro() {
     mode = 'intro'; releaseAll();
     $('introTitle').textContent = `${STAGE.short} · 오늘 배울 말`;
-    $('introGrid').innerHTML = STAGE.cardOrder.map(id => {
-      const w = STAGE.words[id];
-      return `<button class="ichip${w.sent ? ' sent' : ''}${w.bonus ? ' bonus' : ''}" data-say="${sayText(w)}">${w.bonus ? '<span class="bonusTag">⭐ 보너스</span>' : ''}<span class="han">${w.h}</span><span class="py t${w.t}">${w.p}</span><small>${w.hun || w.ko}</small></button>`;
-    }).join('');
+    // 기본 학습 → 보너스 순서로 나눠서 보여 줌 (보너스는 아래쪽에 따로 모음)
+    const chip = (w) => `<button class="ichip${w.sent ? ' sent' : ''}${w.bonus ? ' bonus' : ''}" data-say="${sayText(w)}"><span class="han">${w.h}</span><span class="py t${w.t}">${w.p}</span><small>${w.hun || w.ko}</small></button>`;
+    const iw = STAGE.cardOrder.map(id => STAGE.words[id]), ib = iw.filter(w => w.bonus);
+    $('introGrid').innerHTML = iw.filter(w => !w.bonus).map(chip).join('')
+      + (ib.length ? `<div class="introBonusHead">⭐ 보너스 표현 <small>몰라도 클리어할 수 있어요</small></div>` + ib.map(chip).join('') : '');
     bindSoundButtons($('introGrid')); wrapPinyin($('introGrid'));
     $('intro').hidden = false; $('intro').scrollTop = 0; $('introGo').focus({ preventScroll: true });
   }
