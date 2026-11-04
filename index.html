@@ -495,17 +495,18 @@
       <div class="formula" id="nameFormula">
         <div class="frow">
           <span class="blk"><span class="han">你</span><small>nǐ · 너</small></span>+
-          <span class="blk"><span class="han">叫</span><small>jiào · ~라고 하다</small></span>+
+          <span class="blk"><span class="han">叫</span><small>jiào · ~라고 부르다</small></span>+
           <span class="blk"><span class="han">什么</span><small>shénme · 무엇</small></span>+
           <span class="blk"><span class="han">名字</span><small>míngzi · 이름</small></span>
           <span class="han">？</span><span class="eq">= 이름이 뭐예요?</span>
         </div>
         <div class="frow">
           <span class="blk"><span class="han">我</span><small>wǒ · 나</small></span>+
-          <span class="blk"><span class="han">叫</span><small>jiào · ~라고 하다</small></span>+
+          <span class="blk"><span class="han">叫</span><small>jiào · ~라고 부르다</small></span>+
           <span class="blk name">내 이름</span>
           <span class="han">。</span><span class="eq">= 제 이름은 ○○예요.</span>
         </div>
+        <div class="frow"><span class="eq">예: <span class="han">我叫小明。</span> <span class="py t0">Wǒ jiào Xiǎomíng.</span> = 제 이름은 小明(샤오밍)이에요.</span></div>
       </div>
       <h3 class="lsub"><span id="cardTitle">이름 카드</span> <small id="cardCount"></small></h3>
       <div class="gcards" id="nameCards"></div>
@@ -594,7 +595,7 @@
     <div class="sp-py py t0">Wǒ jiào <span id="spBlankPy">______</span>.</div>
     <button class="btn small" data-say="我叫">🔊 我叫 듣기</button>
     <label for="myName">내 이름을 써 보세요 (안 써도 괜찮아요)</label>
-    <input id="myName" maxlength="8" autocomplete="off" placeholder="예: 민준">
+    <input id="myName" maxlength="8" autocomplete="off" placeholder="예: 小明 또는 내 이름">
     <p class="sp-tip">화면을 보면서 큰 소리로 “我叫 ○○。” 하고 말해 보세요!<br>선생님과 친구들에게 들려주면 더 좋아요.</p>
     <button class="btn primary" id="btnSpoke">큰 소리로 말했어요!<span class="kh"> (Enter)</span></button>
   </div>
@@ -624,7 +625,7 @@
 
   // Google Fonts (한자는 필요한 글자만 받아옴)
   (function loadFonts() {
-    const han = '熊猫探险队妈麻马骂你们好老师同学中国汉语拼音文我叫什么名字谢再见不客气对起没关系晚安早上。？！“”一二三四五六七八九十';
+    const han = '熊猫探险队妈麻马骂你们好老师同学中国汉语拼音文我叫什么名字小明谢再见不客气对起没关系晚安早上。？！“”一二三四五六七八九十';
     // 병음용: 알파벳·성조 모음·숫자만 받아서 파일이 아주 작음
     const py = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜüĀÁǍÀĒÉĚÈĪÍǏÌŌÓǑÒŪÚǓÙÜ0123456789 .,?!’\'-/()%…:→ˉˊˇˋ';
     for (const href of [
@@ -652,13 +653,14 @@
   const NW = {
     wo: { id: 'wo', h: '我', p: 'wǒ', t: 3, ko: '나' },
     ni: { id: 'ni', h: '你', p: 'nǐ', t: 3, ko: '너' },
-    jiao: { id: 'jiao', h: '叫', p: 'jiào', t: 4, ko: '(이름을) ~라고 하다' },
+    jiao: { id: 'jiao', h: '叫', p: 'jiào', t: 4, ko: '~라고 부르다, 이름이 ~이다' },
     shenme: { id: 'shenme', h: '什么', p: 'shénme', t: 0, ko: '무엇' },
     mingzi: { id: 'mingzi', h: '名字', p: 'míngzi', t: 0, ko: '이름' },
     ask: { id: 'ask', h: '你叫什么名字？', p: 'Nǐ jiào shénme míngzi?', t: 0, ko: '이름이 뭐예요?', sent: true },
     ans: { id: 'ans', h: '我叫……。', p: 'Wǒ jiào …….', t: 0, ko: '제 이름은 ……예요.', sent: true, say: '我叫' },
+    xm: { id: 'xm', h: '小明', p: 'Xiǎomíng', t: 0, ko: '샤오밍 (수업 예시 이름)' },
   };
-  const NAME_CARDS = ['wo', 'ni', 'jiao', 'shenme', 'mingzi', 'ask', 'ans'];
+  const NAME_CARDS = ['wo', 'ni', 'jiao', 'shenme', 'mingzi', 'ask', 'ans', 'xm'];
   // 숫자 계곡: 숫자 1~10 (t: 성조)
   const NUMS = [
     { id: 'num1', h: '一', p: 'yī', t: 1, v: 1 }, { id: 'num2', h: '二', p: 'èr', t: 4, v: 2 },
@@ -743,7 +745,7 @@
   }
   const josa = (word, pair) => `${word}${pp(word, pair)}`;
   // 숫자가 아닌 한자의 소리 (게임에 나오는 글자)
-  const HAN_PY = { '妈': 'mā', '麻': 'má', '马': 'mǎ', '骂': 'mà', '我': 'wǒ', '你': 'nǐ', '叫': 'jiào', '什': 'shén', '么': 'me', '名': 'míng', '字': 'zi',
+  const HAN_PY = { '妈': 'mā', '麻': 'má', '马': 'mǎ', '骂': 'mà', '我': 'wǒ', '你': 'nǐ', '叫': 'jiào', '什': 'shén', '么': 'me', '名': 'míng', '小': 'xiǎo', '明': 'míng', '字': 'zi',
     '们': 'men', '好': 'hǎo', '老': 'lǎo', '师': 'shī', '同': 'tóng', '学': 'xué', '中': 'zhōng', '国': 'guó', '汉': 'hàn', '语': 'yǔ', '文': 'wén', '拼': 'pīn', '音': 'yīn', '谢': 'xiè', '再': 'zài', '见': 'jiàn', '不': 'bù', '客': 'kè', '气': 'qi', '对': 'duì', '起': 'qǐ', '没': 'méi', '关': 'guān', '系': 'xi', '晚': 'wǎn', '安': 'ān', '早': 'zǎo', '上': 'shang' };
   const pyHTML = (w) => `<span class="py t${w.t}">${w.p}</span>`;
   const hanHTML = (w) => `<span class="han">${w.h}</span>`;
@@ -1499,7 +1501,7 @@
         { label: '我 / 你', zone: '골목길', cards: ['wo', 'ni'] },
         { label: '叫 / 什么 / 名字', zone: '이름 광장', cards: ['jiao', 'shenme', 'mingzi'] },
         { label: '你叫什么名字？', zone: '등불 거리', cards: ['ask'] },
-        { label: '我叫……。', zone: '이름의 문', cards: ['ans'], boss: true },
+        { label: '我叫……。', zone: '이름의 문', cards: ['ans', 'xm'], boss: true },
       ],
       finalText: '이름의 문', decorate: decorateName,
       words: NW, cardOrder: NAME_CARDS, cardName: '이름 카드', bossFinale: 'speak',
@@ -2475,7 +2477,7 @@
   const zh = (w) => `<span class="han">${w.h}</span><span class="py t${w.t}">${w.p}</span>`;
   const zhOnly = (w) => `<span class="han">${w.h}</span>`;
   const showW = (w, ko) => `<span class="han${w.sent ? ' sent' : ''}">${w.h}</span><div class="meta">${ko ? `<span class="ko">${w.ko}</span>` : `<span class="py t${w.t}">${w.p}</span>`}</div>`;
-  const X = { nihao: { h: '你好！', p: 'Nǐ hǎo!', t: 0 }, laoshi: { h: '老师好！', p: 'Lǎoshī hǎo!', t: 0 } };
+  const X = { nihao: { h: '你好！', p: 'Nǐ hǎo!', t: 0 }, laoshi: { h: '老师好！', p: 'Lǎoshī hǎo!', t: 0 }, xiexie: { h: '谢谢！', p: 'Xièxie!', t: 0 } };
   function nq(o) {
     return {
       prompt: o.prompt, show: o.show || '', hint: o.hint, explain: o.explain, words: o.words || [], say: o.say, listen: o.listen,
@@ -2510,9 +2512,9 @@
     shenme_char: () => nq({ prompt: '‘무엇’은 중국어로 무엇일까요?', say: NW.shenme, right: zh(NW.shenme), wrong: [zh(NW.jiao), zh(NW.wo)],
       hint: '궁금한 것을 물어볼 때 쓰는 말이에요. 두 글자예요!',
       explain: '<b>什么 shénme</b> = 무엇<br>궁금한 것을 물어볼 때 써요.', words: [NW.shenme] }),
-    jiao_mean: () => nq({ prompt: '‘叫’의 뜻은 무엇일까요?', show: showW(NW.jiao), say: NW.jiao, right: '(이름을) ~라고 하다', wrong: ['무엇', '너'],
+    jiao_mean: () => nq({ prompt: '‘叫’의 뜻은 무엇일까요?', show: showW(NW.jiao), say: NW.jiao, right: '~라고 부르다, 이름이 ~이다', wrong: ['무엇', '너'],
       hint: '我叫……。(제 이름은 ……예요)에서 이름 바로 앞에 오는 말이에요.',
-      explain: '<b>叫 jiào</b> = (이름을) ~라고 하다<br>我 + 叫 + 이름 = 제 이름은 ○○예요.', words: [NW.jiao] }),
+      explain: '<b>叫 jiào</b> = ~라고 부르다, 이름이 ~이다<br>我 + 叫 + 이름 = 제 이름은 ○○예요. 예: 我叫小明。', words: [NW.jiao] }),
     mingzi_char: () => nq({ prompt: '‘이름’은 중국어로 무엇일까요?', say: NW.mingzi, right: zh(NW.mingzi), wrong: [zh(NW.shenme), zh(NW.ni)],
       hint: 'míngzi라고 읽어요. 두 글자예요!',
       explain: '<b>名字 míngzi</b> = 이름', words: [NW.mingzi] }),
@@ -2526,9 +2528,9 @@
       explain: `들은 말: <b>${w.h} ${w.p}</b> (${w.ko})`, words: [w] }); },
     // 미션 3: 你叫什么名字？
     ask_mean: () => nq({ prompt: '‘你叫什么名字？’의 뜻은 무엇일까요?', show: showW(NW.ask), say: NW.ask,
-      right: '이름이 뭐예요?', wrong: ['어디에 가요?', '몇 살이에요?'],
+      right: '이름이 뭐예요?', wrong: ['안녕하세요', '고마워'],
       hint: '名字 míngzi는 ‘이름’, 什么 shénme는 ‘무엇’이었죠?',
-      explain: '<b>你叫什么名字？</b> = 이름이 뭐예요?<br>你(너) + 叫(~라고 하다) + 什么(무엇) + 名字(이름)', words: [NW.ask] }),
+      explain: '<b>你叫什么名字？</b> = 이름이 뭐예요?<br>你(너) + 叫(~라고 부르다) + 什么(무엇) + 名字(이름)', words: [NW.ask] }),
     ask_zh: () => nq({ prompt: '‘이름이 뭐예요?’를 중국어로 하면?', say: NW.ask, right: zh(NW.ask), wrong: [zh(X.nihao), zh(X.laoshi)],
       hint: '‘이름’이라는 뜻의 名字가 들어 있는 문장을 찾아보세요.',
       explain: '<b>你叫什么名字？</b> = 이름이 뭐예요?<br>이름을 물어볼 때 쓰는 문장이에요.', words: [NW.ask] }),
@@ -2552,24 +2554,24 @@
     b1: () => nq({ prompt: '붓 대왕이 물어요. 알맞은 대답은?',
       show: '<div class="npc"><span class="han sent">你叫什么名字？</span><span class="py t0">Nǐ jiào shénme míngzi?</span><span class="ko">(이름이 뭐예요?)</span></div>',
       say: NW.ask,
-      right: '<span class="han">我叫민준。</span><span class="py t0">Wǒ jiào 민준.</span>',
-      wrong: ['<span class="han">你好。</span><span class="py t0">Nǐ hǎo.</span>', '<span class="han">中国。</span><span class="py t0">Zhōngguó.</span>'],
+      right: '<span class="han">我叫小明。</span><span class="py t0">Wǒ jiào Xiǎomíng.</span>',
+      wrong: [zh(X.nihao), zh(X.xiexie)],
       hint: '이름을 물었으니 ‘我叫 + 이름’으로 대답해요.',
-      explain: '<b>你叫什么名字？</b> → <b>我叫민준。</b><br>이름을 물으면 我叫 뒤에 내 이름을 붙여서 대답해요.', words: [NW.ask, NW.ans] }),
-    b2: () => nq({ prompt: '‘제 이름은 판다예요.’를 중국어로 하면?',
-      right: '<span class="han">我叫판다。</span><span class="py t0">Wǒ jiào 판다.</span>',
-      wrong: ['<span class="han">你叫판다。</span><span class="py t0">Nǐ jiào 판다.</span>', zh(NW.ask)],
+      explain: '<b>你叫什么名字？</b> → <b>我叫小明。</b><br>이름을 물으면 我叫 뒤에 내 이름을 붙여서 대답해요.', words: [NW.ask, NW.ans] }),
+    b2: () => nq({ prompt: '‘제 이름은 小明이에요.’를 중국어로 하면?',
+      right: '<span class="han">我叫小明。</span><span class="py t0">Wǒ jiào Xiǎomíng.</span>',
+      wrong: ['<span class="han">你叫小明。</span><span class="py t0">Nǐ jiào Xiǎomíng.</span>', zh(NW.ask)],
       hint: '‘나’는 我, ‘너’는 你예요. 내 이름을 말하는 거니까…',
-      explain: '<b>我叫판다。</b> = 제 이름은 판다예요.<br>你叫판다。라고 하면 ‘너는 판다라고 해’라는 뜻이 돼요.', words: [NW.wo, NW.ans] }),
+      explain: '<b>我叫小明。</b> = 제 이름은 小明이에요.<br>你叫小明。이라고 하면 ‘너는 小明이라고 해’라는 뜻이 돼요.', words: [NW.wo, NW.ans] }),
     b3: () => nq({ prompt: '빈칸에 알맞은 말은 무엇일까요?',
-      show: '<span class="han sent"><span class="blankq">?</span> 叫 지우。</span><div class="meta"><span class="ko">제 이름은 지우예요.</span></div>',
+      show: '<span class="han sent"><span class="blankq">?</span> 叫 小明。</span><div class="meta"><span class="ko">제 이름은 小明이에요.</span></div>',
       right: zh(NW.wo), wrong: [zh(NW.ni), zh(NW.shenme)],
       hint: '‘제 이름은’이니까 ‘나’라는 말이 필요해요.',
-      explain: '<b>我叫지우。</b> = 제 이름은 지우예요.<br>我(나) + 叫(~라고 하다) + 이름', words: [NW.wo, NW.jiao, NW.ans] }),
+      explain: '<b>我叫小明。</b> = 제 이름은 小明이에요.<br>我(나) + 叫(이름이 ~이다) + 이름', words: [NW.wo, NW.jiao, NW.ans] }),
     b4: () => nq({ prompt: '‘이름이 뭐예요?’를 바른 순서로 쓴 문장은?', say: NW.ask,
       right: zh(NW.ask), wrong: ['<span class="han">你名字什么叫？</span>', '<span class="han">什么你叫名字？</span>'],
       hint: '‘너(你)’로 시작해서 ‘이름(名字)’으로 끝나요.',
-      explain: '<b>你叫什么名字？</b><br>你(너) → 叫(~라고 하다) → 什么(무엇) → 名字(이름) 순서로 말해요.', words: [NW.ask] }),
+      explain: '<b>你叫什么名字？</b><br>你(너) → 叫(~라고 부르다) → 什么(무엇) → 名字(이름) 순서로 말해요.', words: [NW.ask] }),
   };
   const LISTEN_IDS = ['m1_listen', 'm2_listen', 'ask_listen'];
   // 미션별 문제 순서. 배열은 그중 하나를 고름 (듣기 문제는 중국어 음성이 있을 때만)
