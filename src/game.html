@@ -190,6 +190,10 @@
   .qopts.reshuffled .opt { animation: pop .35s; }
   @keyframes pop { from { transform: scale(.94); opacity: .4; } to { transform: none; opacity: 1; } }
   @media (prefers-reduced-motion: reduce) { .opt.shake, .qopts.reshuffled .opt { animation: none; } }
+  .opt.sel { background: #fff4c4; border-color: var(--gold); box-shadow: 0 4px 0 #b88a1c; }
+  .opt .aud { font-family: var(--font-display); font-size: 22px; }
+  .qpick { display: flex; justify-content: center; margin-top: 10px; }
+  .qpick .btn:disabled { opacity: .55; }
   .opt.wrong { background: var(--wrong-bg); border-color: var(--t4); box-shadow: 0 4px 0 var(--t4); }
   .opt:disabled { cursor: default; }
   .qtools { display: flex; justify-content: center; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
@@ -529,6 +533,7 @@
     <div class="qprompt" id="qPrompt"></div>
     <div class="qshow" id="qShow"></div>
     <div class="qopts" id="qOpts"></div>
+    <div class="qpick" id="qPick" hidden><button class="btn primary" id="btnPick" disabled>먼저 보기를 눌러 소리를 들어 보세요</button></div>
     <div class="qtools" id="qTools"></div>
     <div class="qhint" id="qHint" hidden></div>
     <div class="qfb" id="qFb" hidden>
@@ -619,7 +624,7 @@
 
   // Google Fonts (한자는 필요한 글자만 받아옴)
   (function loadFonts() {
-    const han = '熊猫探险队妈麻马骂你们好老师同学中国汉语拼音文我叫什么名字小明谢再见不客气对起没关系晚安早上。？！“”一二三四五六七八九十';
+    const han = '熊猫探险队妈麻马骂你们好老师同学中国汉语拼音文我叫什么名字小明韩人是哪谢再见不客气对起没关系晚安早上。？！“”一二三四五六七八九十';
     // 병음용: 알파벳·성조 모음·숫자만 받아서 파일이 아주 작음
     const py = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜüĀÁǍÀĒÉĚÈĪÍǏÌŌÓǑÒŪÚǓÙÜ0123456789 .,?!’\'-/()%…:→ˉˊˇˋ';
     for (const href of [
@@ -655,6 +660,16 @@
     xm: { id: 'xm', h: '小明', p: 'Xiǎomíng', t: 0, ko: '샤오밍 (수업 예시 이름)' },
   };
   const NAME_CARDS = ['wo', 'ni', 'jiao', 'shenme', 'mingzi', 'ask', 'ans', 'xm'];
+  // 4차시 나라 표현 (선생님이 준 한국어 내용을 옮긴 표기, 2026-11-05 선생님 확인)
+  const NAW = Object.fromEntries([
+    { id: 'na_hanguo', h: '韩国', p: 'Hánguó', t: 0, ko: '한국' },
+    { id: 'na_zhongguo', h: '中国', p: 'Zhōngguó', t: 0, ko: '중국' },
+    { id: 'na_ren', h: '人', p: 'rén', t: 2, ko: '사람' },
+    { id: 'na_ask', h: '你是哪国人？', p: 'Nǐ shì nǎ guó rén?', t: 0, ko: '당신은 어느 나라 사람이에요?', sent: true },
+    { id: 'na_kr', h: '我是韩国人。', p: 'Wǒ shì Hánguórén.', t: 0, ko: '저는 한국인이에요.', sent: true },
+    { id: 'na_cn', h: '我是中国人。', p: 'Wǒ shì Zhōngguórén.', t: 0, ko: '저는 중국인이에요.', sent: true },
+  ].map(w => [w.id, w]));
+  const NATION_CARDS = Object.keys(NAW);
   // 숫자 계곡: 숫자 1~10 (t: 성조)
   const NUMS = [
     { id: 'num1', h: '一', p: 'yī', t: 1, v: 1 }, { id: 'num2', h: '二', p: 'èr', t: 4, v: 2 },
@@ -739,7 +754,7 @@
   }
   const josa = (word, pair) => `${word}${pp(word, pair)}`;
   // 숫자가 아닌 한자의 소리 (게임에 나오는 글자)
-  const HAN_PY = { '妈': 'mā', '麻': 'má', '马': 'mǎ', '骂': 'mà', '我': 'wǒ', '你': 'nǐ', '叫': 'jiào', '什': 'shén', '么': 'me', '名': 'míng', '小': 'xiǎo', '明': 'míng', '字': 'zi',
+  const HAN_PY = { '妈': 'mā', '麻': 'má', '马': 'mǎ', '骂': 'mà', '我': 'wǒ', '你': 'nǐ', '叫': 'jiào', '什': 'shén', '么': 'me', '名': 'míng', '小': 'xiǎo', '明': 'míng', '韩': 'hán', '人': 'rén', '是': 'shì', '哪': 'nǎ', '字': 'zi',
     '们': 'men', '好': 'hǎo', '老': 'lǎo', '师': 'shī', '同': 'tóng', '学': 'xué', '中': 'zhōng', '国': 'guó', '汉': 'hàn', '语': 'yǔ', '文': 'wén', '拼': 'pīn', '音': 'yīn', '谢': 'xiè', '再': 'zài', '见': 'jiàn', '不': 'bù', '客': 'kè', '气': 'qi', '对': 'duì', '起': 'qǐ', '没': 'méi', '关': 'guān', '系': 'xi', '晚': 'wǎn', '安': 'ān', '早': 'zǎo', '上': 'shang' };
   const pyHTML = (w) => `<span class="py t${w.t}">${w.p}</span>`;
   const hanHTML = (w) => `<span class="han">${w.h}</span>`;
@@ -1382,6 +1397,15 @@
       paifang: { pillar: '#b8262c', hi: '#e0504f', roof: '#2a2f3d', roof2: '#4a5268', plate: '#f6c445' },
       skins: ['scroll', 'scroll', 'lantern', 'brush'], mid: 'mscroll',
     },
+    // 4차시 나라 마을: 이름 마을과 같은 동네, 낮 하늘
+    world: {
+      sky: ['#3f86c6', '#8fc6ea', '#e3f4ff'], sun: true, clouds: true,
+      far: ['#a8c4d8', '#84a6bd'], hill: ['#6f8f7e', '#86a894'], hills: 'houses', near: 'lanterns',
+      ground: { top: '#b9b2a4', hi: '#d8d2c4', edge: '#7f796e', dirt: '#7d6a58', d1: '#6b5948', d2: '#937e6a', deco: 'brick' },
+      plat: 'eave', gate: 'village',
+      paifang: { pillar: '#2f6fb0', hi: '#5a93cf', roof: '#2a2f3d', roof2: '#4a5268', plate: '#f6c445' },
+      skins: ['lantern', 'scroll', 'lantern', 'brush'], mid: 'mscroll',
+    },
     garden: {
       sky: ['#79b8ec', '#cfe8f7', '#ffe3ee'], sun: true, clouds: true,
       far: ['#c9dcef', '#b3cde6'], hill: ['#82c784', '#a5dca3'], hills: 'pavilion', near: 'blossom',
@@ -1483,7 +1507,7 @@
       quickMons: [{ type: 'mon', skin: 'bud', name: '인사 꽃봉오리' }],
     },
     name: {
-      id: 'name', status: 'draft', lessonNo: '3차시', label: '11월 5일 1교시', title: '이름 마을', short: '이름 마을', topic: '이름 묻고 답하기', mapName: '이름 마을', isNew: true, theme: 'village',
+      id: 'name', status: 'ready', lessonNo: '3차시', label: '11월 5일 1교시', title: '이름 마을', short: '이름 마을', topic: '이름 묻고 답하기', mapName: '이름 마을', isNew: true, theme: 'village',
       ...LAYOUT,
       monsters: layoutMonsters([
         ['글자 두루마리', '글자 두루마리', '꼭대기 두루마리', '문지기 두루마리'],
@@ -1503,6 +1527,29 @@
       // 중간보스 2문제: 我/你 1문제 + 叫/什么/名字 1문제 복습
       midQ: () => [() => nameById(pickNew(['ni_mean', 'wo_char', 'wo_py', 'py_ni', 'py_wo'])), () => nameById(pickNew(['mingzi_char', 'shenme_py', 'jiao_mean', 'py_shenme', 'py_mingzi']))],
       quickMons: [{ type: 'mon', skin: 'scroll', name: '이름 두루마리' }, { type: 'mon', skin: 'lantern', name: '친구 등불' }],
+    },
+    nation: {
+      id: 'nation', status: 'ready', lessonNo: '4차시', label: '11월 5일 2교시', title: '나라 마을', short: '나라 마을', topic: '어느 나라 사람이에요?', mapName: '나라 마을', isNew: true, theme: 'world', song: 'village',
+      ...LAYOUT,
+      monsters: layoutMonsters([
+        ['나라 등불', '나라 등불', '꼭대기 등불', '문지기 등불'],
+        ['질문 두루마리', '질문 두루마리', '꼭대기 두루마리', '문지기 두루마리'],
+        ['대답 등불', '대답 등불', '꼭대기 등불', '문지기 등불'],
+      ], { name: '지도 대왕', hp: 4 }, { name: '깃발 두루마리 정령' }),
+      gates: layoutGates(['첫째 문', '둘째 문', '셋째 문', '나라의 문']),
+      missions: [
+        { label: '韩国 / 中国 / 人', zone: '나라 골목', cards: ['na_hanguo', 'na_zhongguo', 'na_ren'] },
+        { label: '你是哪国人？', zone: '질문 광장', cards: ['na_ask'] },
+        { label: '我是韩国人。/ 我是中国人。', zone: '대답 거리', cards: ['na_kr', 'na_cn'] },
+        { label: '지도 대왕', zone: '나라의 문', cards: [], boss: true },
+      ],
+      finalText: '나라의 문', decorate: decorateNation,
+      words: NAW, cardOrder: NATION_CARDS, cardName: '나라 카드', bossFinale: 'none',
+      noteIntro: '이번에는 <b>어느 나라 사람인지 묻고 답하는 말</b>을 배워요. <b>韩国人</b> = 韩国(한국) + 人(사람), <b>中国人</b> = 中国(중국) + 人(사람)! 카드의 🔊를 누르고 큰 소리로 따라 말해 보세요.',
+      qgen: (m) => nameQuestion(m), makeQueue: (i) => NATION_QUEUES[i],
+      // 중간보스 2문제: 나라 단어 1 + 질문 1
+      midQ: () => [() => nameById(pickNew(['na_zg_mean', 'na_hg_char', 'na_ren_char', 'na_aud_hg', 'na_aud_zg'])), () => nameById(pickNew(['na_ask_zh', 'na_ask_who', 'na_ask_part']))],
+      quickMons: [{ type: 'mon', skin: 'lantern', name: '나라 등불' }],
     },
     number: {
       id: 'number', status: 'draft', lessonNo: '5차시', label: '11월 10일 1교시', title: '숫자 계곡', short: '숫자 계곡', topic: '숫자 一 ~ 十', mapName: '숫자 계곡', isNew: true, theme: 'cave',
@@ -1531,7 +1578,7 @@
   // 지역 순서 (시작 화면에 이 순서대로, 준비 안 된 지역은 아예 넣지 않음)
   // 학생 화면에는 status: 'ready'만 보여요. 주소 끝에 #preview(또는 #preview-지역이름)를 붙이면 선생님 미리보기로 전부 보여요
   const PREVIEW = /^#preview/i.test(location.hash || '');
-  const ALL_STAGES = ['bamboo', 'greet', 'name', 'number'];
+  const ALL_STAGES = ['bamboo', 'greet', 'name', 'nation', 'number'];
   const STAGE_ORDER = ALL_STAGES.filter(id => PREVIEW || STAGES[id].status === 'ready');
   let THEME = THEMES.forest;
   let STAGE = STAGES.bamboo, PLATFORMS = STAGE.platforms, CHECKPOINTS = STAGE.checkpoints, gates = [], run = null;
@@ -1750,6 +1797,11 @@
   }
   function decorateName(g) {
     drawSign(g, 110, ['이름 마을', '출발! →'], 84);
+    drawHouse(g, 2030); drawHouse(g, 2450);
+    drawPaifang(g, GATE_X[3] + 12, STAGE.finalText);
+  }
+  function decorateNation(g) {
+    drawSign(g, 110, ['나라 마을', '출발! →'], 84);
     drawHouse(g, 2030); drawHouse(g, 2450);
     drawPaifang(g, GATE_X[3] + 12, STAGE.finalText);
   }
@@ -2115,7 +2167,8 @@
     if (mode === 'card') { if ((isEnter(c) || c === 'Space') && !e.repeat) closeCardPop(); return; }
     if (mode === 'quiz') {
       const d = /^(Digit|Numpad)([1-4])$/.exec(c);
-      if (d && !quiz.answered) answer(+d[2] - 1);
+      if (d && !quiz.answered) { if (audioMode(quiz.q)) selectAudio(+d[2] - 1); else answer(+d[2] - 1); }
+      else if (isEnter(c) && !quiz.answered && audioMode(quiz.q) && quiz.sel >= 0 && !e.repeat) { e.preventDefault(); answer(quiz.sel); }
       else if (c === 'KeyS' && quiz.answered && !e.repeat) useSkill();
       else if ((isEnter(c) || c === 'Space') && quiz.answered && !e.repeat) { e.preventDefault(); closeQuiz(); }
       return;
@@ -2178,7 +2231,7 @@
     if ((mode === 'lesson' && lessonReturn === 'start') || (mode === 'help' && helpReturn === 'menu')) return [null, 1];
     let vol = mode === 'play' || mode === 'cut' ? 1 : 0.3;
     try { if (window.speechSynthesis && window.speechSynthesis.speaking) vol = Math.min(vol, 0.12); } catch (e) {}
-    return [STAGE.theme, vol];
+    return [STAGE.song || STAGE.theme, vol];
   }
   // 손을 뗀 상태로 만들기 (창이 바뀌거나 화면이 덮일 때)
   function releaseAll() { clearKeys(); document.querySelectorAll('#touch button.on').forEach(b => b.classList.remove('on')); }
@@ -2567,36 +2620,102 @@
       hint: '‘너(你)’로 시작해서 ‘이름(名字)’으로 끝나요.',
       explain: '<b>你叫什么名字？</b><br>你(너) → 叫(~라고 부르다) → 什么(무엇) → 名字(이름) 순서로 말해요.', words: [NW.ask] }),
   };
-  // 알맞은 발음 고르기 (말하기·듣기 중심): 한국어 뜻을 보고 중국어 발음(병음)을 고름. 오답은 1·2차시 문장과 3차시 다른 말
-  const L12S = [['Nǐ hǎo!', '안녕하세요'], ['Lǎoshī hǎo!', '선생님, 안녕하세요'], ['Xièxie!', '고마워'], ['Bú kèqi!', '천만에'], ['Duìbuqǐ!', '미안해'], ['Méi guānxi!', '괜찮아'], ['Zàijiàn!', '잘 가 / 안녕']];
+  // 보기를 눌러 듣고 고르기 (말하기·듣기 중심): 한국어 뜻을 보고, 보기마다 🔊 소리를 들은 뒤 알맞은 말을 고름
+  // 소리가 안 나는 기기는 문제마다 '읽고 풀기'(병음 보기)로 바꿀 수 있어요. 문장 문제의 오답은 1·2차시 문장
+  const L12W = [['你好！', 'Nǐ hǎo!', '안녕하세요'], ['老师好！', 'Lǎoshī hǎo!', '선생님, 안녕하세요'], ['谢谢！', 'Xièxie!', '고마워'], ['不客气！', 'Bú kèqi!', '천만에'], ['对不起！', 'Duìbuqǐ!', '미안해'], ['没关系！', 'Méi guānxi!', '괜찮아'], ['再见！', 'Zàijiàn!', '잘 가 / 안녕']].map(([h, p, ko]) => ({ h, p, ko, t: 0 }));
   const SENT = {
     ans: { id: 'xmsent', h: '我叫小明。', p: 'Wǒ jiào Xiǎomíng.', t: 0, ko: '내 이름은 샤오밍이야.', sent: true },
   };
-  function pyq(o) {
-    const wrong = o.wrong || shuffle(L12S).slice(0, 2);
+  function aq(o) {
+    const wrong = o.wrong || shuffle(L12W).slice(0, 2);
+    const op = (x, correct) => ({ html: `<span class="han">${x.h}</span><span class="py t0">${x.p}</span>`, read: `<span class="py pyopt">${x.p}</span>`, say: x.say || x.h, correct });
     return {
-      prompt: o.prompt, show: o.show || `<span class="ko say">${o.ko}</span>`, hint: o.hint, words: [o.w], word: o.w,
-      options: shuffle([{ html: `<span class="py pyopt">${o.w.p}</span>`, correct: true }, ...wrong.map(([p]) => ({ html: `<span class="py pyopt">${p}</span>`, correct: false }))]),
-      explain: `‘${o.ko}’ → <b>${o.w.p}</b> (${o.w.h})<br>${wrong.map(([p, k]) => `${p} = ${k}`).join(' · ')}<br>큰 소리로 따라 말해 보세요!`,
+      audioOpts: true, prompt: o.prompt || '보기를 눌러 소리를 듣고, 알맞은 말을 고르세요.', readPrompt: o.readPrompt || '알맞은 발음을 고르세요.',
+      show: o.show || `<span class="ko say">‘${o.ko}’</span>`, hint: o.hint, words: [o.w], word: o.w,
+      options: shuffle([op(o.w, true), ...wrong.map(x => op(x, false))]),
+      explain: `‘${o.ko}’ → <b>${o.w.h} ${o.w.p}</b><br>${wrong.map(x => `${x.h} ${x.p} = ${x.ko}`).join(' · ')}<br>큰 소리로 따라 말해 보세요!`,
     };
   }
   Object.assign(NQ, {
-    py_ans: () => pyq({ prompt: '중국어로 어떻게 말할까요? 알맞은 발음을 고르세요.', ko: '내 이름은 샤오밍이야.', w: SENT.ans,
-      hint: '‘나’는 wǒ, ‘~라고 부르다’는 jiào예요. 그 뒤에 이름 Xiǎomíng!' }),
-    py_ask: () => pyq({ prompt: '중국어로 어떻게 말할까요? 알맞은 발음을 고르세요.', ko: '이름이 뭐예요?', w: NW.ask,
-      hint: 'nǐ(너) + jiào + shénme(무엇) + míngzi(이름)' }),
-    py_reply: () => pyq({ prompt: '친구가 이렇게 물었어요. 샤오밍은 뭐라고 대답할까요?', ko: '내 이름은 샤오밍이야.', w: SENT.ans,
+    py_ans: () => aq({ ko: '내 이름은 샤오밍이야.', w: SENT.ans, hint: '‘나’는 wǒ, ‘~라고 부르다’는 jiào예요. 그 뒤에 이름 Xiǎomíng!' }),
+    py_ask: () => aq({ ko: '이름이 뭐예요?', w: NW.ask, hint: 'nǐ(너) + jiào + shénme(무엇) + míngzi(이름)' }),
+    py_reply: () => aq({ prompt: '친구가 이렇게 물었어요. 샤오밍은 뭐라고 대답할까요? 보기를 눌러 듣고 고르세요.', readPrompt: '친구가 이렇게 물었어요. 샤오밍은 뭐라고 대답할까요?', ko: '내 이름은 샤오밍이야.', w: SENT.ans,
       show: '<div class="npc"><span class="py t0" style="font-size:30px">Nǐ jiào shénme míngzi?</span><span class="ko">(이름이 뭐예요?)</span></div>',
       hint: '이름을 물었으니 Wǒ jiào + 이름으로 대답해요.' }),
-    py_wo: () => pyq({ prompt: '중국어로 어떻게 말할까요? 알맞은 발음을 고르세요.', ko: '나', w: NW.wo, wrong: [['nǐ', '너'], ['míngzi', '이름']],
-      hint: '‘너’는 nǐ예요. ‘나’는 w로 시작해요.' }),
-    py_ni: () => pyq({ prompt: '중국어로 어떻게 말할까요? 알맞은 발음을 고르세요.', ko: '너', w: NW.ni, wrong: [['wǒ', '나'], ['jiào', '~라고 부르다']],
-      hint: 'Nǐ hǎo!의 첫 소리를 떠올려 보세요.' }),
-    py_mingzi: () => pyq({ prompt: '중국어로 어떻게 말할까요? 알맞은 발음을 고르세요.', ko: '이름', w: NW.mingzi, wrong: [['shénme', '무엇'], ['Zàijiàn!', '잘 가 / 안녕']],
-      hint: 'Nǐ jiào shénme míngzi?의 맨 끝 말이에요.' }),
-    py_shenme: () => pyq({ prompt: '중국어로 어떻게 말할까요? 알맞은 발음을 고르세요.', ko: '무엇', w: NW.shenme, wrong: [['míngzi', '이름'], ['Xièxie!', '고마워']],
-      hint: 'sh 소리로 시작해요.' }),
+    py_wo: () => aq({ ko: '나', w: NW.wo, wrong: [NW.ni, NW.mingzi], hint: '‘너’는 nǐ예요. ‘나’는 w로 시작해요.' }),
+    py_ni: () => aq({ ko: '너', w: NW.ni, wrong: [NW.wo, NW.jiao], hint: 'Nǐ hǎo!의 첫 소리를 떠올려 보세요.' }),
+    py_mingzi: () => aq({ ko: '이름', w: NW.mingzi, wrong: [NW.shenme, L12W[6]], hint: 'Nǐ jiào shénme míngzi?의 맨 끝 말이에요.' }),
+    py_shenme: () => aq({ ko: '무엇', w: NW.shenme, wrong: [NW.mingzi, L12W[2]], hint: 'sh 소리로 시작해요.' }),
   });
+  // ===== 4차시 나라 마을 문제 =====
+  const N = NAW;
+  const NA_ASKSHOW = '<div class="npc"><span class="han sent">你是哪国人？</span><span class="py t0">Nǐ shì nǎ guó rén?</span><span class="ko">(당신은 어느 나라 사람이에요?)</span></div>';
+  Object.assign(NQ, {
+    // 미션 1: 韩国 / 中国 / 人
+    na_hg_mean: () => nq({ prompt: '‘韩国’의 뜻은 무엇일까요?', show: showW(N.na_hanguo), say: N.na_hanguo, right: '한국', wrong: ['중국', '사람'],
+      hint: '우리나라 이름이에요. Hánguó!', explain: '<b>韩国 Hánguó</b> = 한국', words: [N.na_hanguo] }),
+    na_zg_char: () => nq({ prompt: '‘중국’은 중국어로 무엇일까요?', say: N.na_zhongguo, right: zh(N.na_zhongguo), wrong: [zh(N.na_hanguo), zh(N.na_ren)],
+      hint: 'Zhōngguó라고 읽어요. 中文 Zhōngwén의 Zhōng과 같은 글자로 시작해요.', explain: '<b>中国 Zhōngguó</b> = 중국', words: [N.na_zhongguo] }),
+    na_ren_mean: () => nq({ prompt: '‘人’의 뜻은 무엇일까요?', show: showW(N.na_ren), say: N.na_ren, right: '사람', wrong: ['한국', '이름'],
+      hint: '두 다리로 서 있는 모습을 닮은 글자예요.', explain: '<b>人 rén</b> = 사람<br>韩国人은 한국 사람, 中国人은 중국 사람이에요.', words: [N.na_ren] }),
+    na_zg_mean: () => nq({ prompt: '‘中国’의 뜻은 무엇일까요?', show: showW(N.na_zhongguo), say: N.na_zhongguo, right: '중국', wrong: ['한국', '사람'],
+      hint: 'Zhōngguó, 판다가 사는 나라예요!', explain: '<b>中国 Zhōngguó</b> = 중국', words: [N.na_zhongguo] }),
+    na_hg_char: () => nq({ prompt: '‘한국’은 중국어로 무엇일까요?', say: N.na_hanguo, right: zh(N.na_hanguo), wrong: [zh(N.na_zhongguo), zh(N.na_ren)],
+      hint: 'Hánguó, ‘한’ 소리와 비슷해요.', explain: '<b>韩国 Hánguó</b> = 한국', words: [N.na_hanguo] }),
+    na_ren_char: () => nq({ prompt: '‘사람’은 중국어로 무엇일까요?', say: N.na_ren, right: zh(N.na_ren), wrong: [zh(N.na_hanguo), zh(NW.mingzi)],
+      hint: '한 글자예요. rén!', explain: '<b>人 rén</b> = 사람', words: [N.na_ren] }),
+    na_aud_hg: () => aq({ ko: '한국', w: N.na_hanguo, wrong: [N.na_zhongguo, N.na_ren], hint: 'Hánguó, ‘한’과 비슷한 소리로 시작해요.' }),
+    na_aud_zg: () => aq({ ko: '중국', w: N.na_zhongguo, wrong: [N.na_hanguo, N.na_ren], hint: 'Zhōngguó, Zhōng 소리로 시작해요.' }),
+    na_m1_listen: () => { const w = pick([N.na_hanguo, N.na_zhongguo, N.na_ren]); return nq({ prompt: '잘 듣고, 들은 말을 고르세요.', listen: w,
+      right: zhOnly(w), wrong: [N.na_hanguo, N.na_zhongguo, N.na_ren].filter(x => x !== w).map(zhOnly),
+      hint: '‘다시 듣기’를 눌러 보세요. 한 글자였나요, 두 글자였나요?', explain: `들은 말: <b>${w.h} ${w.p}</b> (${w.ko})`, words: [w] }); },
+    // 미션 2: 你是哪国人？
+    na_ask_mean: () => nq({ prompt: '‘你是哪国人？’의 뜻은 무엇일까요?', show: showW(N.na_ask), say: N.na_ask, right: '당신은 어느 나라 사람이에요?', wrong: ['이름이 뭐예요?', '안녕하세요'],
+      hint: '人 rén은 ‘사람’이었죠? 끝에 물음표가 있어요.', explain: '<b>你是哪国人？</b> = 당신은 어느 나라 사람이에요?', words: [N.na_ask] }),
+    na_aud_ask: () => aq({ ko: '당신은 어느 나라 사람이에요?', w: N.na_ask, wrong: [NW.ask, L12W[0]], hint: 'Nǐ shì로 시작하고 rén으로 끝나요.' }),
+    na_ask_part: () => nq({ prompt: '你是哪国人？에서 ‘사람’이라는 뜻의 글자는?', show: showW(N.na_ask), say: N.na_ask, right: zh(N.na_ren), wrong: [zh(NW.ni), zh(NW.mingzi)],
+      hint: '맨 끝 글자를 보세요. rén!', explain: '你是哪国<b>人</b>？ — <b>人 rén</b>이 ‘사람’이에요.', words: [N.na_ask, N.na_ren] }),
+    na_ask_zh: () => nq({ prompt: '‘당신은 어느 나라 사람이에요?’를 중국어로 하면?', say: N.na_ask, right: zh(N.na_ask), wrong: [zh(NW.ask), zh(N.na_kr)],
+      hint: '물어보는 말이고, ‘사람’ 人이 들어 있어요.', explain: '<b>你是哪国人？</b> = 당신은 어느 나라 사람이에요?<br>你叫什么名字？는 ‘이름이 뭐예요?’예요.', words: [N.na_ask] }),
+    na_ask_who: () => nq({ prompt: '친구가 어느 나라 사람인지 궁금할 때 하는 말은?', say: N.na_ask, right: zh(N.na_ask), wrong: [zh(NW.ask), zh(N.na_cn)],
+      hint: '물어보는 문장이에요. 끝에 물음표(？)가 있어요.', explain: '나라를 물을 때는 <b>你是哪国人？</b>, 이름을 물을 때는 <b>你叫什么名字？</b>예요.', words: [N.na_ask] }),
+    na_ask_listen: () => nq({ prompt: '잘 듣고, 들은 문장을 고르세요.', listen: N.na_ask, right: zhOnly(N.na_ask), wrong: [zhOnly(NW.ask), zhOnly(N.na_kr)],
+      hint: '‘다시 듣기’를 눌러 보세요. 물어보는 말이었나요?', explain: '들은 문장: <b>你是哪国人？</b> (당신은 어느 나라 사람이에요?)', words: [N.na_ask] }),
+    // 미션 3: 我是韩国人。/ 我是中国人。
+    na_kr_mean: () => nq({ prompt: '‘我是韩国人。’의 뜻은 무엇일까요?', show: showW(N.na_kr), say: N.na_kr, right: '저는 한국인이에요.', wrong: ['저는 중국인이에요.', '당신은 어느 나라 사람이에요?'],
+      hint: '韩国는 한국, 中国는 중국이었어요.', explain: '<b>我是韩国人。</b> = 저는 한국인이에요.', words: [N.na_kr] }),
+    na_aud_cn: () => aq({ ko: '저는 중국인이에요.', w: N.na_cn, wrong: [N.na_kr, SENT.ans], hint: 'Zhōngguó(중국) + rén(사람)이 들어 있어요.' }),
+    na_aud_kr: () => aq({ ko: '저는 한국인이에요.', w: N.na_kr, wrong: [N.na_cn, N.na_ask], hint: 'Hánguó(한국) + rén(사람)이 들어 있어요.' }),
+    na_kr_blank: () => nq({ prompt: '빈칸에 들어갈 말은 무엇일까요?',
+      show: '<span class="han sent">我是 <span class="blankq">?</span> 人。</span><div class="meta"><span class="ko">저는 한국인이에요.</span></div>',
+      say: N.na_kr, right: zh(N.na_hanguo), wrong: [zh(N.na_zhongguo), zh(NW.mingzi)],
+      hint: '‘한국’이라는 말이 들어가요.', explain: '<b>我是韩国人。</b> = 저는 한국인이에요.<br>빈칸에는 <b>韩国 Hánguó</b>(한국)가 들어가요.', words: [N.na_kr, N.na_hanguo] }),
+    na_cn_blank: () => nq({ prompt: '빈칸에 들어갈 말은 무엇일까요?',
+      show: '<span class="han sent">我是中国 <span class="blankq">?</span>。</span><div class="meta"><span class="ko">저는 중국인이에요.</span></div>',
+      say: N.na_cn, right: zh(N.na_ren), wrong: [zh(NW.mingzi), zh(NW.shenme)],
+      hint: '‘사람’이라는 뜻의 한 글자가 들어가요.', explain: '<b>我是中国人。</b> = 저는 중국인이에요.<br>빈칸에는 <b>人 rén</b>(사람)이 들어가요.', words: [N.na_cn, N.na_ren] }),
+    na_cn_mean: () => nq({ prompt: '‘我是中国人。’의 뜻은 무엇일까요?', show: showW(N.na_cn), say: N.na_cn, right: '저는 중국인이에요.', wrong: ['저는 한국인이에요.', '제 이름은 ……예요.'],
+      hint: '中国는 중국이었어요.', explain: '<b>我是中国人。</b> = 저는 중국인이에요.', words: [N.na_cn] }),
+    na_kr_listen: () => { const w = pick([N.na_kr, N.na_cn]); return nq({ prompt: '잘 듣고, 들은 문장을 고르세요.', listen: w,
+      right: zhOnly(w), wrong: [w === N.na_kr ? N.na_cn : N.na_kr, N.na_ask].map(zhOnly),
+      hint: '‘다시 듣기’를 눌러 보세요. Hánguó였나요, Zhōngguó였나요?', explain: `들은 문장: <b>${w.h} ${w.p}</b> (${w.ko})`, words: [w] }); },
+    // 미션 4: 보스 지도 대왕
+    na_b1: () => nq({ prompt: '지도 대왕이 물어요. 나는 한국 사람이에요. 알맞은 대답은?', show: NA_ASKSHOW, say: N.na_ask,
+      right: zh(N.na_kr), wrong: [zh(N.na_cn), zh(SENT.ans)],
+      hint: '나라를 물었으니 ‘我是 + 나라 + 人’으로 대답해요. 나는 한국 사람!', explain: '<b>你是哪国人？</b> → <b>我是韩国人。</b> (저는 한국인이에요.)', words: [N.na_ask, N.na_kr] }),
+    na_b2: () => aq({ prompt: '지도 대왕이 중국 친구에게 물었어요. 중국 친구는 뭐라고 대답할까요? 보기를 눌러 듣고 고르세요.', readPrompt: '지도 대왕이 중국 친구에게 물었어요. 중국 친구는 뭐라고 대답할까요?',
+      show: NA_ASKSHOW, ko: '저는 중국인이에요.', w: N.na_cn, wrong: [N.na_kr, SENT.ans], hint: '중국 친구니까 Zhōngguó + rén!' }),
+    na_b3: () => nq({ prompt: '‘당신은 어느 나라 사람이에요?’를 바른 순서로 쓴 문장은?', say: N.na_ask,
+      right: zh(N.na_ask), wrong: ['<span class="han">你哪国是人？</span>', '<span class="han">人是你哪国？</span>'],
+      hint: '‘你是’로 시작해서 ‘人’으로 끝나요.', explain: '<b>你是哪国人？</b> Nǐ shì nǎ guó rén?', words: [N.na_ask] }),
+    na_b4: () => aq({ ko: '저는 한국인이에요.', w: N.na_kr, wrong: [N.na_cn, N.na_ask], hint: 'Wǒ shì + Hánguó + rén!' }),
+  });
+  const NATION_QUEUES = [
+    ['na_hg_mean', 'na_aud_zg', 'na_ren_mean', ['na_zg_char', 'na_hg_char', 'na_ren_char', 'na_aud_hg', 'na_m1_listen']],
+    ['na_ask_mean', 'na_aud_ask', 'na_ask_part', ['na_ask_zh', 'na_ask_who', 'na_ask_listen']],
+    ['na_kr_mean', 'na_aud_cn', 'na_kr_blank', ['na_cn_blank', 'na_cn_mean', 'na_kr_listen', 'na_aud_kr']],
+    ['na_b1', 'na_b2', 'na_b3', 'na_b4'],
+  ];
   const LISTEN_IDS = ['m1_listen', 'm2_listen', 'ask_listen'];
   // 미션별 문제 순서. 배열은 그중 하나를 고름 (듣기 문제는 중국어 음성이 있을 때만)
   // 미션마다 '알맞은 발음 고르기'(py_)를 섞음
@@ -2792,6 +2911,7 @@
     renderOptions(q);
     const tools = [];
     if (q.say && q.show) tools.push(`<button class="btn small" data-say="${sayText(q.say)}">🔊 발음 듣기</button>`);
+    if (q.audioOpts) { q.audioPrompt = q.prompt; q.readMode = !Voice.supported(); tools.push('<button class="btn small" id="btnReadMode"></button>'); }
     if (q.listen) {
       // 듣기 문제: 소리가 안 나는 기기도 풀 수 있게, 문제마다 '읽고 풀기'로 바꿀 수 있어요 (다시 '듣고 풀기'로 돌아갈 수도 있어요)
       q.listenPrompt = q.prompt; q.readMode = !Voice.supported();
@@ -2800,6 +2920,7 @@
     }
     $('qTools').innerHTML = tools.join(''); $('qTools').hidden = !tools.length;
     if (q.listen) { $('btnReadMode').addEventListener('click', () => setReadMode(q, !q.readMode)); setReadMode(q, q.readMode); }
+    if (q.audioOpts) { $('btnReadMode').addEventListener('click', () => setAudioRead(q, !q.readMode)); setAudioRead(q, q.readMode); }
     bindSoundButtons($('qTools'));
     $('qHint').hidden = true;
     $('qFb').hidden = true; $('btnSkill').hidden = true;
@@ -2818,12 +2939,33 @@
     $('btnReadMode').textContent = on ? '🔊 듣고 풀기로 바꾸기' : '📖 소리가 안 들려요 → 읽고 풀기';
     wrapPinyin($('qShow'));
   }
+  // 보기를 눌러 듣고 고르기: 누르면 그 보기 소리가 나고 선택됨 → [이 소리로 정할래요]로 제출
+  const audioMode = (q) => !!(q && q.audioOpts && !q.readMode);
   function renderOptions(q) {
-    $('qOpts').className = 'qopts' + (q.options.length === 3 ? ' n3' : '');
-    $('qOpts').innerHTML = q.options.map((o, i) => `<button class="opt" data-i="${i}"><span class="num">${i + 1}</span><span class="lbl">${o.html}</span></button>`).join('');
-    $('qOpts').querySelectorAll('.opt').forEach(b => b.addEventListener('click', () => answer(+b.dataset.i)));
+    const aud = audioMode(q);
+    quiz.sel = -1;
+    $('qOpts').className = 'qopts' + (q.options.length === 3 ? ' n3' : '') + (aud ? ' audio' : '');
+    $('qOpts').innerHTML = q.options.map((o, i) => `<button class="opt" data-i="${i}"><span class="num">${i + 1}</span><span class="lbl">${aud ? `<span class="aud">🔊 소리 ${i + 1}</span>` : q.audioOpts ? o.read : o.html}</span></button>`).join('');
+    $('qOpts').querySelectorAll('.opt').forEach(b => b.addEventListener('click', () => aud ? selectAudio(+b.dataset.i) : answer(+b.dataset.i)));
+    $('qPick').hidden = !aud; $('btnPick').disabled = true; $('btnPick').textContent = '먼저 보기를 눌러 소리를 들어 보세요';
     wrapPinyin($('qOpts'));
   }
+  function selectAudio(i) {
+    const q = quiz.q;
+    if (mode !== 'quiz' || quiz.answered || quiz.lock || !audioMode(q) || !q.options[i]) return;
+    quiz.sel = i;
+    $('qOpts').querySelectorAll('.opt').forEach((b, j) => b.classList.toggle('sel', j === i));
+    Voice.play(q.options[i].say);
+    $('btnPick').disabled = false; $('btnPick').textContent = `✔ ${i + 1}번 소리로 정할래요`;
+  }
+  function setAudioRead(q, on) {
+    if (quiz.q !== q) return;
+    q.readMode = on;
+    $('qPrompt').textContent = on ? q.readPrompt : q.audioPrompt;
+    $('btnReadMode').textContent = on ? '🔊 듣고 풀기로 바꾸기' : '📖 소리가 안 들려요 → 읽고 풀기';
+    renderOptions(q);
+  }
+  $('btnPick').addEventListener('click', () => { if (quiz.sel >= 0) answer(quiz.sel); });
   // 보기 순서를 다시 섞되, 정답이 avoid 자리에 오지 않게
   function reorderOptions(q, avoid) {
     for (let t = 0; t < 20; t++) {
@@ -2865,6 +3007,7 @@
     quiz.answered = true; quiz.correct = opt.correct;
     const first = quiz.tries === 0;
     btns.forEach((b, j) => { b.disabled = true; if (q.options[j].correct) b.classList.add('right'); });
+    if (q.audioOpts) { btns.forEach((b, j) => { b.classList.remove('sel'); b.querySelector('.lbl').innerHTML = q.options[j].html; }); $('qPick').hidden = true; wrapPinyin($('qOpts')); }
     const w = q.word;
     sessionStats.total++; if (opt.correct && first) sessionStats.correct++;
     if (quick.on && opt.correct && first) quick.correct++;
@@ -3300,7 +3443,7 @@
   // ================= 시작 · 지역 선택 =================
   function initialStage() {
     const h = (location.hash || '').slice(1).toLowerCase().replace(/^preview-?/, '');
-    const alias = { s1: 'bamboo', lesson1: 'bamboo', '1': 'bamboo', s2: 'greet', lesson2: 'greet', '2': 'greet', s3: 'name', lesson3: 'name', num: 'number', numbers: 'number' };
+    const alias = { s1: 'bamboo', lesson1: 'bamboo', '1': 'bamboo', s2: 'greet', lesson2: 'greet', '2': 'greet', s3: 'name', lesson3: 'name', '3': 'name', s4: 'nation', lesson4: 'nation', '4': 'nation', num: 'number', numbers: 'number' };
     const id = alias[h] || h;
     // 준비 중 지역은 학생 주소로 열리지 않아요 → 공개된 첫 지역으로
     return STAGE_ORDER.includes(id) ? id : STAGE_ORDER[0];
