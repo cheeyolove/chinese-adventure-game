@@ -2626,7 +2626,7 @@
       hint: '‘제 이름은’이니까 ‘나’라는 말이 필요해요.',
       explain: '<b>我叫小明。</b> = 제 이름은 小明이에요.<br>我(나) + 叫(이름이 ~이다) + 이름', words: [NW.wo, NW.jiao, NW.ans] }),
     b4: () => nq({ prompt: '‘이름이 뭐예요?’를 바른 순서로 쓴 문장은?', say: NW.ask,
-      right: zh(NW.ask), wrong: ['<span class="han">你名字什么叫？</span>', '<span class="han">什么你叫名字？</span>'],
+      right: zh(NW.ask), wrong: ['<span class="han">你名字什么叫？</span><span class="py t0">Nǐ míngzi shénme jiào?</span>', '<span class="han">什么你叫名字？</span><span class="py t0">Shénme nǐ jiào míngzi?</span>'],
       hint: '‘너(你)’로 시작해서 ‘이름(名字)’으로 끝나요.',
       explain: '<b>你叫什么名字？</b><br>你(너) → 叫(~라고 부르다) → 什么(무엇) → 名字(이름) 순서로 말해요.', words: [NW.ask] }),
   };
@@ -2739,7 +2739,7 @@
     na_b2: () => aq({ prompt: '지도 대왕이 중국 친구에게 물었어요. 중국 친구는 뭐라고 대답할까요? 보기를 눌러 듣고 고르세요.', readPrompt: '지도 대왕이 중국 친구에게 물었어요. 중국 친구는 뭐라고 대답할까요?',
       show: NA_ASKSHOW, ko: '저는 중국인이에요.', w: N.na_cn, wrong: [N.na_kr, SENT.ans], hint: '중국 친구니까 Zhōngguó + rén!' }),
     na_b3: () => nq({ prompt: '‘당신은 어느 나라 사람이에요?’를 바른 순서로 쓴 문장은?', say: N.na_ask,
-      right: zh(N.na_ask), wrong: ['<span class="han">你哪国是人？</span>', '<span class="han">人是你哪国？</span>'],
+      right: zh(N.na_ask), wrong: ['<span class="han">你哪国是人？</span><span class="py t0">Nǐ nǎ guó shì rén?</span>', '<span class="han">人是你哪国？</span><span class="py t0">Rén shì nǐ nǎ guó?</span>'],
       hint: '‘你是’로 시작해서 ‘人’으로 끝나요.', explain: '<b>你是哪国人？</b> Nǐ shì nǎ guó rén?', words: [N.na_ask] }),
     na_b4: () => aq({ ko: '저는 한국인이에요.', w: N.na_kr, wrong: [N.na_cn, N.na_ask], hint: 'Wǒ shì + Hánguó + rén!' }),
   });
