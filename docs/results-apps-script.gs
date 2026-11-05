@@ -1,9 +1,11 @@
-// 판다 탐험대 결과 기록 (Google Apps Script)
+// 판다 탐험대 결과 기록 (Google Apps Script) · 2판
 // 이 코드를 Google 시트의 [확장 프로그램 → Apps Script]에 붙여 넣고 '웹 앱'으로 배포하세요.
 // - 학생 게임이 이 주소로 결과를 보내면 '기록' 탭에 한 줄씩 쌓여요.
-// - 이 주소를 브라우저에서 열면 오늘의 결과표(학생별)가 보여요. 다른 날은 주소 끝에 ?day=2026-11-03
+// - 선생님 결과 페이지(teacher.html)가 이 주소에서 기록을 읽어 가요(?format=json).
+// - 이 주소를 브라우저에서 그냥 열면 오늘의 간단한 결과표가 보여요. 다른 날은 주소 끝에 ?day=2026-11-03
 const SHEET = '기록';
 const TZ = 'Asia/Seoul';
+const VERSION = 2;
 
 function sheet_() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -19,7 +21,7 @@ function sheet_() {
 function doPost(e) {
   try {
     const d = JSON.parse(e.postData.contents);
-    const kind = { start: '입장', mission: '미션 성공', clear: '클리어' }[d.event] || String(d.event || '');
+    const kind = { start: '입장', mission: '미션 성공', clear: '클리어', test: '연결 확인' }[d.event] || String(d.event || '');
     const lock = LockService.getScriptLock();
     lock.waitLock(10000);
     try {
@@ -31,10 +33,28 @@ function doPost(e) {
   return ContentService.createTextOutput('ok');
 }
 
-function doGet(e) {
-  const day = (e && e.parameter && e.parameter.day) || Utilities.formatDate(new Date(), TZ, 'yyyy-MM-dd');
+function dayOf_(d) { return Utilities.formatDate(d, TZ, 'yyyy-MM-dd'); }
+
+// 선생님 결과 페이지용: 날짜 범위의 기록을 JSON(또는 JSONP)으로
+function dataOut_(p) {
+  const from = p.from || p.day || dayOf_(new Date()), to = p.to || from;
   const rows = sheet_().getDataRange().getValues().slice(1)
-    .filter(r => r[0] instanceof Date && Utilities.formatDate(r[0], TZ, 'yyyy-MM-dd') === day);
+    .filter(r => r[0] instanceof Date && dayOf_(r[0]) >= from && dayOf_(r[0]) <= to)
+    .map(r => ({ t: r[0].toISOString(), day: dayOf_(r[0]), name: String(r[1]), lesson: String(r[2]), stage: String(r[3]), kind: String(r[4]),
+      mission: String(r[5]), first: Number(r[6]) || 0, asked: Number(r[7]) || 0, stars: Number(r[8]) || 0, wrong: String(r[9] || ''),
+      secs: Number(r[10]) || 0, level: Number(r[11]) || 0, device: String(r[12] || '') }));
+  const body = JSON.stringify({ ok: true, version: VERSION, from: from, to: to, rows: rows });
+  const cb = String(p.callback || '');
+  if (/^[A-Za-z_$][\w$]{0,40}$/.test(cb)) return ContentService.createTextOutput(cb + '(' + body + ');').setMimeType(ContentService.MimeType.JAVASCRIPT);
+  return ContentService.createTextOutput(body).setMimeType(ContentService.MimeType.JSON);
+}
+
+function doGet(e) {
+  const p = (e && e.parameter) || {};
+  if (p.format === 'json' || p.callback) return dataOut_(p);
+  const day = p.day || dayOf_(new Date());
+  const rows = sheet_().getDataRange().getValues().slice(1)
+    .filter(r => r[0] instanceof Date && dayOf_(r[0]) === day && r[4] !== '연결 확인');
   const by = {};
   rows.forEach(r => {
     const key = r[1] + '|' + r[2];

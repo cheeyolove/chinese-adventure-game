@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>판다 탐험대 선생님 결과</title>
+<style>
+  :root {
+    --ink: #1d2738; --soft: #52627a; --line: #d7e2da; --paper: #ffffff; --bg: #f3f7f4; --jade: #1f8a5b; --jade-bg: #e1f2ea;
+    --gold: #e0a400; --red: #d64545; --red-bg: #fdecec; --blue: #2f6fb0;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif; font-size: 15px; }
+  [hidden] { display: none !important; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 18px 16px 40px; }
+  h1 { font-size: 24px; margin: 0 0 4px; }
+  .sub { color: var(--soft); font-size: 14px; margin: 0 0 14px; }
+  .bar { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; }
+  .bar label { display: flex; align-items: center; gap: 6px; font-size: 14px; color: var(--soft); }
+  input[type=date], select { font: inherit; padding: 6px 8px; border: 1px solid #b9c7be; border-radius: 8px; background: #fff; color: var(--ink); }
+  button { font: inherit; cursor: pointer; border: 1px solid #b9c7be; background: #fff; color: var(--ink); border-radius: 8px; padding: 6px 12px; }
+  button.primary { background: var(--jade); border-color: var(--jade); color: #fff; font-weight: 600; }
+  button:disabled { opacity: .55; cursor: default; }
+  .spacer { flex: 1; }
+  .status { margin: 10px 0 0; font-size: 14px; padding: 8px 12px; border-radius: 10px; background: var(--jade-bg); }
+  .status.bad { background: var(--red-bg); }
+  .status.wait { background: #fff6d6; }
+  .status ol { margin: 6px 0 0; padding-left: 20px; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 14px 0; }
+  .card { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; }
+  .card .k { font-size: 13px; color: var(--soft); }
+  .card .v { font-size: 26px; font-weight: 700; margin-top: 2px; }
+  .grid2 { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
+
+  .panel { background: var(--paper); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  .panel h2 { font-size: 16px; margin: 0; padding: 10px 14px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 8px; }
+  .panel h2 small { font-weight: 400; color: var(--soft); font-size: 13px; }
+  .tablewrap { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  th, td { border-bottom: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: middle; white-space: nowrap; }
+  th { background: #f7faf8; font-size: 13px; color: var(--soft); font-weight: 600; position: sticky; top: 0; }
+  tr.st:hover td { background: #fafcfb; }
+  td.name { font-weight: 600; white-space: normal; min-width: 90px; }
+  .les { display: inline-block; font-size: 12px; padding: 1px 7px; border-radius: 6px; background: #eef2f7; color: var(--blue); }
+  .prog { display: inline-flex; gap: 3px; vertical-align: middle; }
+  .prog i { width: 14px; height: 14px; border-radius: 4px; background: #e4e9e6; display: inline-block; }
+  .prog i.on { background: var(--jade); }
+  .done { color: var(--jade); font-weight: 700; margin-left: 6px; }
+  .rate { display: inline-block; min-width: 42px; text-align: right; font-weight: 700; }
+  .rate.lo { color: var(--red); } .rate.mid { color: #b07800; } .rate.hi { color: var(--jade); }
+  .stars { color: var(--gold); letter-spacing: 1px; }
+  .muted { color: var(--soft); }
+  .wbtn { font-size: 13px; padding: 3px 8px; }
+  tr.wrow td { background: #fbfcfb; white-space: normal; font-size: 13px; color: var(--soft); }
+  tr.wrow ul { margin: 0; padding-left: 18px; }
+  .top li { padding: 8px 14px; border-bottom: 1px solid var(--line); font-size: 14px; display: flex; gap: 10px; }
+  .top ol { list-style: none; margin: 0; padding: 0; }
+  .top .n { flex: none; min-width: 52px; font-weight: 700; color: var(--red); }
+  .top .q { white-space: normal; }
+  .top .q small { display: block; color: var(--soft); }
+  .empty { padding: 18px 14px; color: var(--soft); font-size: 14px; }
+  .foot { margin-top: 18px; font-size: 13px; color: var(--soft); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🐼 판다 탐험대 · 선생님 결과</h1>
+  <p class="sub">학생들이 학생 링크로 들어와 게임한 기록이에요. 닉네임별로 묶어서 보여 줘요. 이 주소는 학생들에게 알려 주지 마세요.</p>
+
+  <div class="bar">
+    <label>날짜 <input type="date" id="day"></label>
+    <label>차시 <select id="lesson"><option value="">전체</option></select></label>
+    <label>정렬 <select id="sort">
+      <option value="lesson">차시 → 이름</option>
+      <option value="rate">처음 정답률 높은 순</option>
+      <option value="rateLow">처음 정답률 낮은 순</option>
+      <option value="prog">진행 많이 한 순</option>
+      <option value="recent">최근 기록 순</option>
+    </select></label>
+    <button class="primary" id="reload">🔄 새로 고침</button>
+    <label><input type="checkbox" id="auto" checked> 30초마다 자동</label>
+    <span class="spacer"></span>
+    <button id="test" title="시트에 '연결 확인' 기록을 하나 보내고, 잘 들어오는지 확인해요">🔌 기록 연결 확인</button>
+  </div>
+  <div class="status wait" id="status">기록을 불러오는 중이에요…</div>
+
+  <div class="cards">
+    <div class="card"><div class="k">들어온 학생</div><div class="v" id="cStudents">-</div></div>
+    <div class="card"><div class="k">클리어</div><div class="v" id="cClear">-</div></div>
+    <div class="card"><div class="k">진행 중</div><div class="v" id="cPlaying">-</div></div>
+    <div class="card"><div class="k">평균 처음 정답률</div><div class="v" id="cRate">-</div></div>
+  </div>
+
+  <div class="grid2">
+    <div class="panel">
+      <h2>닉네임별 결과 <small id="tCount"></small></h2>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>닉네임</th><th>차시</th><th>진행</th><th>처음 정답</th><th>별</th><th>걸린 시간</th><th>마지막 기록</th><th>기기</th><th>틀린 문제</th></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+      <div class="empty" id="noRows" hidden>이 날짜에는 아직 기록이 없어요.</div>
+    </div>
+    <div class="panel top">
+      <h2>많이 틀린 문제 <small>처음에 틀린 학생 수</small></h2>
+      <ol id="top"></ol>
+      <div class="empty" id="noTop" hidden>처음에 틀린 문제가 없어요.</div>
+    </div>
+  </div>
+
+  <p class="foot">
+    · 처음 정답 = 처음 시도에 맞힌 문제 / 푼 문제. 틀려도 다시 도전해서 끝까지 갈 수 있어요.<br>
+    · 같은 닉네임이 같은 차시를 여러 번 하면 가장 마지막 기록을 보여 줘요.<br>
+    · 원본 기록은 Google 시트의 '기록' 탭에 있어요.
+  </p>
+</div>
+
+<script>
+(() => {
+  // 게임(src/game.html)의 RESULT_URL과 같은 주소
+  const DATA_URL = 'https://script.google.com/macros/s/AKfycbzneKS_tGDulume_qI9513R_niANPNWb73vkCzNMIT87-9TYIS5nUjz4tS4ehZd1AI7mw/exec';
+  const $ = (id) => document.getElementById(id);
+  const esc = (v) => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const pad = (n) => String(n).padStart(2, '0');
+  const ymd = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  const hm = (iso) => { const d = new Date(iso); return `${pad(d.getHours())}:${pad(d.getMinutes())}`; };
+  const mmss = (s) => s ? `${Math.floor(s / 60)}분 ${pad(s % 60)}초` : '-';
+  const TEST_NAME = '(선생님 연결 확인)';
+
+  let data = [], open = new Set(), timer = null, loading = false, testAt = 0;
+  $('day').value = ymd(new Date());
+
+  // JSONP로 읽기 (Google Apps Script 웹 앱은 다른 사이트에서 읽을 때 이 방법이 가장 확실해요)
+  function fetchRows(day) {
+    return new Promise((resolve, reject) => {
+      const cb = '__panda' + Date.now() + Math.floor(Math.random() * 1000);
+      const s = document.createElement('script');
+      const done = (fn, v) => { clearTimeout(t); delete window[cb]; s.remove(); fn(v); };
+      const t = setTimeout(() => done(reject, new Error('timeout')), 20000);
+      window[cb] = (res) => done(resolve, res);
+      s.onerror = () => done(reject, new Error('load'));
+      // 스크립트는 받았는데 콜백이 불리지 않음 = 예전 Apps Script(HTML만 줌)
+      s.onload = () => setTimeout(() => { if (window[cb]) done(reject, new Error('old')); }, 300);
+      s.src = `${DATA_URL}?format=json&from=${day}&to=${day}&callback=${cb}&_=${Date.now()}`;
+      document.head.appendChild(s);
+    });
+  }
+
+  function setStatus(kind, html) { const el = $('status'); el.className = 'status' + (kind ? ' ' + kind : ''); el.innerHTML = html; }
+
+  async function load() {
+    if (loading) return; loading = true; $('reload').disabled = true;
+    const day = $('day').value;
+    try {
+      const res = await fetchRows(day);
+      if (!res || !res.ok) throw new Error('bad');
+      data = res.rows || [];
+      const tests = data.filter(r => r.kind === '연결 확인');
+      const lastTest = tests.length ? tests[tests.length - 1] : null;
+      let extra = '';
+      if (testAt) {
+        const got = tests.some(r => new Date(r.t).getTime() >= testAt - 60000);
+        extra = got ? ' · ✅ 연결 확인 기록이 시트에 잘 들어왔어요. 학생 기록도 저장돼요.' : '';
+      } else if (lastTest) extra = ` · 마지막 연결 확인 ${hm(lastTest.t)}`;
+      setStatus('', `연결됨 · ${day} 기록 ${data.length - tests.length}줄 · ${hm(new Date().toISOString())}에 불러옴${extra}`);
+      render();
+    } catch (e) {
+      setStatus('bad', `<b>기록을 불러오지 못했어요.</b>
+        <ol>
+          <li>Apps Script를 <b>2판 코드</b>로 바꿨는지 확인해 주세요. (docs/results-apps-script.gs 전체를 다시 붙여 넣고 저장)</li>
+          <li>Apps Script에서 <b>배포 → 배포 관리 → 연필(수정) → 버전: 새 버전 → 배포</b>를 눌러야 바뀐 코드가 적용돼요.</li>
+          <li>같은 화면에서 <b>실행 사용자: 나</b>, <b>액세스 권한: 모든 사용자</b>인지 확인해 주세요.</li>
+          <li>학교 인터넷이 Google 주소를 막고 있지 않은지 확인해 주세요.</li>
+        </ol>`);
+    } finally { loading = false; $('reload').disabled = false; }
+  }
+
+  // 닉네임 + 차시로 묶기 (마지막 기록 기준)
+  function group(rows) {
+    const by = new Map();
+    for (const r of rows) {
+      if (r.kind === '연결 확인' || r.name === TEST_NAME) continue;
+      const key = r.name + '|' + r.lesson;
+      let o = by.get(key);
+      if (!o) { o = { key, name: r.name || '(닉네임 없음)', lesson: r.lesson, start: r.t, last: r.t, mission: 0, total: 4, first: 0, asked: 0, stars: 0, wrong: '', secs: 0, device: r.device, clear: null }; by.set(key, o); }
+      o.last = r.t; o.device = r.device || o.device;
+      if (r.kind === '입장') { if (o.clear) { o.clear = null; o.mission = 0; o.first = 0; o.asked = 0; o.wrong = ''; o.stars = 0; } continue; }
+      const m = /^(\d+)\s*\/\s*(\d+)$/.exec(r.mission || '');
+      if (m) { o.mission = +m[1]; o.total = +m[2]; }
+      o.first = r.first; o.asked = r.asked; o.wrong = r.wrong; o.secs = r.secs;
+      if (r.kind === '클리어') { o.clear = r.t; o.stars = r.stars; o.mission = o.total; }
+    }
+    return [...by.values()];
+  }
+  const rateOf = (o) => o.asked ? Math.round(o.first / o.asked * 100) : null;
+  const wrongList = (o) => String(o.wrong || '').split(' | ').map(s => s.trim()).filter(Boolean);
+
+  function render() {
+    const all = group(data);
+    // 차시 목록
+    const lessons = [...new Set(all.map(o => o.lesson))].sort();
+    const sel = $('lesson'), cur = sel.value;
+    sel.innerHTML = '<option value="">전체</option>' + lessons.map(l => `<option value="${esc(l)}">${esc(l)}</option>`).join('');
+    sel.value = lessons.includes(cur) ? cur : '';
+    const list = all.filter(o => !sel.value || o.lesson === sel.value);
+    const sort = $('sort').value;
+    const cmpName = (a, b) => a.lesson.localeCompare(b.lesson) || a.name.localeCompare(b.name, 'ko');
+    list.sort(sort === 'rate' ? (a, b) => (rateOf(b) ?? -1) - (rateOf(a) ?? -1) || cmpName(a, b)
+      : sort === 'rateLow' ? (a, b) => (rateOf(a) ?? 101) - (rateOf(b) ?? 101) || cmpName(a, b)
+      : sort === 'prog' ? (a, b) => (b.clear ? 9 : b.mission) - (a.clear ? 9 : a.mission) || cmpName(a, b)
+      : sort === 'recent' ? (a, b) => b.last.localeCompare(a.last)
+      : cmpName);
+
+    // 요약
+    const students = new Set(list.map(o => o.name)).size;
+    const clear = list.filter(o => o.clear).length;
+    const rated = list.filter(o => o.asked);
+    const avg = rated.length ? Math.round(rated.reduce((s, o) => s + o.first / o.asked, 0) / rated.length * 100) : null;
+    $('cStudents').textContent = students; $('cClear').textContent = clear; $('cPlaying').textContent = list.length - clear;
+    $('cRate').textContent = avg == null ? '-' : avg + '%';
+    $('tCount').textContent = list.length ? `${list.length}줄` : '';
+
+    // 표
+    $('rows').innerHTML = list.map(o => {
+      const r = rateOf(o), w = wrongList(o), isOpen = open.has(o.key);
+      const dots = Array.from({ length: o.total }, (_, i) => `<i class="${i < o.mission ? 'on' : ''}"></i>`).join('');
+      return `<tr class="st">
+        <td class="name">${esc(o.name)}</td>
+        <td><span class="les">${esc(o.lesson)}</span></td>
+        <td><span class="prog" title="미션 ${o.mission}/${o.total}">${dots}</span>${o.clear ? '<span class="done">✅ 클리어</span>' : ` <span class="muted">${o.mission}/${o.total}</span>`}</td>
+        <td>${o.asked ? `<span class="rate ${r < 60 ? 'lo' : r < 85 ? 'mid' : 'hi'}">${r}%</span> <span class="muted">${o.first}/${o.asked}</span>` : '<span class="muted">-</span>'}</td>
+        <td class="stars">${o.stars ? '★'.repeat(o.stars) : '<span class="muted">-</span>'}</td>
+        <td>${mmss(o.secs)}</td>
+        <td>${hm(o.last)}</td>
+        <td class="muted">${esc(o.device)}</td>
+        <td>${w.length ? `<button class="wbtn" data-k="${esc(o.key)}">${isOpen ? '접기' : `${w.length}개 보기`}</button>` : '<span class="muted">없음</span>'}</td>
+      </tr>${isOpen && w.length ? `<tr class="wrow"><td colspan="9"><ul>${w.map(x => `<li>${esc(x)}</li>`).join('')}</ul></td></tr>` : ''}`;
+    }).join('');
+    $('noRows').hidden = list.length > 0;
+    $('rows').querySelectorAll('.wbtn').forEach(b => b.addEventListener('click', () => { const k = b.dataset.k; open.has(k) ? open.delete(k) : open.add(k); render(); }));
+
+    // 많이 틀린 문제 (한 학생은 한 번만 셈)
+    const cnt = new Map();
+    for (const o of list) for (const q of new Set(wrongList(o))) { const k = o.lesson + '§' + q; cnt.set(k, (cnt.get(k) || 0) + 1); }
+    const top = [...cnt.entries()].sort((a, b) => b[1] - a[1]).slice(0, 12);
+    $('top').innerHTML = top.map(([k, n]) => { const [les, q] = k.split('§'); const cut = q.indexOf(' → '), ask = cut < 0 ? q : q.slice(0, cut), ans = cut < 0 ? '' : q.slice(cut + 3);
+      return `<li><span class="n">${n}명</span><span class="q">${esc(ask)}${ans ? `<small>정답: ${esc(ans)}</small>` : ''}<small>${esc(les)}</small></span></li>`; }).join('');
+    $('noTop').hidden = top.length > 0;
+  }
+
+  // 연결 확인: 게임과 똑같은 방법으로 '연결 확인' 한 줄을 보내고, 몇 초 뒤 다시 읽어 봄
+  async function testConn() {
+    $('test').disabled = true; testAt = Date.now();
+    setStatus('wait', '연결 확인 기록을 보내는 중이에요… 5초 뒤 다시 불러올게요.');
+    try {
+      await fetch(DATA_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ event: 'test', name: TEST_NAME, lesson: '-', stage: 'teacher', device: 'PC', time: new Date().toISOString() }) });
+    } catch (e) {}
+    setTimeout(async () => {
+      $('day').value = ymd(new Date());
+      await load();
+      const ok = data.some(r => r.kind === '연결 확인' && new Date(r.t).getTime() >= testAt - 60000);
+      if (!ok && !$('status').classList.contains('bad')) setStatus('bad', `<b>읽기는 되는데, 연결 확인 기록이 시트에 들어오지 않았어요.</b>
+        <ol><li>Apps Script 배포 설정에서 <b>액세스 권한: 모든 사용자</b>인지 확인해 주세요. ('Google 계정이 있는 모든 사용자'이면 학생 기록이 버려져요.)</li>
+        <li>설정을 바꿨다면 <b>버전: 새 버전</b>으로 다시 배포해 주세요.</li></ol>`);
+      testAt = 0; $('test').disabled = false;
+    }, 5000);
+  }
+
+  $('reload').addEventListener('click', load);
+  $('day').addEventListener('change', () => { open.clear(); load(); });
+  $('lesson').addEventListener('change', render);
+  $('sort').addEventListener('change', render);
+  $('test').addEventListener('click', testConn);
+  const arm = () => { clearInterval(timer); if ($('auto').checked) timer = setInterval(() => { if (!document.hidden) load(); }, 30000); };
+  $('auto').addEventListener('change', arm);
+  arm(); load();
+})();
+</script>
+</body>
+</html>
