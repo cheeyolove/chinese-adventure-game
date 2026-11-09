@@ -486,6 +486,7 @@
     <button class="linkbtn" id="btnNewRun" hidden>처음부터 새 탐험</button>
     <div class="submodes">
       <button class="btn small" id="btnLearnFirst">📖 배움 노트</button>
+      <a class="btn small" id="btnCards" href="cards.html" style="text-decoration:none;display:inline-flex;align-items:center" hidden>🃏 숫자 카드 놀이</a>
     </div>
   </div>
 </div>
@@ -1689,6 +1690,10 @@
   // 지역 순서 (시작 화면에 이 순서대로, 준비 안 된 지역은 아예 넣지 않음)
   // 학생 화면에는 status: 'ready'만 보여요. 주소 끝에 #preview(또는 #preview-지역이름)를 붙이면 선생님 미리보기로 전부 보여요
   const PREVIEW = /^#preview/i.test(location.hash || '');
+  // 숫자 카드 짝 맞추기(따로 있는 연습 게임, cards.html): 주소 끝 #number-cards로도 열려요. Claude 미리보기 안에서는 다른 페이지가 열리지 않아 숨겨요
+  const CARDS_OK = /^(https?|file):$/.test(location.protocol) && !/claude/i.test(location.hostname);
+  if (CARDS_OK && /^#number-cards/i.test(location.hash || '')) location.replace('cards.html');
+  if (CARDS_OK) $('btnCards').hidden = false;
   const ALL_STAGES = ['bamboo', 'greet', 'name', 'nation', 'number'];
   const STAGE_ORDER = ALL_STAGES.filter(id => PREVIEW || STAGES[id].status === 'ready');
   let THEME = THEMES.forest;

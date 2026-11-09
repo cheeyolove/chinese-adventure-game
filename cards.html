@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>판다 숫자 카드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- 한글(Jua·Gowun Dodum) + 병음(Noto Sans: 성조 모음 포함) + 한자(Noto Sans SC: 一~十만) -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&display=swap">
+<script>
+  // 병음은 성조 모음까지 모두 들어 있는 글자만 작게 받아와요 (판다 탐험대와 같은 방식)
+  (() => {
+    const py = 'abcdefghijklmnopqrstuvwxyzāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜü0123456789 /';
+    const han = '一二三四五六七八九十';
+    for (const href of ['https://fonts.googleapis.com/css2?family=Noto+Sans:wght@700&display=swap&text=' + encodeURIComponent(py),
+      'https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@700&display=swap&text=' + encodeURIComponent(han)]) {
+      const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = href; document.head.appendChild(l);
+    }
+  })();
+</script>
+<style>
+  :root {
+    --night: #13223a; --night-2: #1c3052; --paper: #f3faf6; --paper-2: #e2f1e9; --ink: #1d2738; --ink-soft: #52627a;
+    --jade: #23966b; --jade-soft: #d3f0e2; --gold: #f6c445; --lantern: #e5484d;
+    --font-display: "Jua", "Gowun Dodum", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+    --font-body: "Gowun Dodum", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+    --font-pinyin: "Noto Sans", -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-han: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", "Source Han Sans SC", sans-serif;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html, body { margin: 0; min-height: 100%; }
+  body {
+    background: var(--night); color: var(--paper); font-family: var(--font-body); font-size: 16px;
+    /* 대나무 숲 배경 (픽셀 줄기) */
+    background-image:
+      repeating-linear-gradient(90deg, transparent 0 46px, rgba(76, 160, 92, .18) 46px 54px, transparent 54px 130px),
+      repeating-linear-gradient(90deg, transparent 0 88px, rgba(76, 160, 92, .12) 88px 94px, transparent 94px 170px),
+      linear-gradient(180deg, #13223a 0%, #1c3052 60%, #1f4a3a 100%);
+    background-attachment: fixed;
+  }
+  button { font-family: var(--font-display); cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  button:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 12px 16px 28px; }
+  .top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .title { display: flex; align-items: center; gap: 8px; font-family: var(--font-display); font-size: clamp(20px, 4.4vw, 28px); margin-right: auto; }
+  .title canvas { width: 40px; height: 40px; image-rendering: pixelated; }
+  .hbtn { height: 44px; padding: 0 14px; border-radius: 12px; border: 3px solid var(--ink); background: var(--paper); color: var(--ink); font-size: 17px; box-shadow: 0 3px 0 var(--ink); white-space: nowrap; }
+  .hbtn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink); }
+  .hbtn.gold { background: var(--gold); }
+  .bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 12px 0; }
+  .modes { display: inline-flex; border: 3px solid var(--ink); border-radius: 14px; overflow: hidden; box-shadow: 0 3px 0 var(--ink); }
+  .modes button { border: 0; background: var(--paper); color: var(--ink); font-size: 16px; padding: 7px 12px 8px; min-height: 42px; }
+  .modes button + button { border-left: 3px solid var(--ink); }
+  .modes button[aria-pressed="true"] { background: var(--gold); }
+  .modes small { display: block; font-family: var(--font-body); font-size: 12px; color: var(--ink-soft); }
+  .stat { margin-left: auto; font-family: var(--font-display); font-size: clamp(16px, 3.4vw, 20px); background: rgba(19, 34, 58, .82); border: 2px solid rgba(243, 250, 246, .25); border-radius: 12px; padding: 6px 12px; white-space: nowrap; }
+  .stat b { color: var(--gold); }
+  .msg { min-height: 34px; text-align: center; font-family: var(--font-display); font-size: clamp(18px, 4vw, 24px); margin: 4px 0 10px; }
+  .msg .han { font-family: var(--font-han); font-weight: 700; }
+  .msg .py { font-family: var(--font-pinyin); font-weight: 700; color: #8fe0b8; }
+  /* 카드: 화면 너비에 맞춰 자동 배치, 한자 획·성조가 보일 만큼 최소 크기 유지 */
+  .grid { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(clamp(70px, 21vw, 112px), 1fr)); }
+  .card { position: relative; aspect-ratio: 3 / 4; perspective: 600px; border: 0; padding: 0; background: none; }
+  .card .in { position: absolute; inset: 0; transition: transform .32s ease; transform-style: preserve-3d; }
+  .card.up .in { transform: rotateY(180deg); }
+  .face { position: absolute; inset: 0; border-radius: 12px; border: 3px solid var(--ink); box-shadow: 0 4px 0 var(--ink); backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; }
+  /* 뒷면: 모든 카드가 똑같아요 (판다 발바닥 + 대나무 무늬) */
+  .back { background-color: #3f8f4f; background-image: repeating-linear-gradient(90deg, rgba(255, 255, 255, .08) 0 6px, transparent 6px 18px), radial-gradient(circle at 50% 56%, #f3faf6 0 22%, transparent 23%), radial-gradient(circle at 34% 30%, #f3faf6 0 8%, transparent 9%), radial-gradient(circle at 50% 24%, #f3faf6 0 8%, transparent 9%), radial-gradient(circle at 66% 30%, #f3faf6 0 8%, transparent 9%); }
+  .back::after { content: ''; position: absolute; inset: 6px; border: 2px dashed rgba(243, 250, 246, .45); border-radius: 8px; }
+  .front { transform: rotateY(180deg); background: var(--paper); color: var(--ink); gap: 2px; }
+  .front .han { font-family: var(--font-han); font-weight: 700; font-size: clamp(38px, 11vw, 64px); line-height: 1; }
+  .front .num { font-family: var(--font-pinyin); font-weight: 700; font-size: clamp(30px, 8.5vw, 48px); line-height: 1; }
+  .front .py { font-family: var(--font-pinyin); font-weight: 700; font-size: clamp(18px, 4.8vw, 26px); color: var(--jade); line-height: 1.1; }
+  .card.done .front { background: var(--jade-soft); border-color: var(--jade); box-shadow: 0 4px 0 var(--jade); }
+  .card.done .front::after { content: '✔'; position: absolute; top: 4px; right: 7px; font-size: 14px; color: var(--jade); }
+  .card.pop .in { animation: pop .45s ease; }
+  @keyframes pop { 40% { transform: rotateY(180deg) scale(1.08); } 100% { transform: rotateY(180deg) scale(1); } }
+  .card:disabled { cursor: default; }
+  @media (prefers-reduced-motion: reduce) { .card .in { transition: none; } .card.pop .in { animation: none; } }
+  /* 창 (숫자 공부하기 · 완료) */
+  .overlay { position: fixed; inset: 0; z-index: 20; display: flex; align-items: flex-start; justify-content: center; padding: 16px; overflow-y: auto; background: rgba(9, 17, 31, .74); }
+  .panel { margin: auto; width: 100%; max-width: 560px; background: var(--paper); color: var(--ink); border: 4px solid var(--ink); border-radius: 18px; padding: 16px 18px; box-shadow: 0 8px 0 rgba(0, 0, 0, .3); outline: none; text-align: center; }
+  .panel h2 { font-family: var(--font-display); font-size: 24px; margin: 4px 0 10px; }
+  .study { width: 100%; border-collapse: collapse; }
+  .study th { font-family: var(--font-display); font-size: 15px; color: var(--ink-soft); font-weight: 400; padding: 4px; }
+  .study td { border-top: 2px solid var(--paper-2); padding: 3px 6px; }
+  .study .han { font-family: var(--font-han); font-weight: 700; font-size: 32px; }
+  .study .num { font-family: var(--font-pinyin); font-weight: 700; font-size: 24px; }
+  .study .py { font-family: var(--font-pinyin); font-weight: 700; font-size: 22px; color: var(--jade); }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 14px; }
+  .btn { border: 3px solid var(--ink); border-radius: 14px; background: var(--paper); color: var(--ink); font-size: 18px; padding: 9px 16px 10px; box-shadow: 0 4px 0 var(--ink); }
+  .btn.primary { background: var(--gold); }
+  .btn:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--ink); }
+  .done-panda { width: 96px; height: 96px; image-rendering: pixelated; animation: hop 1s ease-in-out infinite; }
+  @keyframes hop { 50% { transform: translateY(-8px); } }
+  @media (prefers-reduced-motion: reduce) { .done-panda { animation: none; } }
+  .done-msg { font-family: var(--font-display); font-size: clamp(20px, 5vw, 26px); margin: 6px 0; }
+  .done-sub { color: var(--ink-soft); font-size: 17px; }
+  @media (max-width: 520px) {
+    .wrap { padding: 10px 10px 24px; }
+    .hbtn { height: 40px; padding: 0 10px; font-size: 15px; }
+    .stat { margin-left: 0; }
+    .grid { gap: 8px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="title"><canvas id="logo" width="16" height="16" aria-hidden="true"></canvas>숫자 카드 짝 맞추기</div>
+    <a class="hbtn" id="home" href="index.html" style="display:inline-flex;align-items:center;text-decoration:none">🏠 판다 탐험대</a>
+    <button class="hbtn" id="studyBtn">📖 숫자 공부하기</button>
+    <button class="hbtn gold" id="restart">↻ 다시 시작</button>
+  </div>
+  <div class="bar">
+    <div class="modes" id="modes" role="group" aria-label="난이도">
+      <button data-mode="easy" aria-pressed="true">쉬움<small>1~5 · 5쌍</small></button>
+      <button data-mode="normal" aria-pressed="false">보통<small>7쌍</small></button>
+      <button data-mode="hard" aria-pressed="false">도전<small>1~10 · 10쌍</small></button>
+    </div>
+    <div class="stat" id="stat">맞힌 쌍 <b>0/5</b> · 시도 <b>0</b>번</div>
+  </div>
+  <div class="msg" id="msg" role="status" aria-live="polite">한자 카드와 숫자 카드를 짝지어 보세요!</div>
+  <div class="grid" id="grid"></div>
+</div>
+
+<!-- 숫자 공부하기 -->
+<div class="overlay" id="study" hidden>
+  <div class="panel" tabindex="-1">
+    <h2>📖 중국어 숫자 一 ~ 十</h2>
+    <table class="study"><thead><tr><th>한자</th><th>숫자</th><th>병음</th></tr></thead><tbody id="studyRows"></tbody></table>
+    <div class="btns"><button class="btn primary" id="studyClose">게임으로 돌아가기</button></div>
+  </div>
+</div>
+
+<!-- 완료 -->
+<div class="overlay" id="done" hidden>
+  <div class="panel" tabindex="-1">
+    <canvas class="done-panda" id="donePanda" width="16" height="16" aria-hidden="true"></canvas>
+    <div class="done-msg" id="doneMsg">축하해!</div>
+    <div class="done-sub" id="doneSub"></div>
+    <div class="btns">
+      <button class="btn primary" id="again">다시 도전하기</button>
+      <button class="btn" id="changeMode">난이도 바꾸기</button>
+      <button class="btn" id="doneStudy">숫자 공부하기</button>
+      <a class="btn" href="index.html" style="text-decoration:none">판다 탐험대로 돌아가기</a>
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+  'use strict';
+  // 숫자 1~10: 한자 · 숫자 · 병음 (성조 표시 포함)
+  const NUMS = [
+    { v: 1, h: '一', p: 'yī' }, { v: 2, h: '二', p: 'èr' }, { v: 3, h: '三', p: 'sān' }, { v: 4, h: '四', p: 'sì' }, { v: 5, h: '五', p: 'wǔ' },
+    { v: 6, h: '六', p: 'liù' }, { v: 7, h: '七', p: 'qī' }, { v: 8, h: '八', p: 'bā' }, { v: 9, h: '九', p: 'jiǔ' }, { v: 10, h: '十', p: 'shí' },
+  ];
+  const byV = (v) => NUMS[v - 1];
+  const MODES = { easy: { label: '쉬움', pick: () => [1, 2, 3, 4, 5] }, normal: { label: '보통', pick: () => shuffle(NUMS.map(n => n.v)).slice(0, 7).sort((a, b) => a - b) }, hard: { label: '도전', pick: () => NUMS.map(n => n.v) } };
+  const $ = (id) => document.getElementById(id);
+  function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+
+  // ----- 픽셀 판다 (판다 탐험대와 같은 그림) -----
+  const PANDA = ['..kk..lll...kk..', '.kkkk..ll..kkkk.', '.kkkkkwwwwkkkkk.', '..kwwwwwwwwwwk..', '.kwwwwwwwwwwwwk.', '.kwkkkwwwwkkkwk.', '.kwkekwwwwkekwk.', '.kwkkwwwwwwkkwk.', '.kpwwwwkkwwwwpk.', '..kwwwwwwwwwwk..', '...kkkkkkkkkk...',
+    '..kkrrrrrrrrkk..', '.kkkwwwrrwwwkkk.', '.kkkwwwwwwwwkkk.', '..kkwwwwwwwwkk..', '...kkk....kkk...'];
+  const PAL = { k: '#22202b', w: '#fbfaf5', e: '#ffffff', p: '#f59ab0', r: '#e5484d', l: '#5cc46a' };
+  function drawPanda(c) { const g = c.getContext('2d'); g.clearRect(0, 0, 16, 16); PANDA.forEach((row, y) => [...row].forEach((ch, x) => { if (PAL[ch]) { g.fillStyle = PAL[ch]; g.fillRect(x, y, 1, 1); } })); }
+  drawPanda($('logo')); drawPanda($('donePanda'));
+
+  // ----- 소리 (짧은 효과음, 파일 없이) -----
+  let AC = null;
+  function tone(f, t, d, type = 'triangle', vol = 0.06) {
+    try { AC = AC || new (window.AudioContext || window.webkitAudioContext)(); const o = AC.createOscillator(), g = AC.createGain(), s = AC.currentTime + t;
+      o.type = type; o.frequency.value = f; g.gain.setValueAtTime(vol, s); g.gain.exponentialRampToValueAtTime(0.001, s + d); o.connect(g); g.connect(AC.destination); o.start(s); o.stop(s + d + 0.02); } catch (e) {}
+  }
+  const SFX = { flip: () => tone(520, 0, 0.07), match: () => [523, 659, 784].forEach((f, i) => tone(f, i * 0.08, 0.14)), miss: () => tone(300, 0, 0.16, 'sine', 0.05), done: () => [523, 659, 784, 1047, 1319].forEach((f, i) => tone(f, i * 0.1, 0.2, 'square', 0.04)) };
+
+  // ----- 게임 상태 -----
+  // deck: [{ id, v, kind: 'han' | 'num' }]  (같은 숫자의 한자 카드와 숫자·병음 카드가 한 쌍)
+  const S = { mode: 'easy', deck: [], open: [], done: new Set(), tries: 0, lock: false, pairs: 0, timer: 0, overlay: false };
+  function start(mode = S.mode) {
+    clearTimeout(S.timer);
+    S.mode = mode; S.open = []; S.done = new Set(); S.tries = 0; S.lock = false;
+    const vs = MODES[mode].pick();
+    S.pairs = vs.length;
+    S.deck = shuffle(vs.flatMap(v => [{ v, kind: 'han' }, { v, kind: 'num' }])).map((c, i) => ({ ...c, id: i }));
+    document.querySelectorAll('#modes button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.mode === mode)));
+    $('grid').innerHTML = S.deck.map(c => `<button class="card" data-id="${c.id}" aria-label="뒤집힌 카드"><span class="in"><span class="face back"></span><span class="face front"></span></span></button>`).join('');
+    $('grid').querySelectorAll('.card').forEach(b => b.addEventListener('click', () => flip(+b.dataset.id)));
+    say('한자 카드와 숫자 카드를 짝지어 보세요!');
+    stat();
+  }
+  // 앞면 내용은 뒤집을 때만 넣어요 (뒤집기 전에는 어떤 카드인지 알 수 없게)
+  const faceHTML = (c) => c.kind === 'han' ? `<span class="han">${byV(c.v).h}</span>` : `<span class="num">${c.v}</span><span class="py">${byV(c.v).p}</span>`;
+  const el = (id) => $('grid').querySelector(`.card[data-id="${id}"]`);
+  function show(id, up) {
+    const b = el(id), c = S.deck[id];
+    if (up) { b.querySelector('.front').innerHTML = faceHTML(c); b.setAttribute('aria-label', c.kind === 'han' ? byV(c.v).h : `${c.v} ${byV(c.v).p}`); b.classList.add('up'); }
+    else { b.classList.remove('up'); b.setAttribute('aria-label', '뒤집힌 카드'); setTimeout(() => { if (!b.classList.contains('up')) b.querySelector('.front').innerHTML = ''; }, 340); }
+  }
+  function flip(id) {
+    if (S.lock || S.overlay || S.done.has(id) || S.open.includes(id) || S.open.length >= 2) return;   // 한 번에 두 장까지만, 같은 카드·맞힌 카드는 무시
+    S.open.push(id); show(id, true); SFX.flip();
+    if (S.open.length < 2) return;
+    S.tries++; S.lock = true; stat();
+    const [a, b] = S.open.map(i => S.deck[i]);
+    if (a.v === b.v && a.kind !== b.kind) {
+      S.timer = setTimeout(() => {
+        S.open.forEach(i => { S.done.add(i); const e = el(i); e.classList.add('done', 'pop'); e.disabled = true; });
+        const n = byV(a.v);
+        say(`<span class="han">${n.h}</span> — ${n.v} — <span class="py">${n.p}</span>`);
+        SFX.match(); S.open = []; S.lock = false; stat();
+        if (S.done.size === S.deck.length) setTimeout(finish, 700);
+      }, 380);
+    } else {
+      say('다시 찾아봐요!');
+      S.timer = setTimeout(() => { SFX.miss(); S.open.forEach(i => show(i, false)); S.open = []; S.lock = false; }, 1000);
+    }
+  }
+  function stat() { $('stat').innerHTML = `맞힌 쌍 <b>${S.done.size / 2}/${S.pairs}</b> · 시도 <b>${S.tries}</b>번`; }
+  function say(html) { $('msg').innerHTML = html; }
+  function finish() {
+    SFX.done();
+    $('doneMsg').textContent = `축하해! 중국어 숫자 ${S.pairs}개를 모두 찾았어!`;
+    $('doneSub').textContent = `${S.tries}번 만에 다 찾았어요. (${MODES[S.mode].label})`;
+    openOverlay('done');
+  }
+  // ----- 창: 열려 있는 동안 카드는 뒤집히지 않아요. 닫으면 진행 상황 그대로 -----
+  function openOverlay(id) { S.overlay = true; $(id).hidden = false; $(id).querySelector('.panel').focus({ preventScroll: true }); }
+  function closeOverlay(id) { $(id).hidden = true; S.overlay = !$('study').hidden || !$('done').hidden; }
+  $('studyRows').innerHTML = NUMS.map(n => `<tr><td class="han">${n.h}</td><td class="num">${n.v}</td><td class="py">${n.p}</td></tr>`).join('');
+  $('studyBtn').addEventListener('click', () => openOverlay('study'));
+  $('studyClose').addEventListener('click', () => closeOverlay('study'));
+  $('restart').addEventListener('click', () => start());
+  $('modes').addEventListener('click', (e) => { const b = e.target.closest('button[data-mode]'); if (b) start(b.dataset.mode); });
+  $('again').addEventListener('click', () => { closeOverlay('done'); start(); });
+  $('changeMode').addEventListener('click', () => { closeOverlay('done'); start(); $('modes').querySelector('[aria-pressed="true"]').focus(); say('난이도를 골라 보세요!'); });
+  $('doneStudy').addEventListener('click', () => { closeOverlay('done'); openOverlay('study'); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { if (!$('study').hidden) closeOverlay('study'); } });
+  start('easy');
+  window.__cards = { S, start, flip, NUMS };
+})();
+</script>
+</body>
+</html>
