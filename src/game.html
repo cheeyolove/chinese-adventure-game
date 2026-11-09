@@ -157,20 +157,42 @@
   #actWrap button { pointer-events: auto; font-family: var(--font-display); font-size: clamp(15px, 2.8vw, 23px); padding: 8px 18px 10px; border: 3px solid var(--ink); border-radius: 16px; background: var(--gold); color: var(--ink); box-shadow: 0 4px 0 var(--ink); touch-action: manipulation; white-space: nowrap; }
   #actWrap #actBtn2 { background: var(--paper); }
   @media (pointer: coarse) { #actWrap { bottom: 10px; } #actWrap button { font-size: clamp(18px, 4.4vw, 26px); padding: 12px 22px 14px; } }
-  #questTip { position: absolute; left: 50%; top: calc(clamp(34px, 5vw, 44px) + 16px); transform: translateX(-50%); font-family: var(--font-display); font-size: clamp(12px, 2vw, 17px); color: #fff; background: rgba(19, 34, 58, .78); padding: 3px 14px 4px; border-radius: 99px; white-space: nowrap; max-width: 92%; overflow: hidden; text-overflow: ellipsis; pointer-events: none; }
+  #questTip { position: absolute; left: 50%; top: calc(clamp(34px, 5vw, 44px) + 14px); transform: translateX(-50%); font-family: var(--font-display); font-size: clamp(15px, 2.5vw, 21px); line-height: 1.25; text-align: center; color: #fff; background: rgba(19, 34, 58, .82); padding: 4px 16px 5px; border-radius: 14px; width: max-content; max-width: min(88%, 620px); word-break: keep-all; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; pointer-events: none; }
+  #questTip[hidden] { display: none; }
+  /* 5차시: 노란 알림은 할 일 안내(최대 두 줄) 아래로 */
+  #stage.quest #toast { top: calc(clamp(34px, 5vw, 44px) + 74px); }
   .talkcard { max-width: 560px; }
   .talk-head { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
   #talkFace { width: 56px; height: 74px; image-rendering: pixelated; }
-  .talk-name { font-family: var(--font-display); font-size: 21px; }
-  .talk-body { font-size: 18px; line-height: 1.5; }
-  .talk-body p { margin: 6px 0; }
-  .zline { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; margin: 8px 0; font-size: 19px; }
+  .talk-name { font-family: var(--font-display); font-size: 23px; }
+  .talk-body { font-size: 21px; line-height: 1.55; }
+  .talk-body p { margin: 8px 0; }
+  .talk-body b { color: #b5121b; }
+  .zline { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin: 10px 0; font-size: 21px; }
   .znum { display: inline-flex; flex-direction: column; align-items: center; background: #fff7d6; border: 2px solid var(--ink); border-radius: 10px; padding: 2px 10px 3px; line-height: 1.1; }
-  .znum .han { font-size: 34px; } .znum .py { font-size: 16px; }
-  .numbig-s { font-size: 26px; font-family: var(--font-display); }
-  .qprog { color: var(--ink-soft); font-size: 15px; }
-  .talk-hint { background: #eef6ff; border-radius: 10px; padding: 8px 12px; font-size: 16px; margin: 8px 0; display: grid; gap: 4px; }
-  .talk-btns { display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap; margin-top: 10px; }
+  .znum .han { font-size: 46px; } .znum .py { font-size: 20px; font-weight: 700; }
+  .numbig-s { font-size: 32px; font-family: var(--font-display); color: #b5121b; }
+  .qprog { color: var(--ink-soft); font-size: 17px; }
+  .talk-hint { background: #eef6ff; border-radius: 10px; padding: 10px 14px; font-size: 18px; line-height: 1.5; margin: 10px 0; display: grid; gap: 6px; }
+  /* 버튼은 창 아래에 늘 보이게 (글이 길면 본문만 스크롤) */
+  .talk-btns { position: sticky; bottom: 0; display: flex; gap: 12px; justify-content: flex-end; flex-wrap: wrap; margin-top: 12px; padding: 10px 0 2px; background: var(--paper); }
+  .talk-btns .btn { font-size: 19px; min-height: 48px; }
+  .basketcard { max-width: 540px; text-align: center; }
+  .bk-head { font-family: var(--font-display); font-size: 24px; }
+  .bk-count b { font-size: 42px; color: #b5121b; }
+  .bk-tip { font-size: 18px; line-height: 1.5; margin: 6px 0; }
+  .bk-tip .znum { vertical-align: middle; }
+  .bk-apples { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin: 12px 0 4px; min-height: 64px; align-items: center; }
+  .bk-apple { width: 64px; height: 64px; font-size: 38px; line-height: 1; border: 3px solid var(--ink); border-radius: 16px; background: #fff; box-shadow: 0 3px 0 var(--ink); touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  .bk-apple:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink); }
+  .bk-empty { font-size: 18px; color: var(--ink-soft); }
+  /* 가로로 든 휴대폰처럼 화면 높이가 낮을 때 */
+  @media (max-height: 460px) {
+    .talkcard, .basketcard { padding: 12px 16px; }
+    #talkFace { width: 40px; height: 53px; }
+    .talk-body { font-size: 19px; } .zline { font-size: 19px; margin: 6px 0; } .znum .han { font-size: 38px; } .znum .py { font-size: 17px; }
+    .bk-apple { width: 54px; height: 54px; font-size: 32px; }
+  }
   .say-z { padding: 2px 8px; }
   .slabcard { max-width: 640px; }
   .sl-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
@@ -513,6 +535,16 @@
     <div class="talk-body" id="talkBody"></div>
     <div class="talk-hint" id="talkHint" hidden></div>
     <div class="talk-btns"><button class="btn" id="talkHintBtn">💡 힌트</button><button class="btn" id="talkAlt" hidden></button><button class="btn primary" id="talkOk">알겠어요!</button></div>
+  </div>
+</div>
+
+<!-- 5차시: 사과 바구니 (사과를 톡 누르면 하나씩 내려놓기) -->
+<div class="overlay" id="basket" hidden>
+  <div class="card basketcard" tabindex="-1">
+    <div class="bk-head">🧺 바구니 <span class="bk-count"><b id="bkNum">0</b>개</span></div>
+    <div class="bk-tip" id="bkTip"></div>
+    <div class="bk-apples" id="bkApples"></div>
+    <div class="talk-btns"><button class="btn" id="bkClose">닫기</button><button class="btn primary" id="bkGive" hidden>🍎 안경 판다에게 건네주기</button></div>
   </div>
 </div>
 
@@ -2247,6 +2279,12 @@
       else if ((isEnter(c) || c === 'Space') && quiz.answered && !e.repeat) { e.preventDefault(); closeQuiz(); }
       return;
     }
+    if (mode === 'basket') {
+      if ((c === 'Backspace' || c === 'Minus' || c === 'NumpadSubtract' || c === 'Delete') && !e.repeat) { e.preventDefault(); basketDrop(); }
+      else if (isEnter(c) && !e.repeat) { e.preventDefault(); if (bkGiveMode && !$('bkGive').hidden) basketGive(); else closeBasket(); }
+      else if ((c === 'Escape' || c === 'KeyQ') && !e.repeat) closeBasket();
+      return;
+    }
     if (mode === 'talk') { if ((isEnter(c) || c === 'Space' || c === 'KeyE') && !e.repeat) { e.preventDefault(); closeTalk(); } return; }
     if (mode === 'slab') {
       const d = /^(Digit|Numpad)([0-9])$/.exec(c);
@@ -2309,7 +2347,7 @@
     $('setMusic').textContent = save.bgmOn !== false ? '🎵 배경음악: 켜짐' : '🎵 배경음악: 꺼짐';
   }
   // 배경음악: 탐험 중에만, 퀴즈·창이 열리면 작게, 중국어 음성이 나올 때는 더 작게, 🔊 끄면 같이 꺼짐
-  const MUSIC_MODES = ['play', 'cut', 'quiz', 'card', 'speak', 'pause', 'lesson', 'help', 'faint', 'talk', 'slab'];
+  const MUSIC_MODES = ['play', 'cut', 'quiz', 'card', 'speak', 'pause', 'lesson', 'help', 'faint', 'talk', 'slab', 'basket'];
   function musicWanted() {
     if (!soundOn || save.bgmOn === false || document.hidden || quick.on || !run || !STAGE || !MUSIC_MODES.includes(mode)) return [null, 1];
     if ((mode === 'lesson' && lessonReturn === 'start') || (mode === 'help' && helpReturn === 'menu')) return [null, 1];
@@ -2443,7 +2481,7 @@
     for (const d of NPC_DEF) {
       if (!near(d.x, GY, 34)) continue;
       if (d.mission === a && carrying) return { label: '🤲 건네주기', act: () => talkTo(d) };
-      if (d.mission === 0 && a === 0 && q.m1.fallen && q.m1.got > 0) return { label: '🍎 사과 건네주기', act: () => talkTo(d) };
+      if (d.mission === 0 && a === 0 && q.m1.fallen && q.m1.got > 0) return { label: '🍎 사과 건네주기', act: () => openBasket(true) };
       return { label: '💬 말 걸기', act: () => talkTo(d) };
     }
     const m1 = q.m1;
@@ -2452,6 +2490,8 @@
       if (m1.shakes > 0 && m1.shakes < SHAKE_MAX) { c.label2 = '✋ 이만큼 흔들었어요!'; c.act2 = shakeDone; }
       return c;
     }
+    // 사과를 들고 있으면 어디서든 바구니를 열어 덜어 낼 수 있어요 (둘째 버튼 · Q)
+    if (a === 0 && m1.fallen && m1.got > 0) return { label: '', label2: '🧺 바구니', act2: () => openBasket(false) };
     if (a === 1 && q.m2.acc && q.m2.ri < q.m2.rounds.length && near(Q_ALTAR_X, GY, 36)) return { label: '🧩 석판 맞추기', act: openAltar };
     const items = qItems();
     for (let i = 0; i < items.length; i++) {
@@ -2469,6 +2509,7 @@
     const lbl = c ? c.label : '', lbl2 = c && c.label2 ? c.label2 : '';
     if (lbl !== actLabel) { actLabel = lbl; $('actBtn').hidden = !lbl; if (lbl) $('actBtn').innerHTML = `${lbl}<span class="kh"> (E)</span>`; }
     if (lbl2 !== actLabel2) { actLabel2 = lbl2; $('actBtn2').hidden = !lbl2; if (lbl2) $('actBtn2').innerHTML = `${lbl2}<span class="kh"> (Q)</span>`; }
+    $('stage').classList.toggle('quest', show);
     const tip = show && mode === 'play' ? questGoal().tip : '';
     if ($('questTip').dataset.t !== tip) { $('questTip').dataset.t = tip; $('questTip').textContent = tip; $('questTip').hidden = !tip; }
   }
@@ -2484,7 +2525,7 @@
       const m = q.m1;
       if (!m.acc) return { tip: '💬 안경 판다에게 말을 걸어요', mark: at(0) };
       if (!m.fallen) return { tip: `🌳 나무를 흔들고 ✋ 버튼을 눌러요 (흔든 횟수: ${m.shakes}번)`, mark: { x: Q_TREE_X, y: GY - 96 } };
-      return { tip: `🍎 사과를 주워 안경 판다에게 건네줘요 (바구니: ${m.got}개)`, mark: m.got > 0 ? at(0) : null };
+      return { tip: `🍎 사과를 모아 안경 판다에게 건네줘요 (바구니: ${m.got}개)`, mark: m.got > 0 ? at(0) : null };
     }
     if (a === 1) {
       const m = q.m2;
@@ -2508,10 +2549,14 @@
     return { tip: '🤲 촌장 판다에게 가져가요', mark: at(3) };
   }
 
+  // 큰 버튼(손가락을 누르는 순간)으로 창을 열면, 같은 터치의 '클릭'이 새 창의 버튼을 눌러 버리지 않게 0.25초는 무시
+  let uiOpenT = -1e9;
+  const tooSoon = () => performance.now() - uiOpenT < 250;
+  const onTap = (el, f) => $(el).addEventListener('click', (e) => { if (tooSoon()) { e.preventDefault(); return; } f(e); });
   // ----- 대화창 (힌트 3단계, 둘째 버튼) -----
   let talkCtx = null;
   function openTalk(npcI, html, { ok = '알겠어요!', hints = [], onOk = null, alt = null } = {}) {
-    mode = 'talk'; releaseAll(); closeMissionPanel();
+    mode = 'talk'; releaseAll(); closeMissionPanel(); uiOpenT = performance.now();
     const d = qNpc(npcI), spr = npcSpr(d), c = $('talkFace'), g = c.getContext('2d');
     c.width = 32; c.height = 42; g.imageSmoothingEnabled = false; g.clearRect(0, 0, c.width, c.height); g.drawImage(spr, 0, 10, 32, 32); drawNpcAcc(g, d, 0, 10, 1);
     talkCtx = { onOk, hints, hi: 0, alt };
@@ -2545,9 +2590,9 @@
     if (f) f();
     updateMissionPanel();
   }
-  $('talkOk').addEventListener('click', closeTalk);
-  $('talkHintBtn').addEventListener('click', talkHint);
-  $('talkAlt').addEventListener('click', talkAlt);
+  onTap('talkOk', closeTalk);
+  onTap('talkHintBtn', talkHint);
+  onTap('talkAlt', talkAlt);
 
   // ----- NPC에게 말 걸기 -----
   const M1_REQ = () => `<p>안녕! 부탁이 하나 있어.</p><div class="zline">사과나무를 ${znum(3)} 번 흔들고,</div><div class="zline">사과 ${znum(5)} 개를 가져다줘!</div>`;
@@ -2599,12 +2644,7 @@
     }
     if (!m.fallen) { openTalk(0, M1_REQ() + `<p class="qprog">나무 옆에서 🌳 흔들기, 다 흔들었으면 ✋ 이만큼 흔들었어요! (지금 흔든 횟수: ${m.shakes}번)</p>`, { ok: '다시 해 볼게요!', hints: M1_HINTS }); return; }
     if (m.got === 0) { openTalk(0, `<p>사과가 떨어졌구나!</p><div class="zline">사과 ${znum(5)} 개를 주워서 가져다줘!</div>`, { ok: '주워 올게요!', hints: M1_HINTS }); return; }
-    appleHandover();
-  }
-  function appleHandover() {
-    const m = run.q.m1;
-    openTalk(0, `<p>사과를 몇 개 가져왔니?</p><div class="zline">바구니: ${'🍎'.repeat(m.got)} <b>(${m.got}개)</b></div><div class="zline">내가 부탁한 건 사과 ${znum(5)} 개야.</div>`,
-      { ok: '🍎 사과 건네주기', hints: M1_HINTS, onOk: judgeApples, alt: { label: '아직이에요', fn: null } });
+    openBasket(true);
   }
   function judgeApples() {
     const m = run.q.m1;
@@ -2614,18 +2654,45 @@
       return;
     }
     taskMiss(); SFX.wrong();
-    if (m.got < 5) openTalk(0, `<p>앗, 사과가 <b>${m.got}개</b>야. ${znum(5)} 개가 되려면 조금 더 있어야 해!</p><p>더 주워서 다시 가져다줄래?</p>`, { ok: '더 주워 올게요!', hints: M1_HINTS });
-    else openTalk(0, `<p>앗, 사과가 <b>${m.got}개</b>야. 너무 많아!</p><div class="zline">나는 사과 ${znum(5)} 개만 필요해.</div><p>사과를 하나씩 내려놓을 수 있어.</p>`, { ok: '알겠어요!', hints: M1_HINTS, alt: { label: '🍎 하나 내려놓기', fn: dropApple } });
+    if (m.got < 5) openTalk(0, `<p>앗, 사과가 <b>${m.got}개</b>야.</p><div class="zline">${znum(5)} 개가 되려면 조금 더 있어야 해!</div><p>더 주워서 다시 가져다줄래?</p>`, { ok: '더 주워 올게요!', hints: M1_HINTS });
+    else openTalk(0, `<p>앗, 사과가 <b>${m.got}개</b>야. 너무 많아!</p><div class="zline">나는 사과 ${znum(5)} 개만 필요해.</div><p>바구니에서 사과를 톡톡 눌러 덜어 낼 수 있어.</p>`, { ok: '알겠어요!', hints: M1_HINTS, alt: { label: '🧺 바구니 열기', fn: () => openBasket(true) } });
   }
-  // 사과 하나 내려놓기: 바구니에서 1개를 빼서 판다 옆 땅에 둠 (새로 생기지 않아요)
-  function dropApple() {
+  // ----- 사과 바구니: 사과 그림을 톡 누르면 하나씩 내려놓아요 (창은 그대로) -----
+  // 내려놓은 사과는 판다 옆 땅에 놓이고, 판다가 한 번 비켜선 뒤에 다시 주울 수 있어요. 사과는 처음 8개뿐이라 늘어나지 않아요
+  let bkGiveMode = false;
+  function openBasket(give) {
+    if (!run || !run.q) return;
+    mode = 'basket'; releaseAll(); closeMissionPanel(); uiOpenT = performance.now();
+    bkGiveMode = !!give;
+    basketDraw();
+    $('basket').hidden = false; $('basket').scrollTop = 0;
+    ($('bkGive').hidden ? $('bkClose') : $('bkGive')).focus({ preventScroll: true });
+  }
+  function basketDraw() {
+    const m = run.q.m1;
+    $('bkNum').textContent = m.got;
+    $('bkTip').innerHTML = (bkGiveMode ? `<div class="zline" style="justify-content:center">안경 판다의 부탁: 사과 ${znum(5)} 개</div>` : '')
+      + (m.got ? '사과를 <b>톡</b> 누르면 하나씩 내려놓아요.' : '');
+    $('bkApples').innerHTML = m.got ? Array.from({ length: m.got }, (_, i) => `<button class="bk-apple" data-i="${i}" aria-label="사과 하나 내려놓기">🍎</button>`).join('') : '<span class="bk-empty">바구니가 비었어요. 사과를 주워 와요!</span>';
+    $('bkApples').querySelectorAll('.bk-apple').forEach(b => b.addEventListener('click', () => { if (!tooSoon()) basketDrop(); }));
+    $('bkGive').hidden = !bkGiveMode || !m.got;
+    bindSoundButtons($('bkTip'));
+  }
+  function basketDrop() {
+    if (mode !== 'basket') return;
     const m = run.q.m1, ap = m.apples.find(x => x.got);
     if (!ap || m.got <= 0) return;
-    const n = qNpc(0), dir = P.x + P.w / 2 >= n.x ? -1 : 1, k = m.apples.filter(x => x.dropped && !x.got).length;
-    ap.got = false; ap.dropped = true; ap.rest = true; ap.vx = ap.vy = 0; ap.x = n.x + dir * (40 + k * 10); ap.y = GY - 4;
-    m.got--; SFX.pop(); floatText(ap.x, GY - 30, `🍎 ${m.got}개`, '#ff9fb2');
-    appleHandover();
+    const k = m.apples.filter(x => x.dropped && !x.got).length, px = P.x + P.w / 2;
+    const side = k % 2 ? -1 : 1, x = clamp(px + side * (24 + Math.floor(k / 2) * 14), 80, GATE_X[0] - 30);
+    ap.got = false; ap.dropped = true; ap.rest = true; ap.vx = ap.vy = 0; ap.x = x; ap.y = GY - 4; ap.lock = true;   // 판다가 비켜설 때까지는 안 주워져요
+    m.got--; SFX.pop();
+    basketDraw(); updateMissionPanel();
+    (m.got && !bkGiveMode ? $('bkApples').querySelector('.bk-apple') : $('bkGive').hidden ? $('bkClose') : $('bkGive'))?.focus({ preventScroll: true });
   }
+  function closeBasket() { if (mode !== 'basket') return; $('basket').hidden = true; mode = 'play'; focusStage(); updateMissionPanel(); }
+  function basketGive() { if (mode !== 'basket' || !bkGiveMode) return; closeBasket(); judgeApples(); }
+  onTap('bkClose', closeBasket);
+  onTap('bkGive', basketGive);
   function askDelivery(head) {
     const m = run.q.m3, r = m.rounds[m.ri];
     if (r.dir === 'a2h') {
@@ -2736,7 +2803,7 @@
   let slab = null;
   const ORDERED = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   function openSlab(spec) {
-    mode = 'slab'; releaseAll(); closeMissionPanel();
+    mode = 'slab'; releaseAll(); closeMissionPanel(); uiOpenT = performance.now();
     slab = { ...spec, ri: spec.start, toks: [], lock: false, order: ORDERED };
     $('slTitle').textContent = spec.title;
     slabRound();
@@ -2744,7 +2811,7 @@
   }
   function slabTiles() {
     $('slTiles').innerHTML = slab.order.map((v, i) => `<button class="sltile" data-v="${v}" data-pos="${i + 1}"><span class="han">${ZH_D[v]}</span><span class="py t0">${PY_D[v]}</span><span class="kn">${i === 9 ? 0 : i + 1}</span></button>`).join('');
-    $('slTiles').querySelectorAll('.sltile').forEach(b => b.addEventListener('click', () => slabTap(+b.dataset.v)));
+    $('slTiles').querySelectorAll('.sltile').forEach(b => b.addEventListener('click', () => { if (!tooSoon()) slabTap(+b.dataset.v); }));
   }
   function slabRound() {
     const r = slab.rounds[slab.ri], z = zhNum(r.n);
@@ -2809,9 +2876,9 @@
     $('slHint').textContent = slab.hints >= h.length ? '💡 힌트' : HINT_LBL[slab.hints] || HINT_LBL[1];
   }
   function closeSlab() { if (mode !== 'slab') return; $('slab').hidden = true; $('slHint').textContent = '💡 힌트'; slab = null; mode = 'play'; focusStage(); updateMissionPanel(); }
-  $('slUndo').addEventListener('click', slabUndo);
-  $('slHint').addEventListener('click', slabHint);
-  $('slLater').addEventListener('click', closeSlab);
+  onTap('slUndo', slabUndo);
+  onTap('slHint', slabHint);
+  onTap('slLater', closeSlab);
 
   // ----- 매 프레임: 사과 떨어지기·줍기, 들고 다니기 -----
   function questUpdate(dt) {
@@ -2827,7 +2894,9 @@
         continue;
       }
       // 줍기: 판다가 닿으면 (개수는 학생이 정해요. 몇 개든 주울 수 있고, 안경 판다에게 건네줄 때 판정)
-      if (Math.abs(P.x + P.w / 2 - ap.x) < 10 && P.y + P.h > GY - 14) {
+      const dx = Math.abs(P.x + P.w / 2 - ap.x);
+      if (ap.lock) { if (dx >= 16) ap.lock = false; continue; }
+      if (dx < 10 && P.y + P.h > GY - 14) {
         ap.got = true; m.got++; SFX.coin();
         floatText(ap.x, GY - 40, `🍎 ${m.got}개`, '#ff9fb2');
         updateMissionPanel();
@@ -4548,7 +4617,7 @@
     requestAnimationFrame(frame);
     $('startScreen').querySelector('.card').focus({ preventScroll: true });
     window.__panda = {
-      questInteract, zhNum, tokVal, testSpawn: (kind, n, set) => { const q = run.q, list = set ? q.m4.items : q.m3.items; spawnItems(list, kind, n, Q_SPOTS[set]); }, testOpenSlab: (rounds) => openSlab({ title: 'test', rounds, start: 0, tag: 'test', key: (i) => 'test' + i, onRound() {}, onAll() {} }), slabTap, slabKey, ruleHints, boxNums, closeTalk, closeSlab, questRecall, NPC_DEF, useSkill, canSkill, BGM, josa, BUILD, forestBuild, basicQuestion, MA, GREET, NW, P, save, quiz, quick, NQ, numQ, numQueue, NUMS, openQuiz, answer, closeQuiz, closeSpeak, selectStage, startPlay, goHome, askHome, resumeFromPause, loadStage, closeHelp, closeIntro, startNewRun, THEMES, SKINS, STAGES,
+      questInteract, openBasket, basketDrop, closeBasket, zhNum, tokVal, testSpawn: (kind, n, set) => { const q = run.q, list = set ? q.m4.items : q.m3.items; spawnItems(list, kind, n, Q_SPOTS[set]); }, testOpenSlab: (rounds) => openSlab({ title: 'test', rounds, start: 0, tag: 'test', key: (i) => 'test' + i, onRound() {}, onAll() {} }), slabTap, slabKey, ruleHints, boxNums, closeTalk, closeSlab, questRecall, NPC_DEF, useSkill, canSkill, BGM, josa, BUILD, forestBuild, basicQuestion, MA, GREET, NW, P, save, quiz, quick, NQ, numQ, numQueue, NUMS, openQuiz, answer, closeQuiz, closeSpeak, selectStage, startPlay, goHome, askHome, resumeFromPause, loadStage, closeHelp, closeIntro, startNewRun, THEMES, SKINS, STAGES,
       get mode() { return mode; }, get monsters() { return monsters; }, get coins() { return coins; }, get gates() { return gates; },
       get run() { return run; }, get cam() { return cam; }, get floats() { return floats; }, get stage() { return STAGE.id; }, get drops() { return drops; }, get selStage() { return selStage; },
     };
