@@ -1621,7 +1621,7 @@
     },
     // 5차시: 미션형 (NPC 부탁 → 탐험·조작·수집·배달·퍼즐 → 보고). 예전 몬스터 퀴즈형은 docs/backup/number-stage-v1.js
     number: {
-      id: 'number', status: 'draft', lessonNo: '5차시', label: '11월 10일 1교시', title: '숫자 계곡', short: '숫자 계곡', topic: '숫자 一 ~ 九十九', mapName: '숫자 계곡', isNew: true, theme: 'cave',
+      id: 'number', status: 'ready', lessonNo: '5차시', label: '11월 10일 1교시', title: '숫자 계곡', short: '숫자 계곡', topic: '숫자 一 ~ 九十九', mapName: '숫자 계곡', isNew: true, theme: 'cave',
       quest: true, clearTitle: '숫자 마스터! 一부터 九十九까지!',
       ...LAYOUT,
       monsters: [],
@@ -4048,12 +4048,14 @@
   // ================= 시작 · 지역 선택 =================
   function initialStage() {
     const h = (location.hash || '').slice(1).toLowerCase().replace(/^preview-?/, '');
-    const alias = { s1: 'bamboo', lesson1: 'bamboo', '1': 'bamboo', s2: 'greet', lesson2: 'greet', '2': 'greet', s3: 'name', lesson3: 'name', '3': 'name', s4: 'nation', lesson4: 'nation', '4': 'nation', num: 'number', numbers: 'number' };
+    const alias = { s1: 'bamboo', lesson1: 'bamboo', '1': 'bamboo', s2: 'greet', lesson2: 'greet', '2': 'greet', s3: 'name', lesson3: 'name', '3': 'name', s4: 'nation', lesson4: 'nation', '4': 'nation', s5: 'number', lesson5: 'number', '5': 'number', num: 'number', numbers: 'number' };
     const id = alias[h] || h;
     // 준비 중 지역은 학생 주소로 열리지 않아요 → 공개된 첫 지역으로
     return STAGE_ORDER.includes(id) ? id : STAGE_ORDER[0];
   }
   let selStage = initialStage();
+  // 주소 끝(#...)만 바꿔도 새로 열리도록 (예: 이미 열린 게임 주소에 #preview-number를 붙였을 때)
+  window.addEventListener('hashchange', () => { try { location.reload(); } catch (e) {} });
   // 진행 중인(아직 클리어 안 한) 탐험이 있는지
   function runOf(id) { return run && run.stage === id ? run : stageCache[id] && stageCache[id].run; }
   const inProgress = (id) => { const r = runOf(id); return !!r && !r.cleared && (r.ms.some(x => x.done > 0) || r.coins > 0 || r.introSeen); };
