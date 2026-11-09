@@ -189,6 +189,7 @@
   .sl-tiles { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
   .sltile { position: relative; display: flex; flex-direction: column; align-items: center; padding: 6px 0 4px; border: 3px solid var(--ink); border-radius: 12px; background: #fff; color: var(--ink); box-shadow: 0 3px 0 var(--ink); touch-action: manipulation; }
   .sltile .han { font-size: 32px; line-height: 1.15; } .sltile .py { font-size: 14px; }
+  .sltile { -webkit-tap-highlight-color: transparent; }
   .sltile .kn { position: absolute; top: 2px; left: 6px; font-size: 11px; color: var(--ink-soft); }
   .sltile.glow { background: #fff4c4; border-color: #c99a14; animation: slglow .8s infinite alternate; }
   @keyframes slglow { to { box-shadow: 0 3px 0 var(--ink), 0 0 0 5px rgba(246, 196, 69, .55); } }
@@ -1665,6 +1666,8 @@
     for (const x of STAGE.groundCoins) spots.push({ x, y: GY - 26 });
     // ghost: 예전 탐험에서 이미 받은 동전 (흐리게 보이고, 지갑에는 더해지지 않음)
     coins = spots.map((c, i) => ({ ...c, i, taken: false, timer: 0, ghost: ever.has(i) }));
+    // 5차시: 상자·석판이 놓이는 자리 뒤의 동전은 빼요 (어떤 물건만 금색 테두리처럼 보이지 않게)
+    if (STAGE.quest) coins = coins.filter(c => !Q_SPOTS.flat().some(sp => Math.abs(c.x - sp.x) < 46 && Math.abs(c.y + 26 - sp.y) < 12));   // 가장 넓은 한자 상자(폭 62) + 동전 폭
     drops = []; parts = []; floats = []; bolts = [];
   }
 
@@ -2897,17 +2900,18 @@
     if (x < -40 || x > W + 40) return;
     ctx.fillStyle = '#2b2838'; ctx.fillRect(x - 26, y - 26, 52, 26); ctx.fillStyle = '#8a85a0'; ctx.fillRect(x - 24, y - 24, 48, 24); ctx.fillStyle = '#b3aec4'; ctx.fillRect(x - 24, y - 24, 48, 4);
     const glow = run.q.m2.acc && run.q.m2.ri < run.q.m2.rounds.length;
-    ['十', '一', '二'].forEach((h, k) => {
+    // 장식 석판 3개 (글자 없음: 정답 숫자를 떠올리게 하지 않도록)
+    for (let k = 0; k < 3; k++) {
       const tx = x - 20 + k * 14;
       ctx.fillStyle = '#2b2838'; ctx.fillRect(tx - 1, y - 42, 14, 18); ctx.fillStyle = glow ? '#d4fbff' : '#cfcbe0'; ctx.fillRect(tx, y - 41, 12, 16);
-      ctx.fillStyle = '#2b2838'; ctx.font = '11px "Noto Sans SC", sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(h, tx + 6, y - 33);
-    });
+      ctx.fillStyle = '#8a85a0'; ctx.fillRect(tx + 5, y - 37, 2, 8);
+    }
   }
   function drawItem(it) {
     const x = Math.round(it.x - cam), y = Math.round(it.y);
     if (x < -40 || x > W + 40) return;
     if (it.kind === 'box' || it.kind === 'zbox') {
-      const lab = itemLabel(it), hw = it.kind === 'zbox' ? Math.max(16, 7 + lab.length * 8) : 16;   // 휴대폰에서도 읽히게 글자 14px
+      const lab = itemLabel(it), hw = it.kind === 'zbox' ? 31 : 16;   // 휴대폰에서도 읽히게 글자 14px · 한자 상자는 글자 수와 상관없이 모두 같은 크기
       ctx.fillStyle = '#5a3a22'; ctx.fillRect(x - hw, y - 22, hw * 2, 22); ctx.fillStyle = '#b07a45'; ctx.fillRect(x - hw + 2, y - 20, hw * 2 - 4, 18); ctx.fillStyle = '#c99560'; ctx.fillRect(x - hw + 2, y - 20, hw * 2 - 4, 3);
       ctx.fillStyle = '#fbfaf5'; ctx.fillRect(x - hw + 4, y - 18, hw * 2 - 8, 15);
       ctx.fillStyle = '#1d2738'; ctx.font = it.kind === 'zbox' ? 'bold 14px "Noto Sans SC", sans-serif' : 'bold 14px "Noto Sans", Arial, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(lab, x, y - 10);
@@ -4544,9 +4548,9 @@
     requestAnimationFrame(frame);
     $('startScreen').querySelector('.card').focus({ preventScroll: true });
     window.__panda = {
-      questInteract, zhNum, tokVal, slabTap, slabKey, ruleHints, boxNums, closeTalk, closeSlab, questRecall, NPC_DEF, useSkill, canSkill, BGM, josa, BUILD, forestBuild, basicQuestion, MA, GREET, NW, P, save, quiz, quick, NQ, numQ, numQueue, NUMS, openQuiz, answer, closeQuiz, closeSpeak, selectStage, startPlay, goHome, askHome, resumeFromPause, loadStage, closeHelp, closeIntro, startNewRun, THEMES, SKINS, STAGES,
+      questInteract, zhNum, tokVal, testSpawn: (kind, n, set) => { const q = run.q, list = set ? q.m4.items : q.m3.items; spawnItems(list, kind, n, Q_SPOTS[set]); }, testOpenSlab: (rounds) => openSlab({ title: 'test', rounds, start: 0, tag: 'test', key: (i) => 'test' + i, onRound() {}, onAll() {} }), slabTap, slabKey, ruleHints, boxNums, closeTalk, closeSlab, questRecall, NPC_DEF, useSkill, canSkill, BGM, josa, BUILD, forestBuild, basicQuestion, MA, GREET, NW, P, save, quiz, quick, NQ, numQ, numQueue, NUMS, openQuiz, answer, closeQuiz, closeSpeak, selectStage, startPlay, goHome, askHome, resumeFromPause, loadStage, closeHelp, closeIntro, startNewRun, THEMES, SKINS, STAGES,
       get mode() { return mode; }, get monsters() { return monsters; }, get coins() { return coins; }, get gates() { return gates; },
-      get run() { return run; }, get floats() { return floats; }, get stage() { return STAGE.id; }, get drops() { return drops; }, get selStage() { return selStage; },
+      get run() { return run; }, get cam() { return cam; }, get floats() { return floats; }, get stage() { return STAGE.id; }, get drops() { return drops; }, get selStage() { return selStage; },
     };
   }
 
