@@ -51,6 +51,7 @@
   .rate.lo { color: var(--red); } .rate.mid { color: #b07800; } .rate.hi { color: var(--jade); }
   .stars { color: var(--gold); letter-spacing: 1px; }
   .muted { color: var(--soft); }
+  .hintb { font-size: 12px; background: #fff6d6; border-radius: 6px; padding: 1px 5px; color: #8a6400; }
   .wbtn { font-size: 13px; padding: 3px 8px; }
   tr.wrow td { background: #fbfcfb; white-space: normal; font-size: 13px; color: var(--soft); }
   tr.wrow ul { margin: 0; padding-left: 18px; }
@@ -112,6 +113,7 @@
 
   <p class="foot">
     · 처음 정답 = 처음 시도에 맞힌 문제 / 푼 문제. 틀려도 다시 도전해서 끝까지 갈 수 있어요.<br>
+    · 5차시(숫자 계곡)는 처음 정답 = 힌트 없이 혼자 처음에 해결한 과제 / 혼자 푼 과제예요. 안내 문제(11·20 만들기)는 빼고, 💡는 힌트를 쓴 과제 수예요. (Apps Script 3판에서 보여요)<br>
     · 같은 닉네임이 같은 차시를 여러 번 하면 가장 마지막 기록을 보여 줘요.<br>
     · 원본 기록은 Google 시트의 '기록' 탭에 있어요.
   </p>
@@ -190,6 +192,7 @@
       const m = /^(\d+)\s*\/\s*(\d+)$/.exec(r.mission || '');
       if (m) { o.mission = +m[1]; o.total = +m[2]; }
       o.first = r.first; o.asked = r.asked; o.wrong = r.wrong; o.secs = r.secs;
+      o.hints = r.hints == null ? null : r.hints; o.guided = r.guided == null ? null : r.guided;   // 5차시(기록 방식 2)만 있어요
       if (r.kind === '클리어') { o.clear = r.t; o.stars = r.stars; o.mission = o.total; }
     }
     return [...by.values()];
@@ -230,7 +233,7 @@
         <td class="name">${esc(o.name)}</td>
         <td><span class="les">${esc(o.lesson)}</span></td>
         <td><span class="prog" title="미션 ${o.mission}/${o.total}">${dots}</span>${o.clear ? '<span class="done">✅ 클리어</span>' : ` <span class="muted">${o.mission}/${o.total}</span>`}</td>
-        <td>${o.asked ? `<span class="rate ${r < 60 ? 'lo' : r < 85 ? 'mid' : 'hi'}">${r}%</span> <span class="muted">${o.first}/${o.asked}</span>` : '<span class="muted">-</span>'}</td>
+        <td>${o.asked ? `<span class="rate ${r < 60 ? 'lo' : r < 85 ? 'mid' : 'hi'}">${r}%</span> <span class="muted">${o.first}/${o.asked}</span>${o.hints ? ` <span class="hintb" title="힌트를 쓴 과제 수">💡${o.hints}</span>` : ''}${o.guided ? ` <span class="muted" title="안내 문제(점수에서 뺌)">· 안내 ${o.guided}</span>` : ''}` : '<span class="muted">-</span>'}</td>
         <td class="stars">${o.stars ? '★'.repeat(o.stars) : '<span class="muted">-</span>'}</td>
         <td>${mmss(o.secs)}</td>
         <td>${hm(o.last)}</td>

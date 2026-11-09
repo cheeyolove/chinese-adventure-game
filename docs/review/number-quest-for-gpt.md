@@ -1,5 +1,7 @@
 # 판다 탐험대 5차시 「숫자 계곡」 미션형 게임 정리 (검토·업그레이드 의견 요청용)
 
+> **2판 반영(2026-11-09):** 아래 본문은 1판 설명이에요. 2판에서 바뀐 점(사과 직접 판단, 석판 섞기, 안내·힌트 기록 분리, 배달 양방향, 축제 단계 연출, 3단계 힌트, 화면 밖 방향 화살표)은 `docs/plan-number-quest.md` 맨 아래 '2판 개선'에 정리돼 있어요. 코드 발췌(number-quest-code.js)는 2판 코드예요.
+
 > 이 문서는 다른 AI(예: ChatGPT)에게 보여 주고 개선 아이디어를 받기 위한 요약이에요.
 > - 실제 게임: https://cheeyolove.github.io/chinese-adventure-game/#5
 > - 전체 코드(한 파일): https://raw.githubusercontent.com/cheeyolove/chinese-adventure-game/claude/panda-adventure-chinese-rpg-zm4wbu/src/game.html

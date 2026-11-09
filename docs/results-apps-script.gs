@@ -1,19 +1,24 @@
-// 판다 탐험대 결과 기록 (Google Apps Script) · 2판
+// 판다 탐험대 결과 기록 (Google Apps Script) · 3판
+// 3판(2026-11-09): 5차시용 칸 3개를 맨 뒤에 더함 — 힌트 쓴 과제 · 안내 문제 · 기록 방식. 예전 13칸은 그대로예요.
 // 이 코드를 Google 시트의 [확장 프로그램 → Apps Script]에 붙여 넣고 '웹 앱'으로 배포하세요.
 // - 학생 게임이 이 주소로 결과를 보내면 '기록' 탭에 한 줄씩 쌓여요.
 // - 선생님 결과 페이지(teacher.html)가 이 주소에서 기록을 읽어 가요(?format=json).
 // - 이 주소를 브라우저에서 그냥 열면 오늘의 간단한 결과표가 보여요. 다른 날은 주소 끝에 ?day=2026-11-03
 const SHEET = '기록';
 const TZ = 'Asia/Seoul';
-const VERSION = 2;
+const VERSION = 3;
+const HEAD = ['시간', '닉네임', '차시', '지역', '기록', '미션', '처음 정답', '푼 문제', '별', '처음에 틀린 문제', '걸린 시간(초)', '레벨', '기기', '힌트 쓴 과제', '안내 문제', '기록 방식'];
 
 function sheet_() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   let sh = ss.getSheetByName(SHEET);
   if (!sh) {
     sh = ss.insertSheet(SHEET);
-    sh.appendRow(['시간', '닉네임', '차시', '지역', '기록', '미션', '처음 정답', '푼 문제', '별', '처음에 틀린 문제', '걸린 시간(초)', '레벨', '기기']);
+    sh.appendRow(HEAD);
     sh.setFrozenRows(1);
+  } else if (sh.getLastColumn() < HEAD.length) {
+    // 예전(13칸) 시트: 제목 줄에 새 칸 이름만 더해요. 쌓인 기록은 건드리지 않아요
+    sh.getRange(1, 14, 1, HEAD.length - 13).setValues([HEAD.slice(13)]);
   }
   return sh;
 }
@@ -27,7 +32,8 @@ function doPost(e) {
     try {
       sheet_().appendRow([new Date(), String(d.name || '').slice(0, 20), String(d.lesson || ''), String(d.stage || ''), kind,
         String(d.mission || ''), Number(d.firstTry) || 0, Number(d.asked) || 0, d.stars || '', String(d.wrong || '').slice(0, 800),
-        Number(d.secs) || 0, Number(d.level) || 0, String(d.device || '')]);
+        Number(d.secs) || 0, Number(d.level) || 0, String(d.device || ''),
+        d.hints === undefined ? '' : Number(d.hints) || 0, d.guided === undefined ? '' : Number(d.guided) || 0, d.dataVer === undefined ? '' : String(d.dataVer)]);
     } finally { lock.releaseLock(); }
   } catch (err) { /* 잘못된 요청은 무시 */ }
   return ContentService.createTextOutput('ok');
@@ -42,7 +48,8 @@ function dataOut_(p) {
     .filter(r => r[0] instanceof Date && dayOf_(r[0]) >= from && dayOf_(r[0]) <= to)
     .map(r => ({ t: r[0].toISOString(), day: dayOf_(r[0]), name: String(r[1]), lesson: String(r[2]), stage: String(r[3]), kind: String(r[4]),
       mission: String(r[5]), first: Number(r[6]) || 0, asked: Number(r[7]) || 0, stars: Number(r[8]) || 0, wrong: String(r[9] || ''),
-      secs: Number(r[10]) || 0, level: Number(r[11]) || 0, device: String(r[12] || '') }));
+      secs: Number(r[10]) || 0, level: Number(r[11]) || 0, device: String(r[12] || ''),
+      hints: r[13] === '' || r[13] === undefined ? null : Number(r[13]), guided: r[14] === '' || r[14] === undefined ? null : Number(r[14]), dataVer: String(r[15] || '') }));
   const body = JSON.stringify({ ok: true, version: VERSION, from: from, to: to, rows: rows });
   const cb = String(p.callback || '');
   if (/^[A-Za-z_$][\w$]{0,40}$/.test(cb)) return ContentService.createTextOutput(cb + '(' + body + ');').setMimeType(ContentService.MimeType.JAVASCRIPT);
