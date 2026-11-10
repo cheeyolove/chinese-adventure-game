@@ -367,6 +367,9 @@
   .stagecard .sc-topic { font-size: 14px; color: var(--ink-soft); }
   .stagecard .sc-stars { font-size: 18px; letter-spacing: 2px; color: var(--gold); text-shadow: 0 1px 0 var(--ink); }
   .stagecard .sc-stars .off { color: #cfd8d3; text-shadow: none; }
+  .stagecard.minicard { text-decoration: none; background: #fff7d6; }
+  .stagecard .sc-ico { font-size: 30px; line-height: 46px; }
+  .stagecard .sc-new.mini { background: var(--jade); }
   .stagecard.locked { background: var(--paper-2); color: var(--ink-soft); border-style: dashed; box-shadow: none; justify-content: center; cursor: default; }
   .stagecard .sc-lock { font-size: 30px; line-height: 46px; }
   .stagecard.sel { background: var(--jade-soft); border-color: var(--jade); box-shadow: 0 4px 0 var(--jade), 0 0 0 3px var(--jade); }
@@ -486,7 +489,6 @@
     <button class="linkbtn" id="btnNewRun" hidden>처음부터 새 탐험</button>
     <div class="submodes">
       <button class="btn small" id="btnLearnFirst">📖 배움 노트</button>
-      <a class="btn small" id="btnCards" href="cards.html" style="text-decoration:none;display:inline-flex;align-items:center" hidden>🃏 숫자 카드 놀이</a>
     </div>
   </div>
 </div>
@@ -1693,7 +1695,7 @@
   // 숫자 카드 짝 맞추기(따로 있는 연습 게임, cards.html): 주소 끝 #number-cards로도 열려요. Claude 미리보기 안에서는 다른 페이지가 열리지 않아 숨겨요
   const CARDS_OK = /^(https?|file):$/.test(location.protocol) && !/claude/i.test(location.hostname);
   if (CARDS_OK && /^#number-cards/i.test(location.hash || '')) location.replace('cards.html');
-  if (CARDS_OK) $('btnCards').hidden = false;
+
   const ALL_STAGES = ['bamboo', 'greet', 'name', 'nation', 'number'];
   const STAGE_ORDER = ALL_STAGES.filter(id => PREVIEW || STAGES[id].status === 'ready');
   let THEME = THEMES.forest;
@@ -4342,12 +4344,18 @@
         <span class="sc-topic">${st.topic}</span>
         <span class="sc-stars" aria-label="별 ${stars}개">${'★'.repeat(stars)}<span class="off">${'★'.repeat(3 - stars)}</span></span>
       </button>`;
-    }).join('') + (PREVIEW ? '' : '<div class="stagecard locked" aria-disabled="true"><span class="sc-lock">🔒</span><span class="sc-title">다음 수업</span><span class="sc-topic">준비 중이에요</span></div>');
+    }).join('') + (CARDS_OK ? `<a class="stagecard minicard" id="cardsTile" href="cards.html">
+        <span class="sc-new mini">미니게임</span>
+        <span class="sc-ico">🃏</span>
+        <span class="sc-num">언제든 연습</span>
+        <span class="sc-title">숫자 카드</span>
+        <span class="sc-topic">一 ~ 十 짝 맞추기</span>
+      </a>` : '') + (PREVIEW ? '' : '<div class="stagecard locked" aria-disabled="true"><span class="sc-lock">🔒</span><span class="sc-title">다음 수업</span><span class="sc-topic">준비 중이에요</span></div>');
     $('stagePick').querySelectorAll('canvas[data-ico]').forEach(c => {
       const T = THEMES[STAGES[c.dataset.ico].theme], spr = SKINS[T.skins[0]].spr({ tone: 1 });
       c.width = spr.width; c.height = spr.height; c.getContext('2d').drawImage(spr, 0, 0);
     });
-    $('stagePick').querySelectorAll('.stagecard').forEach(b => b.addEventListener('click', () => selectStage(b.dataset.stage)));
+    $('stagePick').querySelectorAll('.stagecard[data-stage]').forEach(b => b.addEventListener('click', () => selectStage(b.dataset.stage)));
     const prog = inProgress(selStage);
     $('btnPlay').textContent = prog ? '▶ 이어서 탐험' : '▶ 탐험 시작';
     $('btnNewRun').hidden = !prog;

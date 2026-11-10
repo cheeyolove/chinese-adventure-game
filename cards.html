@@ -143,7 +143,8 @@
     <div class="done-msg" id="doneMsg">축하해!</div>
     <div class="done-sub" id="doneSub"></div>
     <div class="btns">
-      <button class="btn primary" id="again">다시 도전하기</button>
+      <button class="btn primary" id="nextMode" hidden>다음 난이도 ▶</button>
+      <button class="btn" id="again">다시 도전하기</button>
       <button class="btn" id="changeMode">난이도 바꾸기</button>
       <button class="btn" id="doneStudy">숫자 공부하기</button>
       <a class="btn" href="index.html" style="text-decoration:none">판다 탐험대로 돌아가기</a>
@@ -221,12 +222,18 @@
       S.timer = setTimeout(() => { SFX.miss(); S.open.forEach(i => show(i, false)); S.open = []; S.lock = false; }, 1000);
     }
   }
+  const NEXT = { easy: 'normal', normal: 'hard' };
   function stat() { $('stat').innerHTML = `맞힌 쌍 <b>${S.done.size / 2}/${S.pairs}</b> · 시도 <b>${S.tries}</b>번`; }
   function say(html) { $('msg').innerHTML = html; }
   function finish() {
     SFX.done();
     $('doneMsg').textContent = `축하해! 중국어 숫자 ${S.pairs}개를 모두 찾았어!`;
     $('doneSub').textContent = `${S.tries}번 만에 다 찾았어요. (${MODES[S.mode].label})`;
+    // 쉬움 → 보통 → 도전: 다음 난이도로 바로 가는 버튼 (도전을 깨면 없음)
+    const nx = NEXT[S.mode];
+    $('nextMode').hidden = !nx;
+    if (nx) $('nextMode').innerHTML = `다음 난이도: ${MODES[nx].label} ▶`;
+    $('again').classList.toggle('primary', !nx);
     openOverlay('done');
   }
   // ----- 창: 열려 있는 동안 카드는 뒤집히지 않아요. 닫으면 진행 상황 그대로 -----
@@ -238,6 +245,7 @@
   $('restart').addEventListener('click', () => start());
   $('modes').addEventListener('click', (e) => { const b = e.target.closest('button[data-mode]'); if (b) start(b.dataset.mode); });
   $('again').addEventListener('click', () => { closeOverlay('done'); start(); });
+  $('nextMode').addEventListener('click', () => { const nx = NEXT[S.mode]; closeOverlay('done'); if (nx) start(nx); });
   $('changeMode').addEventListener('click', () => { closeOverlay('done'); start(); $('modes').querySelector('[aria-pressed="true"]').focus(); say('난이도를 골라 보세요!'); });
   $('doneStudy').addEventListener('click', () => { closeOverlay('done'); openOverlay('study'); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { if (!$('study').hidden) closeOverlay('study'); } });
