@@ -214,6 +214,64 @@
     .bk-apple { width: 48px; height: 48px; font-size: 28px; border-radius: 12px; }
   }
   .say-z { padding: 2px 8px; }
+  /* 6차시 생일파티: 케이크·달력·생일카드 창 */
+  .bdcard { max-width: 640px; text-align: center; }
+  .bd-head { font-family: var(--font-display); font-size: 24px; }
+  .bd-ask { font-size: 19px; margin: 4px 0; } .bd-ask p { margin: 4px 0; }
+  .zline.big .znum .han { font-size: 58px; } .znum.hb { background: #ffe3ee; }
+  .bd-msg { min-height: 1.4em; font-size: 19px; font-weight: 700; margin: 6px 0; }
+  .bd-msg.ok { color: #1f7a3a; } .bd-msg.no { color: #b5121b; }
+  .bd-msg .han { font-family: var(--font-han); }
+  .talk-hint:empty { display: none; }
+  #ckCanvas { width: 192px; height: 128px; image-rendering: pixelated; display: block; margin: 4px auto; }
+  .ck-count { font-size: 20px; } .ck-count b { font-size: 30px; color: #b5121b; }
+  .ck-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin: 8px 0; }
+  .ck-row .btn { min-height: 56px; font-size: 20px; }
+  .cal-step { font-family: var(--font-display); font-size: 20px; margin: 6px 0; }
+  .cal-grid { display: grid; gap: 8px; margin: 6px auto; }
+  .cal-grid.months { grid-template-columns: repeat(4, 1fr); max-width: 520px; }
+  .cal-grid.days { grid-template-columns: repeat(7, 1fr); max-width: 480px; }
+  .calb, .bcm, .bcd, .bcdeco { border: 3px solid var(--ink); border-radius: 12px; background: #fff; color: var(--ink); font-family: var(--font-display); box-shadow: 0 3px 0 var(--ink); touch-action: manipulation; -webkit-tap-highlight-color: transparent; cursor: pointer; }
+  .calb { min-height: 52px; font-size: 21px; padding: 4px 2px; }
+  .cal-grid.days .calb { min-height: 46px; font-size: 19px; }
+  .calb.sel, .bcm.sel, .bcd.sel { background: #2b6fd6; color: #fff; }
+  .bcdeco.sel { outline: 4px solid #2b6fd6; outline-offset: 2px; }
+  .bcm.sel .py { color: #fff; }
+  .calb:disabled { opacity: .75; cursor: default; }
+  .calb:active, .bcm:active, .bcd:active, .bcdeco:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink); }
+  /* 고르는 동안 문장 미리보기가 늘 보이게 (창이 스크롤되어도 위에 붙어 있음) */
+  .bcard-prev { position: sticky; top: 0; z-index: 2; border: 3px solid var(--ink); border-radius: 14px; padding: 12px 34px; margin: 6px auto 8px; max-width: 520px; }
+  .bc-han { font-family: var(--font-han); font-size: 34px; line-height: 1.3; }
+  .bc-slot { display: inline-block; border-bottom: 3px dashed #b5121b; margin: 0 2px; }
+  .bc-py { font-size: 19px; font-weight: 700; } .bc-py b { color: #b5121b; }
+  .bc-ko { font-size: 17px; color: var(--ink-soft); }
+  .bcst { position: absolute; font-size: 24px; } .bcst.a { left: 6px; top: 4px; } .bcst.b { right: 6px; bottom: 4px; }
+  .bc-lbl { font-family: var(--font-display); font-size: 17px; text-align: left; margin: 8px 0 4px; }
+  .bc-months { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+  .bcm { display: flex; flex-direction: column; align-items: center; padding: 4px 2px; min-height: 58px; }
+  .bcm .han { font-family: var(--font-han); font-size: 22px; } .bcm .py { font-size: 13px; font-weight: 700; }
+  .bc-days { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; }
+  .bcd { min-height: 44px; font-size: 19px; }
+  .bc-deco { display: flex; gap: 8px; justify-content: center; }
+  .bcdeco { min-height: 46px; padding: 4px 14px; font-size: 18px; }
+  .bopts { display: grid; gap: 10px; margin: 10px 0; }
+  .bopt { min-height: 54px; font-size: 21px; font-family: var(--font-display); border: 3px solid var(--ink); border-radius: 12px; background: #fff; color: var(--ink); box-shadow: 0 3px 0 var(--ink); cursor: pointer; touch-action: manipulation; }
+  @media (max-height: 520px), (max-width: 560px) {
+    .bdov { padding: 6px 8px; }
+    .bdcard { padding: 8px 12px 6px; border-width: 3px; border-radius: 14px; }
+    .bd-head { font-size: 19px; } .bd-ask { font-size: 16px; } .bd-msg { font-size: 16px; margin: 3px 0; }
+    .zline.big .znum .han { font-size: 40px; }
+    #ckCanvas { width: 144px; height: 96px; margin: 0 auto; }
+    .ck-row .btn { min-height: 48px; font-size: 17px; }
+    .cal-step { font-size: 17px; margin: 2px 0; }
+    .cal-grid { gap: 6px; } .calb { min-height: 44px; font-size: 18px; } .cal-grid.days .calb { min-height: 40px; font-size: 17px; }
+    .bcard-prev { padding: 6px 28px; margin: 2px auto 4px; } .bc-han { font-size: 26px; } .bc-py { font-size: 16px; } .bc-ko { font-size: 15px; }
+    .bc-lbl { font-size: 15px; margin: 4px 0 2px; }
+    .bcm { min-height: 50px; } .bcm .han { font-size: 19px; } .bcm .py { font-size: 12px; }
+    .bcd { min-height: 40px; font-size: 17px; }
+    .bopt { min-height: 46px; font-size: 18px; } .bopts { gap: 6px; margin: 6px 0; }
+  }
+  @media (max-width: 560px) { .bc-months { grid-template-columns: repeat(4, 1fr); } .bc-days { grid-template-columns: repeat(7, 1fr); } }
   .slabcard { max-width: 640px; }
   .sl-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
   .sl-prog { font-family: var(--font-display); color: var(--ink-soft); }
@@ -583,6 +641,51 @@
   </div>
 </div>
 
+<!-- 6차시: 케이크에 초 꽂기 (학생이 개수를 정해서 [완성했어요!]) -->
+<div class="overlay bdov" id="cake" hidden>
+  <div class="card bdcard" tabindex="-1">
+    <div class="bd-head">🎂 케이크 꾸미기</div>
+    <div class="bd-ask" id="ckAsk"></div>
+    <canvas id="ckCanvas" width="96" height="64"></canvas>
+    <div class="ck-count" id="ckCount"></div>
+    <div class="ck-row"><button class="btn big" id="ckAdd">🕯 초 하나 꽂기</button><button class="btn big" id="ckDel">↩ 초 하나 빼기</button></div>
+    <div class="bd-msg" id="ckMsg" aria-live="polite"></div>
+    <div class="talk-hint" id="ckHintBox"></div>
+    <div class="talk-btns"><button class="btn" id="ckHint">💡 힌트</button><button class="btn" id="ckClose">닫기</button><button class="btn primary" id="ckDone">✅ 완성했어요!</button></div>
+  </div>
+</div>
+
+<!-- 6차시: 달력에서 날짜 찾기 (1단계 월 → 2단계 일, [확인]을 눌러야 맞았는지 보여요) -->
+<div class="overlay bdov" id="cal" hidden>
+  <div class="card bdcard" tabindex="-1">
+    <div class="bd-head">📅 달력에서 찾기 <span class="sl-prog" id="calProg"></span></div>
+    <div class="bd-ask" id="calAsk"></div>
+    <div class="cal-step" id="calStepTxt"></div>
+    <div class="cal-grid months" id="calGrid"></div>
+    <div class="bd-msg" id="calMsg" aria-live="polite"></div>
+    <div class="talk-hint" id="calHintBox"></div>
+    <div class="talk-btns"><button class="btn" id="calBack" hidden>← 월 다시 고르기</button><button class="btn" id="calHint">💡 힌트</button><button class="btn" id="calClose">닫기</button><button class="btn primary" id="calOk" disabled>확인</button></div>
+  </div>
+</div>
+
+<!-- 6차시: 생일카드 만들기 (글자는 쓰지 않고 월·일 버튼만 골라요) -->
+<div class="overlay bdov" id="bcard" hidden>
+  <div class="card bdcard" tabindex="-1">
+    <div class="bd-head" id="bcHead">💌 생일카드 만들기</div>
+    <div class="bd-ask" id="bcAsk"></div>
+    <div class="bcard-prev" id="bcPrev"></div>
+    <div class="bc-lbl">① 몇 월?</div>
+    <div class="bc-months" id="bcMonths"></div>
+    <div class="bc-lbl">② 며칠?</div>
+    <div class="bc-days" id="bcDays"></div>
+    <div class="bc-lbl">③ 꾸미기 (마음대로)</div>
+    <div class="bc-deco" id="bcDeco"></div>
+    <div class="bd-msg" id="bcMsg" aria-live="polite"></div>
+    <div class="talk-hint" id="bcHintBox"></div>
+    <div class="talk-btns"><button class="btn" id="bcHint">💡 힌트</button><button class="btn" id="bcClose">닫기</button><button class="btn primary" id="bcOk" disabled>💌 생일카드 완성!</button></div>
+  </div>
+</div>
+
 <!-- 홈으로 갈까요? -->
 <div class="overlay" id="homeAsk" hidden>
   <div class="card start" tabindex="-1">
@@ -748,7 +851,7 @@
 
   // Google Fonts (한자는 필요한 글자만 받아옴)
   (function loadFonts() {
-    const han = '熊猫探险队妈麻马骂你们好老师同学中国汉语拼音文我叫什么名字小明韩人是哪谢再见不客气对起没关系晚安早上。？！“”一二三四五六七八九十';
+    const han = '熊猫探险队妈麻马骂你们好老师同学中国汉语拼音文我叫什么名字小明韩人是哪谢再见不客气对起没关系晚安早上。？！“”一二三四五六七八九十生日快乐月号几的○';
     // 병음용: 알파벳·성조 모음·숫자만 받아서 파일이 아주 작음
     const py = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜüĀÁǍÀĒÉĚÈĪÍǏÌŌÓǑÒŪÚǓÙÜ0123456789 .,?!’\'-/()%…:→ˉˊˇˋ';
     for (const href of [
@@ -807,6 +910,16 @@
   const NUM_HUN = ['한 일', '두 이', '석 삼', '넉 사', '다섯 오', '여섯 륙', '일곱 칠', '여덟 팔', '아홉 구', '열 십'];
   NUMS.forEach(n => { n.hun = NUM_HUN[n.v - 1]; n.ko = `${n.hun} · 숫자 ${n.v}`; });
   const NUMW = Object.fromEntries(NUMS.map(n => [n.id, n]));
+  // 6차시 생일파티: 生日快乐！ · 我的生日是○月○号。 · (듣고 알아듣기) 你的生日是几月几号？
+  const BDW = Object.fromEntries([
+    { id: 'bd_hb', h: '生日快乐！', p: 'Shēngrì kuàilè!', t: 0, ko: '생일 축하해!', sent: true },
+    { id: 'bd_kuaile', h: '快乐', p: 'kuàilè', t: 0, ko: '즐겁다, 행복하다' },
+    { id: 'bd_shengri', h: '生日', p: 'shēngrì', t: 0, ko: '생일' },
+    { id: 'bd_yue', h: '月', p: 'yuè', t: 4, ko: '월 (숫자 + 月 = ○월)' },
+    { id: 'bd_hao', h: '号', p: 'hào', t: 4, ko: '일 (숫자 + 号 = ○일)' },
+    { id: 'bd_my', h: '我的生日是五月十号。', p: 'Wǒ de shēngrì shì wǔ yuè shí hào.', t: 0, ko: '내 생일은 5월 10일이야.', sent: true },
+    { id: 'bd_ask', h: '你的生日是几月几号？', p: 'Nǐ de shēngrì shì jǐ yuè jǐ hào?', t: 0, ko: '네 생일은 몇 월 며칠이야? (듣고 알아들어요)', sent: true },
+  ].map(w => [w.id, w]));
   const numOf = (v) => NUMS[v - 1];
   const GREET = [
     // 1차시 (11/3 1교시): 필수 你好 · 老师好 / 보너스(bonus) 你们好 · 中文 — 보너스는 카드·노트에만, 필수 문제에는 안 나와요
@@ -881,7 +994,7 @@
   const josa = (word, pair) => `${word}${pp(word, pair)}`;
   // 숫자가 아닌 한자의 소리 (게임에 나오는 글자)
   const HAN_PY = { '妈': 'mā', '麻': 'má', '马': 'mǎ', '骂': 'mà', '我': 'wǒ', '你': 'nǐ', '叫': 'jiào', '什': 'shén', '么': 'me', '名': 'míng', '小': 'xiǎo', '明': 'míng', '韩': 'hán', '人': 'rén', '是': 'shì', '哪': 'nǎ', '字': 'zi',
-    '们': 'men', '好': 'hǎo', '老': 'lǎo', '师': 'shī', '同': 'tóng', '学': 'xué', '中': 'zhōng', '国': 'guó', '汉': 'hàn', '语': 'yǔ', '文': 'wén', '拼': 'pīn', '音': 'yīn', '谢': 'xiè', '再': 'zài', '见': 'jiàn', '不': 'bù', '客': 'kè', '气': 'qi', '对': 'duì', '起': 'qǐ', '没': 'méi', '关': 'guān', '系': 'xi', '晚': 'wǎn', '安': 'ān', '早': 'zǎo', '上': 'shang' };
+    '们': 'men', '好': 'hǎo', '老': 'lǎo', '师': 'shī', '同': 'tóng', '学': 'xué', '中': 'zhōng', '国': 'guó', '汉': 'hàn', '语': 'yǔ', '文': 'wén', '拼': 'pīn', '音': 'yīn', '谢': 'xiè', '再': 'zài', '见': 'jiàn', '不': 'bù', '客': 'kè', '气': 'qi', '对': 'duì', '起': 'qǐ', '没': 'méi', '关': 'guān', '系': 'xi', '晚': 'wǎn', '安': 'ān', '早': 'zǎo', '上': 'shang', '生': 'shēng', '日': 'rì', '快': 'kuài', '乐': 'lè', '月': 'yuè', '号': 'hào', '几': 'jǐ', '的': 'de' };
   const pyHTML = (w) => `<span class="py t${w.t}">${w.p}</span>`;
   const hanHTML = (w) => `<span class="han">${w.h}</span>`;
 
@@ -1540,6 +1653,15 @@
       paifang: { pillar: '#e8689a', hi: '#ff9fc3', roof: '#6a3f86', roof2: '#9a6ac0', plate: '#fff0a8' },
       skins: ['bud', 'bee', 'bud', 'queen'], mid: 'snail',
     },
+    // 6차시 생일 파티 마을: 꽃밭과 같은 모양, 따뜻한 저녁 하늘
+    party: {
+      sky: ['#f08aa8', '#ffc9b8', '#fff1d6'], sun: true, clouds: true,
+      far: ['#f3c6d3', '#e7aec2'], hill: ['#82c784', '#a5dca3'], hills: 'pavilion', near: 'blossom',
+      ground: { top: '#6fcf6a', hi: '#9be58f', edge: '#46a048', dirt: '#a8754d', d1: '#966641', d2: '#c4946a', deco: 'petal' },
+      plat: 'wood', gate: 'hedge',
+      paifang: { pillar: '#e5484d', hi: '#ff7b7f', roof: '#c0457a', roof2: '#e8689a', plate: '#fff0a8' },
+      skins: ['bud', 'bee', 'bud', 'queen'], mid: 'snail',
+    },
     cave: {
       sky: ['#120e26', '#2a1f52', '#4b3683'], sun: false, clouds: false,
       far: ['#2b2350', '#3a2f68'], hill: ['#463a78', '#5a4b92'], hills: 'crystals', near: 'stalactites',
@@ -1696,6 +1818,26 @@
       noteIntro: '중국어 숫자 <b>一(1)부터 十(10)</b>까지 배우고, 규칙으로 <b>99까지</b> 만들어요.<br>· 11~19: <b>十 + 숫자</b> → 十一 shí yī (11), 十五 shí wǔ (15)<br>· 몇십: <b>숫자 + 十</b> → 二十 èr shí (20), 三十 sān shí (30)<br>· 21~99: <b>숫자 + 十 + 숫자</b> → 三十五 sān shí wǔ (35), 九十九 jiǔ shí jiǔ (99)',
       qgen: () => null, makeQueue: () => [],
     },
+    // 6차시: 미션형 (5차시와 같은 NPC 엔진 + 따로 만든 미션: 케이크 · 달력 · 생일카드 · 파티). questKit: 'bd'
+    birthday: {
+      id: 'birthday', status: 'ready', lessonNo: '6차시', label: '11월 10일 2교시', title: '생일 파티 마을', short: '생일 파티', topic: '生日快乐！ · 몇 월 며칠', mapName: '생일 파티 마을', isNew: true, theme: 'party', song: 'garden',
+      quest: true, questKit: 'bd', clearTitle: '생일파티 성공! 生日快乐！',
+      ...LAYOUT,
+      monsters: [],
+      gates: layoutGates(['케이크 문', '달력 문', '카드 문', '파티의 문']),
+      missions: [
+        { label: '🎂 케이크에 초 五 개', zone: '케이크 가게', cards: ['bd_hb', 'bd_kuaile'] },
+        { label: '📅 달력에서 생일 찾기', zone: '달력 정원', cards: ['bd_yue', 'bd_hao'] },
+        { label: '💌 생일카드 만들기', zone: '카드 공방', cards: ['bd_shengri', 'bd_my'] },
+        { label: '🎉 생일파티', zone: '파티 광장', cards: ['bd_ask'], cheer: '생일파티 성공!' },
+      ],
+      finalText: '파티의 문', decorate: decorateBirthday,
+      words: BDW, cardOrder: ['bd_hb', 'bd_kuaile', 'bd_shengri', 'bd_yue', 'bd_hao', 'bd_my', 'bd_ask'], cardName: '생일 카드', bossFinale: 'none',
+      introRulesHead: '📅 날짜 만들기 규칙 <small>숫자 + 月 = ○월 · 숫자 + 号 = ○일</small>',
+      introRules: [{ h: '一月', p: 'yī yuè', t: 0, ko: '1월' }, { h: '十二月', p: 'shí èr yuè', t: 0, ko: '12월' }, { h: '二十五号', p: 'èr shí wǔ hào', t: 0, ko: '25일' }, { h: '三十一号', p: 'sān shí yī hào', t: 0, ko: '31일' }],
+      noteIntro: '생일을 축하하고, <b>내 생일이 몇 월 며칠인지</b> 말해 봐요.<br>· <b>生日快乐！</b> Shēngrì kuàilè! = 생일 축하해!<br>· 날짜: <b>숫자 + 月</b> = ○월, <b>숫자 + 号</b> = ○일 → 五月十号 wǔ yuè shí hào (5월 10일)<br>· <b>我的生日是○月○号。</b> = 내 생일은 ○월 ○일이야.<br>· <b>你的生日是几月几号？</b> = 네 생일은 몇 월 며칠이야? (듣고 알아들으면 돼요)',
+      qgen: () => null, makeQueue: () => [],
+    },
   };
   // 지역 순서 (시작 화면에 이 순서대로, 준비 안 된 지역은 아예 넣지 않음)
   // 학생 화면에는 status: 'ready'만 보여요. 주소 끝에 #preview(또는 #preview-지역이름)를 붙이면 선생님 미리보기로 전부 보여요
@@ -1704,7 +1846,7 @@
   const CARDS_OK = /^(https?|file):$/.test(location.protocol) && !/claude/i.test(location.hostname);
   if (CARDS_OK && /^#number-cards/i.test(location.hash || '')) location.replace('cards.html');
 
-  const ALL_STAGES = ['bamboo', 'greet', 'name', 'nation', 'number'];
+  const ALL_STAGES = ['bamboo', 'greet', 'name', 'nation', 'number', 'birthday'];
   const STAGE_ORDER = ALL_STAGES.filter(id => PREVIEW || STAGES[id].status === 'ready');
   let THEME = THEMES.forest;
   let STAGE = STAGES.bamboo, PLATFORMS = STAGE.platforms, CHECKPOINTS = STAGE.checkpoints, gates = [], run = null;
@@ -1726,7 +1868,9 @@
     // ghost: 예전 탐험에서 이미 받은 동전 (흐리게 보이고, 지갑에는 더해지지 않음)
     coins = spots.map((c, i) => ({ ...c, i, taken: false, timer: 0, ghost: ever.has(i) }));
     // 5차시: 상자·석판이 놓이는 자리 뒤의 동전은 빼요 (어떤 물건만 금색 테두리처럼 보이지 않게)
-    if (STAGE.quest) coins = coins.filter(c => !Q_SPOTS.flat().some(sp => Math.abs(c.x - sp.x) < 46 && Math.abs(c.y + 26 - sp.y) < 12));   // 가장 넓은 한자 상자(폭 62) + 동전 폭
+    // 6차시: 초가 놓이는 자리의 동전도 빼요 (초가 동전과 겹쳐 보이지 않게)
+    if (STAGE.quest) { const free = STAGE.questKit === 'bd' ? BD_CANDLES.map(sp => ({ ...sp, r: 24 })) : Q_SPOTS.flat().map(sp => ({ ...sp, r: 46 }));   // 가장 넓은 한자 상자(폭 62) + 동전 폭
+      coins = coins.filter(c => !free.some(sp => Math.abs(c.x - sp.x) < sp.r && Math.abs(c.y + 26 - sp.y) < 12)); }
     drops = []; parts = []; floats = []; bolts = [];
   }
 
@@ -1945,6 +2089,17 @@
     // 축제 광장 등불 줄
     g.fillStyle = '#3b3346'; g.fillRect(2720, 150, 2, GY - 150); g.fillRect(3400, 150, 2, GY - 150);
     for (let x = 2730; x < 3400; x += 34) { g.fillStyle = '#2b2838'; g.fillRect(x, 152 + Math.round(Math.sin(x) * 3), 1, 6); g.fillStyle = ['#e5484d', '#f6c445', '#5cc46a', '#62aefc'][(x / 34 | 0) % 4]; g.fillRect(x - 3, 158 + Math.round(Math.sin(x) * 3), 8, 9); }
+    drawPaifang(g, GATE_X[3] + 12, STAGE.finalText);
+  }
+  function decorateBirthday(g) {
+    drawSign(g, 110, ['생일 파티 마을', '출발! →'], 96);
+    for (const x of [600, 1500, 2230]) {   // 작은 꽃밭 (친구 판다·케이크·달력·책상과 겹치지 않게)
+      for (let k = 0; k < 6; k++) { const fx = x + k * 9; g.fillStyle = '#3f9442'; g.fillRect(fx + 1, GY - 7, 1, 7); g.fillStyle = pick(['#ff8fb8', '#ffd23f', '#ffffff', '#b38cff']); g.fillRect(fx, GY - 10, 3, 3); }
+    }
+    // 파티 광장 삼각 깃발 줄
+    g.fillStyle = '#5a3a22'; g.fillRect(2720, 140, 3, GY - 140); g.fillRect(3400, 140, 3, GY - 140);
+    g.fillStyle = '#3b3346'; g.fillRect(2722, 142, 680, 1);
+    for (let x = 2730; x < 3396; x += 22) { const c = ['#e5484d', '#f6c445', '#62aefc', '#5cc46a', '#c084fc'][(x / 22 | 0) % 5]; g.fillStyle = c; for (let r = 0; r < 8; r++) g.fillRect(x + Math.floor(r / 2), 143 + r, 10 - r, 1); }
     drawPaifang(g, GATE_X[3] + 12, STAGE.finalText);
   }
   function buildWorld() {
@@ -2312,6 +2467,12 @@
       else if ((c === 'Escape' || c === 'KeyQ') && !e.repeat) closeBasket();
       return;
     }
+    // 6차시 창: Enter = 확인/완성, Esc = 닫기
+    if (mode === 'cake') { if (isEnter(c) && !e.repeat) { e.preventDefault(); cakeDone(); } else if (c === 'Escape' && !e.repeat) closeCake(); return; }
+    const pickBtn = document.activeElement && document.activeElement.matches && document.activeElement.matches('#cake button, #cal button, #bcard button') ? document.activeElement : null;   // 키보드로 고른 칸은 Enter로 누르기
+    if ((mode === 'cal' || mode === 'bcard' || mode === 'cake') && pickBtn && isEnter(c) && !e.repeat) { e.preventDefault(); if (!pickBtn.disabled) pickBtn.click(); return; }
+    if (mode === 'cal') { if (isEnter(c) && !e.repeat) { e.preventDefault(); if (!$('calOk').disabled) calOk(); } else if (c === 'Escape' && !e.repeat) closeCal(); return; }
+    if (mode === 'bcard') { if (isEnter(c) && !e.repeat) { e.preventDefault(); if (!$('bcOk').disabled) bcOk(); } else if (c === 'Escape' && !e.repeat) closeBCard(); return; }
     if (mode === 'talk') { if ((isEnter(c) || c === 'Space' || c === 'KeyE') && !e.repeat) { e.preventDefault(); closeTalk(); } return; }
     if (mode === 'slab') {
       const d = /^(Digit|Numpad)([0-9])$/.exec(c);
@@ -2374,7 +2535,7 @@
     $('setMusic').textContent = save.bgmOn !== false ? '🎵 배경음악: 켜짐' : '🎵 배경음악: 꺼짐';
   }
   // 배경음악: 탐험 중에만, 퀴즈·창이 열리면 작게, 중국어 음성이 나올 때는 더 작게, 🔊 끄면 같이 꺼짐
-  const MUSIC_MODES = ['play', 'cut', 'quiz', 'card', 'speak', 'pause', 'lesson', 'help', 'faint', 'talk', 'slab', 'basket'];
+  const MUSIC_MODES = ['play', 'cut', 'quiz', 'card', 'speak', 'pause', 'lesson', 'help', 'faint', 'talk', 'slab', 'basket', 'cake', 'cal', 'bcard'];
   function musicWanted() {
     if (!soundOn || save.bgmOn === false || document.hidden || quick.on || !run || !STAGE || !MUSIC_MODES.includes(mode)) return [null, 1];
     if ((mode === 'lesson' && lessonReturn === 'start') || (mode === 'help' && helpReturn === 'menu')) return [null, 1];
@@ -2426,6 +2587,7 @@
   const APPLE_N = 8, SHAKE_MAX = 6, SHAKE_CD = 0.35;
 
   function newQuest() {
+    if (STAGE.questKit === 'bd') return bdNew();
     const r = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
     let teen2; do { teen2 = r(13, 19); } while (teen2 === 15);
     return {
@@ -2439,7 +2601,7 @@
     };
   }
   const qAct = () => run ? run.ms.findIndex(x => !x.complete) : -1;
-  const qNpc = (i) => NPC_DEF[i];
+  const qNpc = (i) => (STAGE.questKit === 'bd' ? BD_NPC : NPC_DEF)[i];
   // 몇 번째 미션의 들고 다니는 물건 목록
   const qItems = () => { const q = run.q, a = qAct(); return a === 2 ? q.m3.items : a === 3 ? q.m4.items : []; };
 
@@ -2502,6 +2664,7 @@
   // ----- 상호작용 (E·Enter = 큰 버튼, Q = 둘째 버튼) -----
   function questCand() {
     if (!run || !run.q || mode !== 'play') return null;
+    if (STAGE.questKit === 'bd') return bdCand();
     const q = run.q, a = qAct(), px = P.x + P.w / 2, feet = P.y + P.h;
     const near = (x, y, r = 30) => Math.abs(px - x) < r && feet > y - 46 && feet < y + 8;
     const carrying = q.carry >= 0;
@@ -2545,6 +2708,7 @@
 
   // ----- 지금 할 일 (화면 위 짧은 안내 + 화살표). 정답 상자·석판은 가리키지 않아요 -----
   function questGoal() {
+    if (STAGE.questKit === 'bd') return bdGoal();
     const q = run.q, a = qAct();
     const at = (i) => ({ x: qNpc(i).x, y: GY - 40 });
     if (a < 0) return { tip: '🚪 숫자의 문으로 가요 →', mark: { x: GATE_X[3] + 12, y: GY - 120 } };
@@ -2909,6 +3073,7 @@
 
   // ----- 매 프레임: 사과 떨어지기·줍기, 들고 다니기 -----
   function questUpdate(dt) {
+    if (STAGE.questKit === 'bd') return bdUpdate(dt);
     const q = run.q, m = q.m1;
     if (q.shakeT > 0) q.shakeT = Math.max(0, q.shakeT - dt);
     if (q.shakeCd > 0) q.shakeCd = Math.max(0, q.shakeCd - dt);
@@ -2949,6 +3114,9 @@
     }
     if (d.hat === 'cap') { g.fillStyle = '#f08a24'; g.fillRect(sx + 6, sy - 2, 20, 6); g.fillStyle = '#c96a10'; g.fillRect(face > 0 ? sx + 20 : sx + 2, sy + 3, 10, 2); }
     if (d.hat === 'beret') { g.fillStyle = '#3d7bd9'; g.fillRect(sx + 8, sy - 2, 16, 5); g.fillRect(sx + 14, sy - 4, 4, 2); }
+    if (d.hat === 'chef') { g.fillStyle = '#1d2738'; g.fillRect(sx + 8, sy - 12, 16, 14); g.fillStyle = '#fbfaf5'; g.fillRect(sx + 9, sy - 11, 14, 12); g.fillRect(sx + 7, sy - 13, 6, 5); g.fillRect(sx + 19, sy - 13, 6, 5); g.fillStyle = '#d9dde3'; g.fillRect(sx + 9, sy - 1, 14, 2); }
+    if (d.hat === 'beret2') { g.fillStyle = '#3d9a5c'; g.fillRect(sx + 8, sy - 2, 16, 5); g.fillRect(sx + 14, sy - 4, 4, 2); }
+    if (d.hat === 'party') { g.fillStyle = '#1d2738'; g.fillRect(sx + 11, sy - 3, 10, 4); g.fillRect(sx + 13, sy - 8, 6, 5); g.fillRect(sx + 15, sy - 12, 2, 4); g.fillStyle = '#c084fc'; g.fillRect(sx + 12, sy - 2, 8, 2); g.fillStyle = '#f6c445'; g.fillRect(sx + 14, sy - 7, 4, 4); g.fillStyle = '#ff6b8b'; g.fillRect(sx + 14, sy - 14, 4, 3); }
     if (d.hat === 'festival') { g.fillStyle = '#e5484d'; g.fillRect(sx + 9, sy - 6, 14, 8); g.fillStyle = '#f6c445'; g.fillRect(sx + 9, sy, 14, 2); g.fillRect(sx + 15, sy - 9, 2, 3); }
   }
   function drawMarker(x, y) {
@@ -3054,6 +3222,7 @@
     if (run.q.party) for (let k = 0; k < 14; k++) { const x = sx(2900 + ((k * 53 + time * 40) % 380)), y = Math.round((k * 37 + time * 60) % 160) + 40; ctx.fillStyle = ['#ff9fb2', '#f6c445', '#62aefc', '#5cc46a'][k % 4]; ctx.fillRect(x, y, 3, 3); }
   }
   function drawQuest() {
+    if (STAGE.questKit === 'bd') return bdDraw();
     const q = run.q, a = qAct();
     drawTree(); drawAltar(); drawFestival();
     for (const ap of q.m1.apples) if (!ap.got) drawApple(ap);
@@ -3068,10 +3237,11 @@
       else if (i < a || a < 0) drawBubble2(x, GY - 44, '♥', '#ff9fb2');
     });
   }
-  function drawQuestTop() { const it = qItems()[run.q.carry]; if (it) drawItem(it); drawGoalGuide(); }
+  function drawQuestTop() { if (STAGE.questKit === 'bd') return drawGoalGuide(); const it = qItems()[run.q.carry]; if (it) drawItem(it); drawGoalGuide(); }
 
   // 미션 다시 보기 (미션 창의 버튼): 지금 부탁을 다시 보여 줘요 (판정은 하지 않음)
   function questRecall() {
+    if (STAGE.questKit === 'bd') return bdRecall();
     const q = run.q, a = qAct();
     if (a < 0) return;
     closeMissionPanel();
@@ -3091,6 +3261,375 @@
     openTalk(3, `<p class="qprog">축제 준비 ${m.ti + 1} / ${m.tasks.length}</p><div class="zline">${what}</div>`, { hints: ruleHints(t.n, t.type === 'box' ? 'h2a' : 'a2h') });
   }
   $('mpAgain').addEventListener('click', () => { if (mode === 'play' && STAGE.quest && run && run.q) questRecall(); });
+
+  // ================= 6차시 생일파티: 미션형 (5차시 숫자 계곡과 같은 NPC 엔진, 상태·미션은 따로) =================
+  // 핵심: 生日快乐！ / 我的生日是○月○号。 / (듣고 이해) 你的生日是几月几号？  — 숫자 + 月 = ○월, 숫자 + 号 = ○일
+  const BD_DAYS = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];   // 달력에서 고를 수 있는 날 (2월은 29일까지)
+  // 문제로 내는 날짜는 실제로 있는 날만 (2월은 28일까지)
+  const bdValid = (m, d) => Number.isInteger(m) && Number.isInteger(d) && m >= 1 && m <= 12 && d >= 1 && d <= (m === 2 ? 28 : BD_DAYS[m - 1]);
+  function dateZh(m, d) {
+    const a = zhNum(m), b = zhNum(d);
+    return { h: `${a.h}月${b.h}号`, p: `${a.p} yuè ${b.p} hào`, mh: `${a.h}月`, mp: `${a.p} yuè`, dh: `${b.h}号`, dp: `${b.p} hào` };
+  }
+  const bdSent = (m, d) => { const z = dateZh(m, d); return { h: `我的生日是${z.h}。`, p: `Wǒ de shēngrì shì ${z.p}.`, ko: `내 생일은 ${m}월 ${d}일이야.` }; };
+  const zdate = (m, d) => { const z = dateZh(m, d); return `<span class="znum"><span class="han">${z.h}</span><span class="py t0">${z.p}</span></span>`; };
+  const HB = `<span class="znum hb"><span class="han">生日快乐！</span><span class="py t0">Shēngrì kuàilè!</span></span>`;
+
+  const BD_NPC = [
+    { id: 'chef', name: '요리사 판다', x: 230, mission: 0, scarf: '#e8689a', hat: 'chef' },
+    { id: 'calendar', name: '달력 판다', x: 1340, mission: 1, scarf: '#3d9a5c', hat: 'beret2' },
+    { id: 'bdglasses', name: '안경 판다', x: 2070, mission: 2, scarf: '#e5484d', glasses: true },
+    { id: 'kid', name: '꼬마 판다', x: 3180, mission: 3, scarf: '#f6c445', hat: 'party' },
+  ];
+  const BD_CAKE_X = 760, BD_BOARD_X = 1600, BD_DESK_X = 2380, BD_TABLE_X = 2880;
+  const BD_CANDLES = [{ x: 330, y: 236 }, { x: 382, y: 236 }, { x: 480, y: GY }, { x: 540, y: GY }, { x: 600, y: GY }, { x: 920, y: 236 }, { x: 985, y: 236 }, { x: 1090, y: GY }];
+
+  function bdNew() {
+    const r = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+    const km = r(1, 12), kd = r(1, 10);                       // 꼬마 판다 생일: 날짜는 한 자리·十까지 (쉽게)
+    let fm; do { fm = r(1, 12); } while (fm === km);
+    const fd = r(11, fm === 2 ? 28 : BD_DAYS[fm - 1]);          // 요리사 판다 생일: 두 자리 날짜 (실제로 있는 날만)
+    return {
+      m1: { acc: false, cand: BD_CANDLES.map(s => ({ ...s, got: false })), pocket: 0, onCake: 0 },
+      m2: { acc: false, qi: 0, asked: -1, qs: [{ m: km, d: kd, who: '꼬마 판다' }, { m: fm, d: fd, who: '요리사 판다' }] },
+      m3: { acc: false, done: false },
+      m4: { placed: false, cheered: false },
+      party: false, final: false, partyT: 0, task: null, carry: -1,
+    };
+  }
+  const bdKid = () => run.q.m2.qs[0];
+
+  // ----- 상호작용 -----
+  function bdCand() {
+    if (!run || !run.q || mode !== 'play') return null;
+    const q = run.q, a = qAct(), px = P.x + P.w / 2, feet = P.y + P.h;
+    const near = (x, r = 34) => Math.abs(px - x) < r && feet > GY - 46;
+    for (const d of BD_NPC) { const x = bdNpcX(d); if (near(x, 34)) return { label: '💬 말 걸기', act: () => bdTalk(d) }; }
+    if (a === 0 && q.m1.acc && near(BD_CAKE_X, 40)) return { label: '🎂 케이크에 초 꽂기', act: openCake };
+    if (a === 1 && q.m2.acc && q.m2.asked === q.m2.qi && q.m2.qi < 2 && near(BD_BOARD_X, 44)) return { label: '📅 달력 보기', act: openCal };
+    if (a === 2 && q.m3.acc && !q.m3.done && near(BD_DESK_X, 40)) return { label: '💌 생일카드 만들기', act: () => openBCard(false) };
+    if (a === 3 && !q.m4.placed && near(BD_TABLE_X, 44)) return { label: '🎂 케이크·카드 놓기', act: bdPlace };
+    return null;
+  }
+  const bdNpcX = (d) => run.q.party && d.id !== 'kid' ? 3000 + BD_NPC.indexOf(d) * 40 : d.x;   // 파티가 시작되면 친구들이 광장으로
+  function bdGoal() {
+    const q = run.q, a = qAct(), at = (i) => ({ x: bdNpcX(BD_NPC[i]), y: GY - 44 });
+    if (a < 0) return { tip: '🚪 파티의 문으로 가요 →', mark: { x: GATE_X[3] + 12, y: GY - 120 } };
+    if (a === 0) {
+      const m = q.m1;
+      if (!m.acc) return { tip: '💬 요리사 판다에게 말을 걸어요', mark: at(0) };
+      return { tip: `🕯 초를 모아 케이크에 꽂아요 (주머니 ${m.pocket}개 · 케이크 ${m.onCake}개)`, mark: { x: BD_CAKE_X, y: GY - 74 } };
+    }
+    if (a === 1) {
+      const m = q.m2;
+      if (!m.acc || m.asked !== m.qi) return { tip: '💬 달력 판다에게 말을 걸어요', mark: at(1) };
+      return { tip: `📅 달력에서 ${dateZh(m.qs[m.qi].m, m.qs[m.qi].d).h} 찾기 (${m.qi + 1}/2)`, mark: { x: BD_BOARD_X, y: GY - 92 } };
+    }
+    if (a === 2) {
+      if (!q.m3.acc) return { tip: '💬 안경 판다에게 말을 걸어요', mark: at(2) };
+      return { tip: '💌 카드 책상에서 꼬마 판다 생일카드를 만들어요', mark: { x: BD_DESK_X, y: GY - 70 } };
+    }
+    if (!q.m4.placed) return { tip: '🎂 파티 테이블에 케이크와 카드를 놓아요', mark: { x: BD_TABLE_X, y: GY - 70 } };
+    return { tip: '💬 꼬마 판다에게 생일 축하 인사를 해요', mark: at(3) };
+  }
+
+  // ----- 힌트 -----
+  const H_CANDLE = ['一 yī · 二 èr · 三 sān · 四 sì · 五 wǔ, 손가락을 펴며 세어 봐요.', '五는 5예요.', '정답: 초 5개를 꽂아요.'];
+  function numMeaning(n) {   // 예: 二十五 = 二(2) 十 五(5) → 25
+    const z = zhNum(n);
+    if (n <= 10) return `${z.h}${pp(z.h, '은/는')} ${n}`;
+    return `${z.h} = ${z.toks.map(k => k === 10 ? '十' : `${ZH_D[k]}(${k})`).join(' ')} → ${n}`;
+  }
+  const calHints = (m, d) => ['숫자 뒤에 月가 붙으면 몇 월, 号가 붙으면 며칠이에요.', `${numMeaning(m)}, ${numMeaning(d)}이에요.`.replace(/(\d)이에요\.$/, (s, x) => `${x}${pp(x, '이에요/예요')}.`), `정답: ${m}월 ${d}일`];
+  const cardHints = (m, d) => ['月 앞에는 몇 월인지, 号 앞에는 며칠인지 숫자를 넣어요.', `${m}월은 ${dateZh(m, d).mh} ${dateZh(m, d).mp}, ${d}일은 ${dateZh(m, d).dh} ${dateZh(m, d).dp}예요.`, `정답: ${bdSent(m, d).h}`];
+
+  // ----- NPC 대화 -----
+  function bdTalk(d) {
+    const q = run.q, a = qAct(), i = d.mission;
+    if (q.final || a < 0) { openTalk(i, `<div class="zline">${HB}</div><p>생일파티 성공! 파티의 문으로 가 봐 →</p>`, { ok: '네!' }); return; }
+    if (i < a) { openTalk(i, '<p>고마워! 다음 구역 친구를 도와줘 →</p>', { ok: '네!' }); return; }
+    if (i > a) { openTalk(i, '<p>앞 구역 친구의 부탁을 먼저 들어줘!</p>', { ok: '네!' }); return; }
+    if (i === 0) {
+      const m = q.m1;
+      if (!m.acc) {
+        taskBegin('b1', '케이크: 초 五 개 꽂기', '5개');
+        openTalk(0, `<p>꼬마 판다 생일 케이크를 만들고 있어!</p><div class="zline">케이크에 초 ${znum(5)} 개를 꽂아 줘!</div><p class="qprog">주변의 초를 모아서 케이크에 꽂아요.</p>`,
+          { ok: '좋아요!', hints: H_CANDLE, onOk: () => { m.acc = true; toast('🕯 초를 모아 케이크로 가요 →', 2200, true); } });
+        return;
+      }
+      openTalk(0, `<div class="zline">케이크에 초 ${znum(5)} 개를 꽂아 줘!</div><p class="qprog">주머니 ${m.pocket}개 · 케이크 ${m.onCake}개</p>`, { ok: '알겠어요!', hints: H_CANDLE });
+      return;
+    }
+    if (i === 1) {
+      const m = q.m2;
+      if (m.qi >= 2) { openTalk(1, '<p>둘 다 찾았어! 고마워!</p>', { ok: '알겠어요!', onOk: () => questDone(1) }); return; }
+      if (!m.acc) { m.acc = true; bdAsk('<p>달력에서 친구들 생일을 같이 찾아 줄래?</p>'); return; }
+      bdAsk('<p>다시 알려 줄게!</p>');
+      return;
+    }
+    if (i === 2) {
+      const m = q.m3, k = bdKid();
+      taskBegin('b3', `생일카드: ${k.m}월 ${k.d}일`, bdSent(k.m, k.d).h);
+      openTalk(2, `<p>꼬마 판다 생일카드를 만들고 있는데, 날짜를 못 적었어!</p><p>꼬마 판다 생일은 <b>${k.m}월 ${k.d}일</b>이야. (달력에서 찾았지?)</p><div class="zline"><span class="znum"><span class="han">我的生日是○月○号。</span></span></div>`,
+        { ok: '카드를 만들게요!', hints: cardHints(k.m, k.d), onOk: () => { m.acc = true; toast('💌 카드 책상으로 가요 →', 2000, true); } });
+      return;
+    }
+    const m = q.m4;
+    if (!m.placed) { openTalk(3, '<p>오늘 내 생일이야! 파티 테이블에 케이크랑 카드를 놓아 줄래?</p>', { ok: '네!' }); return; }
+    if (!m.cheered) {
+      openTalk(3, `<p>친구들이 다 모였어! 다 같이 말해 볼까?</p><div class="zline big">${HB}</div><p>생일 축하해! 화면을 보고 <b>큰 소리로</b> 말해 봐요.</p>`,
+        { ok: '🎉 생일 축하했어요!', onOk: () => { m.cheered = true; bdReview(); } });
+      return;
+    }
+    bdReview();
+  }
+  function bdAsk(head) {
+    const m = run.q.m2, t = m.qs[m.qi];
+    m.asked = m.qi;
+    taskBegin('b2' + m.qi, `달력: ${dateZh(t.m, t.d).h} 찾기`, `${t.m}월 ${t.d}일`);
+    openTalk(1, `${head}<p>${t.who}의 생일은</p><div class="zline">${zdate(t.m, t.d)} 이야!</div><p>달력에서 찾아 줄래? (${m.qi + 1}/2)</p>`, { ok: '달력에서 찾을게요!', hints: calHints(t.m, t.d) });
+  }
+  // 마지막 복습: 生日快乐！의 뜻 고르기 (보기 모양은 모두 같아요)
+  function bdReview() {
+    taskBegin('b4', '복습: 生日快乐！의 뜻', '생일 축하해!');
+    const opts = shuffle(['생일 축하해!', '고마워!', '잘 가!']);
+    openTalk(3, `<p>꼬마 판다가 물어요.</p><div class="zline">${HB} 는 무슨 뜻일까?</div><div class="bopts">${opts.map(o => `<button class="bopt" data-o="${o}">${o}</button>`).join('')}</div><div class="bd-msg" id="bdRevMsg"></div>`, { ok: '나중에 할게요' });
+    $('talkBody').querySelectorAll('.bopt').forEach(b => b.addEventListener('click', () => {
+      if (tooSoon() || mode !== 'talk') return;
+      if (b.dataset.o === '생일 축하해!') { taskEnd(); SFX.correct(); bdFinal(); return; }
+      taskMiss(); SFX.wrong(); $('bdRevMsg').textContent = `‘${b.dataset.o}’는 다른 표현이에요. 다시 골라 봐요!`;
+    }));
+  }
+  function bdFinal() {
+    const q = run.q; q.final = true; q.partyT = 0;
+    for (let k = 0; k < 6; k++) burst(BD_TABLE_X + rnd(-80, 260), GY - rnd(60, 140), ['#ff9fb2', '#f6c445', '#62aefc', '#5cc46a', '#ffffff'], 18, 220);
+    openTalk(3, `<div class="zline big">${HB}</div><p>생일파티 성공! 다들 정말 고마워!</p>`, { ok: '야호! 🎉', onOk: () => questDone(3) });
+  }
+  function bdPlace() {
+    const q = run.q; q.m4.placed = true; q.party = true; q.partyT = 0;
+    SFX.gate(); burst(BD_TABLE_X, GY - 50, ['#fff0a8', '#ff9fb2', '#ffffff'], 18, 200);
+    toast('🎂 케이크와 💌 카드를 놓았어요! 친구들이 모여요', 2400, true);
+  }
+
+  // ----- 미션 1: 케이크에 초 꽂기 (창에서 하나씩 꽂고 빼고, 직접 판단해서 [완성했어요!]) -----
+  function openCake() {
+    mode = 'cake'; releaseAll(); closeMissionPanel(); uiOpenT = performance.now();
+    $('ckAsk').innerHTML = `<div class="zline" style="justify-content:center">요리사 판다의 부탁: 초 ${znum(5)} 개</div>`;
+    $('ckMsg').className = 'bd-msg'; $('ckMsg').textContent = ''; $('ckHintBox').innerHTML = ''; run.q.ckHint = 0;
+    cakeDraw();
+    $('cake').hidden = false; $('cake').scrollTop = 0; $('ckDone').focus({ preventScroll: true });
+  }
+  function cakeDraw() {
+    const m = run.q.m1, c = $('ckCanvas'), g = c.getContext('2d');
+    g.clearRect(0, 0, c.width, c.height); drawCakeAt(g, 48, 60, m.onCake, 1);
+    $('ckCount').innerHTML = `케이크 🕯 <b>${m.onCake}</b>개 · 주머니 <b>${m.pocket}</b>개`;
+    $('ckAdd').disabled = !m.pocket; $('ckDel').disabled = !m.onCake;
+  }
+  function cakeAdd() { const m = run.q.m1; if (mode !== 'cake' || !m.pocket) return; m.pocket--; m.onCake++; SFX.pop(); $('ckMsg').textContent = ''; cakeDraw(); }
+  function cakeDel() { const m = run.q.m1; if (mode !== 'cake' || !m.onCake) return; m.onCake--; m.pocket++; SFX.pop(); $('ckMsg').textContent = ''; cakeDraw(); }
+  function cakeHint() { const q = run.q; if (q.ckHint >= H_CANDLE.length) return; taskHint(); $('ckHintBox').insertAdjacentHTML('beforeend', `<div>💡 ${H_CANDLE[q.ckHint++]}</div>`); }
+  function cakeDone() {
+    const m = run.q.m1; if (mode !== 'cake') return;
+    if (m.onCake === 5) {
+      taskEnd(); SFX.correct(); closeCake();
+      openTalk(0, `<p>와! 초 ${znum(5)} 개, 딱 맞아! 케이크 완성!</p><div class="zline big">${HB}</div><p>생일 축하해! 같이 <b>큰 소리로</b> 따라 말해 봐요.</p>`, { ok: '生日快乐！ 따라 말했어요', onOk: () => questDone(0) });
+      return;
+    }
+    taskMiss(); SFX.wrong();
+    $('ckMsg').className = 'bd-msg no';
+    $('ckMsg').innerHTML = m.onCake < 5 ? `초가 <b>${m.onCake}개</b>예요. ${m.pocket ? '조금 더 꽂아 볼까요?' : '초를 더 모아 와요!'}` : `초가 <b>${m.onCake}개</b>, 너무 많아요! ↩ 하나 빼기로 빼 봐요.`;
+  }
+  function closeCake() { if (mode !== 'cake') return; $('cake').hidden = true; mode = 'play'; focusStage(); updateMissionPanel(); }
+  onTap('ckAdd', cakeAdd); onTap('ckDel', cakeDel); onTap('ckDone', cakeDone); onTap('ckClose', closeCake); onTap('ckHint', cakeHint);
+
+  // ----- 미션 2: 달력 (1단계 월 → 2단계 일 → [확인]해야 정답 여부가 보여요) -----
+  let cal = null;
+  function openCal() {
+    const m = run.q.m2, t = m.qs[m.qi];
+    mode = 'cal'; releaseAll(); closeMissionPanel(); uiOpenT = performance.now();
+    cal = { t, m: 0, d: 0, hint: 0 };
+    $('calProg').textContent = `(${m.qi + 1}/2)`;
+    $('calAsk').innerHTML = `<div class="zline" style="justify-content:center">${t.who} 생일: ${zdate(t.m, t.d)}</div>`;
+    $('calMsg').className = 'bd-msg'; $('calMsg').textContent = ''; $('calHintBox').innerHTML = '';
+    calStep();
+    $('cal').hidden = false; $('cal').scrollTop = 0; $('cal').querySelector('.card').focus({ preventScroll: true });
+  }
+  function calStep() {
+    const months = !cal.m;
+    $('calStepTxt').textContent = months ? '1단계: 몇 월일까요?' : `2단계: ${cal.m}월 며칠일까요?`;
+    $('calBack').hidden = months;
+    $('calGrid').className = 'cal-grid ' + (months ? 'months' : 'days');
+    $('calGrid').innerHTML = months
+      ? Array.from({ length: 12 }, (_, i) => `<button class="calb" data-m="${i + 1}">${i + 1}월</button>`).join('')
+      : Array.from({ length: BD_DAYS[cal.m - 1] }, (_, i) => `<button class="calb${cal.d === i + 1 ? ' sel' : ''}" data-d="${i + 1}" aria-pressed="${cal.d === i + 1}">${i + 1}</button>`).join('');
+    $('calGrid').querySelectorAll('.calb').forEach(b => b.addEventListener('click', () => {
+      if (tooSoon() || mode !== 'cal') return;
+      if (b.dataset.m) { cal.m = +b.dataset.m; cal.d = 0; SFX.pop(); calStep(); }
+      else { cal.d = +b.dataset.d; SFX.pop(); calStep(); }
+    }));
+    $('calOk').disabled = !(cal.m && cal.d);
+  }
+  function calBack() { if (mode !== 'cal') return; cal.m = 0; cal.d = 0; calStep(); }
+  function calHint() { if (!cal) return; const h = calHints(cal.t.m, cal.t.d); if (cal.hint >= h.length) return; taskHint(); $('calHintBox').insertAdjacentHTML('beforeend', `<div>💡 ${h[cal.hint++]}</div>`); }
+  function calOk() {
+    if (mode !== 'cal' || !cal.m || !cal.d) return;
+    const q = run.q, m = q.m2, t = cal.t, z = dateZh(cal.m, cal.d);
+    if (cal.m === t.m && cal.d === t.d) {
+      taskEnd(); SFX.correct();
+      $('calMsg').className = 'bd-msg ok'; $('calMsg').innerHTML = `✔ ${zdate(t.m, t.d)} = ${t.m}월 ${t.d}일! 달력에 🎂 표시했어요.`;
+      $('calGrid').querySelectorAll('.calb').forEach(b => { b.disabled = true; if (+b.dataset.d === t.d) b.textContent = '🎂'; });
+      $('calOk').disabled = true;
+      m.qi++;
+      setTimeout(() => {
+        closeCal();
+        if (m.qi < 2) bdAsk(`<p>찾았다! ${bdKid().who} 생일은 ${bdKid().m}월 ${bdKid().d}일!</p><p>하나 더 찾아 줄래?</p>`);
+        else openTalk(1, `<p>둘 다 찾았어! 고마워!</p><div class="zline">숫자 + <span class="znum"><span class="han">月</span><span class="py t0">yuè</span></span> = ○월</div><div class="zline">숫자 + <span class="znum"><span class="han">号</span><span class="py t0">hào</span></span> = ○일</div>`, { ok: '알겠어요!', onOk: () => questDone(1) });
+      }, 1500);
+      return;
+    }
+    taskMiss(); SFX.wrong();
+    const monthOk = cal.m === t.m;
+    $('calMsg').className = 'bd-msg no';
+    $('calMsg').innerHTML = `고른 날: ${cal.m}월 ${cal.d}일 (<span class="han">${z.h}</span>). ${monthOk ? '월은 맞았어요! 날짜를 다시 골라 봐요.' : '월부터 다시 골라 봐요.'}`;
+    if (monthOk) { cal.d = 0; calStep(); } else { cal.m = 0; cal.d = 0; calStep(); }
+  }
+  function closeCal() { if (mode !== 'cal') return; $('cal').hidden = true; cal = null; mode = 'play'; focusStage(); updateMissionPanel(); }
+  onTap('calOk', calOk); onTap('calBack', calBack); onTap('calHint', calHint); onTap('calClose', closeCal);
+
+  // ----- 미션 3: 생일카드 만들기 (월·일 버튼 → 한자·병음 문장이 바로 만들어져요) -----
+  // free = 보너스: 내 생일로 만들어 보기 (선택, 저장·전송하지 않아요)
+  let bc = null;
+  const BC_DECO = [{ bg: '#ffe3ee', st: '🎈', name: '풍선' }, { bg: '#fff4c4', st: '⭐', name: '별' }, { bg: '#dff5e1', st: '🌸', name: '꽃' }];
+  function openBCard(free) {
+    mode = 'bcard'; releaseAll(); closeMissionPanel(); uiOpenT = performance.now();
+    bc = { free, m: 0, d: 0, deco: 0, hint: 0 };
+    const k = bdKid();
+    $('bcHead').textContent = free ? '🎁 내 생일카드 (해 보고 싶은 사람만)' : '💌 꼬마 판다 생일카드 만들기';
+    $('bcAsk').innerHTML = free
+      ? `<div class="zline" style="justify-content:center"><span class="znum"><span class="han">你的生日是几月几号？</span><span class="py t0">Nǐ de shēngrì shì jǐ yuè jǐ hào?</span></span></div><p class="qprog">네 생일은 몇 월 며칠이야? (안 골라도 돼요. 어디에도 저장·전송하지 않아요)</p>`
+      : `<p>꼬마 판다 생일: <b>${k.m}월 ${k.d}일</b></p>`;
+    $('bcMonths').innerHTML = Array.from({ length: 12 }, (_, i) => { const z = zhNum(i + 1); return `<button class="bcm" data-m="${i + 1}"><span class="han">${z.h}月</span><span class="py t0">${z.p} yuè</span></button>`; }).join('');
+    $('bcMonths').querySelectorAll('.bcm').forEach(b => b.addEventListener('click', () => { if (tooSoon() || mode !== 'bcard') return; bc.m = +b.dataset.m; if (bc.d > BD_DAYS[bc.m - 1]) bc.d = 0; SFX.pop(); bcDraw(); }));
+    $('bcDeco').innerHTML = BC_DECO.map((x, i) => `<button class="bcdeco" data-i="${i}" style="background:${x.bg}">${x.st} ${x.name}</button>`).join('');
+    $('bcDeco').querySelectorAll('.bcdeco').forEach(b => b.addEventListener('click', () => { if (tooSoon() || mode !== 'bcard') return; bc.deco = +b.dataset.i; bcDraw(); }));
+    $('bcOk').textContent = free ? '다 만들었어요!' : '💌 생일카드 완성!';
+    $('bcHint').hidden = free;
+    $('bcMsg').className = 'bd-msg'; $('bcMsg').textContent = ''; $('bcHintBox').innerHTML = '';
+    bcDraw();
+    $('bcard').hidden = false; $('bcard').scrollTop = 0; $('bcard').querySelector('.card').focus({ preventScroll: true });
+  }
+  function bcDraw() {
+    const days = bc.m ? BD_DAYS[bc.m - 1] : 31, dc = BC_DECO[bc.deco];
+    $('bcDays').innerHTML = Array.from({ length: days }, (_, i) => `<button class="bcd${bc.d === i + 1 ? ' sel' : ''}" data-d="${i + 1}" aria-pressed="${bc.d === i + 1}">${i + 1}</button>`).join('');
+    $('bcDays').querySelectorAll('.bcd').forEach(b => b.addEventListener('click', () => { if (tooSoon() || mode !== 'bcard') return; bc.d = +b.dataset.d; SFX.pop(); bcDraw(); }));
+    $('bcMonths').querySelectorAll('.bcm').forEach(b => { const on = +b.dataset.m === bc.m; b.classList.toggle('sel', on); b.setAttribute('aria-pressed', String(on)); });
+    $('bcDeco').querySelectorAll('.bcdeco').forEach(b => b.classList.toggle('sel', +b.dataset.i === bc.deco));
+    const z = bc.m && bc.d ? dateZh(bc.m, bc.d) : null, zm = bc.m ? zhNum(bc.m) : null, zd = bc.d ? zhNum(bc.d) : null;
+    $('bcPrev').style.background = dc.bg;
+    $('bcPrev').innerHTML = `<span class="bcst a">${dc.st}</span><span class="bcst b">${dc.st}</span>
+      <div class="bc-han">我的生日是<span class="bc-slot">${zm ? zm.h : '○'}月</span><span class="bc-slot">${zd ? zd.h : '○'}号</span>。</div>
+      <div class="bc-py">Wǒ de shēngrì shì <b>${zm ? zm.p : '○'} yuè</b> <b>${zd ? zd.p : '○'} hào</b>.</div>
+      <div class="bc-ko">내 생일은 ${bc.m || '○'}월 ${bc.d || '○'}일이야.</div>`;
+    $('bcOk').disabled = !(bc.m && bc.d);
+    void z;
+  }
+  function bcHint() { if (!bc || bc.free) return; const k = bdKid(), h = cardHints(k.m, k.d); if (bc.hint >= h.length) return; taskHint(); $('bcHintBox').insertAdjacentHTML('beforeend', `<div>💡 ${h[bc.hint++]}</div>`); }
+  function bcOk() {
+    if (mode !== 'bcard' || !bc.m || !bc.d) return;
+    if (bc.free) { const s = bdSent(bc.m, bc.d); closeBCard(); openTalk(2, `<p>멋진 카드야!</p><div class="zline"><span class="znum"><span class="han">${s.h}</span><span class="py t0">${s.p}</span></span></div><p>${s.ko} 큰 소리로 말해 봐요!</p>`, { ok: '말했어요!' }); return; }
+    const k = bdKid();
+    if (bc.m === k.m && bc.d === k.d) {
+      taskEnd(); SFX.correct(); run.q.m3.done = true;
+      const s = bdSent(k.m, k.d); closeBCard();
+      openTalk(2, `<p>멋진 생일카드 완성! 같이 읽어 볼까?</p><div class="zline"><span class="znum"><span class="han">${s.h}</span><span class="py t0">${s.p}</span></span></div><p>${s.ko}</p>`,
+        { ok: '다음으로 가요!', onOk: () => questDone(2), alt: { label: '🎁 내 생일로도 만들어 볼래요 (선택)', fn: () => { bdBonusLater = true; questDone(2); } } });
+      return;
+    }
+    taskMiss(); SFX.wrong();
+    $('bcMsg').className = 'bd-msg no';
+    $('bcMsg').innerHTML = `카드에 쓴 날은 ${bc.m}월 ${bc.d}일이에요. 꼬마 판다 생일(<b>${k.m}월 ${k.d}일</b>)과 ${bc.m !== k.m ? '월이' : '날짜가'} 달라요. 다시 골라 봐요!`;
+  }
+  let bdBonusLater = false;   // 카드 화면(카드 획득)이 먼저 뜨면, 닫힌 뒤에 보너스 카드 만들기를 열어요
+  function closeBCard() { if (mode !== 'bcard') return; $('bcard').hidden = true; bc = null; mode = 'play'; focusStage(); updateMissionPanel(); }
+  onTap('bcOk', bcOk); onTap('bcHint', bcHint); onTap('bcClose', closeBCard);
+
+  // ----- 매 프레임: 초 줍기 -----
+  function bdUpdate(dt) {
+    const q = run.q, m = q.m1;
+    if (q.party) q.partyT += dt;
+    if (bdBonusLater && mode === 'play') { bdBonusLater = false; openBCard(true); }
+    if (qAct() !== 0 || !m.acc) return;
+    const px = P.x + P.w / 2, feet = P.y + P.h;
+    for (const c of m.cand) {
+      if (c.got) continue;
+      if (Math.abs(px - c.x) < 12 && feet > c.y - 16 && feet < c.y + 6) { c.got = true; m.pocket++; SFX.coin(); floatText(c.x, c.y - 30, `🕯 ${m.pocket}개`, '#fff0a8'); }
+    }
+  }
+
+  // ----- 그리기 -----
+  // 케이크 (g: 캔버스, cx: 가운데, by: 바닥, n: 초 개수, s: 배율)
+  function drawCakeAt(g, cx, by, n, s = 1) {
+    const R = (x, y, w, h, c) => { g.fillStyle = c; g.fillRect(Math.round(cx + x * s), Math.round(by + y * s), Math.ceil(w * s), Math.ceil(h * s)); };
+    R(-22, -16, 44, 16, '#7a3a52'); R(-21, -15, 42, 14, '#ff9fb2'); R(-21, -15, 42, 3, '#fff6f8'); for (let k = -18; k < 20; k += 8) R(k, -12, 3, 3, '#fff6f8');
+    R(-15, -27, 30, 11, '#7a3a52'); R(-14, -26, 28, 10, '#fbfaf5'); R(-14, -26, 28, 2, '#ffd6e0'); R(-10, -21, 3, 3, '#e5484d'); R(7, -21, 3, 3, '#e5484d');
+    const sp = n > 1 ? Math.min(6, 24 / (n - 1)) : 0;
+    for (let k = 0; k < n; k++) {
+      const x = -1 - ((n - 1) * sp) / 2 + k * sp;
+      R(x, -35, 2, 8, ['#62aefc', '#5cc46a', '#f6c445', '#c084fc'][k % 4]);
+      R(x - 0.5, -39, 3, 3, Math.sin(time * 12 + k) > 0 ? '#ffd43b' : '#ff922b');
+    }
+  }
+  function bdDrawObjects() {
+    const q = run.q, sx = (x) => Math.round(x - cam), vis = (x) => x - cam > -80 && x - cam < W + 80;
+    // 케이크 가게 테이블
+    if (vis(BD_CAKE_X)) { const x = sx(BD_CAKE_X); ctx.fillStyle = '#5a3a22'; ctx.fillRect(x - 32, GY - 22, 64, 6); ctx.fillRect(x - 28, GY - 16, 4, 16); ctx.fillRect(x + 24, GY - 16, 4, 16); if (qAct() === 0 || qAct() < 0 || qAct() > 0 && !q.m4.placed) drawCakeAt(ctx, x, GY - 22, q.m1.onCake, 1); }
+    // 초
+    if (qAct() === 0 && q.m1.acc) for (const c of q.m1.cand) if (!c.got && vis(c.x)) { const x = sx(c.x); ctx.fillStyle = '#2b2838'; ctx.fillRect(x - 2, c.y - 13, 5, 13); ctx.fillStyle = '#62aefc'; ctx.fillRect(x - 1, c.y - 12, 3, 12); ctx.fillStyle = Math.sin(time * 10 + c.x) > 0 ? '#ffd43b' : '#ff922b'; ctx.fillRect(x - 1, c.y - 17, 3, 4); }
+    // 달력 판
+    if (vis(BD_BOARD_X)) {
+      const x = sx(BD_BOARD_X), y = GY - 84;
+      ctx.fillStyle = '#5a3a22'; ctx.fillRect(x - 3, y + 50, 6, 34);
+      ctx.fillStyle = '#1d2738'; ctx.fillRect(x - 38, y - 2, 76, 56); ctx.fillStyle = '#fbfaf5'; ctx.fillRect(x - 36, y, 72, 52); ctx.fillStyle = '#e5484d'; ctx.fillRect(x - 36, y, 72, 11);
+      ctx.fillStyle = '#fbfaf5'; ctx.font = 'bold 9px "Noto Sans SC", sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('月 · 号', x, y + 6);
+      ctx.fillStyle = '#c9d3dc'; for (let r = 0; r < 4; r++) for (let k = 0; k < 7; k++) ctx.fillRect(x - 33 + k * 10, y + 15 + r * 9, 7, 6);
+      for (let f = 0; f < Math.min(2, q.m2.qi); f++) { ctx.fillStyle = '#ff9fb2'; ctx.fillRect(x - 23 + f * 30, y + 24 + f * 9, 9, 7); ctx.fillStyle = '#e5484d'; ctx.fillRect(x - 20 + f * 30, y + 22 + f * 9, 2, 3); }
+    }
+    // 카드 공방 책상
+    if (vis(BD_DESK_X)) { const x = sx(BD_DESK_X); ctx.fillStyle = '#5a3a22'; ctx.fillRect(x - 30, GY - 22, 60, 6); ctx.fillRect(x - 26, GY - 16, 4, 16); ctx.fillRect(x + 22, GY - 16, 4, 16); if (!q.m3.done) { ctx.fillStyle = '#ffe3ee'; ctx.fillRect(x - 14, GY - 34, 24, 12); ctx.fillStyle = '#e5484d'; ctx.fillRect(x - 6, GY - 30, 6, 5); ctx.fillStyle = '#f6c445'; ctx.fillRect(x + 12, GY - 34, 3, 12); } }
+    // 파티 테이블 (케이크·카드를 놓으면 보여요)
+    if (vis(BD_TABLE_X)) {
+      const x = sx(BD_TABLE_X); ctx.fillStyle = '#e5484d'; ctx.fillRect(x - 40, GY - 24, 80, 8); ctx.fillStyle = '#fbfaf5'; for (let k = -38; k < 40; k += 8) ctx.fillRect(x + k, GY - 18, 4, 4);
+      ctx.fillStyle = '#5a3a22'; ctx.fillRect(x - 34, GY - 16, 4, 16); ctx.fillRect(x + 30, GY - 16, 4, 16);
+      if (q.m4.placed) { drawCakeAt(ctx, x - 12, GY - 24, 5, 1); ctx.fillStyle = '#1d2738'; ctx.fillRect(x + 17, GY - 40, 18, 16); ctx.fillStyle = '#ffe3ee'; ctx.fillRect(x + 18, GY - 39, 16, 14); ctx.fillStyle = '#e5484d'; ctx.fillRect(x + 23, GY - 35, 6, 5); }
+    }
+    // 마지막: 풍선과 색종이
+    if (q.final) {
+      for (let k = 0; k < 7; k++) { const bx = sx(2820 + k * 55), by = GY - 120 - ((q.partyT * 30 + k * 23) % 60); if (bx < -20 || bx > W + 20) continue; ctx.fillStyle = '#5a6577'; ctx.fillRect(bx, by + 14, 1, 26); ctx.fillStyle = ['#ff6b8b', '#f6c445', '#62aefc', '#5cc46a', '#c084fc'][k % 5]; ctx.fillRect(bx - 6, by, 13, 15); ctx.fillRect(bx - 4, by - 2, 9, 19); }
+      for (let k = 0; k < 24; k++) { const x = sx(2760 + ((k * 61 + q.partyT * 40) % 520)), y = Math.round((k * 37 + q.partyT * 70) % 200) + 30; ctx.fillStyle = ['#ff9fb2', '#f6c445', '#62aefc', '#5cc46a'][k % 4]; ctx.fillRect(x, y, 3, 3); }
+    }
+  }
+  function bdDraw() {
+    const q = run.q, a = qAct(), px = P.x + P.w / 2;
+    bdDrawObjects();
+    BD_NPC.forEach((d, i) => {
+      const x = bdNpcX(d), hop = q.final ? Math.max(0, Math.sin(q.partyT * 6 + i)) * -6 : 0;
+      drawNpc(d, x, GY + hop, px >= x ? 1 : -1);
+      if (d.id === 'bdglasses' && q.m3.done) { const cx = Math.round(x - cam); ctx.fillStyle = '#1d2738'; ctx.fillRect(cx + 8, GY - 30, 16, 14); ctx.fillStyle = '#ffe3ee'; ctx.fillRect(cx + 9, GY - 29, 14, 12); ctx.fillStyle = '#e5484d'; ctx.fillRect(cx + 13, GY - 26, 6, 5); }   // 완성한 생일카드를 들고 있어요
+      if (i === a && mode === 'play') drawBubble2(x, GY - (d.small ? 40 : 44) + Math.sin(time * 4) * 2, '!');
+      else if (i < a || a < 0) drawBubble2(x, GY - (d.small ? 40 : 44), '♥', '#ff9fb2');
+    });
+  }
+  function bdRecall() {
+    const q = run.q, a = qAct();
+    if (a < 0) return;
+    closeMissionPanel();
+    const d = BD_NPC[a];
+    const notYet = () => openTalk(a, `<p>아직 ${d.name}의 부탁을 듣지 않았어요.</p><p>노란 ▼ 표시를 따라가서 말을 걸어 봐요!</p>`, { ok: '알겠어요!' });
+    if (a === 0) { if (!q.m1.acc) return notYet(); openTalk(0, `<div class="zline">케이크에 초 ${znum(5)} 개를 꽂아 줘!</div><p class="qprog">주머니 ${q.m1.pocket}개 · 케이크 ${q.m1.onCake}개</p>`, { hints: H_CANDLE }); return; }
+    if (a === 1) { if (!q.m2.acc) return notYet(); const t = q.m2.qs[q.m2.qi]; openTalk(1, `<p>${t.who}의 생일을 달력에서 찾아 줘! (${q.m2.qi + 1}/2)</p><div class="zline">${zdate(t.m, t.d)}</div>`, { hints: calHints(t.m, t.d) }); return; }
+    if (a === 2) { if (!q.m3.acc) return notYet(); const k = bdKid(); openTalk(2, `<p>꼬마 판다 생일카드: <b>${k.m}월 ${k.d}일</b></p><div class="zline"><span class="znum"><span class="han">我的生日是○月○号。</span></span></div>`, { hints: cardHints(k.m, k.d) }); return; }
+    openTalk(3, q.m4.placed ? `<p>꼬마 판다에게 생일 축하 인사를 해 줘!</p><div class="zline">${HB}</div>` : '<p>파티 테이블에 케이크와 카드를 놓아 줘!</p>', { ok: '알겠어요!' });
+  }
 
 
   // ================= 업데이트 =================
@@ -3199,7 +3738,7 @@
   function gateBlocked(gt) {
     if (time - lastGateMsg < 2.5 || !run) return;
     lastGateMsg = time;
-    if (STAGE.quest) { const d = NPC_DEF[gt.mission]; toast(`먼저 ${d.name}의 부탁을 해결해요!`, 2400, true); return; }
+    if (STAGE.quest) { const d = qNpc(gt.mission); toast(`먼저 ${d.name}의 부탁을 해결해요!`, 2400, true); return; }
     const s = run.ms[gt.mission], left = s.need - s.done;
     const bossName = (monsters.find(m => m.type === 'boss') || {}).name || '보스';
     const mid = monsters.find(m => m.type === 'mid' && m.mission === gt.mission && m.state === 'alive');
@@ -4330,7 +4869,7 @@
   // ================= 시작 · 지역 선택 =================
   function initialStage() {
     const h = (location.hash || '').slice(1).toLowerCase().replace(/^preview-?/, '');
-    const alias = { s1: 'bamboo', lesson1: 'bamboo', '1': 'bamboo', s2: 'greet', lesson2: 'greet', '2': 'greet', s3: 'name', lesson3: 'name', '3': 'name', s4: 'nation', lesson4: 'nation', '4': 'nation', s5: 'number', lesson5: 'number', '5': 'number', num: 'number', numbers: 'number' };
+    const alias = { s1: 'bamboo', lesson1: 'bamboo', '1': 'bamboo', s2: 'greet', lesson2: 'greet', '2': 'greet', s3: 'name', lesson3: 'name', '3': 'name', s4: 'nation', lesson4: 'nation', '4': 'nation', s5: 'number', lesson5: 'number', '5': 'number', num: 'number', numbers: 'number', s6: 'birthday', lesson6: 'birthday', '6': 'birthday', bd: 'birthday' };
     const id = alias[h] || h;
     // 준비 중 지역은 학생 주소로 열리지 않아요 → 공개된 첫 지역으로
     return STAGE_ORDER.includes(id) ? id : STAGE_ORDER[0];
@@ -4342,6 +4881,14 @@
   function runOf(id) { return run && run.stage === id ? run : stageCache[id] && stageCache[id].run; }
   const inProgress = (id) => { const r = runOf(id); return !!r && !r.cleared && (r.ms.some(x => x.done > 0) || r.coins > 0 || r.introSeen); };
   function renderStagePick() {
+    // 숫자 카드 미니게임 칸은 숫자 계곡 바로 옆에
+    const miniTile = CARDS_OK ? `<a class="stagecard minicard" id="cardsTile" href="cards.html">
+        <span class="sc-new mini">미니게임</span>
+        <span class="sc-ico">🃏</span>
+        <span class="sc-num">언제든 연습</span>
+        <span class="sc-title">숫자 카드</span>
+        <span class="sc-topic">一 ~ 十 짝 맞추기</span>
+      </a>` : '';
     $('stagePick').innerHTML = STAGE_ORDER.map((id, n) => {
       const st = STAGES[id], stars = save.clears[id] || 0;
       return `<button class="stagecard${id === selStage ? ' sel' : ''}" data-stage="${id}" aria-pressed="${id === selStage}">
@@ -4351,14 +4898,8 @@
         <span class="sc-title">${st.short}</span>
         <span class="sc-topic">${st.topic}</span>
         <span class="sc-stars" aria-label="별 ${stars}개">${'★'.repeat(stars)}<span class="off">${'★'.repeat(3 - stars)}</span></span>
-      </button>`;
-    }).join('') + (CARDS_OK ? `<a class="stagecard minicard" id="cardsTile" href="cards.html">
-        <span class="sc-new mini">미니게임</span>
-        <span class="sc-ico">🃏</span>
-        <span class="sc-num">언제든 연습</span>
-        <span class="sc-title">숫자 카드</span>
-        <span class="sc-topic">一 ~ 十 짝 맞추기</span>
-      </a>` : '') + (PREVIEW ? '' : '<div class="stagecard locked" aria-disabled="true"><span class="sc-lock">🔒</span><span class="sc-title">다음 수업</span><span class="sc-topic">준비 중이에요</span></div>');
+      </button>` + (id === 'number' ? miniTile : '');
+    }).join('') + (STAGE_ORDER.includes('number') ? '' : miniTile) + (PREVIEW ? '' : '<div class="stagecard locked" aria-disabled="true"><span class="sc-lock">🔒</span><span class="sc-title">다음 수업</span><span class="sc-topic">준비 중이에요</span></div>');
     $('stagePick').querySelectorAll('canvas[data-ico]').forEach(c => {
       const T = THEMES[STAGES[c.dataset.ico].theme], spr = SKINS[T.skins[0]].spr({ tone: 1 });
       c.width = spr.width; c.height = spr.height; c.getContext('2d').drawImage(spr, 0, 0);
@@ -4433,7 +4974,7 @@
       <div class="hitem"><div class="ico"><span class="tb">◀</span><span class="tb">▶</span><span class="tb j">점프</span></div>걷기 · 점프</div>
       <div class="hitem"><div class="ico">💬</div>친구 판다 옆에서 노란 버튼을 톡!</div>` : `
       <div class="hitem"><div class="ico"><kbd>←</kbd><kbd>→</kbd><kbd>Space</kbd></div>걷기 · 점프</div>
-      <div class="hitem"><div class="ico"><kbd>E</kbd> / <kbd>Enter</kbd></div>친구 판다 옆에서 말 걸기 · 흔들기 · 들기</div>`) + `
+      <div class="hitem"><div class="ico"><kbd>E</kbd> / <kbd>Enter</kbd></div>친구 판다 옆에서 말 걸기 · ${STAGE.questKit === 'bd' ? '케이크·달력·카드 열기' : '흔들기 · 들기'}</div>`) + `
       <div class="hitem"><div class="ico">▼</div>노란 화살표를 따라가요</div>
       <div class="hitem"><div class="ico">⭐</div>미션 버튼 → 📜 부탁 다시 보기</div>`;
       $('helpOk').textContent = from === 'first' ? '알겠어요! 출발' : '알겠어요!';
@@ -4471,7 +5012,7 @@
     const iw = STAGE.cardOrder.map(id => STAGE.words[id]), ib = iw.filter(w => w.bonus);
     $('introGrid').innerHTML = iw.filter(w => !w.bonus).map(chip).join('')
       + (ib.length ? `<div class="introBonusHead">⭐ 보너스 표현 <small>몰라도 클리어할 수 있어요</small></div>` + ib.map(chip).join('') : '')
-      + (STAGE.introRules ? `<div class="introBonusHead">🧩 숫자 만들기 규칙 <small>외우지 말고 규칙으로 만들어요</small></div>` + STAGE.introRules.map(chip).join('') : '');
+      + (STAGE.introRules ? `<div class="introBonusHead">${STAGE.introRulesHead || '🧩 숫자 만들기 규칙 <small>외우지 말고 규칙으로 만들어요</small>'}</div>` + STAGE.introRules.map(chip).join('') : '');
     bindSoundButtons($('introGrid')); wrapPinyin($('introGrid'));
     $('intro').hidden = false; $('intro').scrollTop = 0; $('introGo').focus({ preventScroll: true });
   }
@@ -4650,7 +5191,7 @@
     requestAnimationFrame(frame);
     $('startScreen').querySelector('.card').focus({ preventScroll: true });
     window.__panda = {
-      questInteract, openBasket, basketDrop, closeBasket, zhNum, tokVal, testSpawn: (kind, n, set) => { const q = run.q, list = set ? q.m4.items : q.m3.items; spawnItems(list, kind, n, Q_SPOTS[set]); }, testOpenSlab: (rounds) => openSlab({ title: 'test', rounds, start: 0, tag: 'test', key: (i) => 'test' + i, onRound() {}, onAll() {} }), slabTap, slabKey, ruleHints, boxNums, closeTalk, closeSlab, questRecall, NPC_DEF, useSkill, canSkill, BGM, josa, BUILD, forestBuild, basicQuestion, MA, GREET, NW, P, save, quiz, quick, NQ, numQ, numQueue, NUMS, openQuiz, answer, closeQuiz, closeSpeak, selectStage, startPlay, goHome, askHome, resumeFromPause, loadStage, closeHelp, closeIntro, startNewRun, THEMES, SKINS, STAGES,
+      questInteract, openBasket, BD_NPC, BD_CANDLES, BD_CAKE_X, BD_BOARD_X, BD_DESK_X, BD_TABLE_X, bdValid, dateZh, bdSent, openCake, cakeAdd, cakeDel, cakeDone, closeCake, openCal, calOk, closeCal, openBCard, bcOk, closeBCard, bdPlace, bdBonus: () => bdBonusLater, basketDrop, closeBasket, zhNum, tokVal, testSpawn: (kind, n, set) => { const q = run.q, list = set ? q.m4.items : q.m3.items; spawnItems(list, kind, n, Q_SPOTS[set]); }, testOpenSlab: (rounds) => openSlab({ title: 'test', rounds, start: 0, tag: 'test', key: (i) => 'test' + i, onRound() {}, onAll() {} }), slabTap, slabKey, ruleHints, boxNums, closeTalk, closeSlab, questRecall, NPC_DEF, useSkill, canSkill, BGM, josa, BUILD, forestBuild, basicQuestion, MA, GREET, NW, P, save, quiz, quick, NQ, numQ, numQueue, NUMS, openQuiz, answer, closeQuiz, closeSpeak, selectStage, startPlay, goHome, askHome, resumeFromPause, loadStage, closeHelp, closeIntro, startNewRun, THEMES, SKINS, STAGES,
       get mode() { return mode; }, get monsters() { return monsters; }, get coins() { return coins; }, get gates() { return gates; },
       get run() { return run; }, get cam() { return cam; }, get floats() { return floats; }, get stage() { return STAGE.id; }, get drops() { return drops; }, get selStage() { return selStage; },
     };
