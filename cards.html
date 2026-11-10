@@ -113,6 +113,7 @@
     <div class="title"><canvas id="logo" width="16" height="16" aria-hidden="true"></canvas>숫자 카드 짝 맞추기</div>
     <a class="hbtn" id="home" href="index.html" style="display:inline-flex;align-items:center;text-decoration:none">🏠 판다 탐험대</a>
     <button class="hbtn" id="studyBtn">📖 숫자 공부하기</button>
+    <button class="hbtn" id="soundBtn" aria-pressed="true" aria-label="소리 끄기">🔊</button>
     <button class="hbtn gold" id="restart">↻ 다시 시작</button>
   </div>
   <div class="bar">
@@ -175,9 +176,32 @@
   // ----- 소리 (짧은 효과음, 파일 없이) -----
   let AC = null;
   function tone(f, t, d, type = 'triangle', vol = 0.06) {
+    if (!soundOn) return;
     try { AC = AC || new (window.AudioContext || window.webkitAudioContext)(); const o = AC.createOscillator(), g = AC.createGain(), s = AC.currentTime + t;
       o.type = type; o.frequency.value = f; g.gain.setValueAtTime(vol, s); g.gain.exponentialRampToValueAtTime(0.001, s + d); o.connect(g); g.connect(AC.destination); o.start(s); o.stop(s + d + 0.02); } catch (e) {}
   }
+  // 소리 켜기/끄기 (이 기기에만 기억)
+  let soundOn = true;
+  try { soundOn = localStorage.getItem('panda-cards-sound') !== 'off'; } catch (e) {}
+  function refreshSound() { const b = $('soundBtn'); b.textContent = soundOn ? '🔊' : '🔇'; b.setAttribute('aria-pressed', String(soundOn)); b.setAttribute('aria-label', soundOn ? '소리 끄기' : '소리 켜기'); }
+  // 중국어 발음: 기기에 있는 중국어 음성(TTS)으로 읽어요. 음성이 없는 기기에서는 조용히 넘어가요 (게임은 그대로)
+  const Voice = {
+    ok() { try { return !!window.speechSynthesis && typeof window.SpeechSynthesisUtterance === 'function'; } catch (e) { return false; } },
+    zh() { try { const vs = window.speechSynthesis.getVoices() || [], lang = (v) => String(v.lang || '').replace('_', '-'); return vs.find(v => /^zh-CN/i.test(lang(v))) || vs.find(v => /^(zh|cmn)/i.test(lang(v))) || null; } catch (e) { return null; } },
+    unlocked: false,
+    unlock() { if (this.unlocked || !this.ok()) return; this.unlocked = true; try { const u = new SpeechSynthesisUtterance(' '); u.volume = 0; u.lang = 'zh-CN'; window.speechSynthesis.speak(u); } catch (e) {} },   // iOS: 첫 터치 때 한 번
+    say(text) {
+      if (!soundOn || !this.ok()) return;
+      try {
+        const synth = window.speechSynthesis, v = this.zh(), u = new SpeechSynthesisUtterance(text);
+        u.lang = v ? String(v.lang).replace('_', '-') : 'zh-CN'; if (v) { try { u.voice = v; } catch (e) {} } u.rate = 0.8;
+        const go = () => { try { if (synth.paused) synth.resume(); synth.speak(u); } catch (e) {} };
+        if (synth.speaking || synth.pending) { synth.cancel(); setTimeout(go, 80); } else go();
+      } catch (e) {}
+    },
+  };
+  if (Voice.ok()) { try { window.speechSynthesis.getVoices(); window.speechSynthesis.addEventListener('voiceschanged', () => window.speechSynthesis.getVoices()); } catch (e) {} }
+  document.addEventListener('pointerdown', () => Voice.unlock(), { once: true });
   const SFX = { flip: () => tone(520, 0, 0.07), match: () => [523, 659, 784].forEach((f, i) => tone(f, i * 0.08, 0.14)), miss: () => tone(300, 0, 0.16, 'sine', 0.05), done: () => [523, 659, 784, 1047, 1319].forEach((f, i) => tone(f, i * 0.1, 0.2, 'square', 0.04)) };
 
   // ----- 게임 상태 -----
@@ -205,7 +229,8 @@
   }
   function flip(id) {
     if (S.lock || S.overlay || S.done.has(id) || S.open.includes(id) || S.open.length >= 2) return;   // 한 번에 두 장까지만, 같은 카드·맞힌 카드는 무시
-    S.open.push(id); show(id, true); SFX.flip();
+    S.open.push(id); show(id, true);
+    if (S.deck[id].kind === 'num') Voice.say(byV(S.deck[id].v).h); else SFX.flip();   // 숫자·병음 카드는 발음을 들려줘요 (한자 카드는 소리 없이: 소리로 짝을 찾지 않게)
     if (S.open.length < 2) return;
     S.tries++; S.lock = true; stat();
     const [a, b] = S.open.map(i => S.deck[i]);
@@ -240,6 +265,8 @@
   function openOverlay(id) { S.overlay = true; $(id).hidden = false; $(id).querySelector('.panel').focus({ preventScroll: true }); }
   function closeOverlay(id) { $(id).hidden = true; S.overlay = !$('study').hidden || !$('done').hidden; }
   $('studyRows').innerHTML = NUMS.map(n => `<tr><td class="han">${n.h}</td><td class="num">${n.v}</td><td class="py">${n.p}</td></tr>`).join('');
+  $('soundBtn').addEventListener('click', () => { soundOn = !soundOn; refreshSound(); try { localStorage.setItem('panda-cards-sound', soundOn ? 'on' : 'off'); } catch (e) {} if (!soundOn) { try { window.speechSynthesis.cancel(); } catch (e) {} } else SFX.flip(); });
+  refreshSound();
   $('studyBtn').addEventListener('click', () => openOverlay('study'));
   $('studyClose').addEventListener('click', () => closeOverlay('study'));
   $('restart').addEventListener('click', () => start());
@@ -250,7 +277,7 @@
   $('doneStudy').addEventListener('click', () => { closeOverlay('done'); openOverlay('study'); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { if (!$('study').hidden) closeOverlay('study'); } });
   start('easy');
-  window.__cards = { S, start, flip, NUMS };
+  window.__cards = { S, start, flip, NUMS, Voice, get soundOn() { return soundOn; } };
 })();
 </script>
 </body>
