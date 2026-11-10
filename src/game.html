@@ -220,7 +220,8 @@
   .ck-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin: 8px 0; }
   .ck-row .btn { min-height: 56px; font-size: 20px; }
   .cal-step { font-family: var(--font-display); font-size: 20px; margin: 6px 0; }
-  .cal-grid { display: grid; gap: 8px; margin: 6px auto; }
+  /* 달력 모양: 빨간 윗단 + 종이 바탕 */
+  .cal-grid { display: grid; gap: 8px; margin: 6px auto; padding: 10px; background: #fbfaf5; border: 3px solid var(--ink); border-top: 14px solid #e5484d; border-radius: 12px; }
   .cal-grid.months { grid-template-columns: repeat(4, 1fr); max-width: 520px; }
   .cal-grid.days { grid-template-columns: repeat(7, 1fr); max-width: 480px; }
   .calb, .bcm, .bcd, .bcdeco { border: 3px solid var(--ink); border-radius: 12px; background: #fff; color: var(--ink); font-family: var(--font-display); box-shadow: 0 3px 0 var(--ink); touch-action: manipulation; -webkit-tap-highlight-color: transparent; cursor: pointer; }
@@ -1812,7 +1813,7 @@
     },
     // 6차시: 미션형 (5차시와 같은 NPC 엔진 + 따로 만든 미션: 케이크 · 달력 · 생일카드 · 파티). questKit: 'bd'
     birthday: {
-      id: 'birthday', status: 'ready', lessonNo: '6차시', label: '11월 10일 2교시', title: '생일 파티 마을', short: '생일 파티', topic: '生日快乐！ · 몇 월 며칠', mapName: '생일 파티 마을', isNew: true, theme: 'party', song: 'garden',
+      id: 'birthday', status: 'ready', lessonNo: '6차시', label: '11월 10일 2교시', title: '판다의 생일파티 대작전', short: '생일 축하합니다!', topic: '生日快乐！ · 몇 월 며칠', mapName: '생일 파티 마을', isNew: true, theme: 'party', icon: '🎂', song: 'garden',
       quest: true, questKit: 'bd', clearTitle: '생일파티 성공! 生日快乐！',
       ...LAYOUT,
       monsters: [],
@@ -2084,7 +2085,7 @@
     drawPaifang(g, GATE_X[3] + 12, STAGE.finalText);
   }
   function decorateBirthday(g) {
-    drawSign(g, 110, ['생일 파티 마을', '출발! →'], 96);
+    drawSign(g, 110, ['생일 축하합니다!', '출발! →'], 96);
     for (const x of [600, 1500, 2230]) {   // 작은 꽃밭 (친구 판다·케이크·달력·책상과 겹치지 않게)
       for (let k = 0; k < 6; k++) { const fx = x + k * 9; g.fillStyle = '#3f9442'; g.fillRect(fx + 1, GY - 7, 1, 7); g.fillStyle = pick(['#ff8fb8', '#ffd23f', '#ffffff', '#b38cff']); g.fillRect(fx, GY - 10, 3, 3); }
     }
@@ -2460,9 +2461,9 @@
       return;
     }
     // 6차시 창: Enter = 확인/완성, Esc = 닫기
-    if (mode === 'cake') { if (isEnter(c) && !e.repeat) { e.preventDefault(); cakeDone(); } else if (c === 'Escape' && !e.repeat) closeCake(); return; }
     const pickBtn = document.activeElement && document.activeElement.matches && document.activeElement.matches('#cake button, #cal button, #bcard button') ? document.activeElement : null;   // 키보드로 고른 칸은 Enter로 누르기
     if ((mode === 'cal' || mode === 'bcard' || mode === 'cake') && pickBtn && isEnter(c) && !e.repeat) { e.preventDefault(); if (!pickBtn.disabled) pickBtn.click(); return; }
+    if (mode === 'cake') { if (isEnter(c) && !e.repeat) { e.preventDefault(); cakeDone(); } else if (c === 'Escape' && !e.repeat) closeCake(); return; }
     if (mode === 'cal') { if (isEnter(c) && !e.repeat) { e.preventDefault(); if (!$('calOk').disabled) calOk(); } else if (c === 'Escape' && !e.repeat) closeCal(); return; }
     if (mode === 'bcard') { if (isEnter(c) && !e.repeat) { e.preventDefault(); if (!$('bcOk').disabled) bcOk(); } else if (c === 'Escape' && !e.repeat) closeBCard(); return; }
     if (mode === 'talk') { if ((isEnter(c) || c === 'Space' || c === 'KeyE') && !e.repeat) { e.preventDefault(); closeTalk(); } return; }
@@ -3332,7 +3333,7 @@
     if (n <= 10) return `${z.h}${pp(z.h, '은/는')} ${n}`;
     return `${z.h} = ${z.toks.map(k => k === 10 ? '十' : `${ZH_D[k]}(${k})`).join(' ')} → ${n}`;
   }
-  const calHints = (m, d) => ['숫자 뒤에 月가 붙으면 몇 월, 号가 붙으면 며칠이에요.', `${numMeaning(m)}, ${numMeaning(d)}이에요.`.replace(/(\d)이에요\.$/, (s, x) => `${x}${pp(x, '이에요/예요')}.`), `정답: ${m}월 ${d}일`];
+  const calHints = (m, d) => ['숫자 뒤에 月를 붙이면 몇 월인지 알 수 있어요. 号를 붙이면 며칠인지 알 수 있어요.', `${numMeaning(m)}, ${numMeaning(d)}이에요.`.replace(/(\d)이에요\.$/, (s, x) => `${x}${pp(x, '이에요/예요')}.`), `정답: ${m}월 ${d}일`];
   const cardHints = (m, d) => ['月 앞에는 몇 월인지, 号 앞에는 며칠인지 숫자를 넣어요.', `${m}월은 ${dateZh(m, d).mh} ${dateZh(m, d).mp}, ${d}일은 ${dateZh(m, d).dh} ${dateZh(m, d).dp}예요.`, `정답: ${bdSent(m, d).h}`];
 
   // ----- NPC 대화 -----
@@ -4885,7 +4886,7 @@
       const st = STAGES[id], stars = save.clears[id] || 0;
       return `<button class="stagecard${id === selStage ? ' sel' : ''}" data-stage="${id}" aria-pressed="${id === selStage}">
         ${st.isNew && !stars ? '<span class="sc-new">NEW</span>' : ''}
-        <canvas width="16" height="16" data-ico="${id}"></canvas>
+        ${st.icon ? `<span class="sc-ico">${st.icon}</span>` : `<canvas width="16" height="16" data-ico="${id}"></canvas>`}
         <span class="sc-num">${st.label || st.lessonNo}${st.status !== 'ready' ? ` · 미리보기(${st.lessonNo})` : ''}</span>
         <span class="sc-title">${st.short}</span>
         <span class="sc-topic">${st.topic}</span>
@@ -5183,7 +5184,7 @@
     requestAnimationFrame(frame);
     $('startScreen').querySelector('.card').focus({ preventScroll: true });
     window.__panda = {
-      questInteract, openBasket, BD_NPC, BD_CANDLES, BD_CAKE_X, BD_BOARD_X, BD_DESK_X, BD_TABLE_X, bdValid, dateZh, bdSent, openCake, cakeAdd, cakeDel, cakeDone, closeCake, openCal, calOk, closeCal, openBCard, bcOk, closeBCard, bdPlace, bdBonus: () => bdBonusLater, basketDrop, closeBasket, zhNum, tokVal, testSpawn: (kind, n, set) => { const q = run.q, list = set ? q.m4.items : q.m3.items; spawnItems(list, kind, n, Q_SPOTS[set]); }, testOpenSlab: (rounds) => openSlab({ title: 'test', rounds, start: 0, tag: 'test', key: (i) => 'test' + i, onRound() {}, onAll() {} }), slabTap, slabKey, ruleHints, boxNums, closeTalk, closeSlab, questRecall, NPC_DEF, useSkill, canSkill, BGM, josa, BUILD, forestBuild, basicQuestion, MA, GREET, NW, P, save, quiz, quick, NQ, numQ, numQueue, NUMS, openQuiz, answer, closeQuiz, closeSpeak, selectStage, startPlay, goHome, askHome, resumeFromPause, loadStage, closeHelp, closeIntro, startNewRun, THEMES, SKINS, STAGES,
+      questInteract, openBasket, BD_NPC, BD_CANDLES, BD_CAKE_X, BD_BOARD_X, BD_DESK_X, BD_TABLE_X, bdValid, dateZh, bdSent, openCake, cakeAdd, cakeDel, cakeDone, closeCake, openCal, calOk, closeCal, openBCard, bcOk, closeBCard, bdPlace, bdNewTest: () => bdNew(), bdBonus: () => bdBonusLater, basketDrop, closeBasket, zhNum, tokVal, testSpawn: (kind, n, set) => { const q = run.q, list = set ? q.m4.items : q.m3.items; spawnItems(list, kind, n, Q_SPOTS[set]); }, testOpenSlab: (rounds) => openSlab({ title: 'test', rounds, start: 0, tag: 'test', key: (i) => 'test' + i, onRound() {}, onAll() {} }), slabTap, slabKey, ruleHints, boxNums, closeTalk, closeSlab, questRecall, NPC_DEF, useSkill, canSkill, BGM, josa, BUILD, forestBuild, basicQuestion, MA, GREET, NW, P, save, quiz, quick, NQ, numQ, numQueue, NUMS, openQuiz, answer, closeQuiz, closeSpeak, selectStage, startPlay, goHome, askHome, resumeFromPause, loadStage, closeHelp, closeIntro, startNewRun, THEMES, SKINS, STAGES,
       get mode() { return mode; }, get monsters() { return monsters; }, get coins() { return coins; }, get gates() { return gates; },
       get run() { return run; }, get cam() { return cam; }, get floats() { return floats; }, get stage() { return STAGE.id; }, get drops() { return drops; }, get selStage() { return selStage; },
     };
