@@ -914,7 +914,7 @@
     { id: 'bd_yue', h: '月', p: 'yuè', t: 4, ko: '월 (숫자 + 月 = ○월)' },
     { id: 'bd_hao', h: '号', p: 'hào', t: 4, ko: '일 (숫자 + 号 = ○일)' },
     { id: 'bd_my', h: '我的生日是五月十号。', p: 'Wǒ de shēngrì shì wǔ yuè shí hào.', t: 0, ko: '내 생일은 5월 10일이야.', sent: true },
-    { id: 'bd_ask', h: '你的生日是几月几号？', p: 'Nǐ de shēngrì shì jǐ yuè jǐ hào?', t: 0, ko: '네 생일은 몇 월 며칠이야? (듣고 알아들어요)', sent: true },
+    { id: 'bd_ask', h: '你的生日是几月几号？', p: 'Nǐ de shēngrì shì jǐ yuè jǐ hào?', t: 0, ko: '네 생일은 몇 월 며칠이야?', sent: true, bonus: true },   // 심화: 2차시처럼 보너스 표현 (문제·미션 판정에는 안 나옴)
   ].map(w => [w.id, w]));
   const numOf = (v) => NUMS[v - 1];
   const GREET = [
@@ -1825,13 +1825,13 @@
         { label: '🎂 케이크에 초 五 개', zone: '케이크 가게', cards: ['bd_hb', 'bd_kuaile'] },
         { label: '📅 달력에서 생일 찾기', zone: '달력 정원', cards: ['bd_yue', 'bd_hao'] },
         { label: '💌 생일카드 만들기', zone: '카드 공방', cards: ['bd_shengri', 'bd_my'] },
-        { label: '🎉 생일파티', zone: '파티 광장', cards: ['bd_ask'], cheer: '생일파티 성공!' },
+        { label: '🎉 생일파티', zone: '파티 광장', cards: [], cheer: '생일파티 성공!' },
       ],
       finalText: '파티의 문', decorate: decorateBirthday,
-      words: BDW, cardOrder: ['bd_hb', 'bd_kuaile', 'bd_shengri', 'bd_yue', 'bd_hao', 'bd_my', 'bd_ask'], cardName: '생일 카드', bossFinale: 'none',
+      words: BDW, cardOrder: ['bd_hb', 'bd_kuaile', 'bd_shengri', 'bd_yue', 'bd_hao', 'bd_my', 'bd_ask'], cardName: '생일 카드', bonusCards: ['bd_ask'], bossFinale: 'none',
       introRulesHead: '📅 날짜 만들기 규칙 <small>숫자 + 月 = ○월 · 숫자 + 号 = ○일</small>',
       introRules: [{ h: '一月', p: 'yī yuè', t: 0, ko: '1월' }, { h: '十二月', p: 'shí èr yuè', t: 0, ko: '12월' }, { h: '二十五号', p: 'èr shí wǔ hào', t: 0, ko: '25일' }, { h: '三十一号', p: 'sān shí yī hào', t: 0, ko: '31일' }],
-      noteIntro: '생일을 축하하고, <b>내 생일이 몇 월 며칠인지</b> 말해 봐요.<br>· <b>生日快乐！</b> Shēngrì kuàilè! = 생일 축하해!<br>· 날짜: <b>숫자 + 月</b> = ○월, <b>숫자 + 号</b> = ○일 → 五月十号 wǔ yuè shí hào (5월 10일)<br>· <b>我的生日是○月○号。</b> = 내 생일은 ○월 ○일이야.<br>· <b>你的生日是几月几号？</b> = 네 생일은 몇 월 며칠이야? (듣고 알아들으면 돼요)',
+      noteIntro: '생일을 축하하고, <b>내 생일이 몇 월 며칠인지</b> 말해 봐요.<br>· <b>生日快乐！</b> Shēngrì kuàilè! = 생일 축하해!<br>· 날짜: <b>숫자 + 月</b> = ○월, <b>숫자 + 号</b> = ○일 → 五月十号 wǔ yuè shí hào (5월 10일)<br>· <b>我的生日是○月○号。</b> = 내 생일은 ○월 ○일이야.',
       qgen: () => null, makeQueue: () => [],
     },
   };
