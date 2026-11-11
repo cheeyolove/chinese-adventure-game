@@ -275,6 +275,69 @@
     .bcd { min-height: 46px; } .bcd .han { font-size: 18px; } .bcd .py { font-size: 11px; }
     .bopt { min-height: 46px; font-size: 18px; } .bopts { gap: 6px; margin: 6px 0; }
   }
+  /* 7·8차시: 가족 소개 카드 · 고르기 창 */
+  .fam-row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin: 8px 0; }
+  .fam-intro { display: flex; flex-direction: column; align-items: center; gap: 4px; background: #fff; border: 3px solid var(--ink); border-radius: 12px; padding: 6px 8px; min-width: 112px; }
+  .fam-face { width: 72px; height: 78px; image-rendering: pixelated; }
+  .fam-ko { font-size: 18px; font-weight: 700; }
+  .znum.big .han { font-size: 56px; } .znum.big .py { font-size: 24px; }
+  .fm-done { font-family: var(--font-display); font-size: 28px; color: #b5121b; text-align: center; margin: 6px 0 !important; }
+  .pkcard { max-width: 700px; }
+  .pk-grid { display: grid; gap: 10px; margin: 8px auto; }
+  .pk-grid.photos { grid-template-columns: repeat(3, 1fr); max-width: 460px; } .pk-grid.photos.six { grid-template-columns: repeat(6, 1fr); max-width: 640px; }
+  .pk-grid.words { grid-template-columns: repeat(4, 1fr); } .pk-grid.gifts { grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 2px 0; } .pk-grid.gifts4 { grid-template-columns: repeat(4, 1fr); }
+  .pk-opt { border: 3px solid var(--ink); border-radius: 12px; background: #fff; color: var(--ink); box-shadow: 0 3px 0 var(--ink); cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 6px 4px; min-height: 64px; font-family: var(--font-display); }
+  .pk-opt:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink); }
+  .pk-opt.sel { background: #2b6fd6; color: #fff; } .pk-opt.sel .py { color: #fff; }
+  .pk-opt.used { opacity: .45; }
+  .pk-opt .han { font-family: var(--font-han); font-size: 34px; line-height: 1.15; white-space: nowrap; } .pk-opt .py { font-size: 18px; font-weight: 700; white-space: nowrap; }
+  .pk-opt .fam-face { width: 64px; height: 70px; }
+  .gift-img { width: 72px; height: 58px; image-rendering: pixelated; }
+  .pk-grid.gifts .gift-img { width: 75px; height: 60px; }
+  .pk-sent { display: flex; justify-content: center; align-items: flex-end; gap: 4px; flex-wrap: nowrap; margin: 6px 0 0; }
+  .pk-sent .han { font-family: var(--font-han); font-size: 46px; line-height: 1.2; white-space: nowrap; }
+  .pk-blank { border-bottom: 4px dashed #b5121b; min-width: 96px; text-align: center; }
+  .pk-sent-py { font-size: 22px; font-weight: 700; } .pk-sent-py b { color: #b5121b; }
+  .pk-sent-ko { font-size: 18px; color: var(--ink-soft); }
+  .pk-frame { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; padding: 10px; margin: 6px auto; background: #fff7d6; border: 4px solid #8a5a2b; border-radius: 10px; max-width: 640px; }
+  .pk-slot { border: 3px dashed #8a5a2b; border-radius: 10px; background: #fff; display: flex; flex-direction: column; align-items: center; padding: 4px 2px; cursor: pointer; touch-action: manipulation; color: var(--ink); }
+  .pk-slot.cur { border-style: solid; border-color: #2b6fd6; box-shadow: 0 0 0 3px #2b6fd6; }
+  .pk-slot-pic { width: 64px; height: 70px; display: flex; align-items: center; justify-content: center; } .pk-slot-pic .fam-face { width: 64px; height: 70px; }
+  .pk-q { font-family: var(--font-display); font-size: 34px; color: #b3aec4; }
+  .pk-slot .han { font-family: var(--font-han); font-size: 24px; } .pk-slot .py { font-size: 15px; font-weight: 700; white-space: nowrap; }
+  .pk-lbl { font-family: var(--font-display); font-size: 18px; margin-top: 4px; }
+  .pk-memo { display: grid; gap: 10px; margin: 6px 0; }
+  .pk-memo-row { display: grid; grid-template-columns: 112px 1fr; gap: 6px 10px; align-items: center; background: #fff; border: 3px solid var(--ink); border-radius: 12px; padding: 6px 10px; text-align: left; }
+  .pk-memo-row .pk-grid { grid-column: 1 / -1; }
+  .pk-who { display: flex; align-items: center; gap: 6px; font-family: var(--font-display); font-size: 17px; }
+  .npc-face { width: 32px; height: 42px; image-rendering: pixelated; }
+  .pk-said { display: flex; flex-direction: column; } .pk-said .han { font-family: var(--font-han); font-size: 30px; line-height: 1.2; } .pk-said .py { font-size: 18px; font-weight: 700; }
+  @media (max-height: 520px), (max-width: 560px) {
+    .fam-intro { min-width: 92px; padding: 4px 6px; } .fam-face { width: 54px; height: 58px; } .fam-ko { font-size: 16px; }
+    .znum.big .han { font-size: 40px; } .znum.big .py { font-size: 19px; } .fm-done { font-size: 22px; }
+    .pk-opt { min-height: 54px; } .pk-opt .han { font-size: 26px; } .pk-opt .py { font-size: 15px; } .pk-opt .fam-face { width: 52px; height: 57px; }
+    .pk-sent .han { font-size: 34px; } .pk-sent-py { font-size: 18px; }
+    .pk-slot-pic, .pk-slot-pic .fam-face { width: 48px; height: 52px; } .pk-slot .han { font-size: 19px; } .pk-slot .py { font-size: 12px; }
+    .pk-said .han { font-size: 24px; } .pk-said .py { font-size: 15px; }
+    .gift-img { width: 58px; height: 46px; } .pk-grid.gifts .gift-img { width: 48px; height: 38px; }
+  }
+  /* 휴대폰 가로(낮은 화면): 소개 카드는 옆으로 납작하게, 메모는 [이름·말 | 그림] 두 칸으로 */
+  @media (max-height: 520px) and (min-width: 561px) {
+    .fam-row { gap: 6px; margin: 4px 0; }
+    .fam-intro { flex-direction: row; min-width: 0; gap: 6px; padding: 2px 8px; }
+    .fam-intro .fam-face { width: 36px; height: 39px; }
+    .fam-intro .znum { padding: 1px 6px; } .fam-intro .znum .han { font-size: 30px; } .fam-intro .znum .py { font-size: 15px; }
+    .fam-ko { font-size: 14px; }
+    .pk-memo { gap: 6px; } .pk-memo-row { grid-template-columns: minmax(170px, 36%) 1fr; grid-template-areas: 'who g' 'said g'; padding: 4px 8px; gap: 2px 8px; }
+    .pk-memo-row .pk-who { grid-area: who; } .pk-memo-row .pk-said { grid-area: said; } .pk-memo-row .pk-grid { grid-area: g; grid-column: auto; }
+    .pk-memo-row .pk-opt { min-height: 48px; }
+    .pk-said .han { font-size: 22px; }
+  }
+  @media (max-width: 560px) {
+    .pk-grid.words, .pk-grid.gifts4 { grid-template-columns: repeat(2, 1fr); }
+    .pk-frame, .pk-grid.photos.six { grid-template-columns: repeat(3, 1fr); }
+    .pk-memo-row { grid-template-columns: 1fr; }
+  }
   @media (max-width: 560px) { .bc-months { grid-template-columns: repeat(4, 1fr); } .bc-days { grid-template-columns: repeat(4, 1fr); } .bc-han { font-size: 5.2vw; } .bcard-prev { padding: 6px 20px; } }
   .slabcard { max-width: 640px; }
   .sl-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
@@ -690,6 +753,18 @@
   </div>
 </div>
 
+<!-- 7·8차시: 고르기 창 (사진 · 문장 · 자리 · 메모 · 좋아하는 것) -->
+<div class="overlay bdov" id="qpick" hidden>
+  <div class="card bdcard pkcard" tabindex="-1">
+    <div class="bd-head" id="qpHead"></div>
+    <div class="bd-ask" id="qpAsk"></div>
+    <div id="qpBody"></div>
+    <div class="bd-msg" id="qpMsg" aria-live="polite"></div>
+    <div class="talk-hint" id="qpHintBox"></div>
+    <div class="talk-btns"><button class="btn" id="qpHint">💡 힌트</button><button class="btn" id="qpClose">닫기</button><button class="btn primary" id="qpOk" hidden>확인</button></div>
+  </div>
+</div>
+
 <!-- 홈으로 갈까요? -->
 <div class="overlay" id="homeAsk" hidden>
   <div class="card start" tabindex="-1">
@@ -855,7 +930,7 @@
 
   // Google Fonts (한자는 필요한 글자만 받아옴)
   (function loadFonts() {
-    const han = '熊猫探险队妈麻马骂你们好老师同学中国汉语拼音文我叫什么名字小明韩人是哪谢再见不客气对起没关系晚安早上。？！“”一二三四五六七八九十生日快乐月号几的○';
+    const han = '熊猫探险队妈麻马骂你们好老师同学中国汉语拼音文我叫什么名字小明韩人是哪谢再见不客气对起没关系晚安早上。？！“”一二三四五六七八九十生日快乐月号几的○爸哥姐弟妹这喜欢苹果饺子辣烫';
     // 병음용: 알파벳·성조 모음·숫자만 받아서 파일이 아주 작음
     const py = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜüĀÁǍÀĒÉĚÈĪÍǏÌŌÓǑÒŪÚǓÙÜ0123456789 .,?!’\'-/()%…:→ˉˊˇˋ';
     for (const href of [
@@ -914,6 +989,26 @@
   const NUM_HUN = ['한 일', '두 이', '석 삼', '넉 사', '다섯 오', '여섯 륙', '일곱 칠', '여덟 팔', '아홉 구', '열 십'];
   NUMS.forEach(n => { n.hun = NUM_HUN[n.v - 1]; n.ko = `${n.hun} · 숫자 ${n.v}`; });
   const NUMW = Object.fromEntries(NUMS.map(n => [n.id, n]));
+  // 7차시 가족: 爸爸 妈妈 哥哥 姐姐 弟弟 妹妹 + 这是我……。 (두 번째 글자는 경성)
+  const FMW = Object.fromEntries([
+    { id: 'fm_baba', h: '爸爸', p: 'bàba', t: 0, ko: '아빠' },
+    { id: 'fm_mama', h: '妈妈', p: 'māma', t: 0, ko: '엄마' },
+    { id: 'fm_gege', h: '哥哥', p: 'gēge', t: 0, ko: '형, 오빠' },
+    { id: 'fm_jiejie', h: '姐姐', p: 'jiějie', t: 0, ko: '누나, 언니' },
+    { id: 'fm_didi', h: '弟弟', p: 'dìdi', t: 0, ko: '남동생' },
+    { id: 'fm_meimei', h: '妹妹', p: 'mèimei', t: 0, ko: '여동생' },
+    { id: 'fm_sent', h: '这是我妈妈。', p: 'Zhè shì wǒ māma.', t: 0, ko: '이분은 우리 엄마예요.', sent: true },
+  ].map(w => [w.id, w]));
+  // 8차시 좋아하는 것: 熊猫 苹果 饺子 麻辣烫 + 我喜欢……。 (你喜欢什么？는 보너스)
+  const GFW = Object.fromEntries([
+    { id: 'gf_xihuan', h: '喜欢', p: 'xǐhuan', t: 0, ko: '좋아하다' },
+    { id: 'gf_xiongmao', h: '熊猫', p: 'xióngmāo', t: 0, ko: '판다' },
+    { id: 'gf_pingguo', h: '苹果', p: 'píngguǒ', t: 0, ko: '사과' },
+    { id: 'gf_jiaozi', h: '饺子', p: 'jiǎozi', t: 0, ko: '만두' },
+    { id: 'gf_malatang', h: '麻辣烫', p: 'málàtàng', t: 0, ko: '마라탕' },
+    { id: 'gf_my', h: '我喜欢麻辣烫。', p: 'Wǒ xǐhuan málàtàng.', t: 0, ko: '나는 마라탕을 좋아해요.', sent: true },
+    { id: 'gf_ask', h: '你喜欢什么？', p: 'Nǐ xǐhuan shénme?', t: 0, ko: '너는 무엇을 좋아해?', sent: true, bonus: true },
+  ].map(w => [w.id, w]));
   // 6차시 생일파티: 生日快乐！ · 我的生日是○月○号。 · (듣고 알아듣기) 你的生日是几月几号？
   const BDW = Object.fromEntries([
     { id: 'bd_hb', h: '生日快乐！', p: 'Shēngrì kuàilè!', t: 0, ko: '생일 축하해!', sent: true },
@@ -998,7 +1093,7 @@
   const josa = (word, pair) => `${word}${pp(word, pair)}`;
   // 숫자가 아닌 한자의 소리 (게임에 나오는 글자)
   const HAN_PY = { '妈': 'mā', '麻': 'má', '马': 'mǎ', '骂': 'mà', '我': 'wǒ', '你': 'nǐ', '叫': 'jiào', '什': 'shén', '么': 'me', '名': 'míng', '小': 'xiǎo', '明': 'míng', '韩': 'hán', '人': 'rén', '是': 'shì', '哪': 'nǎ', '字': 'zi',
-    '们': 'men', '好': 'hǎo', '老': 'lǎo', '师': 'shī', '同': 'tóng', '学': 'xué', '中': 'zhōng', '国': 'guó', '汉': 'hàn', '语': 'yǔ', '文': 'wén', '拼': 'pīn', '音': 'yīn', '谢': 'xiè', '再': 'zài', '见': 'jiàn', '不': 'bù', '客': 'kè', '气': 'qi', '对': 'duì', '起': 'qǐ', '没': 'méi', '关': 'guān', '系': 'xi', '晚': 'wǎn', '安': 'ān', '早': 'zǎo', '上': 'shang', '生': 'shēng', '日': 'rì', '快': 'kuài', '乐': 'lè', '月': 'yuè', '号': 'hào', '几': 'jǐ', '的': 'de' };
+    '们': 'men', '好': 'hǎo', '老': 'lǎo', '师': 'shī', '同': 'tóng', '学': 'xué', '中': 'zhōng', '国': 'guó', '汉': 'hàn', '语': 'yǔ', '文': 'wén', '拼': 'pīn', '音': 'yīn', '谢': 'xiè', '再': 'zài', '见': 'jiàn', '不': 'bù', '客': 'kè', '气': 'qi', '对': 'duì', '起': 'qǐ', '没': 'méi', '关': 'guān', '系': 'xi', '晚': 'wǎn', '安': 'ān', '早': 'zǎo', '上': 'shang', '生': 'shēng', '日': 'rì', '快': 'kuài', '乐': 'lè', '月': 'yuè', '号': 'hào', '几': 'jǐ', '的': 'de', '爸': 'bà', '哥': 'gē', '姐': 'jiě', '弟': 'dì', '妹': 'mèi', '这': 'zhè', '喜': 'xǐ', '欢': 'huan', '苹': 'píng', '果': 'guǒ', '饺': 'jiǎo', '子': 'zi', '辣': 'là', '烫': 'tàng', '熊': 'xióng', '猫': 'māo' };
   const pyHTML = (w) => `<span class="py t${w.t}">${w.p}</span>`;
   const hanHTML = (w) => `<span class="han">${w.h}</span>`;
 
@@ -1666,6 +1761,24 @@
       paifang: { pillar: '#e5484d', hi: '#ff7b7f', roof: '#c0457a', roof2: '#e8689a', plate: '#fff0a8' },
       skins: ['bud', 'bee', 'bud', 'queen'], mid: 'snail',
     },
+    // 7차시 판다 가족 마을: 따뜻한 저녁 마을 + 대나무 숲
+    family: {
+      sky: ['#f4a261', '#fcd5a5', '#fff3dc'], sun: true, clouds: true,
+      far: ['#c9d9b8', '#aec79a'], hill: ['#6aa874', '#7fbd84'], hills: 'houses', near: 'bamboo',
+      ground: { top: '#5ebf57', hi: '#7fd86f', edge: '#3f9442', dirt: '#9b6a43', d1: '#8a5c38', d2: '#b88a5f', deco: 'grass' },
+      plat: 'wood', gate: 'bamboo',
+      paifang: { pillar: '#c73a3a', hi: '#e8645a', roof: '#1f5f4b', roof2: '#2f8f6a', plate: '#f6c445' },
+      skins: ['shoot', 'mushroom', 'mushroom', 'guardian'], mid: 'bslime',
+    },
+    // 8차시 판다 선물 마을: 분홍·보라 하늘 + 등불 거리
+    gift: {
+      sky: ['#a98bd6', '#f3c4e0', '#fff1f6'], sun: true, clouds: true,
+      far: ['#e9c9df', '#d9b3cf'], hill: ['#82c784', '#a5dca3'], hills: 'houses', near: 'lanterns',
+      ground: { top: '#6fcf6a', hi: '#9be58f', edge: '#46a048', dirt: '#a8754d', d1: '#966641', d2: '#c4946a', deco: 'petal' },
+      plat: 'wood', gate: 'hedge',
+      paifang: { pillar: '#8a5cd6', hi: '#b38cff', roof: '#c0457a', roof2: '#e8689a', plate: '#fff0a8' },
+      skins: ['bud', 'bee', 'bud', 'queen'], mid: 'snail',
+    },
     cave: {
       sky: ['#120e26', '#2a1f52', '#4b3683'], sun: false, clouds: false,
       far: ['#2b2350', '#3a2f68'], hill: ['#463a78', '#5a4b92'], hills: 'crystals', near: 'stalactites',
@@ -1825,7 +1938,7 @@
     // 6차시: 미션형 (5차시와 같은 NPC 엔진 + 따로 만든 미션: 케이크 · 달력 · 생일카드 · 파티). questKit: 'bd'
     birthday: {
       id: 'birthday', status: 'ready', lessonNo: '6차시', label: '11월 10일 2교시', title: '판다의 생일파티 대작전', short: '생일 축하합니다!', topic: '生日快乐！ · 몇 월 며칠', mapName: '생일 파티 마을', isNew: true, theme: 'party', icon: '🎂', song: 'garden',
-      quest: true, questKit: 'bd', clearTitle: '생일파티 성공! 生日快乐！',
+      quest: true, questKit: 'bd', helpAct: '케이크·달력·카드 열기', clearTitle: '생일파티 성공! 生日快乐！',
       ...LAYOUT,
       monsters: [],
       gates: layoutGates(['케이크 문', '달력 문', '카드 문', '파티의 문']),
@@ -1842,6 +1955,46 @@
       noteIntro: '생일을 축하하고, <b>내 생일이 몇 월 며칠인지</b> 말해 봐요.<br>· <b>生日快乐！</b> Shēngrì kuàilè! = 생일 축하해!<br>· 날짜: <b>숫자 + 月</b> = ○월, <b>숫자 + 号</b> = ○일 → 五月十号 wǔ yuè shí hào (5월 10일)<br>· <b>我的生日是○月○号。</b> = 내 생일은 ○월 ○일이야.',
       qgen: () => null, makeQueue: () => [],
     },
+    // 7차시: 미션형 (가족 사진 찾기 → 숲에서 가족 데려오기 → 这是我……。 → 가족사진). questKit: 'fam'
+    family: {
+      id: 'family', status: 'ready', lessonNo: '7차시', label: '', title: '판다 가족사진 대작전', short: '가족사진 대작전', topic: '爸爸 · 妈妈 · 这是我……。', mapName: '판다 가족 마을', isNew: true, theme: 'family', song: 'forest', icon: '📷',
+      quest: true, questKit: 'fam', helpAct: '사진 고르기 · 같이 가기', clearTitle: '판다 가족사진 완성!',
+      ...LAYOUT,
+      monsters: [],
+      gates: layoutGates(['마을 문', '숲 문', '연못 문', '사진관 문']),
+      missions: [
+        { label: '📷 가족 사진 찾기', zone: '판다 마을 입구', cards: ['fm_baba', 'fm_mama', 'fm_gege'] },
+        { label: '🐼 흩어진 가족 찾기', zone: '대나무 숲', cards: ['fm_jiejie', 'fm_didi', 'fm_meimei'] },
+        { label: '🗣 这是我……。', zone: '연못 마을', cards: ['fm_sent'] },
+        { label: '📸 가족사진 찍기', zone: '판다 사진관', cards: [], cheer: '판다 가족사진 완성!' },
+      ],
+      finalText: '사진관 문', decorate: decorateFamily,
+      words: FMW, cardOrder: ['fm_baba', 'fm_mama', 'fm_gege', 'fm_jiejie', 'fm_didi', 'fm_meimei', 'fm_sent'], cardName: '가족 카드', bossFinale: 'none',
+      introRulesHead: '🗣 바꿔 말해 보기 <small>这是我 + 가족</small>',
+      introRules: [{ h: '这是我爸爸。', p: 'Zhè shì wǒ bàba.', t: 0, ko: '이분은 우리 아빠예요.', sent: true }, { h: '这是我哥哥。', p: 'Zhè shì wǒ gēge.', t: 0, ko: '이 사람은 우리 형/오빠예요.', sent: true }, { h: '这是我妹妹。', p: 'Zhè shì wǒ mèimei.', t: 0, ko: '이 사람은 우리 여동생이에요.', sent: true }],
+      noteIntro: '가족을 부르는 말과, 가족을 소개하는 말을 배워요.<br>· 爸爸 bàba 아빠 · 妈妈 māma 엄마 · 哥哥 gēge 형/오빠<br>· 姐姐 jiějie 누나/언니 · 弟弟 dìdi 남동생 · 妹妹 mèimei 여동생<br>· 두 번째 글자는 <b>짧고 가볍게</b> 읽어요(경성).<br>· <b>这是我○○。</b> Zhè shì wǒ ○○. = 이 사람은 우리 ○○예요.',
+      qgen: () => null, makeQueue: () => [],
+    },
+    // 8차시: 미션형 (가게 → 취향 메모 → 선물 배달 → 내가 좋아하는 것). questKit: 'gift'
+    gift: {
+      id: 'gift', status: 'ready', lessonNo: '8차시', label: '', title: '판다 친구들의 선물 찾기', short: '선물 찾기', topic: '我喜欢……。 · 麻辣烫', mapName: '판다 선물 마을', isNew: true, theme: 'gift', song: 'village', icon: '🎁',
+      quest: true, questKit: 'gift', helpAct: '선물 들기 · 건네주기 (Q: 내려놓기)', clearTitle: '나도 중국어로 좋아하는 것을 말할 수 있어!',
+      ...LAYOUT,
+      monsters: [],
+      gates: layoutGates(['가게 문', '정원 문', '배달 문', '축제의 문']),
+      missions: [
+        { label: '🎁 좋아하는 물건 찾기', zone: '선물 가게', cards: ['gf_xihuan', 'gf_xiongmao'] },
+        { label: '📝 친구들의 취향 알아보기', zone: '과일 정원 · 음식 거리', cards: ['gf_pingguo', 'gf_jiaozi'] },
+        { label: '🚚 선물 전달하기', zone: '선물 배달 마을', cards: ['gf_malatang', 'gf_my'] },
+        { label: '💝 내가 좋아하는 것', zone: '선물 축제 광장', cards: [], cheer: '나도 중국어로 좋아하는 것을 말할 수 있어!' },
+      ],
+      finalText: '축제의 문', decorate: decorateGift,
+      words: GFW, cardOrder: ['gf_xihuan', 'gf_xiongmao', 'gf_pingguo', 'gf_jiaozi', 'gf_malatang', 'gf_my', 'gf_ask'], cardName: '좋아해 카드', bonusCards: ['gf_ask'], bossFinale: 'none',
+      introRulesHead: '🗣 바꿔 말해 보기 <small>我喜欢 + 좋아하는 것</small>',
+      introRules: [{ h: '我喜欢熊猫。', p: 'Wǒ xǐhuan xióngmāo.', t: 0, ko: '나는 판다를 좋아해요.', sent: true }, { h: '我喜欢苹果。', p: 'Wǒ xǐhuan píngguǒ.', t: 0, ko: '나는 사과를 좋아해요.', sent: true }, { h: '我喜欢饺子。', p: 'Wǒ xǐhuan jiǎozi.', t: 0, ko: '나는 만두를 좋아해요.', sent: true }],
+      noteIntro: '좋아하는 것을 말해 봐요.<br>· 喜欢 xǐhuan = 좋아하다<br>· <b>我喜欢○○。</b> Wǒ xǐhuan ○○. = 나는 ○○을/를 좋아해요.<br>· 熊猫 xióngmāo 판다 · 苹果 píngguǒ 사과 · 饺子 jiǎozi 만두 · 麻辣烫 málàtàng 마라탕',
+      qgen: () => null, makeQueue: () => [],
+    },
   };
   // 지역 순서 (시작 화면에 이 순서대로, 준비 안 된 지역은 아예 넣지 않음)
   // 학생 화면에는 status: 'ready'만 보여요. 주소 끝에 #preview(또는 #preview-지역이름)를 붙이면 선생님 미리보기로 전부 보여요
@@ -1850,7 +2003,7 @@
   const CARDS_OK = /^(https?|file):$/.test(location.protocol) && !/claude/i.test(location.hostname);
   if (CARDS_OK && /^#number-cards/i.test(location.hash || '')) location.replace('cards.html');
 
-  const ALL_STAGES = ['bamboo', 'greet', 'name', 'nation', 'number', 'birthday'];
+  const ALL_STAGES = ['bamboo', 'greet', 'name', 'nation', 'number', 'birthday', 'family', 'gift'];
   const STAGE_ORDER = ALL_STAGES.filter(id => PREVIEW || STAGES[id].status === 'ready');
   let THEME = THEMES.forest;
   let STAGE = STAGES.bamboo, PLATFORMS = STAGE.platforms, CHECKPOINTS = STAGE.checkpoints, gates = [], run = null;
@@ -1873,7 +2026,7 @@
     coins = spots.map((c, i) => ({ ...c, i, taken: false, timer: 0, ghost: ever.has(i) }));
     // 5차시: 상자·석판이 놓이는 자리 뒤의 동전은 빼요 (어떤 물건만 금색 테두리처럼 보이지 않게)
     // 6차시: 초가 놓이는 자리의 동전도 빼요 (초가 동전과 겹쳐 보이지 않게)
-    if (STAGE.quest) { const free = STAGE.questKit === 'bd' ? BD_CANDLES.map(sp => ({ ...sp, r: 24 })) : Q_SPOTS.flat().map(sp => ({ ...sp, r: 46 }));   // 가장 넓은 한자 상자(폭 62) + 동전 폭
+    if (STAGE.quest) { const free = STAGE.questKit ? KIT().free() : Q_SPOTS.flat().map(sp => ({ ...sp, r: 46 }));   // 가장 넓은 한자 상자(폭 62) + 동전 폭
       coins = coins.filter(c => !free.some(sp => Math.abs(c.x - sp.x) < sp.r && Math.abs(c.y + 26 - sp.y) < 12)); }
     drops = []; parts = []; floats = []; bolts = [];
   }
@@ -2093,6 +2246,42 @@
     // 축제 광장 등불 줄
     g.fillStyle = '#3b3346'; g.fillRect(2720, 150, 2, GY - 150); g.fillRect(3400, 150, 2, GY - 150);
     for (let x = 2730; x < 3400; x += 34) { g.fillStyle = '#2b2838'; g.fillRect(x, 152 + Math.round(Math.sin(x) * 3), 1, 6); g.fillStyle = ['#e5484d', '#f6c445', '#5cc46a', '#62aefc'][(x / 34 | 0) % 4]; g.fillRect(x - 3, 158 + Math.round(Math.sin(x) * 3), 8, 9); }
+    drawPaifang(g, GATE_X[3] + 12, STAGE.finalText);
+  }
+  function decorateFamily(g) {
+    drawSign(g, 110, ['판다 가족 마을', '출발! →'], 96);
+    drawHouse(g, 470); drawHouse(g, 1040);
+    drawSign(g, 1278, ['대나무 숲'], 70); drawSign(g, 1992, ['연못 마을'], 70);
+    // 대나무 숲: 굵은 대나무 몇 그루
+    for (const x of [1365, 1495, 1625, 1770, 1840]) { g.fillStyle = '#2f7d3a'; g.fillRect(x, 120, 6, GY - 120); g.fillStyle = '#5cc46a'; g.fillRect(x + 1, 120, 2, GY - 120); g.fillStyle = '#1f5f2b'; for (let y = 140; y < GY; y += 34) g.fillRect(x - 1, y, 8, 2); g.fillStyle = '#4fae5c'; g.fillRect(x + 6, 150, 10, 3); g.fillRect(x - 10, 200, 10, 3); }
+    // 연못과 작은 다리
+    g.fillStyle = '#2b6fd6'; g.fillRect(2230, GY + 2, 210, 14); g.fillStyle = '#62aefc'; g.fillRect(2236, GY + 4, 198, 9); g.fillStyle = '#cfeeff'; for (let x = 2245; x < 2425; x += 28) g.fillRect(x, GY + 7, 10, 2);
+    g.fillStyle = '#5a3a22'; g.fillRect(2290, GY - 4, 90, 6); g.fillStyle = '#8a5a2b'; for (let x = 2292; x < 2378; x += 9) g.fillRect(x, GY - 3, 7, 4); g.fillStyle = '#5a3a22'; g.fillRect(2290, GY - 18, 3, 14); g.fillRect(2377, GY - 18, 3, 14); g.fillRect(2290, GY - 18, 90, 2);
+    for (const [x, c] of [[2250, '#ff8fb8'], [2410, '#ffffff']]) { g.fillStyle = '#3f9442'; g.fillRect(x, GY + 6, 8, 3); g.fillStyle = c; g.fillRect(x + 2, GY + 4, 3, 3); }
+    // 판다 사진관
+    const sx = 2880, sw = 340, top = GY - 100;
+    g.fillStyle = '#3b2716'; g.fillRect(sx - 2, top - 2, sw + 4, 102); g.fillStyle = '#fbf1d6'; g.fillRect(sx, top, sw, 100);
+    g.fillStyle = '#b8262c'; g.fillRect(sx - 14, top - 18, sw + 28, 18); g.fillStyle = '#e0504f'; g.fillRect(sx - 14, top - 18, sw + 28, 5);
+    g.fillStyle = '#3b2716'; g.fillRect(sx + sw / 2 - 62, top + 8, 124, 26); g.fillStyle = '#f6c445'; g.fillRect(sx + sw / 2 - 60, top + 10, 120, 22);
+    g.fillStyle = '#2b1d12'; g.font = SIGN_FONT; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('📷 판다 사진관', sx + sw / 2, top + 21);
+    g.fillStyle = '#9fd3f5'; g.fillRect(sx + 20, top + 42, 60, 30); g.fillRect(sx + sw - 80, top + 42, 60, 30); g.fillStyle = '#3b2716'; g.fillRect(sx + 49, top + 42, 2, 30); g.fillRect(sx + sw - 51, top + 42, 2, 30);
+    drawPaifang(g, GATE_X[3] + 12, STAGE.finalText);
+  }
+  function decorateGift(g) {
+    drawSign(g, 110, ['판다 선물 마을', '출발! →'], 96);
+    // 선물 가게 차양
+    const aw = (x0, w, y, c1, c2) => { for (let x = x0; x < x0 + w; x += 16) { g.fillStyle = (x - x0) / 16 % 2 ? c1 : c2; g.fillRect(x, y, 16, 14); g.fillRect(x + 2, y + 14, 12, 4); } g.fillStyle = '#5a3a22'; g.fillRect(x0, y + 14, 4, GY - y - 14); g.fillRect(x0 + w - 4, y + 14, 4, GY - y - 14); };
+    aw(560, 192, GY - 96, '#ff8fb8', '#fbfaf5'); drawSign(g, 450, ['선물 가게'], 70);
+    // 과일 정원: 사과나무 (그림만)
+    for (const x of [1380, 1590]) { g.fillStyle = '#5a3a22'; g.fillRect(x - 5, GY - 50, 10, 50); g.fillStyle = '#2f7d3a'; g.fillRect(x - 30, GY - 98, 60, 50); g.fillStyle = '#4fae5c'; g.fillRect(x - 26, GY - 94, 52, 42); g.fillStyle = '#e03131'; for (const [ax, ay] of [[-18, -86], [6, -80], [-6, -66], [16, -64]]) g.fillRect(x + ax, GY + ay, 5, 5); }
+    drawSign(g, 1335, ['과일 정원'], 70);
+    // 음식 거리 차양
+    aw(1700, 176, GY - 100, '#e5484d', '#f6c445'); drawSign(g, 1710, ['음식 거리'], 70);
+    // 배달 마을 집
+    drawHouse(g, 2410); drawHouse(g, 2510); drawHouse(g, 2610); drawSign(g, 1992, ['배달 마을'], 70);
+    // 선물 축제 광장 깃발
+    g.fillStyle = '#5a3a22'; g.fillRect(2720, 140, 3, GY - 140); g.fillRect(3400, 140, 3, GY - 140); g.fillStyle = '#3b3346'; g.fillRect(2722, 142, 680, 1);
+    for (let x = 2730; x < 3396; x += 22) { g.fillStyle = ['#e5484d', '#f6c445', '#62aefc', '#5cc46a', '#c084fc'][(x / 22 | 0) % 5]; for (let r = 0; r < 8; r++) g.fillRect(x + Math.floor(r / 2), 143 + r, 10 - r, 1); }
     drawPaifang(g, GATE_X[3] + 12, STAGE.finalText);
   }
   function decorateBirthday(g) {
@@ -2472,8 +2661,9 @@
       return;
     }
     // 6차시 창: Enter = 확인/완성, Esc = 닫기
-    const pickBtn = document.activeElement && document.activeElement.matches && document.activeElement.matches('#cake button, #cal button, #bcard button') ? document.activeElement : null;   // 키보드로 고른 칸은 Enter로 누르기
-    if ((mode === 'cal' || mode === 'bcard' || mode === 'cake') && pickBtn && isEnter(c) && !e.repeat) { e.preventDefault(); if (!pickBtn.disabled) pickBtn.click(); return; }
+    const pickBtn = document.activeElement && document.activeElement.matches && document.activeElement.matches('#cake button, #cal button, #bcard button, #qpick button') ? document.activeElement : null;   // 키보드로 고른 칸은 Enter로 누르기
+    if ((mode === 'cal' || mode === 'bcard' || mode === 'cake' || mode === 'qpick') && pickBtn && isEnter(c) && !e.repeat) { e.preventDefault(); if (!pickBtn.disabled) pickBtn.click(); return; }
+    if (mode === 'qpick') { if (isEnter(c) && !e.repeat) { e.preventDefault(); pickOk(); } else if (c === 'Escape' && !e.repeat) closePick(); return; }
     if (mode === 'cake') { if (isEnter(c) && !e.repeat) { e.preventDefault(); cakeDone(); } else if (c === 'Escape' && !e.repeat) closeCake(); return; }
     if (mode === 'cal') { if (isEnter(c) && !e.repeat) { e.preventDefault(); if (!$('calOk').disabled) calOk(); } else if (c === 'Escape' && !e.repeat) closeCal(); return; }
     if (mode === 'bcard') { if (isEnter(c) && !e.repeat) { e.preventDefault(); if (!$('bcOk').disabled) bcOk(); } else if (c === 'Escape' && !e.repeat) closeBCard(); return; }
@@ -2539,7 +2729,7 @@
     $('setMusic').textContent = save.bgmOn !== false ? '🎵 배경음악: 켜짐' : '🎵 배경음악: 꺼짐';
   }
   // 배경음악: 탐험 중에만, 퀴즈·창이 열리면 작게, 중국어 음성이 나올 때는 더 작게, 🔊 끄면 같이 꺼짐
-  const MUSIC_MODES = ['play', 'cut', 'quiz', 'card', 'speak', 'pause', 'lesson', 'help', 'faint', 'talk', 'slab', 'basket', 'cake', 'cal', 'bcard'];
+  const MUSIC_MODES = ['play', 'cut', 'quiz', 'card', 'speak', 'pause', 'lesson', 'help', 'faint', 'talk', 'slab', 'basket', 'cake', 'cal', 'bcard', 'qpick'];
   function musicWanted() {
     if (!soundOn || save.bgmOn === false || document.hidden || quick.on || !run || !STAGE || !MUSIC_MODES.includes(mode)) return [null, 1];
     if ((mode === 'lesson' && lessonReturn === 'start') || (mode === 'help' && helpReturn === 'menu')) return [null, 1];
@@ -2591,7 +2781,7 @@
   const APPLE_N = 8, SHAKE_MAX = 6, SHAKE_CD = 0.35;
 
   function newQuest() {
-    if (STAGE.questKit === 'bd') return bdNew();
+    if (STAGE.questKit) return KIT().make();
     const r = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
     let teen2; do { teen2 = r(13, 19); } while (teen2 === 15);
     return {
@@ -2605,7 +2795,7 @@
     };
   }
   const qAct = () => run ? run.ms.findIndex(x => !x.complete) : -1;
-  const qNpc = (i) => (STAGE.questKit === 'bd' ? BD_NPC : NPC_DEF)[i];
+  const qNpc = (i) => (STAGE.questKit ? KIT().npcs : NPC_DEF)[i];
   // 몇 번째 미션의 들고 다니는 물건 목록
   const qItems = () => { const q = run.q, a = qAct(); return a === 2 ? q.m3.items : a === 3 ? q.m4.items : []; };
 
@@ -2668,7 +2858,7 @@
   // ----- 상호작용 (E·Enter = 큰 버튼, Q = 둘째 버튼) -----
   function questCand() {
     if (!run || !run.q || mode !== 'play') return null;
-    if (STAGE.questKit === 'bd') return bdCand();
+    if (STAGE.questKit) return KIT().cand();
     const q = run.q, a = qAct(), px = P.x + P.w / 2, feet = P.y + P.h;
     const near = (x, y, r = 30) => Math.abs(px - x) < r && feet > y - 46 && feet < y + 8;
     const carrying = q.carry >= 0;
@@ -2712,7 +2902,7 @@
 
   // ----- 지금 할 일 (화면 위 짧은 안내 + 화살표). 정답 상자·석판은 가리키지 않아요 -----
   function questGoal() {
-    if (STAGE.questKit === 'bd') return bdGoal();
+    if (STAGE.questKit) return KIT().goal();
     const q = run.q, a = qAct();
     const at = (i) => ({ x: qNpc(i).x, y: GY - 40 });
     if (a < 0) return { tip: '🚪 숫자의 문으로 가요 →', mark: { x: GATE_X[3] + 12, y: GY - 120 } };
@@ -3077,7 +3267,7 @@
 
   // ----- 매 프레임: 사과 떨어지기·줍기, 들고 다니기 -----
   function questUpdate(dt) {
-    if (STAGE.questKit === 'bd') return bdUpdate(dt);
+    if (STAGE.questKit) return KIT().update(dt);
     const q = run.q, m = q.m1;
     if (q.shakeT > 0) q.shakeT = Math.max(0, q.shakeT - dt);
     if (q.shakeCd > 0) q.shakeCd = Math.max(0, q.shakeCd - dt);
@@ -3121,6 +3311,9 @@
     if (d.hat === 'chef') { g.fillStyle = '#1d2738'; g.fillRect(sx + 8, sy - 12, 16, 14); g.fillStyle = '#fbfaf5'; g.fillRect(sx + 9, sy - 11, 14, 12); g.fillRect(sx + 7, sy - 13, 6, 5); g.fillRect(sx + 19, sy - 13, 6, 5); g.fillStyle = '#d9dde3'; g.fillRect(sx + 9, sy - 1, 14, 2); }
     if (d.hat === 'beret2') { g.fillStyle = '#3d9a5c'; g.fillRect(sx + 8, sy - 2, 16, 5); g.fillRect(sx + 14, sy - 4, 4, 2); }
     if (d.hat === 'party') { g.fillStyle = '#1d2738'; g.fillRect(sx + 11, sy - 3, 10, 4); g.fillRect(sx + 13, sy - 8, 6, 5); g.fillRect(sx + 15, sy - 12, 2, 4); g.fillStyle = '#c084fc'; g.fillRect(sx + 12, sy - 2, 8, 2); g.fillStyle = '#f6c445'; g.fillRect(sx + 14, sy - 7, 4, 4); g.fillStyle = '#ff6b8b'; g.fillRect(sx + 14, sy - 14, 4, 3); }
+    if (d.hat === 'strawhat') { g.fillStyle = '#b8902f'; g.fillRect(sx + 1, sy, 30, 3); g.fillStyle = '#e8c46a'; g.fillRect(sx + 2, sy, 28, 2); g.fillStyle = '#d9b14f'; g.fillRect(sx + 9, sy - 6, 14, 7); g.fillStyle = '#e5484d'; g.fillRect(sx + 9, sy - 2, 14, 2); }
+    if (d.hat === 'apron') { g.fillStyle = '#2b2838'; g.fillRect(sx + 9, sy + 24, 14, 8); g.fillStyle = '#ffd1e3'; g.fillRect(sx + 10, sy + 24, 12, 7); g.fillStyle = '#ff8fb8'; g.fillRect(sx + 13, sy + 27, 6, 3); }
+    if (d.hat === 'bow') { g.fillStyle = '#c2557f'; g.fillRect(sx + 9, sy - 5, 6, 6); g.fillRect(sx + 17, sy - 5, 6, 6); g.fillStyle = '#ff6b8b'; g.fillRect(sx + 10, sy - 4, 4, 4); g.fillRect(sx + 18, sy - 4, 4, 4); g.fillStyle = '#c2557f'; g.fillRect(sx + 14, sy - 3, 4, 4); }
     if (d.hat === 'festival') { g.fillStyle = '#e5484d'; g.fillRect(sx + 9, sy - 6, 14, 8); g.fillStyle = '#f6c445'; g.fillRect(sx + 9, sy, 14, 2); g.fillRect(sx + 15, sy - 9, 2, 3); }
   }
   function drawMarker(x, y) {
@@ -3226,7 +3419,7 @@
     if (run.q.party) for (let k = 0; k < 14; k++) { const x = sx(2900 + ((k * 53 + time * 40) % 380)), y = Math.round((k * 37 + time * 60) % 160) + 40; ctx.fillStyle = ['#ff9fb2', '#f6c445', '#62aefc', '#5cc46a'][k % 4]; ctx.fillRect(x, y, 3, 3); }
   }
   function drawQuest() {
-    if (STAGE.questKit === 'bd') return bdDraw();
+    if (STAGE.questKit) return KIT().draw();
     const q = run.q, a = qAct();
     drawTree(); drawAltar(); drawFestival();
     for (const ap of q.m1.apples) if (!ap.got) drawApple(ap);
@@ -3241,11 +3434,11 @@
       else if (i < a || a < 0) drawBubble2(x, GY - 44, '♥', '#ff9fb2');
     });
   }
-  function drawQuestTop() { if (STAGE.questKit === 'bd') return drawGoalGuide(); const it = qItems()[run.q.carry]; if (it) drawItem(it); drawGoalGuide(); }
+  function drawQuestTop() { if (STAGE.questKit) { if (KIT().top) KIT().top(); return drawGoalGuide(); } const it = qItems()[run.q.carry]; if (it) drawItem(it); drawGoalGuide(); }
 
   // 미션 다시 보기 (미션 창의 버튼): 지금 부탁을 다시 보여 줘요 (판정은 하지 않음)
   function questRecall() {
-    if (STAGE.questKit === 'bd') return bdRecall();
+    if (STAGE.questKit) return KIT().recall();
     const q = run.q, a = qAct();
     if (a < 0) return;
     closeMissionPanel();
@@ -3635,6 +3828,623 @@
     if (a === 2) { if (!q.m3.acc) return notYet(); const k = bdKid(); openTalk(2, `<p>꼬마 판다 생일카드: <b>${k.m}월 ${k.d}일</b></p><div class="zline"><span class="znum"><span class="han">我的生日是○月○号。</span></span></div>`, { hints: cardHints(k.m, k.d) }); return; }
     openTalk(3, q.m4.placed ? `<p>꼬마 판다에게 생일 축하 인사를 해 줘!</p><div class="zline">${HB}</div>` : '<p>파티 테이블에 케이크와 카드를 놓아 줘!</p>', { ok: '알겠어요!' });
   }
+
+
+  // ================= 7·8차시 공통: 고르기 창 (사진 고르기 · 문장 완성 · 자리 배치 · 취향 메모 · 좋아하는 것 고르기) =================
+  // 창 하나를 미션마다 다르게 채워 써요. 정답 여부는 [확인]을 눌러야 보이고, 보기 버튼은 모두 같은 모양이에요.
+  let qp = null;
+  function openPick(o) {
+    mode = 'qpick'; releaseAll(); closeMissionPanel(); uiOpenT = performance.now();
+    qp = { ...o, hi: 0 };
+    $('qpHead').innerHTML = o.title; $('qpAsk').innerHTML = o.ask || '';
+    $('qpMsg').className = 'bd-msg'; $('qpMsg').innerHTML = ''; $('qpHintBox').innerHTML = '';
+    $('qpHint').hidden = !(o.hints && o.hints.length); $('qpHint').textContent = '💡 힌트';
+    $('qpOk').hidden = !o.ok; $('qpOk').textContent = o.ok || '확인';
+    $('qpClose').textContent = o.closeLabel || '닫기';
+    o.render();
+    $('qpick').hidden = false; $('qpick').scrollTop = 0; $('qpick').querySelector('.card').focus({ preventScroll: true });
+  }
+  // 창 안의 보기 버튼 연결 (빨리 두 번 눌림 방지)
+  function pickBind(sel, f) { $('qpBody').querySelectorAll(sel).forEach(b => b.addEventListener('click', () => { if (tooSoon() || mode !== 'qpick') return; f(b); })); }
+  function pickMsg(html, cls = '') { $('qpMsg').className = 'bd-msg ' + cls; $('qpMsg').innerHTML = html; }
+  function pickHint() {
+    if (!qp || !qp.hints || qp.hi >= qp.hints.length) return;
+    taskHint(); $('qpHintBox').insertAdjacentHTML('beforeend', `<div>💡 ${qp.hints[qp.hi++]}</div>`);
+    if (qp.hi >= qp.hints.length) $('qpHint').hidden = true; else $('qpHint').textContent = HINT_LBL[qp.hi] || HINT_LBL[1];
+  }
+  function pickOk() { if (mode !== 'qpick' || !qp || $('qpOk').hidden || $('qpOk').disabled) return; qp.onOk(); }
+  function closePick() {
+    if (mode !== 'qpick') return;
+    $('qpick').hidden = true; const f = qp && qp.onClose; qp = null; mode = 'play'; focusStage(); updateMissionPanel();
+    if (f) f();
+  }
+  onTap('qpOk', pickOk); onTap('qpHint', pickHint); onTap('qpClose', closePick);
+  const zw = (w, big) => `<span class="znum${big ? ' big' : ''}"><span class="han">${w.h}</span><span class="py t0">${w.p}</span></span>`;
+  // NPC 얼굴 그림 (창 안에서 쓰는 작은 그림)
+  const FACE_URL = {};
+  function npcFaceURL(d) {
+    if (FACE_URL[d.id]) return FACE_URL[d.id];
+    const c = document.createElement('canvas'); c.width = 32; c.height = 42; const g = c.getContext('2d');
+    g.imageSmoothingEnabled = false; g.drawImage(npcSpr(d), 0, 10, 32, 32); drawNpcAcc(g, d, 0, 10, 1);
+    return (FACE_URL[d.id] = c.toDataURL());
+  }
+  // 들고 다니는 물건 (공통): 판다 머리 위에 그려요
+  function drawHeld(f) { const x = P.x + P.w / 2, y = P.y - 4; f(ctx, Math.round(x - cam), Math.round(y)); }
+
+  // ================= 7차시 판다 가족사진 대작전 (questKit 'fam') =================
+  // 爸爸 妈妈 哥哥 姐姐 弟弟 妹妹 + 这是我……。  가상의 판다 가족만 나와요 (학생의 실제 가족 정보는 묻지 않아요)
+  // 가족마다 모습이 늘 같아요: 키(어른·형제·동생) + 장식 하나. 정답 여부는 색·반짝임으로 드러나지 않아요.
+  const FAM = [
+    { id: 'baba', h: '爸爸', p: 'bàba', ko: '아빠', s: 1.2, scarf: '#3d7bd9', look: '검은 모자와 넥타이를 한 키 큰 판다', say: '이분은 우리 아빠예요.' },
+    { id: 'mama', h: '妈妈', p: 'māma', ko: '엄마', s: 1.2, scarf: '#e8689a', look: '분홍 꽃 머리핀을 한 키 큰 판다', say: '이분은 우리 엄마예요.' },
+    { id: 'gege', h: '哥哥', p: 'gēge', ko: '형, 오빠', s: 1, scarf: '#f08a24', look: '초록 모자를 쓴 판다', say: '이 사람은 우리 형/오빠예요.' },
+    { id: 'jiejie', h: '姐姐', p: 'jiějie', ko: '누나, 언니', s: 1, scarf: '#c084fc', look: '빨간 리본을 단 판다', say: '이 사람은 우리 누나/언니예요.' },
+    { id: 'didi', h: '弟弟', p: 'dìdi', ko: '남동생', s: 0.8, scarf: '#62aefc', look: '바람개비 모자를 쓴 작은 판다', say: '이 사람은 우리 남동생이에요.' },
+    { id: 'meimei', h: '妹妹', p: 'mèimei', ko: '여동생', s: 0.8, scarf: '#ffd23f', look: '양쪽에 머리 방울을 단 작은 판다', say: '이 사람은 우리 여동생이에요.' },
+  ];
+  const famOf = (id) => FAM.find(f => f.id === id);
+  const famSent = (id) => { const f = famOf(id); return { h: `这是我${f.h}。`, p: `Zhè shì wǒ ${f.p}.`, ko: f.say }; };
+  const FAM_SPR = {};
+  function famSpr(id) {
+    if (FAM_SPR[id]) return FAM_SPR[id];
+    const f = famOf(id), c = document.createElement('canvas'); c.width = 16; c.height = 20; const g = c.getContext('2d');
+    g.drawImage(makeSprite([...PANDA_HEAD, ...PANDA_BODY.idle], { ...PANDA_PAL, l: null, r: f.scarf }), 0, 4);
+    const R = (x, y, w, h, col) => { g.fillStyle = col; g.fillRect(x, y, w, h); };
+    if (id === 'baba') { R(2, 4, 12, 1, '#2b2838'); R(4, 1, 8, 3, '#2b2838'); R(5, 2, 6, 1, '#4a4458'); R(4, 3, 8, 1, '#e5484d'); R(7, 17, 2, 2, '#1d3f7a'); }
+    if (id === 'mama') { R(11, 2, 3, 3, '#ff8fb8'); R(12, 1, 1, 5, '#ff8fb8'); R(10, 3, 5, 1, '#ff8fb8'); R(12, 3, 1, 1, '#ffd23f'); }
+    if (id === 'gege') { R(4, 2, 8, 3, '#2f9e44'); R(4, 2, 8, 1, '#5cc46a'); R(11, 4, 4, 1, '#1f6e2e'); }
+    if (id === 'jiejie') { R(4, 1, 3, 3, '#e5484d'); R(9, 1, 3, 3, '#e5484d'); R(7, 2, 2, 2, '#b8262c'); }
+    if (id === 'didi') { R(4, 2, 8, 3, '#f6c445'); R(4, 4, 8, 1, '#c99a1e'); R(7, 1, 2, 1, '#2b2838'); R(4, 0, 8, 1, '#62aefc'); }
+    if (id === 'meimei') { R(0, 6, 3, 3, '#ff6b8b'); R(13, 6, 3, 3, '#ff6b8b'); R(1, 7, 1, 1, '#ffd1e3'); R(14, 7, 1, 1, '#ffd1e3'); }
+    return (FAM_SPR[id] = c);
+  }
+  // 게임 화면에 가족 그리기 (x: 가운데, y: 발 위치)
+  function famDrawAt(id, x, y, face = 1, hop = 0) {
+    const spr = famSpr(id), k = 2 * famOf(id).s, w = Math.round(16 * k), h = Math.round(20 * k);
+    const sx = Math.round(x - w / 2 - cam), sy = Math.round(y - h + hop);
+    if (sx < -60 || sx > W + 60) return;
+    ctx.fillStyle = 'rgba(30,40,30,.25)'; ctx.fillRect(sx + Math.round(w * 0.22), Math.round(y) - 2, Math.round(w * 0.56), 3);
+    if (face > 0) ctx.drawImage(spr, sx, sy, w, h); else { ctx.save(); ctx.translate(sx + w, sy); ctx.scale(-1, 1); ctx.drawImage(spr, 0, 0, w, h); ctx.restore(); }
+  }
+  // 사진(초상화) 그림: 모든 사진 칸은 같은 크기, 안의 판다 키만 가족마다 달라요 (소개할 때와 같은 모습)
+  const FAM_FACE = {};
+  function famFace(id) {
+    if (FAM_FACE[id]) return FAM_FACE[id];
+    const c = document.createElement('canvas'); c.width = 48; c.height = 52; const g = c.getContext('2d'); g.imageSmoothingEnabled = false;
+    const k = 2 * famOf(id).s, w = Math.round(16 * k), h = Math.round(20 * k);
+    g.drawImage(famSpr(id), Math.round((48 - w) / 2), 52 - h, w, h);
+    return (FAM_FACE[id] = c.toDataURL());
+  }
+  const famImg = (id) => `<img class="fam-face" src="${famFace(id)}" alt="판다 사진">`;
+  const famCard = (id) => { const f = famOf(id); return `<div class="fam-intro">${famImg(id)}<span class="znum"><span class="han">${f.h}</span><span class="py t0">${f.p}</span></span><span class="fam-ko">${f.ko}</span></div>`; };
+
+  const FM_NPC = [
+    { id: 'assist', name: '사진사 조수 판다', x: 330, mission: 0, scarf: '#3d7bd9', hat: 'beret' },
+    { id: 'forest', name: '숲지기 판다', x: 1890, mission: 1, scarf: '#3d9a5c', hat: 'strawhat' },
+    { id: 'neighbor', name: '이웃 판다', x: 2080, mission: 2, scarf: '#e8689a', hat: 'apron' },
+    { id: 'photo', name: '사진사 판다', x: 2770, mission: 3, scarf: '#8a5cd6', hat: 'beret2', glasses: true },
+  ];
+  const FM_BOARD_X = 820;                                                   // 1구역 사진 게시판
+  const FM_FOREST = [1380, 1450, 1520, 1590, 1660, 1730, 1800];               // 2구역 대나무 숲: 이 중 6곳에 가족이 무작위로
+  const FM_POND_X = 2160;                                                   // 3구역: 이웃 판다 옆에 서는 가족
+  const FM_STUDIO = [2900, 2955, 3010, 3065, 3120, 3175];                    // 4구역 사진관 앞 기다리는 자리
+  const FM_GROUP = [['baba', 'mama', 'gege'], ['jiejie', 'didi', 'meimei']];
+
+  function fmNew() {
+    const ids = FAM.map(f => f.id), spots = shuffle(FM_FOREST).slice(0, 6);
+    return {
+      // 1구역: 소개(2번에 나눠서) → 사진 골라 가져오기
+      m1: { acc: false, ri: 0, rounds: [{ t: pick(FM_GROUP[0]), intro: FM_GROUP[0], opts: FM_GROUP[0] }, { t: pick(FM_GROUP[1]), intro: FM_GROUP[1], opts: ids }], photo: null },
+      // 2구역: 숲에서 가족 찾아 데려오기 (6명 모두 숲에, 위치는 무작위)
+      m2: { acc: false, ri: 0, targets: shuffle(ids).slice(0, 2), fam: ids.map((id, i) => ({ id, hx: spots[i], x: spots[i], st: 'wait' })), follow: null },
+      // 3구역: 这是我____。 2문제
+      m3: { acc: false, ri: 0, qs: shuffle(ids).slice(0, 2) },
+      // 4구역: 가족사진 자리 6개 (자리 순서 무작위)
+      m4: { acc: false, slots: shuffle(ids), studio: shuffle(ids) },
+      party: false, final: false, partyT: 0, flashT: 0, task: null, carry: -1,
+    };
+  }
+  function fmCand() {
+    const q = run.q, a = qAct(), px = P.x + P.w / 2, feet = P.y + P.h;
+    const near = (x, r = 34) => Math.abs(px - x) < r && feet > GY - 46;
+    for (const d of FM_NPC) {
+      if (!near(d.x)) continue;
+      if (d.mission === 0 && a === 0 && q.m1.photo) return { label: '🤲 사진 건네주기', act: fmGivePhoto, label2: '📷 사진 내려놓기', act2: fmDropPhoto };
+      if (d.mission === 1 && a === 1 && q.m2.follow) return { label: '🤝 데려왔어요', act: fmBringFam, label2: '👋 돌려보내기', act2: fmSendBack };
+      return { label: '💬 말 걸기', act: () => fmTalk(d) };
+    }
+    if (a === 0 && q.m1.acc && near(FM_BOARD_X, 44)) return { label: q.m1.photo ? '🔄 다른 사진 고르기' : '📷 사진 고르기', act: fmOpenBoard, ...(q.m1.photo ? { label2: '📷 사진 내려놓기', act2: fmDropPhoto } : {}) };
+    if (a === 1 && q.m2.acc) {
+      for (const f of q.m2.fam) if (f.st === 'wait' && near(f.x, 22)) return { label: q.m2.follow ? '🔄 이 판다와 같이 가기' : '🐼 같이 가자!', act: () => fmFollow(f), ...(q.m2.follow ? { label2: '👋 돌려보내기', act2: fmSendBack } : {}) };
+      if (q.m2.follow) return { label: '', label2: '👋 돌려보내기', act2: fmSendBack };
+    }
+    if (a === 0 && q.m1.photo) return { label: '', label2: '📷 사진 내려놓기', act2: fmDropPhoto };
+    return null;
+  }
+  function fmGoal() {
+    const q = run.q, a = qAct(), at = (i) => ({ x: FM_NPC[i].x, y: GY - 44 });
+    if (a < 0) return { tip: '🚪 가족사진 완성! 마지막 문으로 가요 →', mark: { x: GATE_X[3] + 12, y: GY - 120 } };
+    if (a === 0) {
+      const m = q.m1;
+      if (!m.acc) return { tip: '💬 사진사 조수 판다에게 말을 걸어요', mark: at(0) };
+      if (!m.photo) return { tip: `📷 사진 게시판에서 부탁한 가족 사진을 골라요 (${m.ri + 1}/2)`, mark: { x: FM_BOARD_X, y: GY - 96 } };
+      return { tip: '🤲 고른 사진을 조수 판다에게 가져가요', mark: at(0) };
+    }
+    if (a === 1) {
+      const m = q.m2;
+      if (!m.acc) return { tip: '💬 숲지기 판다에게 말을 걸어요', mark: at(1) };
+      if (!m.follow) return { tip: `🐼 대나무 숲에서 부탁한 가족을 찾아요 (${m.ri + 1}/2)`, mark: null };
+      return { tip: '🤝 숲지기 판다에게 데려가요', mark: at(1) };
+    }
+    if (a === 2) return { tip: q.m3.acc ? `💬 이웃 판다에게 가족을 소개해요 (${q.m3.ri + 1}/2)` : '💬 이웃 판다에게 말을 걸어요', mark: at(2) };
+    return { tip: '📸 사진사 판다에게 가서 가족사진을 찍어요', mark: at(3) };
+  }
+  // 힌트 3단계: ① 중국어를 다시 보고 생각하기 ② 한국어 뜻 ③ 정답과 설명
+  const fmHints = (id) => { const f = famOf(id); return [`${f.h} ${f.p} — 앞에서 소개한 판다 가족 중 누구였는지 떠올려 봐요.`, `${f.h}${pp(f.h, '은/는')} ‘${f.ko}’예요.`, `정답: ${f.look}예요.`]; };
+
+  function fmIntro(ri, then) {
+    const r = run.q.m1.rounds[ri];
+    openTalk(0, `<p>${ri === 0 ? '안녕! 오늘 판다 가족사진을 찍을 거야. 가족을 먼저 소개할게!' : '이번에는 다른 가족 세 명이야!'}</p><div class="fam-row">${r.intro.map(famCard).join('')}</div><p class="qprog">모습을 잘 기억해 두세요.</p>`, { ok: '기억했어요!', onOk: then });
+  }
+  function fmAsk(ri) {
+    const m = run.q.m1, r = m.rounds[ri], f = famOf(r.t);
+    taskBegin('f1' + ri, `사진: ${f.h} 찾기`, f.ko);
+    openTalk(0, `<p>그럼 사진 게시판에서 이 가족 사진을 찾아 줄래? (${ri + 1}/2)</p><div class="zline big">${zw(f)} 사진을 찾아 줘!</div>`, { ok: '찾아볼게요!', hints: fmHints(r.t), onOk: () => { m.acc = true; toast('📷 사진 게시판으로 가요 →', 2000, true); } });
+  }
+  function fmTalk(d) {
+    const q = run.q, a = qAct(), i = d.mission;
+    if (q.final || a < 0) { openTalk(i, '<p>멋진 가족사진이야! 마지막 문으로 가 봐 →</p>', { ok: '네!' }); return; }
+    if (i < a) { openTalk(i, '<p>고마워! 다음 구역도 부탁해 →</p>', { ok: '네!' }); return; }
+    if (i > a) { openTalk(i, '<p>앞 구역 친구의 부탁을 먼저 들어줘!</p>', { ok: '네!' }); return; }
+    if (i === 0) { const m = q.m1; if (!m.acc && m.ri === 0) fmIntro(0, () => fmAsk(0)); else fmAsk(m.ri); return; }
+    if (i === 1) {
+      const m = q.m2, t = famOf(m.targets[m.ri]);
+      taskBegin('f2' + m.ri, `숲: ${t.h} 데려오기`, t.ko);
+      openTalk(1, `<p>${m.acc ? '다시 알려 줄게!' : '판다 가족이 대나무 숲에 흩어져 있어!'}</p><div class="zline big">${zw(t)} 판다를 찾아서 데려와 줘! (${m.ri + 1}/2)</div><p class="qprog">판다 옆에서 [🐼 같이 가자!]를 누르면 따라와요.</p>`,
+        { ok: '찾아볼게요!', hints: fmHints(t.id), onOk: () => { m.acc = true; } });
+      return;
+    }
+    if (i === 2) {
+      const m = q.m3;
+      if (!m.acc) { openTalk(2, '<p>안녕! 너희 가족을 나에게 소개해 줄래?</p><p>중국어로 <b>这是我……。</b> 라고 말하면 돼!</p>', { ok: '좋아요!', onOk: () => { m.acc = true; fmSentence(); } }); return; }
+      fmSentence(); return;
+    }
+    if (!q.m4.acc) { openTalk(3, '<p>가족이 모두 사진관에 모였어! 이제 가족사진 자리를 정해 줘.</p><p class="qprog">자리마다 적힌 가족을 골라 놓아요.</p>', { ok: '좋아요!', onOk: () => { q.m4.acc = true; fmFrame(); } }); return; }
+    fmFrame();
+  }
+
+  // ----- 미션 1: 사진 게시판 → 사진 하나를 들고 가서 건네주기 -----
+  function fmOpenBoard() {
+    const m = run.q.m1, opts = shuffle(m.rounds[m.ri].opts);
+    openPick({
+      title: '📷 사진 게시판', ask: `<p>조수 판다가 부탁한 사진을 골라요.</p>`, hints: fmHints(m.rounds[m.ri].t), closeLabel: '닫기',
+      render() {
+        $('qpBody').innerHTML = `<div class="pk-grid photos">${opts.map((id, k) => `<button class="pk-opt photo" data-k="${k}">${famImg(id)}</button>`).join('')}</div>`;
+        pickBind('.pk-opt', (b) => { m.photo = opts[+b.dataset.k]; SFX.pop(); closePick(); toast('📷 사진을 들었어요! 조수 판다에게 가져가요', 2000, true); });
+      },
+    });
+  }
+  function fmDropPhoto() { const m = run.q.m1; if (!m.photo) return; m.photo = null; SFX.pop(); toast('사진을 게시판에 다시 꽂았어요', 1400, true); }
+  function fmGivePhoto() {
+    const q = run.q, m = q.m1, r = m.rounds[m.ri], f = famOf(r.t), got = m.photo;
+    m.photo = null;
+    if (got === r.t) {
+      taskEnd(); SFX.correct();
+      const ok = `<p>맞아! 이 사진이야!</p><div class="fam-row">${famCard(r.t)}</div>`;
+      if (m.ri === 0) { m.ri = 1; openTalk(0, ok, { ok: '다음!', onOk: () => fmIntro(1, () => fmAsk(1)) }); }
+      else { m.ri = 2; openTalk(0, ok + '<p>고마워! 이제 판다 가족 여섯 명을 모두 알게 됐어!</p>', { ok: '야호!', onOk: () => questDone(0) }); }
+      return;
+    }
+    taskMiss(); SFX.wrong();
+    openTalk(0, `<p>앗, 이 사진은 아니야!</p><div class="fam-row"><div class="fam-intro">${famImg(got)}</div></div><p>내가 찾는 건 ${zw(f)} 사진이야. 다시 골라 볼까?</p>`, { ok: '다시 골라 볼게요!', hints: fmHints(r.t) });
+  }
+
+  // ----- 미션 2: 숲에서 가족을 찾아 데려오기 (한 명씩 따라와요) -----
+  function fmFollow(f) {
+    const m = run.q.m2;
+    if (m.follow) { const o = m.fam.find(x => x.id === m.follow); if (o) o.st = 'wait'; }
+    m.follow = f.id; f.st = 'follow'; SFX.pop();
+    floatText(f.x, GY - 50, '♪', '#fff0a8'); toast('🐼 판다가 따라와요! 숲지기 판다에게 데려가요', 1800, true);
+  }
+  function fmSendBack() { const m = run.q.m2; if (!m.follow) return; const o = m.fam.find(x => x.id === m.follow); if (o) o.st = 'wait'; m.follow = null; SFX.pop(); }
+  function fmBringFam() {
+    const q = run.q, m = q.m2, t = famOf(m.targets[m.ri]), got = m.follow, o = m.fam.find(x => x.id === got);
+    if (got === t.id) {
+      taskEnd(); SFX.correct(); o.st = 'gone'; m.follow = null; m.ri++;
+      burst(o.x, GY - 30, ['#fff0a8', '#ffffff', '#5cc46a'], 12, 160);
+      const done = m.ri >= 2;
+      openTalk(1, `<p>찾았다! 이 판다가 ${zw(t)} 야!</p><div class="fam-row">${famCard(t.id)}</div><p>${done ? '고마워! 나머지 가족도 다 같이 사진관으로 갈게!' : '사진관으로 먼저 보낼게. 하나 더 부탁해!'}</p>`,
+        { ok: done ? '사진관으로 가요!' : '다음!', onOk: () => { if (done) { m.fam.forEach(x => { if (x.st !== 'gone') x.st = 'gone'; }); questDone(1); } else fmTalk(FM_NPC[1]); } });
+      return;
+    }
+    taskMiss(); SFX.wrong(); o.st = 'wait'; m.follow = null;
+    openTalk(1, `<p>앗, 이 판다는 아니야! 숲으로 돌아갔어.</p><p>내가 찾는 건 ${zw(t)} 야. 다시 찾아볼까?</p>`, { ok: '다시 찾아볼게요!', hints: fmHints(t.id) });
+  }
+
+  // ----- 미션 3: 这是我____。 문장 완성 (보기는 한자+병음 카드, 고른 순간에는 판정 없음) -----
+  function fmSentence() {
+    const m = run.q.m3, id = m.qs[m.ri], f = famOf(id);
+    const opts = shuffle([id, ...shuffle(FAM.map(x => x.id).filter(x => x !== id)).slice(0, 3)]);
+    let sel = -1;
+    taskBegin('f3' + m.ri, `소개: 这是我${f.h}。`, `这是我${f.h}。`);
+    const hints = ['这是我 + 가족 이름: 옆에 있는 판다가 우리 가족 중 누구인지 떠올려 봐요.', `이 판다는 우리 ‘${f.ko}’예요.`, `정답: 这是我${f.h}。 ${f.p}`];
+    openPick({
+      title: `🏡 가족 소개하기 (${m.ri + 1}/2)`, ask: `<p>이웃 판다: “이 판다는 누구야?”</p><div class="fam-row">${`<div class="fam-intro">${famImg(id)}</div>`}</div>`,
+      hints, ok: '✅ 문장 완성!', closeLabel: '나중에 할게요',
+      render() {
+        const w = sel >= 0 ? famOf(opts[sel]) : null;
+        $('qpBody').innerHTML = `<div class="pk-sent"><span class="han">这是我</span><span class="pk-blank">${w ? `<span class="han">${w.h}</span>` : '<span class="han">____</span>'}</span><span class="han">。</span></div>
+          <div class="pk-sent-py">Zhè shì wǒ <b>${w ? w.p : '____'}</b>.</div>
+          <div class="pk-grid words">${opts.map((x, k) => { const o = famOf(x); return `<button class="pk-opt word${k === sel ? ' sel' : ''}" data-k="${k}" aria-pressed="${k === sel}"><span class="han">${o.h}</span><span class="py t0">${o.p}</span></button>`; }).join('')}</div>`;
+        pickBind('.pk-opt', (b) => { sel = +b.dataset.k; SFX.pop(); pickMsg(''); qp.render(); });
+        $('qpOk').disabled = sel < 0;
+      },
+      onOk() {
+        if (opts[sel] === id) {
+          taskEnd(); SFX.correct(); closePick();
+          const s = famSent(id); m.ri++;
+          const done = m.ri >= 2;
+          openTalk(2, `<p>멋진 소개야!</p><div class="zline big"><span class="znum big"><span class="han">${s.h}</span><span class="py t0">${s.p}</span></span></div><p>${s.ko}</p><p><b>화면을 보며 중국어로 말해 보세요!</b></p>`,
+            { ok: '🗣 말했어요!', onOk: () => { if (done) questDone(2); else fmSentence(); } });
+          return;
+        }
+        taskMiss(); SFX.wrong();
+        const o = famOf(opts[sel]);
+        pickMsg(`‘这是我${o.h}。’는 이 판다를 소개하는 말이 아니에요. 다시 골라 봐요!`, 'no');
+        sel = -1; qp.render();
+      },
+    });
+  }
+
+  // ----- 미션 4: 가족사진 자리 배치 → 찰칵! -----
+  function fmFrame() {
+    const q = run.q, m = q.m4, slots = m.slots, place = slots.map(() => null), cands = shuffle(FAM.map(f => f.id));
+    let cur = 0;
+    taskBegin('f4', '가족사진 자리 배치', slots.map(id => famOf(id).h).join(' '));
+    const hints = [`자리 이름을 다시 읽어 봐요: ${slots.map(id => `${famOf(id).h} ${famOf(id).p}`).join(' · ')}`, FAM.map(f => `${f.h} = ${f.ko}`).join(', '), `정답: ${FAM.map(f => `${f.h} = ${f.look}`).join(' / ')}`];
+    const nextEmpty = () => { const k = place.findIndex(x => x === null); return k < 0 ? cur : k; };
+    openPick({
+      title: '📸 가족사진 자리 정하기', ask: '<p>자리 이름을 보고 알맞은 가족을 놓아요. 자리를 누르면 비울 수 있어요.</p>', hints, ok: '📸 사진 찍기!', closeLabel: '나중에 할게요',
+      render() {
+        $('qpBody').innerHTML = `<div class="pk-frame">${slots.map((id, k) => { const f = famOf(id); return `<button class="pk-slot${k === cur ? ' cur' : ''}" data-s="${k}"><span class="pk-slot-pic">${place[k] ? famImg(place[k]) : '<span class="pk-q">?</span>'}</span><span class="han">${f.h}</span><span class="py t0">${f.p}</span></button>`; }).join('')}</div>
+          <div class="pk-lbl">가족 고르기 → <b>${cur + 1}번 자리</b>에 놓여요</div>
+          <div class="pk-grid photos six">${cands.map((id, k) => `<button class="pk-opt photo${place.includes(id) ? ' used' : ''}" data-k="${k}">${famImg(id)}</button>`).join('')}</div>`;
+        pickBind('.pk-slot', (b) => { const k = +b.dataset.s; if (place[k]) place[k] = null; cur = k; SFX.pop(); qp.render(); });
+        pickBind('.pk-opt', (b) => { const id = cands[+b.dataset.k], old = place.indexOf(id); if (old >= 0) place[old] = null; place[cur] = id; cur = nextEmpty(); SFX.pop(); pickMsg(''); qp.render(); });
+        $('qpOk').disabled = place.some(x => x === null);
+      },
+      onOk() {
+        const wrong = slots.map((id, k) => place[k] !== id);
+        if (!wrong.some(Boolean)) { taskEnd(); closePick(); fmPhoto(); return; }
+        taskMiss(); SFX.wrong();
+        const n = wrong.filter(Boolean).length;
+        wrong.forEach((w, k) => { if (w) place[k] = null; });
+        cur = nextEmpty();
+        pickMsg(`${n}개 자리가 달라요. 비워진 자리에 다시 놓아 봐요!`, 'no'); qp.render();
+      },
+    });
+  }
+  function fmPhoto() {
+    const q = run.q; q.party = true; q.final = true; q.partyT = 0; q.flashT = 1;
+    SFX.gate(); setTimeout(() => SFX.correct(), 250);
+    for (let k = 0; k < 5; k++) burst(2900 + rnd(0, 300), GY - rnd(40, 110), ['#ffffff', '#fff0a8', '#ff9fb2', '#62aefc'], 14, 200);
+    const s = famSent('baba');
+    setTimeout(() => openTalk(3, `<p>찰칵! 📸</p><div class="zline big"><span class="znum big"><span class="han">${s.h}</span><span class="py t0">${s.p}</span></span></div><p>${s.ko}</p><p class="fm-done">판다 가족사진 완성!</p><p><b>화면을 보며 중국어로 말해 보세요!</b></p>`, { ok: '🗣 말했어요!', onOk: () => questDone(3) }), 700);
+  }
+
+  function fmUpdate(dt) {
+    const q = run.q, m = q.m2;
+    if (q.party) q.partyT += dt;
+    if (q.flashT > 0) q.flashT = Math.max(0, q.flashT - dt * 1.6);
+    for (const f of m.fam) {
+      if (f.st === 'follow') { const tx = P.x + P.w / 2 - 26 * P.face; f.x += (tx - f.x) * Math.min(1, dt * 5); }
+      else if (f.st === 'wait') f.x += (f.hx - f.x) * Math.min(1, dt * 4);
+    }
+  }
+  function fmDraw() {
+    const q = run.q, a = qAct(), px = P.x + P.w / 2, sx = (x) => Math.round(x - cam);
+    // 1구역 사진 게시판 (사진은 뒤집혀 있어서 게시판을 열어야 보여요)
+    { const x = sx(FM_BOARD_X); if (x > -60 && x < W + 60) {
+      ctx.fillStyle = '#5a3a22'; ctx.fillRect(x - 3, GY - 40, 6, 40); ctx.fillStyle = '#3b2716'; ctx.fillRect(x - 36, GY - 82, 72, 46); ctx.fillStyle = '#c99561'; ctx.fillRect(x - 34, GY - 80, 68, 42);
+      ctx.fillStyle = '#fbfaf5'; for (let k = 0; k < 6; k++) ctx.fillRect(x - 30 + (k % 3) * 21, GY - 76 + Math.floor(k / 3) * 19, 17, 15);
+      ctx.fillStyle = '#e5484d'; for (let k = 0; k < 6; k++) ctx.fillRect(x - 22 + (k % 3) * 21, GY - 77 + Math.floor(k / 3) * 19, 2, 2);
+    } }
+    // 3구역 연못가에 선 가족 (지금 소개할 판다)
+    if (a === 2) famDrawAt(q.m3.qs[Math.min(q.m3.ri, 1)], FM_POND_X, GY, px >= FM_POND_X ? 1 : -1);
+    // 2구역 숲의 가족 (숲을 떠난 가족은 4구역 사진관 앞에 서 있어요)
+    for (const f of q.m2.fam) if (f.st === 'wait' || f.st === 'follow') famDrawAt(f.id, f.x, GY, f.st === 'follow' ? P.face : (px >= f.x ? 1 : -1), f.st === 'follow' ? -Math.abs(Math.sin(time * 8)) * 2 : 0);
+    if (a >= 3 || a < 0) q.m4.studio.forEach((id, k) => famDrawAt(id, FM_STUDIO[k], GY, -1, q.final ? -Math.max(0, Math.sin(q.partyT * 5 + k)) * 6 : 0));
+    // 사진기 (삼각대)
+    { const x = sx(2840); if (x > -40 && x < W + 40) { ctx.fillStyle = '#2b2838'; ctx.fillRect(x - 1, GY - 40, 3, 40); ctx.fillRect(x - 8, GY - 6, 3, 6); ctx.fillRect(x + 6, GY - 6, 3, 6); ctx.fillRect(x - 10, GY - 56, 22, 16); ctx.fillStyle = '#5a6577'; ctx.fillRect(x - 8, GY - 54, 18, 12); ctx.fillStyle = '#62aefc'; ctx.fillRect(x + 4, GY - 51, 5, 5); if (q.final && Math.sin(q.partyT * 6) > 0.6) { ctx.fillStyle = '#fff6b0'; ctx.fillRect(x - 12, GY - 62, 6, 6); } } }
+    FM_NPC.forEach((d, i) => {
+      drawNpc(d, d.x, GY, px >= d.x ? 1 : -1);
+      if (i === a && mode === 'play') drawBubble2(d.x, GY - 44 + Math.sin(time * 4) * 2, '!');
+      else if (i < a || a < 0) drawBubble2(d.x, GY - 44, '♥', '#ff9fb2');
+    });
+  }
+  function fmTop() {
+    const q = run.q;
+    if (q.m1.photo && qAct() === 0) drawHeld((g, x, y) => { g.fillStyle = '#2b2838'; g.fillRect(x - 11, y - 26, 22, 26); g.fillStyle = '#fbfaf5'; g.fillRect(x - 10, y - 25, 20, 24); g.drawImage(famSpr(q.m1.photo), x - 8, y - 22, 16, 20); });
+    // 사진 플래시
+    if (q.flashT > 0) { ctx.fillStyle = `rgba(255,255,255,${q.flashT * 0.85})`; ctx.fillRect(0, 0, W, H); }
+  }
+  function fmRecall() {
+    const q = run.q, a = qAct();
+    if (a < 0) return;
+    closeMissionPanel();
+    const notYet = () => openTalk(a, `<p>아직 ${FM_NPC[a].name}의 부탁을 듣지 않았어요.</p><p>노란 ▼ 표시를 따라가서 말을 걸어 봐요!</p>`, { ok: '알겠어요!' });
+    if (a === 0) { const m = q.m1; if (!m.acc) return notYet(); const f = famOf(m.rounds[m.ri].t); openTalk(0, `<div class="zline big">${zw(f)} 사진을 찾아 줘! (${m.ri + 1}/2)</div>`, { hints: fmHints(f.id) }); return; }
+    if (a === 1) { const m = q.m2; if (!m.acc) return notYet(); const t = famOf(m.targets[m.ri]); openTalk(1, `<div class="zline big">${zw(t)} 판다를 찾아서 데려와 줘! (${m.ri + 1}/2)</div>`, { hints: fmHints(t.id) }); return; }
+    if (a === 2) { openTalk(2, '<p>이웃 판다에게 말을 걸고, 가족을 <b>这是我……。</b> 로 소개해 줘!</p>', { ok: '알겠어요!' }); return; }
+    openTalk(3, '<p>사진사 판다에게 말을 걸고, 가족사진 자리를 정해 줘!</p>', { ok: '알겠어요!' });
+  }
+
+  // ================= 8차시 판다 친구들의 선물 찾기 (questKit 'gift') =================
+  // 기본 어휘 4개: 熊猫 · 苹果 · 饺子 · 麻辣烫 + 我喜欢……。 (你喜欢什么？는 듣고 이해하는 보너스)
+  const GIFT = [
+    { id: 'xiongmao', h: '熊猫', p: 'xióngmāo', ko: '판다', obj: '판다 인형', ko2: '판다를' },
+    { id: 'pingguo', h: '苹果', p: 'píngguǒ', ko: '사과', obj: '사과', ko2: '사과를' },
+    { id: 'jiaozi', h: '饺子', p: 'jiǎozi', ko: '만두', obj: '만두', ko2: '만두를' },
+    { id: 'malatang', h: '麻辣烫', p: 'málàtàng', ko: '마라탕', obj: '마라탕', ko2: '마라탕을' },
+  ];
+  const giftOf = (id) => GIFT.find(g => g.id === id);
+  const gfSent = (id) => { const g = giftOf(id); return { h: `我喜欢${g.h}。`, p: `Wǒ xǐhuan ${g.p}.`, ko: `나는 ${g.ko2} 좋아해요.` }; };
+  const gfLine = (id, big) => { const s = gfSent(id); return `<div class="zline${big ? ' big' : ''}"><span class="znum${big ? ' big' : ''}"><span class="han">${s.h}</span><span class="py t0">${s.p}</span></span></div>`; };
+  // 선물 그림 (g: 캔버스, cx: 가운데, by: 바닥, s: 배율). 마라탕(빨간 국물 그릇)과 만두(찜기)는 모양부터 달라요
+  function drawGift(g, id, cx, by, s = 1) {
+    const R = (x, y, w, h, c) => { g.fillStyle = c; g.fillRect(Math.round(cx + x * s), Math.round(by + y * s), Math.ceil(w * s), Math.ceil(h * s)); };
+    if (id === 'pingguo') { R(-6, -13, 12, 12, '#7a1414'); R(-5, -12, 10, 10, '#e03131'); R(-6, -10, 12, 7, '#e03131'); R(-3, -11, 3, 3, '#ff8787'); R(-1, -16, 2, 4, '#5a3a22'); R(1, -16, 4, 2, '#2f9e44'); }
+    if (id === 'xiongmao') {   // 판다 인형 (리본 달린 인형)
+      R(-8, -17, 5, 5, '#22202b'); R(3, -17, 5, 5, '#22202b'); R(-7, -15, 14, 10, '#22202b'); R(-6, -14, 12, 9, '#fbfaf5'); R(-4, -11, 3, 3, '#22202b'); R(1, -11, 3, 3, '#22202b'); R(-1, -8, 2, 1, '#22202b');
+      R(-6, -5, 12, 5, '#22202b'); R(-4, -5, 8, 4, '#fbfaf5'); R(-3, -6, 6, 2, '#ff6b8b'); R(-1, -6, 2, 2, '#c2557f');
+    }
+    if (id === 'jiaozi') {     // 대나무 찜기 위 하얀 만두 3개
+      R(-10, -6, 20, 6, '#5a3a22'); R(-9, -5, 18, 4, '#c4946a'); R(-9, -3, 18, 1, '#8a5a2b');
+      for (const [x, y] of [[-9, -10], [-3, -12], [3, -10]]) { R(x, y + 1, 7, 4, '#9c8f78'); R(x + 1, y, 5, 4, '#fbf5e6'); R(x + 1, y + 3, 5, 1, '#e7dcc4'); R(x + 2, y, 1, 1, '#d9cfb8'); R(x + 4, y, 1, 1, '#d9cfb8'); }
+    }
+    if (id === 'malatang') {   // 둥근 하얀 그릇 + 빨간 국물 + 여러 재료 + 김
+      const k = '#2b2838', w = '#fbfaf5';
+      R(-12, -12, 24, 3, '#d9381e'); R(-10, -12, 7, 1, '#ff6b4a'); R(-13, -11, 1, 2, k); R(12, -11, 1, 2, k);
+      R(-9, -14, 4, 2, '#3f9442'); R(-4, -15, 4, 3, '#fff6d6'); R(1, -14, 3, 3, '#f6a24c'); R(5, -14, 3, 2, '#3f9442'); R(-6, -13, 2, 2, '#8a5a2b'); R(8, -13, 2, 1, '#8b0000'); R(-1, -13, 2, 1, '#8b0000');
+      R(-13, -9, 26, 1, k); R(-12, -8, 24, 2, w); R(-13, -8, 1, 2, k); R(12, -8, 1, 2, k);
+      R(-11, -6, 22, 2, w); R(-12, -6, 1, 2, k); R(11, -6, 1, 2, k); R(-11, -6, 22, 1, '#62aefc');
+      R(-9, -4, 18, 2, w); R(-10, -4, 1, 2, k); R(9, -4, 1, 2, k);
+      R(-6, -2, 12, 1, k); R(-5, -1, 10, 1, '#c9d3dc');
+      g.fillStyle = 'rgba(255,255,255,.75)'; for (const [x, h] of [[-6, 5], [0, 6], [6, 4]]) g.fillRect(Math.round(cx + x * s), Math.round(by + (-16 - h) * s), Math.ceil(s), Math.ceil(h * s));
+    }
+  }
+  // 창 안의 선물 그림
+  const GIFT_URL = {};
+  function giftURL(id) { if (GIFT_URL[id]) return GIFT_URL[id]; const c = document.createElement('canvas'); c.width = 30; c.height = 24; const g = c.getContext('2d'); drawGift(g, id, 15, 23, 1); return (GIFT_URL[id] = c.toDataURL()); }
+  const giftImg = (id) => `<img class="gift-img" src="${giftURL(id)}" alt="선물 그림">`;
+  // 포장된 선물 상자
+  function drawWrapped(g, cx, by, c1 = '#e5484d', c2 = '#f6c445') { g.fillStyle = '#2b2838'; g.fillRect(cx - 8, by - 13, 16, 13); g.fillStyle = c1; g.fillRect(cx - 7, by - 12, 14, 11); g.fillStyle = c2; g.fillRect(cx - 1, by - 12, 2, 11); g.fillRect(cx - 7, by - 8, 14, 2); g.fillRect(cx - 5, by - 16, 4, 4); g.fillRect(cx + 1, by - 16, 4, 4); }
+
+  const GF_NPC = [
+    { id: 'shop', name: '선물 가게 판다', x: 330, mission: 0, scarf: '#e8689a', hat: 'apron' },
+    { id: 'garden', name: '정원 판다', x: 1300, mission: 1, scarf: '#3d9a5c', hat: 'strawhat' },
+    { id: 'post', name: '배달 판다', x: 2030, mission: 2, scarf: '#f08a24', hat: 'cap' },
+    { id: 'fest', name: '축제 판다', x: 2790, mission: 3, scarf: '#8a5cd6', hat: 'festival' },
+    // 친구 판다 3명 (2구역에서 취향을 듣고, 3구역에서 선물을 받아요)
+    { id: 'frA', name: '리본 판다', scarf: '#ff6b8b', hat: 'bow' },
+    { id: 'frB', name: '안경 판다', scarf: '#62aefc', glasses: true },
+    { id: 'frC', name: '고깔 판다', scarf: '#f6c445', hat: 'party' },
+  ];
+  const GF_FR = [4, 5, 6];
+  const GF_SHOP = [{ x: 600, y: GY }, { x: 700, y: GY }, { x: 905, y: 236 }, { x: 990, y: 236 }, { x: 1080, y: 176 }];                     // 1구역 가게 진열 자리 (4곳 사용)
+  const GF_Z2 = [1430, 1540, 1650, 1760, 1870];                                                                                   // 2구역 친구 자리 (3곳 사용)
+  const GF_Z3 = [{ x: 2085, y: GY }, { x: 2140, y: 236 }, { x: 2195, y: 236 }, { x: 2245, y: GY }, { x: 2285, y: 236 }, { x: 2340, y: 236 }, { x: 2395, y: 236 }, { x: 2465, y: 176 }, { x: 2520, y: 176 }];   // 3구역 선물 더미 (8곳 사용)
+  const GF_HOUSE = [2440, 2540, 2640];                                                                                           // 3구역 친구 집 앞
+  const GF_PLAZA = [2900, 2960, 3020];
+  const GF_ITEMS = GIFT.map(g => g.id);
+
+  function gfNew() {
+    const shop = shuffle(GF_SHOP).slice(0, 4), z3 = shuffle(GF_Z3).slice(0, 8), kinds = shuffle(GF_ITEMS);
+    return {
+      m1: { acc: false, target: pick(GF_ITEMS), items: kinds.map((k, i) => ({ kind: k, hx: shop[i].x, hy: shop[i].y, x: shop[i].x, y: shop[i].y, held: false, gone: false })) },
+      m2: { acc: false, met: [false, false, false] },
+      m3: { acc: false, got: [false, false, false], items: shuffle([...GF_ITEMS, ...GF_ITEMS]).map((k, i) => ({ kind: k, hx: z3[i].x, hy: z3[i].y, x: z3[i].x, y: z3[i].y, held: false, gone: false })) },
+      m4: { acc: false, choice: null },
+      prefs: shuffle(GF_ITEMS).slice(0, 3), frZ2: shuffle(GF_Z2).slice(0, 3), frZ3: shuffle(GF_HOUSE),
+      carry: null, party: false, final: false, partyT: 0, task: null,
+    };
+  }
+  const gfItems = () => { const q = run.q, a = qAct(); return a === 0 ? q.m1.items : a === 2 ? q.m3.items : []; };
+  const gfFrX = (k) => { const q = run.q, a = qAct(); return a < 0 || a >= 3 ? GF_PLAZA[k] : a === 2 ? q.frZ3[k] : q.frZ2[k]; };
+  function gfDrop() { const it = run.q.carry; if (!it) return; it.held = false; it.x = it.hx; it.y = it.hy; run.q.carry = null; }
+  function gfCand() {
+    const q = run.q, a = qAct(), px = P.x + P.w / 2, feet = P.y + P.h, carrying = !!q.carry;
+    const near = (x, y = GY, r = 34) => Math.abs(px - x) < r && feet > y - 46 && feet < y + 8;
+    const drop = carrying ? { label2: '⬇ 내려놓기', act2: () => { gfDrop(); SFX.pop(); } } : {};
+    for (const d of GF_NPC.slice(0, 4)) {
+      if (!near(d.x)) continue;
+      if (d.mission === 0 && a === 0 && carrying) return { label: '🤲 건네주기', act: gfGiveShop, ...drop };
+      return { label: '💬 말 걸기', act: () => gfTalk(d), ...drop };
+    }
+    if (a === 1 || a === 2) for (const k of [0, 1, 2]) if (near(gfFrX(k))) return a === 2 && carrying && !q.m3.got[k] ? { label: '🎁 선물하기', act: () => gfGiveFriend(k), ...drop } : { label: '💬 말 걸기', act: () => gfFriendTalk(k), ...drop };
+    if ((a === 0 && q.m1.acc) || (a === 2 && q.m3.acc)) {
+      for (const it of gfItems()) if (!it.held && !it.gone && near(it.x, it.y, 20)) return { label: carrying ? '🔄 바꿔 들기' : '🎁 들기', act: () => { if (q.carry) gfDrop(); q.carry = it; it.held = true; SFX.coin(); }, ...drop };
+    }
+    return carrying ? { label: '', ...drop } : null;
+  }
+  function gfGoal() {
+    const q = run.q, a = qAct(), at = (i) => ({ x: GF_NPC[i].x, y: GY - 44 });
+    if (a < 0) return { tip: '🚪 선물 축제 성공! 마지막 문으로 가요 →', mark: { x: GATE_X[3] + 12, y: GY - 120 } };
+    if (a === 0) { if (!q.m1.acc) return { tip: '💬 선물 가게 판다에게 말을 걸어요', mark: at(0) }; return q.carry ? { tip: '🤲 가게 판다에게 가져가요', mark: at(0) } : { tip: '🎁 가게 판다가 좋아하는 것을 찾아요', mark: null }; }
+    if (a === 1) {
+      const m = q.m2, n = m.met.filter(Boolean).length;
+      if (!m.acc) return { tip: '💬 정원 판다에게 말을 걸어요', mark: at(1) };
+      if (n < 3) return { tip: `💬 친구 판다들에게 좋아하는 것을 물어봐요 (${n}/3)`, mark: null };
+      return { tip: '📝 정원 판다에게 가서 취향 메모를 채워요', mark: at(1) };
+    }
+    if (a === 2) { const n = q.m3.got.filter(Boolean).length; if (!q.m3.acc) return { tip: '💬 배달 판다에게 말을 걸어요', mark: at(2) }; return { tip: q.carry ? '🎁 이 선물을 좋아하는 친구에게 가져가요' : `🎁 친구가 좋아하는 선물을 골라 전해요 (${n}/3)`, mark: null }; }
+    return { tip: '💬 축제 판다에게 말을 걸어요', mark: at(3) };
+  }
+  // 힌트: ① 문장 다시 보기 ② 한국어 뜻 ③ 정답
+  const gfHints = (id) => { const g = giftOf(id), s = gfSent(id); return [`${s.h} ${s.p} — 喜欢 xǐhuan은 ‘좋아하다’예요. 我喜欢 뒤의 말을 잘 봐요.`, `${g.h} ${g.p}${pp(g.p, '은/는')} ‘${g.ko}’예요.`, `정답: ${g.obj} 그림을 골라요.`]; };
+
+  function gfTalk(d) {
+    const q = run.q, a = qAct(), i = d.mission;
+    if (q.final || a < 0) { openTalk(i, '<p>멋진 선물 축제였어! 마지막 문으로 가 봐 →</p>', { ok: '네!' }); return; }
+    if (i < a) { openTalk(i, '<p>고마워! 다음 구역도 부탁해 →</p>', { ok: '네!' }); return; }
+    if (i > a) { openTalk(i, '<p>앞 구역 친구의 부탁을 먼저 들어줘!</p>', { ok: '네!' }); return; }
+    if (i === 0) {
+      const m = q.m1;
+      taskBegin('g1', `가게: 我喜欢${giftOf(m.target).h}。`, giftOf(m.target).obj);
+      openTalk(0, `<p>${m.acc ? '다시 말해 줄게!' : '어서 와! 선물 가게야. 내가 좋아하는 걸 찾아 줄래?'}</p>${gfLine(m.target, true)}<p class="qprog">가게에 놓인 물건 중에서 골라 가져와요. 한 번에 하나씩 들 수 있어요.</p>`, { ok: '찾아볼게요!', hints: gfHints(m.target), onOk: () => { m.acc = true; } });
+      return;
+    }
+    if (i === 1) {
+      const m = q.m2;
+      if (!m.acc) { openTalk(1, '<p>친구 판다 세 명에게 선물을 주고 싶어!</p><p>친구들을 만나서 <b>좋아하는 것</b>을 들어 보고, 나에게 와서 <b>취향 메모</b>를 채워 줄래?</p>', { ok: '좋아요!', onOk: () => { m.acc = true; } }); return; }
+      const n = m.met.filter(Boolean).length;
+      if (n < 3) { openTalk(1, `<p>아직 만나지 않은 친구가 있어요. (${n}/3)</p><p class="qprog">정원과 음식 거리를 돌아다니며 친구 판다에게 말을 걸어 봐요.</p>`, { ok: '알겠어요!' }); return; }
+      gfMemo(); return;
+    }
+    if (i === 2) {
+      const m = q.m3;
+      if (!m.acc) { openTalk(2, '<p>친구들이 집 앞에서 선물을 기다려!</p><p>선물 더미에서 <b>친구가 좋아하는 것</b>을 하나씩 골라 전해 줘.</p><p class="qprog">잘못 들었으면 [⬇ 내려놓기]를 누르면 돼요.</p>', { ok: '배달 출발!', onOk: () => { m.acc = true; } }); return; }
+      openTalk(2, `<p>배달한 선물: ${m.got.filter(Boolean).length}/3</p><p class="qprog">친구에게 말을 걸면 좋아하는 것을 다시 들을 수 있어요.</p>`, { ok: '알겠어요!' });
+      return;
+    }
+    gfFinal();
+  }
+  function gfFriendTalk(k) {
+    const q = run.q, a = qAct(), id = q.prefs[k], d = GF_NPC[GF_FR[k]];
+    if (a === 1) {
+      if (!q.m2.acc) { openTalk(GF_FR[k], '<p>안녕! 정원 판다를 먼저 만나 봐!</p>', { ok: '네!' }); return; }
+      q.m2.met[k] = true;
+      openTalk(GF_FR[k], `<p>안녕! 나는 ${d.name}야.</p>${gfLine(id, true)}`, { ok: '들었어요!', hints: gfHints(id).slice(0, 2) });
+      return;
+    }
+    if (q.m3.got[k]) { openTalk(GF_FR[k], `<p>선물 고마워! 🎁</p>${gfLine(id)}<p>${gfSent(id).ko}</p>`, { ok: '네!' }); return; }
+    taskBegin('g3' + k, `배달: ${d.name} (我喜欢${giftOf(id).h}。)`, giftOf(id).obj);
+    openTalk(GF_FR[k], `<p>선물을 기다리고 있어!</p>${gfLine(id, true)}`, { ok: '찾아올게요!', hints: gfHints(id) });
+  }
+  function gfGiveShop() {
+    const q = run.q, m = q.m1, it = q.carry, g = giftOf(m.target);
+    if (!it) return;
+    if (it.kind === m.target) {
+      taskEnd(); SFX.correct(); it.gone = true; it.held = false; q.carry = null;
+      burst(GF_NPC[0].x, GY - 40, ['#ff9fb2', '#f6c445', '#ffffff'], 16, 180);
+      const s = gfSent(m.target);
+      openTalk(0, `<p>와, 고마워! 바로 이거야!</p>${gfLine(m.target, true)}<p>${s.ko}</p><p class="qprog">${g.h} ${g.p} = ${g.ko}</p>`, { ok: '다음 구역으로!', onOk: () => questDone(0) });
+      return;
+    }
+    taskMiss(); SFX.wrong(); gfDrop();
+    openTalk(0, `<p>앗, 이건 내가 좋아하는 게 아니야! 제자리에 돌려놓았어.</p>${gfLine(m.target, true)}<p>다시 찾아볼까?</p>`, { ok: '다시 찾아볼게요!', hints: gfHints(m.target) });
+  }
+  function gfGiveFriend(k) {
+    const q = run.q, m = q.m3, it = q.carry, id = q.prefs[k], d = GF_NPC[GF_FR[k]];
+    if (!it) return;
+    taskBegin('g3' + k, `배달: ${d.name} (我喜欢${giftOf(id).h}。)`, giftOf(id).obj);
+    if (it.kind === id) {
+      taskEnd(); SFX.correct(); it.gone = true; it.held = false; q.carry = null; m.got[k] = true;
+      burst(gfFrX(k), GY - 40, ['#e5484d', '#f6c445', '#62aefc', '#ffffff'], 18, 200); floatText(gfFrX(k), GY - 60, '🎁', '#fff0a8');
+      const done = m.got.every(Boolean), s = gfSent(id);
+      openTalk(GF_FR[k], `<p>선물을 예쁘게 포장했어! 고마워! 🎁</p>${gfLine(id, true)}<p>${s.ko}</p>${done ? '<p>친구 세 명에게 모두 선물을 전했어요!</p>' : ''}`, { ok: done ? '선물 축제로 가요!' : '다음 친구에게!', onOk: () => { if (done) questDone(2); } });
+      return;
+    }
+    taskMiss(); SFX.wrong(); gfDrop();
+    openTalk(GF_FR[k], `<p>앗, 고마운데… 내가 좋아하는 건 이게 아니야. 선물은 제자리에 돌려놓았어.</p>${gfLine(id, true)}<p>다시 골라 줄래?</p>`, { ok: '다시 골라 볼게요!', hints: gfHints(id) });
+  }
+  // ----- 미션 2: 취향 메모 (친구가 한 말을 보고 알맞은 그림 고르기) -----
+  function gfMemo() {
+    const q = run.q, sel = [-1, -1, -1], ord = shuffle(GF_ITEMS);   // 그림 순서는 줄마다 같고 열 때마다 섞여요 (정답 위치는 친구마다 달라요)
+    taskBegin('g2', '취향 메모', q.prefs.map(id => giftOf(id).obj).join(', '));
+    const hints = [`친구가 한 말을 다시 읽어 봐요: 我喜欢 뒤의 말이 좋아하는 거예요. (${GIFT.map(g => `${g.h} ${g.p}`).join(' · ')})`, GIFT.map(g => `${g.h} = ${g.ko}`).join(', '), `정답: ${q.prefs.map((id, k) => `${GF_NPC[GF_FR[k]].name} → ${giftOf(id).obj}`).join(' / ')}`];
+    openPick({
+      title: '📝 취향 메모', ask: '<p>친구가 한 말을 보고, 좋아하는 것의 그림을 골라요.</p>', hints, ok: '✅ 메모 완성!', closeLabel: '나중에 할게요',
+      render() {
+        $('qpBody').innerHTML = `<div class="pk-memo">${GF_FR.map((ni, k) => { const d = GF_NPC[ni], s = gfSent(q.prefs[k]); return `<div class="pk-memo-row"><div class="pk-who"><img class="npc-face" src="${npcFaceURL(d)}" alt=""><span>${d.name}</span></div><div class="pk-said"><span class="han">${s.h}</span><span class="py t0">${s.p}</span></div><div class="pk-grid gifts">${ord.map((id, j) => `<button class="pk-opt gift${sel[k] === j ? ' sel' : ''}" data-r="${k}" data-k="${j}" aria-pressed="${sel[k] === j}">${giftImg(id)}</button>`).join('')}</div></div>`; }).join('')}</div>`;
+        pickBind('.pk-opt', (b) => { sel[+b.dataset.r] = +b.dataset.k; SFX.pop(); pickMsg(''); qp.render(); });
+        $('qpOk').disabled = sel.some(x => x < 0);
+      },
+      onOk() {
+        const wrong = q.prefs.map((id, k) => ord[sel[k]] !== id);
+        if (!wrong.some(Boolean)) {
+          taskEnd(); SFX.correct(); closePick();
+          openTalk(1, `<p>메모 완성! 이제 누구에게 무엇을 줄지 알겠다!</p>${q.prefs.map(id => gfLine(id)).join('')}<p class="qprog">배달 마을에서 친구들에게 선물을 전해 줘요.</p>`, { ok: '배달하러 가요!', onOk: () => questDone(1) });
+          return;
+        }
+        taskMiss(); SFX.wrong();
+        wrong.forEach((w, k) => { if (w) sel[k] = -1; });
+        pickMsg(`${wrong.filter(Boolean).length}명의 메모가 달라요. 비워진 줄을 다시 골라 봐요!`, 'no'); qp.render();
+      },
+    });
+  }
+  // ----- 미션 4: 你喜欢什么？ → 내가 좋아하는 것 고르기 (정답 없음, 저장·전송 안 함) -----
+  function gfFinal() {
+    const q = run.q, m = q.m4, ord = shuffle(GF_ITEMS);
+    let sel = -1;
+    openTalk(3, `<p>선물 축제에 온 걸 환영해! 이번엔 네 차례야.</p><div class="zline big"><span class="znum big"><span class="han">你喜欢什么？</span><span class="py t0">Nǐ xǐhuan shénme?</span></span></div><p class="qprog">너는 무엇을 좋아해?</p>`, { ok: '골라 볼게요!', onOk: () => {
+      openPick({
+        title: '💝 내가 좋아하는 것', ask: '<p>정답은 없어요! 좋아하는 것을 하나 골라요.</p>', ok: '✅ 이걸로 말할래요', closeLabel: '나중에 할게요',
+        render() {
+          const s = sel >= 0 ? gfSent(ord[sel]) : null;
+          $('qpBody').innerHTML = `<div class="pk-sent"><span class="han">我喜欢</span><span class="pk-blank"><span class="han">${s ? giftOf(ord[sel]).h : '____'}</span></span><span class="han">。</span></div>
+            <div class="pk-sent-py">Wǒ xǐhuan <b>${s ? giftOf(ord[sel]).p : '____'}</b>.</div>${s ? `<div class="pk-sent-ko">${s.ko}</div>` : ''}
+            <div class="pk-grid gifts4">${ord.map((id, k) => { const g = giftOf(id); return `<button class="pk-opt choose${k === sel ? ' sel' : ''}" data-k="${k}" aria-pressed="${k === sel}">${giftImg(id)}<span class="han">${g.h}</span><span class="py t0">${g.p}</span></button>`; }).join('')}</div>`;
+          pickBind('.pk-opt', (b) => { sel = +b.dataset.k; SFX.pop(); qp.render(); });
+          $('qpOk').disabled = sel < 0;
+        },
+        onOk() {
+          const id = ord[sel], s = gfSent(id); m.choice = id; closePick();
+          openTalk(3, `<p>좋아! 큰 소리로 말해 볼까?</p><div class="zline big"><span class="znum big"><span class="han">${s.h}</span><span class="py t0">${s.p}</span></span></div><p>${s.ko}</p><p><b>화면을 보며 중국어로 말해 보세요!</b></p>`, { ok: '🗣 말했어요!', onOk: gfParty });
+        },
+      });
+    } });
+  }
+  function gfParty() {
+    const q = run.q; q.party = true; q.final = true; q.partyT = 0;
+    SFX.gate(); for (let k = 0; k < 6; k++) burst(2880 + rnd(-40, 260), GY - rnd(60, 140), ['#ff9fb2', '#f6c445', '#62aefc', '#5cc46a', '#ffffff'], 18, 220);
+    toast('🎉 나도 중국어로 좋아하는 것을 말할 수 있어!', 3000, true);
+    questDone(3);
+  }
+  function gfUpdate(dt) { const q = run.q; if (q.party) q.partyT += dt; const it = q.carry; if (it) { it.x = P.x + P.w / 2; it.y = P.y - 2; } }
+  function gfDraw() {
+    const q = run.q, a = qAct(), px = P.x + P.w / 2;
+    for (const it of gfItems()) if (!it.held && !it.gone) { const x = Math.round(it.x - cam); if (x > -30 && x < W + 30) drawGift(ctx, it.kind, x, it.y, 1.6); }
+    GF_NPC.slice(0, 4).forEach((d, i) => {
+      drawNpc(d, d.x, GY, px >= d.x ? 1 : -1);
+      if (i === a && mode === 'play') drawBubble2(d.x, GY - 44 + Math.sin(time * 4) * 2, '!');
+      else if (i < a || a < 0) drawBubble2(d.x, GY - 44, '♥', '#ff9fb2');
+    });
+    if (a >= 1 || a < 0) GF_FR.forEach((ni, k) => {
+      const x = gfFrX(k), hop = q.final ? -Math.max(0, Math.sin(q.partyT * 6 + k)) * 6 : 0;
+      drawNpc(GF_NPC[ni], x, GY + hop, px >= x ? 1 : -1);
+      if (q.m3.got[k]) drawWrapped(ctx, Math.round(x - cam) + 16, GY + hop, ['#e5484d', '#62aefc', '#5cc46a'][k], '#f6c445');
+      if (a === 1 && q.m2.acc && !q.m2.met[k] && mode === 'play') drawBubble2(x, GY - 44 + Math.sin(time * 4 + k) * 2, '?', '#cfe3ff');
+    });
+    if (q.final) for (let k = 0; k < 24; k++) { const x = Math.round(2760 + ((k * 61 + q.partyT * 40) % 520) - cam), y = Math.round((k * 37 + q.partyT * 70) % 200) + 30; ctx.fillStyle = ['#ff9fb2', '#f6c445', '#62aefc', '#5cc46a'][k % 4]; ctx.fillRect(x, y, 3, 3); }
+  }
+  function gfTop() {
+    const q = run.q;
+    if (q.carry) drawHeld((g, x, y) => drawGift(g, q.carry.kind, x, y, 1.6));
+    else if (q.final && q.m4.choice) drawHeld((g, x, y) => drawGift(g, q.m4.choice, x, y + Math.round(Math.sin(q.partyT * 6) * 2), 1.6));
+  }
+  function gfRecall() {
+    const q = run.q, a = qAct();
+    if (a < 0) return;
+    closeMissionPanel();
+    const notYet = () => openTalk(a, `<p>아직 ${GF_NPC[a].name}의 부탁을 듣지 않았어요.</p><p>노란 ▼ 표시를 따라가서 말을 걸어 봐요!</p>`, { ok: '알겠어요!' });
+    if (a === 0) { if (!q.m1.acc) return notYet(); openTalk(0, `<p>선물 가게 판다가 좋아하는 것:</p>${gfLine(q.m1.target, true)}`, { hints: gfHints(q.m1.target) }); return; }
+    if (a === 1 || a === 2) {
+      if (!(a === 1 ? q.m2.acc : q.m3.acc)) return notYet();
+      const heard = GF_FR.map((ni, k) => (a === 2 || q.m2.met[k]) ? `<div class="pk-memo-row"><div class="pk-who"><img class="npc-face" src="${npcFaceURL(GF_NPC[ni])}" alt=""><span>${GF_NPC[ni].name}</span></div><div class="pk-said"><span class="han">${gfSent(q.prefs[k]).h}</span><span class="py t0">${gfSent(q.prefs[k]).p}</span></div></div>` : `<div class="pk-memo-row"><div class="pk-who"><img class="npc-face" src="${npcFaceURL(GF_NPC[ni])}" alt=""><span>${GF_NPC[ni].name}</span></div><div class="qprog">아직 못 만났어요</div></div>`).join('');
+      openTalk(a, `<p>친구들이 한 말 다시 보기</p><div class="pk-memo">${heard}</div>`, { ok: '알겠어요!' });
+      return;
+    }
+    openTalk(3, '<p>축제 판다에게 말을 걸고, 좋아하는 것을 중국어로 말해 봐요!</p>', { ok: '알겠어요!' });
+  }
+
+  // ================= 미션형 지역 모음 (6·7·8차시). STAGE.questKit으로 골라요 =================
+  const QUEST_KITS = {
+    bd: { make: bdNew, cand: bdCand, goal: bdGoal, update: bdUpdate, draw: bdDraw, top: null, recall: bdRecall, npcs: BD_NPC, free: () => BD_CANDLES.map(sp => ({ ...sp, r: 24 })) },
+    fam: { make: fmNew, cand: fmCand, goal: fmGoal, update: fmUpdate, draw: fmDraw, top: fmTop, recall: fmRecall, npcs: FM_NPC, free: () => [...FM_FOREST.map(x => ({ x, y: GY, r: 30 })), ...FM_STUDIO.map(x => ({ x, y: GY, r: 30 })), { x: FM_BOARD_X, y: GY, r: 44 }] },
+    gift: { make: gfNew, cand: gfCand, goal: gfGoal, update: gfUpdate, draw: gfDraw, top: gfTop, recall: gfRecall, npcs: GF_NPC, free: () => [...GF_SHOP, ...GF_Z3].map(sp => ({ ...sp, r: 26 })).concat([...GF_Z2, ...GF_HOUSE].map(x => ({ x, y: GY, r: 26 }))) },
+  };
+  const KIT = () => QUEST_KITS[STAGE.questKit];
 
 
   // ================= 업데이트 =================
@@ -4499,7 +5309,7 @@
   function report(event, extra = {}) {
     if (!RESULT_URL || !run || PREVIEW) return;
     const body = {
-      time: new Date().toISOString(), name: save.playerName || '(닉네임 없음)', lesson: `${STAGE.lessonNo} (${STAGE.label || ''})`, stage: STAGE.id, event,
+      time: new Date().toISOString(), name: save.playerName || '(닉네임 없음)', lesson: STAGE.label ? `${STAGE.lessonNo} (${STAGE.label})` : STAGE.lessonNo, stage: STAGE.id, event,
       firstTry: run.firstTry, asked: run.asked, wrong: (run.wrongs || []).join(' | '), secs: Math.round((performance.now() - run.start) / 1000),
       level: save.level, device: isTouch() ? '모바일' : 'PC', ...extra,
       // 5차시(미션형)만: 힌트를 쓴 과제 수 · 안내 문제 수 · 기록 방식 2판 (firstTry/asked는 '혼자 힌트 없이 처음에 해결 / 혼자 푼 과제')
@@ -4874,7 +5684,7 @@
   // ================= 시작 · 지역 선택 =================
   function initialStage() {
     const h = (location.hash || '').slice(1).toLowerCase().replace(/^preview-?/, '');
-    const alias = { s1: 'bamboo', lesson1: 'bamboo', '1': 'bamboo', s2: 'greet', lesson2: 'greet', '2': 'greet', s3: 'name', lesson3: 'name', '3': 'name', s4: 'nation', lesson4: 'nation', '4': 'nation', s5: 'number', lesson5: 'number', '5': 'number', num: 'number', numbers: 'number', s6: 'birthday', lesson6: 'birthday', '6': 'birthday', bd: 'birthday' };
+    const alias = { s1: 'bamboo', lesson1: 'bamboo', '1': 'bamboo', s2: 'greet', lesson2: 'greet', '2': 'greet', s3: 'name', lesson3: 'name', '3': 'name', s4: 'nation', lesson4: 'nation', '4': 'nation', s5: 'number', lesson5: 'number', '5': 'number', num: 'number', numbers: 'number', s6: 'birthday', lesson6: 'birthday', '6': 'birthday', bd: 'birthday', s7: 'family', lesson7: 'family', '7': 'family', s8: 'gift', lesson8: 'gift', '8': 'gift' };
     const id = alias[h] || h;
     // 준비 중 지역은 학생 주소로 열리지 않아요 → 공개된 첫 지역으로
     return STAGE_ORDER.includes(id) ? id : STAGE_ORDER[0];
@@ -4979,7 +5789,7 @@
       <div class="hitem"><div class="ico"><span class="tb">◀</span><span class="tb">▶</span><span class="tb j">점프</span></div>걷기 · 점프</div>
       <div class="hitem"><div class="ico">💬</div>친구 판다 옆에서 노란 버튼을 톡!</div>` : `
       <div class="hitem"><div class="ico"><kbd>←</kbd><kbd>→</kbd><kbd>Space</kbd></div>걷기 · 점프</div>
-      <div class="hitem"><div class="ico"><kbd>E</kbd> / <kbd>Enter</kbd></div>친구 판다 옆에서 말 걸기 · ${STAGE.questKit === 'bd' ? '케이크·달력·카드 열기' : '흔들기 · 들기'}</div>`) + `
+      <div class="hitem"><div class="ico"><kbd>E</kbd> / <kbd>Enter</kbd></div>친구 판다 옆에서 말 걸기 · ${STAGE.helpAct || '흔들기 · 들기'}</div>`) + `
       <div class="hitem"><div class="ico">▼</div>노란 화살표를 따라가요</div>
       <div class="hitem"><div class="ico">⭐</div>미션 버튼 → 📜 부탁 다시 보기</div>`;
       $('helpOk').textContent = from === 'first' ? '알겠어요! 출발' : '알겠어요!';
@@ -5039,7 +5849,7 @@
   }
   // 홈으로: 열린 창·퀴즈·음성·입력을 모두 정리하고 시작 화면으로 (탐험 상태는 지역별로 보관)
   function goHome() {
-    for (const id of ['quiz', 'cardPop', 'speak', 'lesson', 'result', 'help', 'homeAsk', 'intro', 'faint', 'settings', 'confirmReset', 'nameAsk']) $(id).hidden = true;
+    for (const id of ['quiz', 'cardPop', 'speak', 'lesson', 'result', 'help', 'homeAsk', 'intro', 'faint', 'settings', 'confirmReset', 'nameAsk', 'talk', 'basket', 'slab', 'cake', 'cal', 'bcard', 'qpick']) $(id).hidden = true;
     quick.on = false; quiz.lock = false; releaseAll(); closeMissionPanel();
     try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (e) {}
     clearTimeout(Voice.chk); clearTimeout(toastTimer); $('toast').hidden = true; $('focusHint').hidden = true;
@@ -5196,7 +6006,7 @@
     requestAnimationFrame(frame);
     $('startScreen').querySelector('.card').focus({ preventScroll: true });
     window.__panda = {
-      questInteract, openBasket, BD_NPC, BD_CANDLES, BD_CAKE_X, BD_BOARD_X, BD_DESK_X, BD_TABLE_X, bdValid, dateZh, bdSent, openCake, cakeAdd, cakeDel, cakeDone, closeCake, openCal, calOk, closeCal, openBCard, bcOk, closeBCard, bdPlace, bdNewTest: () => bdNew(), bdBonus: () => bdBonusLater, basketDrop, closeBasket, zhNum, tokVal, testSpawn: (kind, n, set) => { const q = run.q, list = set ? q.m4.items : q.m3.items; spawnItems(list, kind, n, Q_SPOTS[set]); }, testOpenSlab: (rounds) => openSlab({ title: 'test', rounds, start: 0, tag: 'test', key: (i) => 'test' + i, onRound() {}, onAll() {} }), slabTap, slabKey, ruleHints, boxNums, closeTalk, closeSlab, questRecall, NPC_DEF, useSkill, canSkill, BGM, josa, BUILD, forestBuild, basicQuestion, MA, GREET, NW, P, save, quiz, quick, NQ, numQ, numQueue, NUMS, openQuiz, answer, closeQuiz, closeSpeak, selectStage, startPlay, goHome, askHome, resumeFromPause, loadStage, closeHelp, closeIntro, startNewRun, THEMES, SKINS, STAGES,
+      questInteract, openBasket, BD_NPC, BD_CANDLES, BD_CAKE_X, BD_BOARD_X, BD_DESK_X, BD_TABLE_X, bdValid, dateZh, bdSent, openCake, cakeAdd, cakeDel, cakeDone, closeCake, openCal, calOk, closeCal, openBCard, bcOk, closeBCard, bdPlace, openPick, closePick, pickOk, FAM, famOf, famSent, FM_NPC, GIFT, giftOf, gfSent, GF_NPC, GF_FR, FM_BOARD_X, famFace, giftURL, drawGift, fmNewTest: () => fmNew(), gfNewTest: () => gfNew(), get qp() { return qp; }, bdNewTest: () => bdNew(), bdBonus: () => bdBonusLater, basketDrop, closeBasket, zhNum, tokVal, testSpawn: (kind, n, set) => { const q = run.q, list = set ? q.m4.items : q.m3.items; spawnItems(list, kind, n, Q_SPOTS[set]); }, testOpenSlab: (rounds) => openSlab({ title: 'test', rounds, start: 0, tag: 'test', key: (i) => 'test' + i, onRound() {}, onAll() {} }), slabTap, slabKey, ruleHints, boxNums, closeTalk, closeSlab, questRecall, NPC_DEF, useSkill, canSkill, BGM, josa, BUILD, forestBuild, basicQuestion, MA, GREET, NW, P, save, quiz, quick, NQ, numQ, numQueue, NUMS, openQuiz, answer, closeQuiz, closeSpeak, selectStage, startPlay, goHome, askHome, resumeFromPause, loadStage, closeHelp, closeIntro, startNewRun, THEMES, SKINS, STAGES,
       get mode() { return mode; }, get monsters() { return monsters; }, get coins() { return coins; }, get gates() { return gates; },
       get run() { return run; }, get cam() { return cam; }, get floats() { return floats; }, get stage() { return STAGE.id; }, get drops() { return drops; }, get selStage() { return selStage; },
     };
