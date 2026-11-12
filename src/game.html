@@ -136,6 +136,49 @@
   .start h1 small { display: block; font-family: var(--font-han); font-size: 15px; color: var(--jade); letter-spacing: .3em; }
   .st-q { font-size: clamp(20px, 4vw, 26px); }
   .btn.big { font-size: 24px; padding: 12px 40px 14px; border-radius: 16px; }
+  /* 판다 옷장 */
+  .st-right { display: inline-flex; align-items: center; gap: 8px; }
+  .wdbtn { background: #fff7d6; white-space: nowrap; }
+  .profile { white-space: nowrap; min-width: 0; } #pfName { max-width: 6em; overflow: hidden; text-overflow: ellipsis; }
+  @media (max-width: 420px) { .wdbtn { padding: 4px 8px; font-size: 14px; } .profile { gap: 5px; padding-right: 8px; } #pfName { max-width: 5.5em; } }
+  .wardcard { max-width: 760px; }
+  .wd-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .wd-top h2 { font-size: 28px; margin: 0; }
+  .wd-coin { font-family: var(--font-display); font-size: 24px; background: var(--paper-2); border-radius: 99px; padding: 4px 14px; display: inline-flex; align-items: center; gap: 6px; }
+  .wd-coin img { width: 22px; height: 22px; image-rendering: pixelated; }
+  .wd-hello { font-size: 17px; margin: 6px 0 10px; }
+  .wd-main { display: grid; grid-template-columns: 230px 1fr; gap: 14px; align-items: start; }
+  .wd-stage { background: linear-gradient(#cfe8f7, #f6efd9); border: 3px solid var(--ink); border-radius: 16px; padding: 10px; text-align: center; }
+  #wdPanda { width: 176px; height: 176px; image-rendering: pixelated; display: block; margin: 0 auto; }
+  .wd-state { font-size: 16px; min-height: 2.6em; margin-top: 4px; }
+  .wd-state .pv { color: #b5121b; font-weight: 700; }
+  .wd-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .wd-item { border: 3px solid var(--ink); border-radius: 14px; background: #fff; color: var(--ink); box-shadow: 0 3px 0 var(--ink); padding: 6px 4px 8px; display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; font-family: var(--font-display); min-height: 132px; }
+  .wd-item:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink); }
+  .wd-item.sel { outline: 4px solid #2b6fd6; outline-offset: 2px; }
+  .wd-item canvas { width: 64px; height: 64px; image-rendering: pixelated; }
+  .wd-item .nm { font-size: 17px; } .wd-item .sl { font-size: 13px; color: var(--ink-soft); font-family: var(--font-body); }
+  .wd-chip { font-size: 14px; border-radius: 99px; padding: 1px 10px; background: var(--paper-2); }
+  .wd-chip.own { background: #dff5e1; color: #1f7a3a; } .wd-chip.on { background: #2b6fd6; color: #fff; }
+  /* 사기·장착 버튼은 창 아래에 붙어 있어요 (목록을 스크롤해도 보임) */
+  .wd-dock { position: sticky; bottom: 0; z-index: 2; background: var(--paper); border-top: 2px dashed var(--paper-2); }
+  .wd-act { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin: 12px 0 4px; min-height: 56px; align-items: center; }
+  .wd-act .btn { min-height: 54px; font-size: 20px; padding: 8px 20px; }
+  .wd-act .q { font-size: 18px; width: 100%; text-align: center; }
+  .wd-msg { text-align: center; font-size: 18px; font-weight: 700; min-height: 1.4em; color: #1f7a3a; } .wd-msg.no { color: #b5121b; }
+  .wd-btns { display: flex; justify-content: center; margin-top: 8px; } .wd-btns .btn { min-height: 50px; font-size: 19px; }
+  @media (max-width: 640px) {
+    .wd-main { grid-template-columns: 1fr; }
+    #wdPanda { width: 128px; height: 128px; }
+    .wd-list { grid-template-columns: repeat(2, 1fr); }
+    .wd-top h2 { font-size: 23px; } .wd-coin { font-size: 20px; } .wd-hello { font-size: 15px; }
+  }
+  @media (max-height: 520px) and (min-width: 641px) {
+    .wardcard { padding: 10px 14px; } .wd-hello { display: none; }
+    #wdPanda { width: 120px; height: 120px; } .wd-main { grid-template-columns: 170px 1fr; }
+    .wd-item { min-height: 104px; } .wd-item canvas { width: 46px; height: 46px; }
+    .wd-act { margin: 6px 0 2px; } .wd-act .btn { min-height: 46px; font-size: 18px; }
+  }
   .submodes { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
   .row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
   .menulist { display: flex; flex-direction: column; gap: 10px; width: 100%; }
@@ -604,8 +647,8 @@
 <div class="overlay" id="startScreen">
   <div class="card start" tabindex="-1">
     <div class="st-top">
-      <div class="profile" title="내 판다"><canvas id="titlePanda" width="16" height="16"></canvas><b id="pfName"></b><span>Lv.<b id="pfLv">1</b></span><span><img id="pfCoinIcon" alt="코인"><b id="pfCoin">0</b></span></div>
-      <button class="iconbtn" id="btnSettings" aria-label="설정" title="설정">⚙</button>
+      <div class="profile" title="내 판다"><canvas id="titlePanda" width="20" height="20"></canvas><b id="pfName"></b><span>Lv.<b id="pfLv">1</b></span><span><img id="pfCoinIcon" alt="코인"><b id="pfCoin">0</b></span></div>
+      <span class="st-right"><button class="btn small wdbtn" id="btnWardrobe">🐼 판다 옷장</button><button class="iconbtn" id="btnSettings" aria-label="설정" title="설정">⚙</button></span>
     </div>
     <h1><small>熊猫探险队</small>판다 탐험대</h1>
     <h2 class="st-q">어느 지역을 탐험할까?</h2>
@@ -615,6 +658,23 @@
     <div class="submodes">
       <button class="btn small" id="btnLearnFirst">📖 배움 노트</button>
     </div>
+  </div>
+</div>
+
+<!-- 판다 옷장 (코인으로 꾸미기) -->
+<div class="overlay" id="wardrobe" hidden>
+  <div class="card wardcard" tabindex="-1">
+    <div class="wd-top"><h2>🐼 판다 옷장</h2><span class="wd-coin"><img id="wdCoinIcon" alt="코인"><b id="wdCoin">0</b></span></div>
+    <p class="wd-hello">🐼 판다 옷장에 오신 걸 환영해요! 미션으로 모은 코인으로 판다를 꾸며 보세요!</p>
+    <div class="wd-main">
+      <div class="wd-stage">
+        <canvas id="wdPanda" width="22" height="22" aria-label="내 판다 미리보기"></canvas>
+        <div class="wd-state" id="wdState"></div>
+      </div>
+      <div class="wd-list" id="wdList"></div>
+    </div>
+    <div class="wd-dock"><div class="wd-act" id="wdAct"></div><div class="wd-msg" id="wdMsg" aria-live="polite"></div></div>
+    <div class="wd-btns"><button class="btn primary" id="wdClose">🏠 홈으로</button></div>
   </div>
 </div>
 
@@ -1689,7 +1749,7 @@
   const SAVE_KEY = 'panda-explorers-v1';
   // coins: 지금 가진 코인(나중에 상점에서 쓰는 지갑) · totalEarned: 지금까지 모은 코인 합계
   // coinsEver / dropsEver: 지역별로 이미 받은 동전 번호 (새로고침·홈·새 탐험으로 같은 동전을 또 받지 못하게)
-  const SAVE_DEFAULT = () => ({ level: 1, exp: 0, coins: 0, totalEarned: 0, maxHp: 100, correct: 0, wrong: 0, words: {}, cards: {}, clears: {}, coinsEver: {}, dropsEver: {}, skillEver: {}, questEver: {}, skillTip: false, helpSeen: false, bgmOn: true, playerName: '', nameSkipped: false });
+  const SAVE_DEFAULT = () => ({ level: 1, exp: 0, coins: 0, totalEarned: 0, maxHp: 100, correct: 0, wrong: 0, words: {}, cards: {}, clears: {}, coinsEver: {}, dropsEver: {}, skillEver: {}, questEver: {}, skillTip: false, helpSeen: false, bgmOn: true, playerName: '', nameSkipped: false, shop: SHOP_DEFAULT() });
   const save = SAVE_DEFAULT();
   // 예전 저장(버전 1 초기)에 없던 칸을 안전하게 채움
   function migrateSave() {
@@ -1701,11 +1761,84 @@
     if (typeof save.bgmOn !== 'boolean') save.bgmOn = true;
     save.playerName = typeof save.playerName === 'string' ? save.playerName.replace(/[<>&"]/g, '').slice(0, 12) : '';
     save.totalEarned = Math.max(typeof save.totalEarned === 'number' ? save.totalEarned : 0, save.coins);
+    migrateShop();
   }
   function loadSave() {
     try { const s = JSON.parse(localStorage.getItem(SAVE_KEY) || 'null'); if (s && typeof s.level === 'number') Object.assign(save, s); } catch (e) {}
   }
   function writeSave() { try { localStorage.setItem(SAVE_KEY, JSON.stringify(save)); } catch (e) {} }
+
+  // ================= 코인 상점: 판다 옷장 =================
+  // 상점 아이템 목록 (kind: 'wear' = 옷장. 나중에 'room' = 판다 방 가구를 같은 목록에 더할 수 있어요)
+  // 가격 근거: 지역마다 첫 탐험에 받을 수 있는 코인이 1~4차시 93개, 5~8차시 50~65개(모두 합쳐 603개)
+  //   → 리본 30(한 지역 절반쯤) … 왕관 200(서너 지역을 모아야 하는 목표). 6개 합계 590 = 지금 1~6차시 최대치(488)보다 많음
+  const WEAR_SLOTS = { head: '머리', face: '얼굴', neck: '목', back: '등' };
+  const SHOP_ITEMS = [
+    { id: 'w_ribbon', kind: 'wear', slot: 'head', name: '빨간 리본', price: 30 },
+    { id: 'w_glasses', kind: 'wear', slot: 'face', name: '동그란 안경', price: 50 },
+    { id: 'w_scarf', kind: 'wear', slot: 'neck', name: '겨울 목도리', price: 80 },
+    { id: 'w_bluehat', kind: 'wear', slot: 'head', name: '파란 모자', price: 100 },
+    { id: 'w_bag', kind: 'wear', slot: 'back', name: '탐험 가방', price: 130 },
+    { id: 'w_crown', kind: 'wear', slot: 'head', name: '황금 왕관', price: 200 },
+  ];
+  const SHOP_BY_ID = Object.fromEntries(SHOP_ITEMS.map(it => [it.id, it]));
+  // save.shop = { v: 1, owned: [아이템 ID…], wear: { head, face, neck, back } }  (나중에 room: { 자리: 가구 ID } 를 더할 자리)
+  function SHOP_DEFAULT() { return { v: 1, owned: [], wear: { head: null, face: null, neck: null, back: null } }; }
+  // 예전 저장에 옷장 칸이 없거나 이상한 값이면 안전하게 채우고 고쳐요 (다른 칸은 건드리지 않음)
+  function migrateShop() {
+    const sh = (save.shop && typeof save.shop === 'object' && !Array.isArray(save.shop)) ? save.shop : SHOP_DEFAULT();
+    sh.owned = Array.isArray(sh.owned) ? [...new Set(sh.owned.filter(x => typeof x === 'string' && x.length <= 40))] : [];
+    const w = (sh.wear && typeof sh.wear === 'object' && !Array.isArray(sh.wear)) ? sh.wear : {};
+    sh.wear = {};
+    for (const slot of Object.keys(WEAR_SLOTS)) { const it = SHOP_BY_ID[w[slot]]; sh.wear[slot] = it && it.kind === 'wear' && it.slot === slot && sh.owned.includes(it.id) ? it.id : null; }
+    sh.v = 1; save.shop = sh;
+  }
+  const owns = (id) => save.shop.owned.includes(id);
+  // 구매: 아이템 ID만 받고, 가격은 목록에서 읽어요 (가격을 밖에서 넘겨받지 않음). 코인은 한 번만 줄어요.
+  function buyItem(id) {
+    const it = Object.prototype.hasOwnProperty.call(SHOP_BY_ID, id) ? SHOP_BY_ID[id] : null;
+    if (!it || !Number.isInteger(it.price) || it.price <= 0) return { ok: false, why: 'bad' };
+    if (owns(id)) return { ok: false, why: 'owned' };
+    const coins = Math.max(0, Math.floor(Number(save.coins) || 0));
+    if (coins < it.price) return { ok: false, why: 'poor', need: it.price - coins };
+    save.coins = coins - it.price;
+    save.shop.owned.push(id);
+    writeSave(); updateHUD();
+    return { ok: true };
+  }
+  // 장착·해제: 코인은 들지 않아요. 같은 부위는 하나만 (새로 끼우면 원래 것은 자동으로 빠져요)
+  function equipItem(id) {
+    const it = SHOP_BY_ID[id];
+    if (!it || it.kind !== 'wear' || !owns(id)) return false;
+    save.shop.wear[it.slot] = id; writeSave(); return true;
+  }
+  function unequipItem(id) {
+    const it = SHOP_BY_ID[id];
+    if (!it || save.shop.wear[it.slot] !== id) return false;
+    save.shop.wear[it.slot] = null; writeSave(); return true;
+  }
+  // 판다 꾸미기 그림: 판다 그림(16칸)과 같은 칸 단위로 그려요. face < 0이면 좌우를 뒤집어요.
+  // layer 'back' = 판다 뒤(가방), 'front' = 판다 앞(리본·안경·목도리·모자·왕관)
+  const WEAR_ART = {
+    w_ribbon: { layer: 'front', draw(R) { R(10, -1, 3, 3, '#e5484d'); R(14, -1, 2, 3, '#e5484d'); R(13, 0, 1, 1, '#a51d24'); R(11, 0, 1, 1, '#ff8787'); } },
+    w_glasses: { layer: 'front', draw(R) { const c = '#c99a1e'; for (const x of [2, 9]) { R(x + 1, 4, 3, 1, c); R(x + 1, 8, 3, 1, c); R(x, 5, 1, 3, c); R(x + 4, 5, 1, 3, c); } R(7, 6, 2, 1, c); } },
+    w_scarf: { layer: 'front', draw(R) { R(3, 11, 10, 2, '#2b6fd6'); R(3, 11, 10, 1, '#62aefc'); R(5, 11, 1, 2, '#fbfaf5'); R(9, 11, 1, 2, '#fbfaf5'); R(10, 13, 2, 2, '#2b6fd6'); R(10, 15, 2, 1, '#fbfaf5'); } },
+    w_bluehat: { layer: 'front', draw(R) { R(4, -1, 8, 3, '#2b6fd6'); R(5, -1, 6, 1, '#62aefc'); R(3, 2, 10, 1, '#1d4fa0'); R(7, -2, 2, 1, '#fbfaf5'); } },
+    w_crown: { layer: 'front', draw(R) { const g = '#f6c445', d = '#c99a1e'; R(4, 0, 8, 2, g); R(4, 1, 8, 1, d); R(4, -2, 1, 2, g); R(7, -2, 2, 2, g); R(11, -2, 1, 2, g); R(6, 0, 1, 1, '#e5484d'); R(9, 0, 1, 1, '#62aefc'); } },
+    w_bag: { layer: 'back', draw(R) { R(-2, 9, 6, 7, '#5a3a22'); R(-1, 10, 4, 5, '#a0652a'); R(-1, 10, 4, 2, '#c4843f'); R(0, 12, 2, 1, '#f6c445'); R(-1, 14, 4, 1, '#7a4a1e'); } },
+  };
+  // g: 캔버스, (sx, sy): 판다 그림 왼쪽 위, s: 한 칸 크기(게임 화면 2), wear: { head, face, neck, back }
+  function drawWear(g, sx, sy, s, face, wear, layer) {
+    if (!wear) return;
+    const R = (x, y, w, h, c) => { const mx = face < 0 ? 16 - x - w : x; g.fillStyle = c; g.fillRect(Math.round(sx + mx * s), Math.round(sy + y * s), w * s, h * s); };
+    for (const slot of ['back', 'neck', 'face', 'head']) { const a = WEAR_ART[wear[slot]]; if (a && a.layer === layer) a.draw(R); }
+  }
+  // 작은 판다 그림 (16 × 20칸: 위 4칸은 모자 자리)
+  function drawPandaWith(c, wear) {
+    const g = c.getContext('2d'); g.imageSmoothingEnabled = false; g.clearRect(0, 0, c.width, c.height);
+    const ox = Math.floor((c.width - 16) / 2), oy = c.height - 16;
+    drawWear(g, ox, oy, 1, 1, wear, 'back'); g.drawImage(PANDA.idle, ox, oy); drawWear(g, ox, oy, 1, 1, wear, 'front');
+  }
 
   // ================= 월드 · 지역 =================
   // 지역(스테이지)마다 맵·몬스터·문을 데이터로 정의합니다.
@@ -2522,8 +2655,11 @@
     else bob = Math.sin(time * 3) > 0.6 ? -1 : 0;
     const x = Math.round(P.x + P.w / 2 - 16 - cam), y = Math.round(P.y + P.h - 32 + bob);
     ctx.fillStyle = 'rgba(30,40,30,.25)'; if (P.onGround) ctx.fillRect(x + 7, Math.round(P.y + P.h) - 2, 18, 3);
+    const wear = save.shop && save.shop.wear;   // 판다 옷장 꾸미기 (그림만, 능력치에는 영향 없음)
+    drawWear(ctx, x, y, 2, P.face, wear, 'back');
     if (P.face > 0) ctx.drawImage(spr, x, y, 32, 32);
     else { ctx.save(); ctx.translate(x + 32, y); ctx.scale(-1, 1); ctx.drawImage(spr, 0, 0, 32, 32); ctx.restore(); }
+    drawWear(ctx, x, y, 2, P.face, wear, 'front');
   }
   function drawCoinAt(x, y, t) {
     const sw = Math.max(2, Math.round(20 * Math.abs(Math.cos(t))));
@@ -2671,6 +2807,7 @@
     if (mode === 'intro') { if (isEnter(c) && !e.repeat) { e.preventDefault(); closeIntro(); } return; }
     if (mode === 'pause') { if ((c === 'Escape' || isEnter(c)) && !e.repeat) { e.preventDefault(); resumeFromPause(); } return; }
     if (mode === 'menu') { if (c === 'Escape' && !e.repeat) closeMenus(); return; }
+    if (mode === 'shop') { if (c === 'Escape' && !e.repeat) closeWardrobe(); return; }
     if (mode === 'name') return;
     if (mode === 'lesson') { if (c === 'KeyH' || c === 'Escape') closeLesson(); return; }
     if (mode === 'result') { if ((isEnter(c) || c === 'Escape' || c === 'KeyR') && !e.repeat) { e.preventDefault(); closeResult(); } return; }
@@ -5721,8 +5858,67 @@
     if (!STAGES[id]) return;
     selStage = id; renderStagePick();
   }
+  // ----- 판다 옷장 창 -----
+  // pick = 고른 아이템(미리보기). 사지 않은 아이템은 미리보기만 하고, 창을 닫으면 실제 장착 상태로 돌아가요.
+  const wd = { pick: null, ask: false, busy: 0 };
+  function drawTitlePanda() { drawPandaWith($('titlePanda'), save.shop.wear); }
+  function openWardrobe() {
+    if (mode !== 'start') return;
+    audio(); mode = 'shop'; wd.pick = null; wd.ask = false;
+    $('startScreen').hidden = true; $('wardrobe').hidden = false; $('wardrobe').scrollTop = 0;
+    $('wdMsg').textContent = ''; $('wdMsg').className = 'wd-msg';
+    renderWardrobe(); $('wardrobe').querySelector('.card').focus({ preventScroll: true });
+  }
+  function closeWardrobe() {
+    if (mode !== 'shop') return;
+    wd.pick = null; wd.ask = false;   // 미리보기는 버려요 (실제 장착은 save.shop.wear 그대로)
+    $('wardrobe').hidden = true; drawTitlePanda(); showStart();
+  }
+  // 미리보기 = 지금 장착한 것 + 고른 아이템 (같은 부위는 고른 것으로 바꿔서)
+  function previewWear() { const w = { ...save.shop.wear }; const it = SHOP_BY_ID[wd.pick]; if (it) w[it.slot] = it.id; return w; }
+  function renderWardrobe() {
+    $('wdCoin').textContent = save.coins;
+    drawPandaWith($('wdPanda'), previewWear());
+    const it = SHOP_BY_ID[wd.pick];
+    $('wdState').innerHTML = !it ? '지금 내 판다예요.<br>아이템을 눌러 입어 보세요!'
+      : owns(it.id) ? (save.shop.wear[it.slot] === it.id ? `<b>${it.name}</b> 장착 중` : `<b>${it.name}</b> 입어 보는 중`)
+      : `<span class="pv">미리보기</span>: <b>${it.name}</b><br>(아직 사지 않았어요)`;
+    $('wdList').innerHTML = SHOP_ITEMS.filter(x => x.kind === 'wear').map(x => {
+      const on = save.shop.wear[x.slot] === x.id, own = owns(x.id);
+      const chip = on ? '<span class="wd-chip on">장착 중</span>' : own ? '<span class="wd-chip own">보유 중</span>' : `<span class="wd-chip">🪙 ${x.price}</span>`;
+      return `<button class="wd-item${wd.pick === x.id ? ' sel' : ''}" data-id="${x.id}" aria-pressed="${wd.pick === x.id}"><canvas width="22" height="22"></canvas><span class="nm">${x.name}</span><span class="sl">${WEAR_SLOTS[x.slot]} 장식</span>${chip}</button>`;
+    }).join('');
+    $('wdList').querySelectorAll('.wd-item').forEach(b => {
+      const x = SHOP_BY_ID[b.dataset.id]; drawPandaWith(b.querySelector('canvas'), { [x.slot]: x.id });
+      b.addEventListener('click', () => { if (mode !== 'shop') return; wd.pick = x.id; wd.ask = false; $('wdMsg').textContent = ''; SFX.pop(); renderWardrobe(); });
+    });
+    // 고른 아이템의 버튼: 사기 → (한 번 더 확인) / 코인 부족 / 장착 / 해제
+    let act = '';
+    if (!it) act = '<span class="q">아이템을 하나 골라 보세요.</span>';
+    else if (owns(it.id)) act = save.shop.wear[it.slot] === it.id ? '<button class="btn" id="wdOff">↩ 해제하기</button>' : '<button class="btn primary" id="wdOn">👕 장착하기</button>';
+    else if (save.coins < it.price) act = `<span class="q">🪙 ${it.price}코인 · 코인이 조금 부족해요! (${it.price - save.coins}코인 더 필요)<br>다른 모험을 하면서 코인을 모아 보세요!</span>`;
+    else if (!wd.ask) act = `<button class="btn primary" id="wdBuy">🪙 ${it.price}코인으로 사기</button>`;
+    else act = `<span class="q">이 아이템을 구매할까요? (🪙 ${save.coins} → ${save.coins - it.price})</span><button class="btn primary" id="wdYes">네, 살래요!</button><button class="btn" id="wdNo">아니요</button>`;
+    $('wdAct').innerHTML = act;
+    // [사기]를 두 번 톡톡 눌러도 같은 자리에 뜬 [네, 살래요!]가 바로 눌리지 않게 0.35초 기다려요 (구매는 어차피 한 번만 돼요)
+    const on = (id, f) => { const b = $(id); if (b) b.addEventListener('click', () => { if (mode !== 'shop' || (id === 'wdYes' && performance.now() < wd.busy)) return; f(); }); };
+    on('wdBuy', () => { wd.ask = true; wd.busy = performance.now() + 350; renderWardrobe(); const y = $('wdYes'); if (y) y.focus({ preventScroll: true }); });
+    on('wdNo', () => { wd.ask = false; renderWardrobe(); });
+    on('wdYes', () => {
+      const r = buyItem(wd.pick); wd.ask = false;
+      if (r.ok) { SFX.correct(); wdSay('구매 완료! 이제 장착할 수 있어요.'); }
+      else if (r.why === 'poor') { SFX.wrong(); wdSay('코인이 조금 부족해요!', true); }
+      else if (r.why === 'owned') wdSay('이미 가지고 있어요!');
+      renderWardrobe();
+    });
+    on('wdOn', () => { if (equipItem(wd.pick)) { SFX.pop(); wdSay('장착 완료! 탐험하러 가 볼까요?'); } renderWardrobe(); });
+    on('wdOff', () => { if (unequipItem(wd.pick)) { SFX.pop(); wdSay('해제했어요.'); } renderWardrobe(); });
+  }
+  function wdSay(t, no) { $('wdMsg').textContent = t; $('wdMsg').className = 'wd-msg' + (no ? ' no' : ''); }
+  $('btnWardrobe').addEventListener('click', openWardrobe);
+  $('wdClose').addEventListener('click', closeWardrobe);
   function showStart() {
-    mode = 'start'; renderStagePick();
+    mode = 'start'; renderStagePick(); drawTitlePanda();
     $('startScreen').hidden = false; $('startScreen').querySelector('.card').focus({ preventScroll: true });
   }
   function startPlay() {
@@ -5841,7 +6037,7 @@
   }
   // 홈으로: 열린 창·퀴즈·음성·입력을 모두 정리하고 시작 화면으로 (탐험 상태는 지역별로 보관)
   function goHome() {
-    for (const id of ['quiz', 'cardPop', 'speak', 'lesson', 'result', 'help', 'homeAsk', 'intro', 'faint', 'settings', 'confirmReset', 'nameAsk', 'talk', 'basket', 'slab', 'cake', 'cal', 'bcard', 'qpick']) $(id).hidden = true;
+    for (const id of ['quiz', 'cardPop', 'speak', 'lesson', 'result', 'help', 'homeAsk', 'intro', 'faint', 'settings', 'confirmReset', 'nameAsk', 'talk', 'basket', 'slab', 'cake', 'cal', 'bcard', 'qpick', 'wardrobe']) $(id).hidden = true;
     quick.on = false; quiz.lock = false; releaseAll(); closeMissionPanel();
     try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (e) {}
     clearTimeout(Voice.chk); clearTimeout(toastTimer); $('toast').hidden = true; $('focusHint').hidden = true;
@@ -5981,7 +6177,7 @@
     migrateSave();
     loadStage(selStage);
     $('coinIcon').src = COIN.toDataURL(); $('pfCoinIcon').src = COIN.toDataURL();
-    const tp = $('titlePanda').getContext('2d'); tp.drawImage(PANDA.idle, 0, 0);
+    $('wdCoinIcon').src = COIN.toDataURL(); drawTitlePanda();
     refreshSoundUI(); renderStagePick(); updateHUD(); wrapPinyin(document.body);
     if (document.fonts && document.fonts.load) {
       Promise.all([document.fonts.load('11px Jua'), document.fonts.load('15px Jua'), document.fonts.load('700 11px "Noto Sans SC"', '我叫什么名字你'), document.fonts.load(SIGN_PY_FONT, 'Nǐ jiào shénme míngzi')]).then(buildWorld).catch(() => {});
@@ -5998,6 +6194,7 @@
     requestAnimationFrame(frame);
     $('startScreen').querySelector('.card').focus({ preventScroll: true });
     window.__panda = {
+      SHOP_ITEMS, buyItem, equipItem, unequipItem, openWardrobe, closeWardrobe, drawWear, get wd() { return wd; },
       questInteract, openBasket, BD_NPC, BD_CANDLES, BD_CAKE_X, BD_BOARD_X, BD_DESK_X, BD_TABLE_X, bdValid, dateZh, bdSent, openCake, cakeAdd, cakeDel, cakeDone, closeCake, openCal, calOk, closeCal, openBCard, bcOk, closeBCard, bdPlace, openPick, closePick, pickOk, FAM, famOf, famSent, FM_NPC, GIFT, giftOf, gfSent, GF_NPC, GF_FR, FM_BOARD_X, famFace, giftURL, drawGift, fmNewTest: () => fmNew(), gfNewTest: () => gfNew(), get qp() { return qp; }, bdNewTest: () => bdNew(), bdBonus: () => bdBonusLater, basketDrop, closeBasket, zhNum, tokVal, testSpawn: (kind, n, set) => { const q = run.q, list = set ? q.m4.items : q.m3.items; spawnItems(list, kind, n, Q_SPOTS[set]); }, testOpenSlab: (rounds) => openSlab({ title: 'test', rounds, start: 0, tag: 'test', key: (i) => 'test' + i, onRound() {}, onAll() {} }), slabTap, slabKey, ruleHints, boxNums, closeTalk, closeSlab, questRecall, NPC_DEF, useSkill, canSkill, BGM, josa, BUILD, forestBuild, basicQuestion, MA, GREET, NW, P, save, quiz, quick, NQ, numQ, numQueue, NUMS, openQuiz, answer, closeQuiz, closeSpeak, selectStage, startPlay, goHome, askHome, resumeFromPause, loadStage, closeHelp, closeIntro, startNewRun, THEMES, SKINS, STAGES,
       get mode() { return mode; }, get monsters() { return monsters; }, get coins() { return coins; }, get gates() { return gates; },
       get run() { return run; }, get cam() { return cam; }, get floats() { return floats; }, get stage() { return STAGE.id; }, get drops() { return drops; }, get selStage() { return selStage; },
