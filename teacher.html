@@ -61,6 +61,7 @@
   .top .q { white-space: normal; }
   .top .q small { display: block; color: var(--soft); }
   .empty { padding: 18px 14px; color: var(--soft); font-size: 14px; }
+  .minipanel { margin-top: 16px; }
   .foot { margin-top: 18px; font-size: 13px; color: var(--soft); }
 </style>
 </head>
@@ -111,10 +112,22 @@
     </div>
   </div>
 
+  <div class="panel minipanel">
+    <h2>🎮 미니게임 기록 <small>학생이 한 판을 끝낼 때마다 한 줄 · <span id="mCount"></span></small></h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>시간</th><th>닉네임</th><th>게임</th><th>난이도</th><th>찾은 짝</th><th>시도</th><th>걸린 시간</th><th>기기</th></tr></thead>
+        <tbody id="mRows"></tbody>
+      </table>
+    </div>
+    <div class="empty" id="noMini" hidden>이 날짜에는 아직 미니게임 기록이 없어요.</div>
+  </div>
+
   <p class="foot">
     · 처음 정답 = 처음 시도에 맞힌 문제 / 푼 문제. 틀려도 다시 도전해서 끝까지 갈 수 있어요.<br>
     · 5~8차시(미션형: 숫자 계곡·생일 파티·가족사진·선물 찾기)는 처음 정답 = 힌트 없이 혼자 처음에 해결한 과제 / 혼자 푼 과제예요. 안내 문제(11·20 만들기)는 빼고, 💡는 힌트를 쓴 과제 수예요. (Apps Script 3판에서 보여요)<br>
     · 같은 닉네임이 같은 차시를 여러 번 하면 가장 마지막 기록을 보여 줘요.<br>
+    · 미니게임(숫자 카드·가족 호칭 카드)은 끝까지 한 판마다 한 줄씩 남아요. 시도 = 카드 두 장을 뒤집은 횟수(적을수록 잘 기억한 것). 차시 결과·정답률에는 섞이지 않아요.<br>
     · 원본 기록은 Google 시트의 '기록' 탭에 있어요.
   </p>
 </div>
@@ -183,7 +196,7 @@
   function group(rows) {
     const by = new Map();
     for (const r of rows) {
-      if (r.kind === '연결 확인' || r.name === TEST_NAME) continue;
+      if (r.kind === '연결 확인' || r.name === TEST_NAME || isMini(r)) continue;   // 미니게임은 아래 표에 따로
       const key = r.name + '|' + r.lesson;
       let o = by.get(key);
       if (!o) { o = { key, name: r.name || '(닉네임 없음)', lesson: r.lesson, start: r.t, last: r.t, mission: 0, total: 4, first: 0, asked: 0, stars: 0, wrong: '', secs: 0, device: r.device, clear: null }; by.set(key, o); }
@@ -197,6 +210,7 @@
     }
     return [...by.values()];
   }
+  const isMini = (r) => r.kind === '미니게임' || /^mini-/.test(r.stage || '');
   const rateOf = (o) => o.asked ? Math.round(o.first / o.asked * 100) : null;
   const wrongList = (o) => String(o.wrong || '').split(' | ').map(s => s.trim()).filter(Boolean);
 
@@ -251,6 +265,15 @@
     $('top').innerHTML = top.map(([k, n]) => { const [les, q] = k.split('§'); const cut = q.indexOf(' → '), ask = cut < 0 ? q : q.slice(0, cut), ans = cut < 0 ? '' : q.slice(cut + 3);
       return `<li><span class="n">${n}명</span><span class="q">${esc(ask)}${ans ? `<small>정답: ${esc(ans)}</small>` : ''}<small>${esc(les)}</small></span></li>`; }).join('');
     $('noTop').hidden = top.length > 0;
+    renderMini();
+  }
+  // 미니게임: 한 판마다 한 줄 (최근 기록이 위)
+  function renderMini() {
+    const ms = data.filter(r => isMini(r) && r.name !== TEST_NAME).sort((a, b) => b.t.localeCompare(a.t));
+    $('mCount').textContent = ms.length ? `${ms.length}판 · ${new Set(ms.map(r => r.name)).size}명` : '';
+    $('mRows').innerHTML = ms.map(r => { const [game, level] = String(r.mission || '').split(' · ');
+      return `<tr><td>${hm(r.t)}</td><td class="name">${esc(r.name || '(닉네임 없음)')}</td><td>${r.stage === 'mini-family' ? '👨‍👩‍👧 ' : '🔢 '}${esc(game || r.stage)}</td><td>${esc(level || '-')}</td><td>${r.first ? `${r.first}쌍 모두` : '-'}</td><td>${r.asked ? `${r.asked}번` : '-'}</td><td>${mmss(r.secs)}</td><td class="muted">${esc(r.device)}</td></tr>`; }).join('');
+    $('noMini').hidden = ms.length > 0;
   }
 
   // 연결 확인: 게임과 똑같은 방법으로 '연결 확인' 한 줄을 보내고, 몇 초 뒤 다시 읽어 봄

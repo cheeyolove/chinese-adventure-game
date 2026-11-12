@@ -269,12 +269,27 @@
   const loadBest = () => { try { const o = JSON.parse(localStorage.getItem(BEST_KEY) || '{}'); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } };
   function saveBest(mode, tries) { const o = loadBest(), old = o[mode]; const isNew = !(Number.isInteger(old) && old > 0 && old <= tries); if (isNew) { o[mode] = tries; try { localStorage.setItem(BEST_KEY, JSON.stringify(o)); } catch (e) {} } return { best: isNew ? tries : old, isNew }; }
 
+  // ----- 선생님 결과 창으로 보내기 (한 판을 끝낼 때마다 한 줄) -----
+  // 판다 탐험대와 같은 Google 시트 주소. 닉네임·레벨은 판다 탐험대 저장에서 읽기만 해요 (코인·경험치는 주지 않음)
+  const RESULT_URL = 'https://script.google.com/macros/s/AKfycbzneKS_tGDulume_qI9513R_niANPNWb73vkCzNMIT87-9TYIS5nUjz4tS4ehZd1AI7mw/exec';
+  function report() {
+    try {
+      let sv = {}; try { sv = JSON.parse(localStorage.getItem('panda-explorers-v1') || '{}') || {}; } catch (e) {}
+      const name = typeof sv.playerName === 'string' && sv.playerName ? sv.playerName.replace(/[<>&"]/g, '').slice(0, 12) : '(닉네임 없음)';
+      const coarse = !!(window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
+      const body = { time: new Date().toISOString(), name, lesson: '미니게임', stage: IS_FAM ? 'mini-family' : 'mini-number', event: '미니게임',
+        mission: `${IS_FAM ? '가족 호칭 카드' : '숫자 카드'} · ${MODES[S.mode].label}`, firstTry: S.pairs, asked: S.tries,
+        secs: Math.round((performance.now() - S.t0) / 1000), level: Number(sv.level) || 0, device: coarse ? '모바일' : 'PC' };
+      fetch(RESULT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(body), keepalive: true }).catch(() => {});
+    } catch (e) {}
+  }
+
   // ----- 게임 상태 -----
   // deck: [{ id, v, kind: 'han' | 'num' }]  (같은 숫자의 한자 카드와 숫자·병음 카드가 한 쌍)
   const S = { mode: 'easy', deck: [], open: [], done: new Set(), tries: 0, lock: false, pairs: 0, timer: 0, overlay: false };
   function start(mode = S.mode) {
     clearTimeout(S.timer);
-    S.mode = mode; S.open = []; S.done = new Set(); S.tries = 0; S.lock = false;
+    S.mode = mode; S.open = []; S.done = new Set(); S.tries = 0; S.lock = false; S.t0 = performance.now(); S.sent = false;
     const vs = MODES[mode].pick();
     S.pairs = vs.length;
     S.deck = shuffle(vs.flatMap(v => [{ v, kind: 'han' }, { v, kind: 'num' }])).map((c, i) => ({ ...c, id: i }));
@@ -318,6 +333,7 @@
   function say(html) { $('msg').innerHTML = html; }
   function finish() {
     SFX.done();
+    if (!S.sent) { S.sent = true; report(); }   // 한 판에 한 번만
     if (IS_FAM) {
       const r = saveBest(S.mode, S.tries);
       $('doneMsg').textContent = '🐼 가족 호칭 카드 완성!';
