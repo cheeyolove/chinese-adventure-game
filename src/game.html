@@ -536,6 +536,12 @@
   .stagecard .sc-stars { font-size: 18px; letter-spacing: 2px; color: var(--gold); text-shadow: 0 1px 0 var(--ink); }
   .stagecard .sc-stars .off { color: #cfd8d3; text-shadow: none; }
   .stagecard.minicard { text-decoration: none; background: #fff7d6; }
+  .minizone { width: 100%; margin-top: 18px; padding-top: 14px; border-top: 3px dashed var(--paper-2); text-align: center; }
+  .mz-title { font-family: var(--font-display); font-size: 22px; margin: 0; }
+  .mz-sub { margin: 4px 0 10px; color: var(--ink-soft); font-size: 15px; }
+  .mz-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .mz-grid .stagecard { padding: 8px 8px 10px; }
+  .mz-grid .sc-title { font-size: 19px; }
   .stagecard .sc-ico { font-size: 30px; line-height: 46px; }
   .stagecard .sc-new.mini { background: var(--jade); }
   .stagecard.locked { background: var(--paper-2); color: var(--ink-soft); border-style: dashed; box-shadow: none; justify-content: center; cursor: default; }
@@ -658,6 +664,12 @@
     <div class="submodes">
       <button class="btn small" id="btnLearnFirst">📖 배움 노트</button>
     </div>
+    <!-- 미니게임 놀이터: 정규 차시와 따로 (기록도 따로) -->
+    <section class="minizone" id="miniZone" hidden>
+      <h3 class="mz-title">🎮 미니게임 놀이터</h3>
+      <p class="mz-sub">배운 중국어를 게임으로 복습해요! (코인·별은 없어요)</p>
+      <div class="mz-grid" id="miniPick"></div>
+    </section>
   </div>
 </div>
 
@@ -2127,6 +2139,12 @@
   // 숫자 카드 짝 맞추기(따로 있는 연습 게임, cards.html): 주소 끝 #number-cards로도 열려요. Claude 미리보기 안에서는 다른 페이지가 열리지 않아 숨겨요
   const CARDS_OK = /^(https?|file):$/.test(location.protocol) && !/claude/i.test(location.hostname);
   if (CARDS_OK && /^#number-cards/i.test(location.hash || '')) location.replace('cards.html');
+  if (CARDS_OK && /^#family-cards/i.test(location.hash || '')) location.replace('cards.html?deck=family');
+  // 미니게임 목록: 새 미니게임은 여기에 한 줄씩 더하면 홈 화면 놀이터에 나와요
+  const MINIGAMES = [
+    { id: 'number-cards', href: 'cards.html', ico: '🔢', title: '숫자 카드', topic: '一 ~ 十 짝 맞추기', from: '5차시 복습' },
+    { id: 'family-cards', href: 'cards.html?deck=family', ico: '👨‍👩‍👧', title: '가족 호칭 카드', topic: '爸爸 · 妈妈 짝 맞추기', from: '7차시 복습', isNew: true },
+  ];
 
   const ALL_STAGES = ['bamboo', 'greet', 'name', 'nation', 'number', 'birthday', 'family', 'gift'];
   const STAGE_ORDER = ALL_STAGES.filter(id => PREVIEW || STAGES[id].status === 'ready');
@@ -5827,14 +5845,6 @@
   function runOf(id) { return run && run.stage === id ? run : stageCache[id] && stageCache[id].run; }
   const inProgress = (id) => { const r = runOf(id); return !!r && !r.cleared && (r.ms.some(x => x.done > 0) || r.coins > 0 || r.introSeen); };
   function renderStagePick() {
-    // 숫자 카드 미니게임 칸은 숫자 계곡 바로 옆에
-    const miniTile = CARDS_OK ? `<a class="stagecard minicard" id="cardsTile" href="cards.html">
-        <span class="sc-new mini">미니게임</span>
-        <span class="sc-ico">🃏</span>
-        <span class="sc-num">언제든 연습</span>
-        <span class="sc-title">숫자 카드</span>
-        <span class="sc-topic">一 ~ 十 짝 맞추기</span>
-      </a>` : '';
     $('stagePick').innerHTML = STAGE_ORDER.map((id, n) => {
       const st = STAGES[id], stars = save.clears[id] || 0;
       return `<button class="stagecard${id === selStage ? ' sel' : ''}" data-stage="${id}" aria-pressed="${id === selStage}">
@@ -5844,13 +5854,22 @@
         <span class="sc-title">${st.short}</span>
         <span class="sc-topic">${st.topic}</span>
         <span class="sc-stars" aria-label="별 ${stars}개">${'★'.repeat(stars)}<span class="off">${'★'.repeat(3 - stars)}</span></span>
-      </button>` + (id === 'number' ? miniTile : '');
-    }).join('') + (STAGE_ORDER.includes('number') ? '' : miniTile) + (PREVIEW ? '' : '<div class="stagecard locked" aria-disabled="true"><span class="sc-lock">🔒</span><span class="sc-title">다음 수업</span><span class="sc-topic">준비 중이에요</span></div>');
+      </button>`;
+    }).join('') + (PREVIEW ? '' : '<div class="stagecard locked" aria-disabled="true"><span class="sc-lock">🔒</span><span class="sc-title">다음 수업</span><span class="sc-topic">준비 중이에요</span></div>');
     $('stagePick').querySelectorAll('canvas[data-ico]').forEach(c => {
       const T = THEMES[STAGES[c.dataset.ico].theme], spr = SKINS[T.skins[0]].spr({ tone: 1 });
       c.width = spr.width; c.height = spr.height; c.getContext('2d').drawImage(spr, 0, 0);
     });
     $('stagePick').querySelectorAll('.stagecard[data-stage]').forEach(b => b.addEventListener('click', () => selectStage(b.dataset.stage)));
+    // 미니게임 놀이터 (다른 페이지로 가는 링크라서 Claude 미리보기 안에서는 숨겨요)
+    $('miniZone').hidden = !CARDS_OK;
+    $('miniPick').innerHTML = MINIGAMES.map(g => `<a class="stagecard minicard" id="mini-${g.id}" href="${g.href}">
+        ${g.isNew ? '<span class="sc-new">NEW</span>' : ''}
+        <span class="sc-ico">${g.ico}</span>
+        <span class="sc-num">${g.from}</span>
+        <span class="sc-title">${g.title}</span>
+        <span class="sc-topic">${g.topic}</span>
+      </a>`).join('');
     const prog = inProgress(selStage);
     $('btnPlay').textContent = prog ? '▶ 이어서 탐험' : '▶ 탐험 시작';
     $('btnNewRun').hidden = !prog;
@@ -5924,6 +5943,7 @@
   $('btnWardrobe').addEventListener('click', openWardrobe);
   $('wdClose').addEventListener('click', closeWardrobe);
   function showStart() {
+    if (/^#minigames/i.test(location.hash || '')) setTimeout(() => { try { $('miniZone').scrollIntoView({ block: 'start' }); } catch (e) {} }, 60);
     mode = 'start'; renderStagePick(); drawTitlePanda(); refreshWardrobeBtn();
     $('startScreen').hidden = false; $('startScreen').querySelector('.card').focus({ preventScroll: true });
   }
@@ -6185,6 +6205,7 @@
     $('coinIcon').src = COIN.toDataURL(); $('pfCoinIcon').src = COIN.toDataURL();
     $('wdCoinIcon').src = COIN.toDataURL(); drawTitlePanda(); refreshWardrobeBtn();
     refreshSoundUI(); renderStagePick(); updateHUD(); wrapPinyin(document.body);
+    if (/^#minigames/i.test(location.hash || '')) setTimeout(() => { try { $('miniZone').scrollIntoView({ block: 'start' }); } catch (e) {} }, 120);   // 미니게임에서 돌아오면 놀이터 위치로
     if (document.fonts && document.fonts.load) {
       Promise.all([document.fonts.load('11px Jua'), document.fonts.load('15px Jua'), document.fonts.load('700 11px "Noto Sans SC"', '我叫什么名字你'), document.fonts.load(SIGN_PY_FONT, 'Nǐ jiào shénme míngzi')]).then(buildWorld).catch(() => {});
     }

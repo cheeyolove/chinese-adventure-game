@@ -12,7 +12,7 @@
   // 병음은 성조 모음까지 모두 들어 있는 글자만 작게 받아와요 (판다 탐험대와 같은 방식)
   (() => {
     const py = 'abcdefghijklmnopqrstuvwxyzāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜü0123456789 /';
-    const han = '一二三四五六七八九十';
+    const han = '一二三四五六七八九十爸妈哥姐弟妹';   // 숫자 카드 + 가족 호칭 카드
     for (const href of ['https://fonts.googleapis.com/css2?family=Noto+Sans:wght@700&display=swap&text=' + encodeURIComponent(py),
       'https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@700&display=swap&text=' + encodeURIComponent(han)]) {
       const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = href; document.head.appendChild(l);
@@ -99,6 +99,27 @@
   @media (prefers-reduced-motion: reduce) { .done-panda { animation: none; } }
   .done-msg { font-family: var(--font-display); font-size: clamp(20px, 5vw, 26px); margin: 6px 0; }
   .done-sub { color: var(--ink-soft); font-size: 17px; }
+  /* ===== 가족 호칭 카드 (body.fam 일 때만) ===== */
+  .fam .front .han { font-size: clamp(30px, 8.6vw, 54px); white-space: nowrap; letter-spacing: -1px; }
+  .fam .front .py { font-size: clamp(18px, 4.6vw, 26px); white-space: nowrap; }
+  .fam .front .ko { font-family: var(--font-display); font-size: clamp(15px, 3.8vw, 20px); color: var(--ink); white-space: nowrap; }
+  .fam .grid.n6 { grid-template-columns: repeat(3, minmax(0, 150px)); justify-content: center; }
+  .fam .grid.n8 { grid-template-columns: repeat(4, minmax(0, 150px)); justify-content: center; }
+  .fam .grid.n12 { grid-template-columns: repeat(6, minmax(0, 140px)); justify-content: center; }
+  @media (max-width: 760px) { .fam .grid.n12 { grid-template-columns: repeat(4, 1fr); } }
+  .fam .card.pop::after { content: '✨'; position: absolute; top: -10px; left: 50%; transform: translateX(-50%); font-size: 22px; animation: spark .7s ease forwards; pointer-events: none; }
+  @keyframes spark { from { opacity: 1; transform: translate(-50%, 4px) scale(.6); } to { opacity: 0; transform: translate(-50%, -16px) scale(1.2); } }
+  .fam .modes button { font-size: 17px; padding: 8px 14px 9px; min-height: 50px; }
+  .pickmode .pm { display: grid; gap: 12px; margin: 10px 0 4px; }
+  .pickmode .pm button { border: 3px solid var(--ink); border-radius: 16px; background: #fff; color: var(--ink); box-shadow: 0 4px 0 var(--ink); font-size: 22px; padding: 12px 10px; min-height: 64px; }
+  .pickmode .pm button small { display: block; font-family: var(--font-body); font-size: 15px; color: var(--ink-soft); }
+  .pickmode .pm button:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--ink); }
+  .fam-done { display: flex; justify-content: center; align-items: flex-end; gap: 4px; }
+  .fam-done canvas { image-rendering: pixelated; animation: hop 1s ease-in-out infinite; }
+  .fam-done canvas:nth-child(2n) { animation-delay: .25s; }
+  .study .ko { font-family: var(--font-display); font-size: 18px; }
+  .study .say { border: 2px solid var(--ink); border-radius: 10px; background: var(--paper-2); font-size: 18px; padding: 2px 8px; }
+  @media (prefers-reduced-motion: reduce) { .fam .card.pop::after, .fam-done canvas { animation: none; } }
   @media (max-width: 520px) {
     .wrap { padding: 10px 10px 24px; }
     .hbtn { height: 40px; padding: 0 10px; font-size: 15px; }
@@ -114,6 +135,7 @@
     <a class="hbtn" id="home" href="index.html" style="display:inline-flex;align-items:center;text-decoration:none">🏠 판다 탐험대</a>
     <button class="hbtn" id="studyBtn">📖 숫자 공부하기</button>
     <button class="hbtn" id="soundBtn" aria-pressed="true" aria-label="소리 끄기">🔊</button>
+    <button class="hbtn" id="pickBtn" hidden>🎚 난이도 선택</button>
     <button class="hbtn gold" id="restart">↻ 다시 시작</button>
   </div>
   <div class="bar">
@@ -137,10 +159,20 @@
   </div>
 </div>
 
+<!-- 난이도 고르기 (가족 호칭 카드) -->
+<div class="overlay pickmode" id="pickMode" hidden>
+  <div class="panel" tabindex="-1">
+    <h2 id="pmTitle">난이도를 골라요</h2>
+    <p class="done-sub" id="pmSub"></p>
+    <div class="pm" id="pmBtns"></div>
+  </div>
+</div>
+
 <!-- 완료 -->
 <div class="overlay" id="done" hidden>
   <div class="panel" tabindex="-1">
     <canvas class="done-panda" id="donePanda" width="16" height="16" aria-hidden="true"></canvas>
+    <div class="fam-done" id="famDone" hidden aria-hidden="true"></div>
     <div class="done-msg" id="doneMsg">축하해!</div>
     <div class="done-sub" id="doneSub"></div>
     <div class="btns">
@@ -148,7 +180,7 @@
       <button class="btn" id="again">다시 도전하기</button>
       <button class="btn" id="changeMode">난이도 바꾸기</button>
       <button class="btn" id="doneStudy">숫자 공부하기</button>
-      <a class="btn" href="index.html" style="text-decoration:none">판다 탐험대로 돌아가기</a>
+      <a class="btn" id="doneHome" href="index.html" style="text-decoration:none">판다 탐험대로 돌아가기</a>
     </div>
   </div>
 </div>
@@ -161,8 +193,21 @@
     { v: 1, h: '一', p: 'yī' }, { v: 2, h: '二', p: 'èr' }, { v: 3, h: '三', p: 'sān' }, { v: 4, h: '四', p: 'sì' }, { v: 5, h: '五', p: 'wǔ' },
     { v: 6, h: '六', p: 'liù' }, { v: 7, h: '七', p: 'qī' }, { v: 8, h: '八', p: 'bā' }, { v: 9, h: '九', p: 'jiǔ' }, { v: 10, h: '十', p: 'shí' },
   ];
-  const byV = (v) => NUMS[v - 1];
-  const MODES = { easy: { label: '쉬움', pick: () => [1, 2, 3, 4, 5] }, normal: { label: '보통', pick: () => shuffle(NUMS.map(n => n.v)).slice(0, 7).sort((a, b) => a - b) }, hard: { label: '도전', pick: () => NUMS.map(n => n.v) } };
+  // 가족 호칭 6개: 한자 ↔ 병음(두 번째 글자는 경성) + 한국어 뜻
+  const FAM = [
+    { v: 1, h: '爸爸', p: 'bàba', ko: '아빠' }, { v: 2, h: '妈妈', p: 'māma', ko: '엄마' }, { v: 3, h: '哥哥', p: 'gēge', ko: '형·오빠' },
+    { v: 4, h: '姐姐', p: 'jiějie', ko: '누나·언니' }, { v: 5, h: '弟弟', p: 'dìdi', ko: '남동생' }, { v: 6, h: '妹妹', p: 'mèimei', ko: '여동생' },
+  ];
+  // 어떤 카드 묶음인지: 주소에 ?deck=family 가 있으면 가족 호칭 카드, 없으면 원래 숫자 카드 (숫자 카드는 그대로)
+  const IS_FAM = /[?&]deck=family\b/.test(location.search);
+  const ITEMS = IS_FAM ? FAM : NUMS;
+  const byV = (v) => ITEMS[v - 1];
+  const MODES = IS_FAM
+    ? { easy: { label: '쉬움', icon: '🌱', pick: () => [1, 2, shuffle([3, 4, 5, 6])[0]] },          // 爸爸·妈妈 + 하나
+        normal: { label: '보통', icon: '🌿', pick: () => shuffle([1, 2, 3, 4, 5, 6]).slice(0, 4).sort((a, b) => a - b) },
+        hard: { label: '도전', icon: '🌳', pick: () => [1, 2, 3, 4, 5, 6] } }
+    : { easy: { label: '쉬움', pick: () => [1, 2, 3, 4, 5] }, normal: { label: '보통', pick: () => shuffle(NUMS.map(n => n.v)).slice(0, 7).sort((a, b) => a - b) }, hard: { label: '도전', pick: () => NUMS.map(n => n.v) } };
+  const FAM_N = { easy: 3, normal: 4, hard: 6 };
   const $ = (id) => document.getElementById(id);
   function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
 
@@ -172,6 +217,21 @@
   const PAL = { k: '#22202b', w: '#fbfaf5', e: '#ffffff', p: '#f59ab0', r: '#e5484d', l: '#5cc46a' };
   function drawPanda(c) { const g = c.getContext('2d'); g.clearRect(0, 0, 16, 16); PANDA.forEach((row, y) => [...row].forEach((ch, x) => { if (PAL[ch]) { g.fillStyle = PAL[ch]; g.fillRect(x, y, 1, 1); } })); }
   drawPanda($('logo')); drawPanda($('donePanda'));
+  if (IS_FAM) {
+    document.body.classList.add('fam'); document.title = '판다 가족 호칭 카드';
+    $('logo').nextSibling.textContent = '가족 호칭 카드';
+    $('studyBtn').textContent = '📖 가족 호칭 보기'; $('pickBtn').hidden = false;
+    $('modes').innerHTML = ['easy', 'normal', 'hard'].map(m => `<button data-mode="${m}" aria-pressed="${m === 'easy'}">${MODES[m].icon} ${MODES[m].label}<small>${FAM_N[m]}쌍 · ${FAM_N[m] * 2}장</small></button>`).join('');
+    $('study').querySelector('h2').textContent = '📖 가족 호칭 6가지';
+    $('study').querySelector('thead').innerHTML = '<tr><th>한자</th><th>병음</th><th>뜻</th><th>듣기</th></tr>';
+    $('doneStudy').textContent = '가족 호칭 보기'; $('changeMode').textContent = '다른 난이도 선택';
+    $('doneHome').textContent = '미니게임 놀이터로 돌아가기'; $('doneHome').href = 'index.html#minigames'; $('home').href = 'index.html#minigames';
+    $('donePanda').hidden = true; $('famDone').hidden = false;
+    // 축하하는 판다 가족 (아빠 · 엄마 · 아이 둘)
+    const deco = [[22, (g) => { g.fillStyle = '#2b2838'; g.fillRect(4, 0, 8, 3); g.fillRect(2, 2, 12, 1); }], [22, (g) => { g.fillStyle = '#ff8fb8'; g.fillRect(11, 0, 3, 3); }], [16, (g) => { g.fillStyle = '#e5484d'; g.fillRect(4, 0, 3, 3); g.fillRect(9, 0, 3, 3); }], [16, (g) => { g.fillStyle = '#f6c445'; g.fillRect(4, 1, 8, 2); g.fillStyle = '#62aefc'; g.fillRect(4, 0, 8, 1); }]];
+    $('famDone').innerHTML = deco.map(([w]) => `<canvas width="16" height="19" style="width:${w * 3}px;height:${Math.round(w * 3 * 19 / 16)}px"></canvas>`).join('');
+    [...$('famDone').querySelectorAll('canvas')].forEach((c, i) => { const g = c.getContext('2d'); PANDA.forEach((row, y) => [...row].forEach((ch, x) => { if (PAL[ch] && ch !== 'l') { g.fillStyle = PAL[ch]; g.fillRect(x, y + 3, 1, 1); } })); deco[i][1](g); });
+  }
 
   // ----- 소리 (짧은 효과음, 파일 없이) -----
   let AC = null;
@@ -204,6 +264,11 @@
   document.addEventListener('pointerdown', () => Voice.unlock(), { once: true });
   const SFX = { flip: () => tone(520, 0, 0.07), match: () => [523, 659, 784].forEach((f, i) => tone(f, i * 0.08, 0.14)), miss: () => tone(300, 0, 0.16, 'sine', 0.05), done: () => [523, 659, 784, 1047, 1319].forEach((f, i) => tone(f, i * 0.1, 0.2, 'square', 0.04)) };
 
+  // 가족 호칭 카드 최고 기록 (이 기기에만, 판다 탐험대 저장과 따로): { easy: 시도 수, ... }
+  const BEST_KEY = 'panda-family-cards-best';
+  const loadBest = () => { try { const o = JSON.parse(localStorage.getItem(BEST_KEY) || '{}'); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } };
+  function saveBest(mode, tries) { const o = loadBest(), old = o[mode]; const isNew = !(Number.isInteger(old) && old > 0 && old <= tries); if (isNew) { o[mode] = tries; try { localStorage.setItem(BEST_KEY, JSON.stringify(o)); } catch (e) {} } return { best: isNew ? tries : old, isNew }; }
+
   // ----- 게임 상태 -----
   // deck: [{ id, v, kind: 'han' | 'num' }]  (같은 숫자의 한자 카드와 숫자·병음 카드가 한 쌍)
   const S = { mode: 'easy', deck: [], open: [], done: new Set(), tries: 0, lock: false, pairs: 0, timer: 0, overlay: false };
@@ -214,17 +279,18 @@
     S.pairs = vs.length;
     S.deck = shuffle(vs.flatMap(v => [{ v, kind: 'han' }, { v, kind: 'num' }])).map((c, i) => ({ ...c, id: i }));
     document.querySelectorAll('#modes button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.mode === mode)));
+    if (IS_FAM) $('grid').className = 'grid n' + S.deck.length;
     $('grid').innerHTML = S.deck.map(c => `<button class="card" data-id="${c.id}" aria-label="뒤집힌 카드"><span class="in"><span class="face back"></span><span class="face front"></span></span></button>`).join('');
     $('grid').querySelectorAll('.card').forEach(b => b.addEventListener('click', () => flip(+b.dataset.id)));
-    say('한자 카드와 숫자 카드를 짝지어 보세요!');
+    say(IS_FAM ? '한자 카드와 병음·뜻 카드를 짝지어 보세요!' : '한자 카드와 숫자 카드를 짝지어 보세요!');
     stat();
   }
   // 앞면 내용은 뒤집을 때만 넣어요 (뒤집기 전에는 어떤 카드인지 알 수 없게)
-  const faceHTML = (c) => c.kind === 'han' ? `<span class="han">${byV(c.v).h}</span>` : `<span class="num">${c.v}</span><span class="py">${byV(c.v).p}</span>`;
+  const faceHTML = (c) => c.kind === 'han' ? `<span class="han">${byV(c.v).h}</span>` : IS_FAM ? `<span class="py">${byV(c.v).p}</span><span class="ko">${byV(c.v).ko}</span>` : `<span class="num">${c.v}</span><span class="py">${byV(c.v).p}</span>`;
   const el = (id) => $('grid').querySelector(`.card[data-id="${id}"]`);
   function show(id, up) {
     const b = el(id), c = S.deck[id];
-    if (up) { b.querySelector('.front').innerHTML = faceHTML(c); b.setAttribute('aria-label', c.kind === 'han' ? byV(c.v).h : `${c.v} ${byV(c.v).p}`); b.classList.add('up'); }
+    if (up) { b.querySelector('.front').innerHTML = faceHTML(c); b.setAttribute('aria-label', c.kind === 'han' ? byV(c.v).h : IS_FAM ? `${byV(c.v).p} ${byV(c.v).ko}` : `${c.v} ${byV(c.v).p}`); b.classList.add('up'); }
     else { b.classList.remove('up'); b.setAttribute('aria-label', '뒤집힌 카드'); setTimeout(() => { if (!b.classList.contains('up')) b.querySelector('.front').innerHTML = ''; }, 340); }
   }
   function flip(id) {
@@ -238,22 +304,28 @@
       S.timer = setTimeout(() => {
         S.open.forEach(i => { S.done.add(i); const e = el(i); e.classList.add('done', 'pop'); e.disabled = true; });
         const n = byV(a.v);
-        say(`<span class="han">${n.h}</span> — ${n.v} — <span class="py">${n.p}</span>`);
+        say(IS_FAM ? `정답! <span class="han">${n.h}</span> <span class="py">${n.p}</span> ${n.ko}` : `<span class="han">${n.h}</span> — ${n.v} — <span class="py">${n.p}</span>`);
         SFX.match(); S.open = []; S.lock = false; stat();
         if (S.done.size === S.deck.length) setTimeout(finish, 700);
       }, 380);
     } else {
-      say('다시 찾아봐요!');
+      say(IS_FAM ? '다시 찾아볼까요?' : '다시 찾아봐요!');
       S.timer = setTimeout(() => { SFX.miss(); S.open.forEach(i => show(i, false)); S.open = []; S.lock = false; }, 1000);
     }
   }
   const NEXT = { easy: 'normal', normal: 'hard' };
-  function stat() { $('stat').innerHTML = `맞힌 쌍 <b>${S.done.size / 2}/${S.pairs}</b> · 시도 <b>${S.tries}</b>번`; }
+  function stat() { $('stat').innerHTML = IS_FAM ? `찾은 짝 <b>${S.done.size / 2} / ${S.pairs}</b> · 시도 <b>${S.tries}</b>회` : `맞힌 쌍 <b>${S.done.size / 2}/${S.pairs}</b> · 시도 <b>${S.tries}</b>번`; }
   function say(html) { $('msg').innerHTML = html; }
   function finish() {
     SFX.done();
+    if (IS_FAM) {
+      const r = saveBest(S.mode, S.tries);
+      $('doneMsg').textContent = '🐼 가족 호칭 카드 완성!';
+      $('doneSub').innerHTML = `가족을 부르는 중국어를 잘 기억했어요!<br>찾은 짝 ${S.pairs} / ${S.pairs} · 시도 ${S.tries}회 (${MODES[S.mode].label})<br>${r.isNew ? '🏅 이 난이도 최고 기록!' : `이 난이도 최고 기록: ${r.best}회`}`;
+    } else {
     $('doneMsg').textContent = `축하해! 중국어 숫자 ${S.pairs}개를 모두 찾았어!`;
     $('doneSub').textContent = `${S.tries}번 만에 다 찾았어요. (${MODES[S.mode].label})`;
+    }
     // 쉬움 → 보통 → 도전: 다음 난이도로 바로 가는 버튼 (도전을 깨면 없음)
     const nx = NEXT[S.mode];
     $('nextMode').hidden = !nx;
@@ -263,8 +335,19 @@
   }
   // ----- 창: 열려 있는 동안 카드는 뒤집히지 않아요. 닫으면 진행 상황 그대로 -----
   function openOverlay(id) { S.overlay = true; $(id).hidden = false; $(id).querySelector('.panel').focus({ preventScroll: true }); }
-  function closeOverlay(id) { $(id).hidden = true; S.overlay = !$('study').hidden || !$('done').hidden; }
-  $('studyRows').innerHTML = NUMS.map(n => `<tr><td class="han">${n.h}</td><td class="num">${n.v}</td><td class="py">${n.p}</td></tr>`).join('');
+  function closeOverlay(id) { $(id).hidden = true; S.overlay = !$('study').hidden || !$('done').hidden || !$('pickMode').hidden; }
+  $('studyRows').innerHTML = IS_FAM ? FAM.map(n => `<tr><td class="han">${n.h}</td><td class="py">${n.p}</td><td class="ko">${n.ko}</td><td><button class="say" data-say="${n.h}" aria-label="${n.h} 듣기">🔊</button></td></tr>`).join('')
+    : NUMS.map(n => `<tr><td class="han">${n.h}</td><td class="num">${n.v}</td><td class="py">${n.p}</td></tr>`).join('');
+  $('studyRows').querySelectorAll('.say').forEach(b => b.addEventListener('click', () => Voice.say(b.dataset.say)));
+  // 가족 카드: 처음과 [난이도 선택]에서 큰 버튼으로 난이도 고르기 (카드 수가 보여요)
+  function openPick() {
+    $('pmTitle').textContent = '👨‍👩‍👧 가족 호칭 카드 · 가족을 찾아라!';
+    $('pmSub').textContent = '난이도를 골라요. 한자 카드와 병음·뜻 카드를 짝지어요.';
+    $('pmBtns').innerHTML = ['easy', 'normal', 'hard'].map(m => `<button data-mode="${m}">${MODES[m].icon} ${MODES[m].label}<small>${FAM_N[m]}쌍 · 카드 ${FAM_N[m] * 2}장${m === 'easy' ? ' (爸爸 · 妈妈 + 하나)' : m === 'hard' ? ' (여섯 가족 모두)' : ' (무작위 네 가족)'}</small></button>`).join('');
+    $('pmBtns').querySelectorAll('button').forEach(b => b.addEventListener('click', () => { closeOverlay('pickMode'); start(b.dataset.mode); }));
+    openOverlay('pickMode');
+  }
+  $('pickBtn').addEventListener('click', openPick);
   $('soundBtn').addEventListener('click', () => { soundOn = !soundOn; refreshSound(); try { localStorage.setItem('panda-cards-sound', soundOn ? 'on' : 'off'); } catch (e) {} if (!soundOn) { try { window.speechSynthesis.cancel(); } catch (e) {} } else SFX.flip(); });
   refreshSound();
   $('studyBtn').addEventListener('click', () => openOverlay('study'));
@@ -273,11 +356,12 @@
   $('modes').addEventListener('click', (e) => { const b = e.target.closest('button[data-mode]'); if (b) start(b.dataset.mode); });
   $('again').addEventListener('click', () => { closeOverlay('done'); start(); });
   $('nextMode').addEventListener('click', () => { const nx = NEXT[S.mode]; closeOverlay('done'); if (nx) start(nx); });
-  $('changeMode').addEventListener('click', () => { closeOverlay('done'); start(); $('modes').querySelector('[aria-pressed="true"]').focus(); say('난이도를 골라 보세요!'); });
+  $('changeMode').addEventListener('click', () => { closeOverlay('done'); if (IS_FAM) { start(); openPick(); return; } start(); $('modes').querySelector('[aria-pressed="true"]').focus(); say('난이도를 골라 보세요!'); });
   $('doneStudy').addEventListener('click', () => { closeOverlay('done'); openOverlay('study'); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { if (!$('study').hidden) closeOverlay('study'); } });
   start('easy');
-  window.__cards = { S, start, flip, NUMS, Voice, get soundOn() { return soundOn; } };
+  if (IS_FAM) openPick();
+  window.__cards = { S, start, flip, NUMS, FAM, IS_FAM, MODES, loadBest, Voice, get soundOn() { return soundOn; } };
 })();
 </script>
 </body>
