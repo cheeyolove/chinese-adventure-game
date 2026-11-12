@@ -138,7 +138,7 @@
   .btn.big { font-size: 24px; padding: 12px 40px 14px; border-radius: 16px; }
   /* 판다 옷장 */
   .st-right { display: inline-flex; align-items: center; gap: 8px; }
-  .wdbtn { background: #fff7d6; white-space: nowrap; }
+  .wdbtn { background: #fff7d6; white-space: nowrap; } .wdbtn.locked { background: var(--paper-2); color: var(--ink-soft); }
   .profile { white-space: nowrap; min-width: 0; } #pfName { max-width: 6em; overflow: hidden; text-overflow: ellipsis; }
   @media (max-width: 420px) { .wdbtn { padding: 4px 8px; font-size: 14px; } .profile { gap: 5px; padding-right: 8px; } #pfName { max-width: 5.5em; } }
   .wardcard { max-width: 760px; }
@@ -698,7 +698,7 @@
 <div class="overlay" id="confirmReset" hidden>
   <div class="card start" tabindex="-1">
     <h2 style="font-size:24px">정말 기록을 지울까요?</h2>
-    <p>레벨, 코인, 카드, 클리어 별이 <b>모두 지워지고</b> 되돌릴 수 없어요.</p>
+    <p>레벨, 코인, 카드, 클리어 별, <b>판다 옷장에서 산 옷</b>이 <b>모두 지워지고</b> 되돌릴 수 없어요.</p>
     <div class="row">
       <button class="btn primary" id="resetNo">아니요, 그대로 둘래요</button>
       <button class="btn red" id="resetYes">네, 지울게요</button>
@@ -2375,7 +2375,7 @@
   }
   function decorateFamily(g) {
     drawSign(g, 110, ['판다 가족 마을', '출발! →'], 96);
-    drawHouse(g, 470); drawHouse(g, 1040);
+    drawHouse(g, 700); drawHouse(g, 1040);
     drawSign(g, 1278, ['대나무 숲'], 70); drawSign(g, 1992, ['연못 마을'], 70);
     // 대나무 숲: 굵은 대나무 몇 그루
     for (const x of [1365, 1495, 1625, 1770, 1840]) { g.fillStyle = '#2f7d3a'; g.fillRect(x, 120, 6, GY - 120); g.fillStyle = '#5cc46a'; g.fillRect(x + 1, 120, 2, GY - 120); g.fillStyle = '#1f5f2b'; for (let y = 140; y < GY; y += 34) g.fillRect(x - 1, y, 8, 2); g.fillStyle = '#4fae5c'; g.fillRect(x + 6, 150, 10, 3); g.fillRect(x - 10, 200, 10, 3); }
@@ -4053,7 +4053,7 @@
     { id: 'neighbor', name: '이웃 판다', x: 2080, mission: 2, scarf: '#e8689a', hat: 'apron' },
     { id: 'photo', name: '사진사 판다', x: 2770, mission: 3, scarf: '#8a5cd6', hat: 'beret2', glasses: true },
   ];
-  const FM_BOARD_X = 820;                                                   // 1구역 사진 게시판
+  const FM_BOARD_X = 500;                                                   // 1구역 사진 게시판 (조수 판다 가까이: 덜 걸어도 돼요)
   const FM_FOREST = [1380, 1450, 1520, 1590, 1660, 1730, 1800];               // 2구역 대나무 숲: 이 중 6곳에 가족이 무작위로
   const FM_POND_X = 2160;                                                   // 3구역: 이웃 판다 옆에 서는 가족
   const FM_STUDIO = [2900, 2955, 3010, 3065, 3120, 3175];                    // 4구역 사진관 앞 기다리는 자리
@@ -4068,8 +4068,8 @@
       m2: { acc: false, ri: 0, targets: shuffle(ids).slice(0, 2), fam: ids.map((id, i) => ({ id, hx: spots[i], x: spots[i], st: 'wait' })), follow: null },
       // 3구역: 这是我____。 2문제
       m3: { acc: false, ri: 0, qs: shuffle(ids).slice(0, 2) },
-      // 4구역: 가족사진 자리 6개 (자리 순서 무작위)
-      m4: { acc: false, slots: shuffle(ids), studio: shuffle(ids) },
+      // 4구역: 가족사진 자리 4개 (자리·가족은 무작위)
+      m4: { acc: false, slots: shuffle(ids).slice(0, 4), studio: shuffle(ids) },   // 사진 자리 4개 (가족 6명 중에서 골라요)
       party: false, final: false, partyT: 0, flashT: 0, task: null, carry: -1,
     };
   }
@@ -4113,12 +4113,12 @@
 
   function fmIntro(ri, then) {
     const r = run.q.m1.rounds[ri];
-    openTalk(0, `<p>${ri === 0 ? '안녕! 오늘 판다 가족사진을 찍을 거야. 가족을 먼저 소개할게!' : '이번에는 다른 가족 세 명이야!'}</p><div class="fam-row">${r.intro.map(famCard).join('')}</div><p class="qprog">모습을 잘 기억해 두세요.</p>`, { ok: '기억했어요!', onOk: then });
+    openTalk(0, `<p>${ri === 0 ? '가족사진을 찍자! 먼저 가족을 소개할게.' : '다른 가족 세 명이야!'}</p><div class="fam-row">${r.intro.map(famCard).join('')}</div><p class="qprog">모습을 기억해요!</p>`, { ok: '기억했어요!', onOk: then });
   }
   function fmAsk(ri) {
     const m = run.q.m1, r = m.rounds[ri], f = famOf(r.t);
     taskBegin('f1' + ri, `사진: ${f.h} 찾기`, f.ko);
-    openTalk(0, `<p>그럼 사진 게시판에서 이 가족 사진을 찾아 줄래? (${ri + 1}/2)</p><div class="zline big">${zw(f)} 사진을 찾아 줘!</div>`, { ok: '찾아볼게요!', hints: fmHints(r.t), onOk: () => { m.acc = true; toast('📷 사진 게시판으로 가요 →', 2000, true); } });
+    openTalk(0, `<div class="zline big">${zw(f)} 사진을 찾아 줘! (${ri + 1}/2)</div>`, { ok: '찾아볼게요!', hints: fmHints(r.t), onOk: () => { m.acc = true; toast('📷 사진 게시판으로 가요 →', 2000, true); } });
   }
   function fmTalk(d) {
     const q = run.q, a = qAct(), i = d.mission;
@@ -4129,16 +4129,16 @@
     if (i === 1) {
       const m = q.m2, t = famOf(m.targets[m.ri]);
       taskBegin('f2' + m.ri, `숲: ${t.h} 데려오기`, t.ko);
-      openTalk(1, `<p>${m.acc ? '다시 알려 줄게!' : '판다 가족이 대나무 숲에 흩어져 있어!'}</p><div class="zline big">${zw(t)} 판다를 찾아서 데려와 줘! (${m.ri + 1}/2)</div><p class="qprog">판다 옆에서 [🐼 같이 가자!]를 누르면 따라와요.</p>`,
+      openTalk(1, `<div class="zline big">${zw(t)} 판다를 데려와 줘! (${m.ri + 1}/2)</div><p class="qprog">판다 옆에서 [🐼 같이 가자!]</p>`,
         { ok: '찾아볼게요!', hints: fmHints(t.id), onOk: () => { m.acc = true; } });
       return;
     }
     if (i === 2) {
       const m = q.m3;
-      if (!m.acc) { openTalk(2, '<p>안녕! 너희 가족을 나에게 소개해 줄래?</p><p>중국어로 <b>这是我……。</b> 라고 말하면 돼!</p>', { ok: '좋아요!', onOk: () => { m.acc = true; fmSentence(); } }); return; }
+      if (!m.acc) { openTalk(2, '<p>가족을 소개해 줄래?</p><p><b>这是我……。</b> 로 말해 봐!</p>', { ok: '좋아요!', onOk: () => { m.acc = true; fmSentence(); } }); return; }
       fmSentence(); return;
     }
-    if (!q.m4.acc) { openTalk(3, '<p>가족이 모두 사진관에 모였어! 이제 가족사진 자리를 정해 줘.</p><p class="qprog">자리마다 적힌 가족을 골라 놓아요.</p>', { ok: '좋아요!', onOk: () => { q.m4.acc = true; fmFrame(); } }); return; }
+    if (!q.m4.acc) { openTalk(3, '<p>가족이 다 모였어! 사진 자리를 정해 줘.</p>', { ok: '좋아요!', onOk: () => { q.m4.acc = true; fmFrame(); } }); return; }
     fmFrame();
   }
 
@@ -4161,11 +4161,11 @@
       taskEnd(); SFX.correct();
       const ok = `<p>맞아! 이 사진이야!</p><div class="fam-row">${famCard(r.t)}</div>`;
       if (m.ri === 0) { m.ri = 1; openTalk(0, ok, { ok: '다음!', onOk: () => fmIntro(1, () => fmAsk(1)) }); }
-      else { m.ri = 2; openTalk(0, ok + '<p>고마워! 이제 판다 가족 여섯 명을 모두 알게 됐어!</p>', { ok: '야호!', onOk: () => questDone(0) }); }
+      else { m.ri = 2; openTalk(0, ok + '<p>고마워! 가족 여섯 명을 다 알게 됐어!</p>', { ok: '야호!', onOk: () => questDone(0) }); }
       return;
     }
     taskMiss(); SFX.wrong();
-    openTalk(0, `<p>앗, 이 사진은 아니야!</p><div class="fam-row"><div class="fam-intro">${famImg(got)}</div></div><p>내가 찾는 건 ${zw(f)} 사진이야. 다시 골라 볼까?</p>`, { ok: '다시 골라 볼게요!', hints: fmHints(r.t) });
+    openTalk(0, `<p>앗, 이 사진은 아니야!</p><p>${zw(f)} 사진을 다시 골라 볼까?</p>`, { ok: '다시 골라 볼게요!', hints: fmHints(r.t) });
   }
 
   // ----- 미션 2: 숲에서 가족을 찾아 데려오기 (한 명씩 따라와요) -----
@@ -4182,12 +4182,12 @@
       taskEnd(); SFX.correct(); o.st = 'gone'; m.follow = null; m.ri++;
       burst(o.x, GY - 30, ['#fff0a8', '#ffffff', '#5cc46a'], 12, 160);
       const done = m.ri >= 2;
-      openTalk(1, `<p>찾았다! 이 판다가 ${zw(t)} 야!</p><div class="fam-row">${famCard(t.id)}</div><p>${done ? '고마워! 나머지 가족도 다 같이 사진관으로 갈게!' : '사진관으로 먼저 보낼게. 하나 더 부탁해!'}</p>`,
+      openTalk(1, `<p>찾았다!</p><div class="fam-row">${famCard(t.id)}</div><p>${done ? '고마워! 다 같이 사진관으로 갈게!' : '하나 더 부탁해!'}</p>`,
         { ok: done ? '사진관으로 가요!' : '다음!', onOk: () => { if (done) { m.fam.forEach(x => { if (x.st !== 'gone') x.st = 'gone'; }); questDone(1); } else fmTalk(FM_NPC[1]); } });
       return;
     }
     taskMiss(); SFX.wrong(); o.st = 'wait'; m.follow = null;
-    openTalk(1, `<p>앗, 이 판다는 아니야! 숲으로 돌아갔어.</p><p>내가 찾는 건 ${zw(t)} 야. 다시 찾아볼까?</p>`, { ok: '다시 찾아볼게요!', hints: fmHints(t.id) });
+    openTalk(1, `<p>앗, 이 판다는 아니야!</p><p>${zw(t)} 판다를 다시 찾아볼까?</p>`, { ok: '다시 찾아볼게요!', hints: fmHints(t.id) });
   }
 
   // ----- 미션 3: 这是我____。 문장 완성 (보기는 한자+병음 카드, 고른 순간에는 판정 없음) -----
@@ -4233,7 +4233,7 @@
     const hints = [`자리 이름을 다시 읽어 봐요: ${slots.map(id => `${famOf(id).h} ${famOf(id).p}`).join(' · ')}`, FAM.map(f => `${f.h} = ${f.ko}`).join(', '), `정답: ${FAM.map(f => `${f.h} = ${f.look}`).join(' / ')}`];
     const nextEmpty = () => { const k = place.findIndex(x => x === null); return k < 0 ? cur : k; };
     openPick({
-      title: '📸 가족사진 자리 정하기', ask: '<p>자리 이름을 보고 알맞은 가족을 놓아요. 자리를 누르면 비울 수 있어요.</p>', hints, ok: '📸 사진 찍기!', closeLabel: '나중에 할게요',
+      title: '📸 가족사진 자리 정하기', ask: '<p>자리 이름에 맞는 가족을 놓아요.</p>', hints, ok: '📸 사진 찍기!', closeLabel: '나중에 할게요',
       render() {
         $('qpBody').innerHTML = `<div class="pk-frame">${slots.map((id, k) => { const f = famOf(id); return `<button class="pk-slot${k === cur ? ' cur' : ''}" data-s="${k}"><span class="pk-slot-pic">${place[k] ? famImg(place[k]) : '<span class="pk-q">?</span>'}</span><span class="han">${f.h}</span><span class="py t0">${f.p}</span></button>`; }).join('')}</div>
           <div class="pk-lbl">가족 고르기 → <b>${cur + 1}번 자리</b>에 놓여요</div>
@@ -4360,26 +4360,27 @@
     { id: 'frC', name: '고깔 판다', scarf: '#f6c445', hat: 'party' },
   ];
   const GF_FR = [4, 5, 6];
-  const GF_SHOP = [{ x: 600, y: GY }, { x: 700, y: GY }, { x: 905, y: 236 }, { x: 990, y: 236 }, { x: 1080, y: 176 }];                     // 1구역 가게 진열 자리 (4곳 사용)
+  const GF_SHOP = [{ x: 590, y: GY }, { x: 650, y: GY }, { x: 710, y: GY }, { x: 770, y: GY }, { x: 830, y: GY }];   // 모두 땅 위 (점프 없이 집어요)                     // 1구역 가게 진열 자리 (4곳 사용)
   const GF_Z2 = [1430, 1540, 1650, 1760, 1870];                                                                                   // 2구역 친구 자리 (3곳 사용)
-  const GF_Z3 = [{ x: 2085, y: GY }, { x: 2140, y: 236 }, { x: 2195, y: 236 }, { x: 2245, y: GY }, { x: 2285, y: 236 }, { x: 2340, y: 236 }, { x: 2395, y: 236 }, { x: 2465, y: 176 }, { x: 2520, y: 176 }];   // 3구역 선물 더미 (8곳 사용)
+  const GF_Z3 = [2080, 2123, 2166, 2209, 2252, 2295, 2338, 2381].map(x => ({ x, y: GY }));   // 3구역 선물 더미 8곳 (모두 땅 위)
   const GF_HOUSE = [2440, 2540, 2640];                                                                                           // 3구역 친구 집 앞
   const GF_PLAZA = [2900, 2960, 3020];
   const GF_ITEMS = GIFT.map(g => g.id);
 
   function gfNew() {
-    const shop = shuffle(GF_SHOP).slice(0, 4), z3 = shuffle(GF_Z3).slice(0, 8), kinds = shuffle(GF_ITEMS);
+    const shop = shuffle(GF_SHOP).slice(0, 4), z3 = shuffle(GF_Z3), kinds = shuffle(GF_ITEMS);
     return {
       m1: { acc: false, target: pick(GF_ITEMS), items: kinds.map((k, i) => ({ kind: k, hx: shop[i].x, hy: shop[i].y, x: shop[i].x, y: shop[i].y, held: false, gone: false })) },
       m2: { acc: false, met: [false, false, false] },
       m3: { acc: false, got: [false, false, false], items: shuffle([...GF_ITEMS, ...GF_ITEMS]).map((k, i) => ({ kind: k, hx: z3[i].x, hy: z3[i].y, x: z3[i].x, y: z3[i].y, held: false, gone: false })) },
       m4: { acc: false, choice: null },
-      prefs: shuffle(GF_ITEMS).slice(0, 3), frZ2: shuffle(GF_Z2).slice(0, 3), frZ3: shuffle(GF_HOUSE),
+      prefs: shuffle(GF_ITEMS).slice(0, 3), frZ2: shuffle(GF_Z2).slice(0, 3), frZ3: shuffle(GF_HOUSE), dl: shuffle([0, 1, 2]).slice(0, 2).sort(),   // 배달은 친구 2명 (무작위)
       carry: null, party: false, final: false, partyT: 0, task: null,
     };
   }
   const gfItems = () => { const q = run.q, a = qAct(); return a === 0 ? q.m1.items : a === 2 ? q.m3.items : []; };
   const gfFrX = (k) => { const q = run.q, a = qAct(); return a < 0 || a >= 3 ? GF_PLAZA[k] : a === 2 ? q.frZ3[k] : q.frZ2[k]; };
+  const gfShown = (k) => qAct() !== 2 || run.q.dl.includes(k);   // 배달 마을에는 선물 받을 친구 2명만 나와요
   function gfDrop() { const it = run.q.carry; if (!it) return; it.held = false; it.x = it.hx; it.y = it.hy; run.q.carry = null; }
   function gfCand() {
     const q = run.q, a = qAct(), px = P.x + P.w / 2, feet = P.y + P.h, carrying = !!q.carry;
@@ -4390,7 +4391,7 @@
       if (d.mission === 0 && a === 0 && carrying) return { label: '🤲 건네주기', act: gfGiveShop, ...drop };
       return { label: '💬 말 걸기', act: () => gfTalk(d), ...drop };
     }
-    if (a === 1 || a === 2) for (const k of [0, 1, 2]) if (near(gfFrX(k))) return a === 2 && carrying && !q.m3.got[k] ? { label: '🎁 선물하기', act: () => gfGiveFriend(k), ...drop } : { label: '💬 말 걸기', act: () => gfFriendTalk(k), ...drop };
+    if (a === 1 || a === 2) for (const k of [0, 1, 2]) if (gfShown(k) && near(gfFrX(k))) return a === 2 && carrying && !q.m3.got[k] ? { label: '🎁 선물하기', act: () => gfGiveFriend(k), ...drop } : { label: '💬 말 걸기', act: () => gfFriendTalk(k), ...drop };
     if ((a === 0 && q.m1.acc) || (a === 2 && q.m3.acc)) {
       for (const it of gfItems()) if (!it.held && !it.gone && near(it.x, it.y, 20)) return { label: carrying ? '🔄 바꿔 들기' : '🎁 들기', act: () => { if (q.carry) gfDrop(); q.carry = it; it.held = true; SFX.coin(); }, ...drop };
     }
@@ -4406,7 +4407,7 @@
       if (n < 3) return { tip: `💬 친구 판다들에게 좋아하는 것을 물어봐요 (${n}/3)`, mark: null };
       return { tip: '📝 정원 판다에게 가서 취향 메모를 채워요', mark: at(1) };
     }
-    if (a === 2) { const n = q.m3.got.filter(Boolean).length; if (!q.m3.acc) return { tip: '💬 배달 판다에게 말을 걸어요', mark: at(2) }; return { tip: q.carry ? '🎁 이 선물을 좋아하는 친구에게 가져가요' : `🎁 친구가 좋아하는 선물을 골라 전해요 (${n}/3)`, mark: null }; }
+    if (a === 2) { const n = q.dl.filter(k => q.m3.got[k]).length; if (!q.m3.acc) return { tip: '💬 배달 판다에게 말을 걸어요', mark: at(2) }; return { tip: q.carry ? '🎁 이 선물을 좋아하는 친구에게 가져가요' : `🎁 친구가 좋아하는 선물을 골라 전해요 (${n}/2)`, mark: null }; }
     return { tip: '💬 축제 판다에게 말을 걸어요', mark: at(3) };
   }
   // 힌트: ① 문장 다시 보기 ② 한국어 뜻 ③ 정답
@@ -4420,20 +4421,20 @@
     if (i === 0) {
       const m = q.m1;
       taskBegin('g1', `가게: 我喜欢${giftOf(m.target).h}。`, giftOf(m.target).obj);
-      openTalk(0, `<p>${m.acc ? '다시 말해 줄게!' : '어서 와! 선물 가게야. 내가 좋아하는 걸 찾아 줄래?'}</p>${gfLine(m.target, true)}<p class="qprog">가게에 놓인 물건 중에서 골라 가져와요. 한 번에 하나씩 들 수 있어요.</p>`, { ok: '찾아볼게요!', hints: gfHints(m.target), onOk: () => { m.acc = true; } });
+      openTalk(0, `<p>${m.acc ? '다시 말해 줄게!' : '내가 좋아하는 걸 찾아 줄래?'}</p>${gfLine(m.target, true)}<p class="qprog">가게 물건 중에서 골라 와요.</p>`, { ok: '찾아볼게요!', hints: gfHints(m.target), onOk: () => { m.acc = true; } });
       return;
     }
     if (i === 1) {
       const m = q.m2;
-      if (!m.acc) { openTalk(1, '<p>친구 판다 세 명에게 선물을 주고 싶어!</p><p>친구들을 만나서 <b>좋아하는 것</b>을 들어 보고, 나에게 와서 <b>취향 메모</b>를 채워 줄래?</p>', { ok: '좋아요!', onOk: () => { m.acc = true; } }); return; }
+      if (!m.acc) { openTalk(1, '<p>친구 세 명이 <b>좋아하는 것</b>을 들어 보고, 나에게 와서 <b>메모</b>를 채워 줘!</p>', { ok: '좋아요!', onOk: () => { m.acc = true; } }); return; }
       const n = m.met.filter(Boolean).length;
       if (n < 3) { openTalk(1, `<p>아직 만나지 않은 친구가 있어요. (${n}/3)</p><p class="qprog">정원과 음식 거리를 돌아다니며 친구 판다에게 말을 걸어 봐요.</p>`, { ok: '알겠어요!' }); return; }
       gfMemo(); return;
     }
     if (i === 2) {
       const m = q.m3;
-      if (!m.acc) { openTalk(2, '<p>친구들이 집 앞에서 선물을 기다려!</p><p>선물 더미에서 <b>친구가 좋아하는 것</b>을 하나씩 골라 전해 줘.</p><p class="qprog">잘못 들었으면 [⬇ 내려놓기]를 누르면 돼요.</p>', { ok: '배달 출발!', onOk: () => { m.acc = true; } }); return; }
-      openTalk(2, `<p>배달한 선물: ${m.got.filter(Boolean).length}/3</p><p class="qprog">친구에게 말을 걸면 좋아하는 것을 다시 들을 수 있어요.</p>`, { ok: '알겠어요!' });
+      if (!m.acc) { openTalk(2, '<p>친구 두 명이 선물을 기다려!</p><p><b>좋아하는 것</b>을 골라 전해 줘.</p><p class="qprog">잘못 들면 [⬇ 내려놓기]</p>', { ok: '배달 출발!', onOk: () => { m.acc = true; } }); return; }
+      openTalk(2, `<p>배달한 선물: ${q.dl.filter(k => m.got[k]).length}/2</p><p class="qprog">친구에게 말을 걸면 좋아하는 것을 다시 들을 수 있어요.</p>`, { ok: '알겠어요!' });
       return;
     }
     gfFinal();
@@ -4470,8 +4471,8 @@
     if (it.kind === id) {
       taskEnd(); SFX.correct(); it.gone = true; it.held = false; q.carry = null; m.got[k] = true;
       burst(gfFrX(k), GY - 40, ['#e5484d', '#f6c445', '#62aefc', '#ffffff'], 18, 200); floatText(gfFrX(k), GY - 60, '🎁', '#fff0a8');
-      const done = m.got.every(Boolean), s = gfSent(id);
-      openTalk(GF_FR[k], `<p>선물을 예쁘게 포장했어! 고마워! 🎁</p>${gfLine(id, true)}<p>${s.ko}</p>${done ? '<p>친구 세 명에게 모두 선물을 전했어요!</p>' : ''}`, { ok: done ? '선물 축제로 가요!' : '다음 친구에게!', onOk: () => { if (done) questDone(2); } });
+      const done = q.dl.every(j => m.got[j]), s = gfSent(id);
+      openTalk(GF_FR[k], `<p>선물을 예쁘게 포장했어! 고마워! 🎁</p>${gfLine(id, true)}<p>${s.ko}</p>${done ? '<p>두 친구에게 모두 선물을 전했어요!</p>' : ''}`, { ok: done ? '선물 축제로 가요!' : '다음 친구에게!', onOk: () => { if (done) questDone(2); } });
       return;
     }
     taskMiss(); SFX.wrong(); gfDrop();
@@ -4540,6 +4541,7 @@
       else if (i < a || a < 0) drawBubble2(d.x, GY - 44, '♥', '#ff9fb2');
     });
     if (a >= 1 || a < 0) GF_FR.forEach((ni, k) => {
+      if (!gfShown(k)) return;
       const x = gfFrX(k), hop = q.final ? -Math.max(0, Math.sin(q.partyT * 6 + k)) * 6 : 0;
       drawNpc(GF_NPC[ni], x, GY + hop, px >= x ? 1 : -1);
       if (q.m3.got[k]) drawWrapped(ctx, Math.round(x - cam) + 16, GY + hop, ['#e5484d', '#62aefc', '#5cc46a'][k], '#f6c445');
@@ -5862,8 +5864,12 @@
   // pick = 고른 아이템(미리보기). 사지 않은 아이템은 미리보기만 하고, 창을 닫으면 실제 장착 상태로 돌아가요.
   const wd = { pick: null, ask: false, busy: 0 };
   function drawTitlePanda() { drawPandaWith($('titlePanda'), save.shop.wear); }
+  // 옷장은 탐험을 하나 끝낸(별을 받은) 뒤부터 열려요 (게임 시간에 옷장만 보지 않게)
+  const wardrobeOpen = () => Object.values(save.clears || {}).some(v => v > 0);
+  function refreshWardrobeBtn() { const on = wardrobeOpen(); $('btnWardrobe').textContent = on ? '🐼 판다 옷장' : '🔒 판다 옷장'; $('btnWardrobe').classList.toggle('locked', !on); }
   function openWardrobe() {
     if (mode !== 'start') return;
+    if (!wardrobeOpen()) { notice('탐험을 하나 끝내면 판다 옷장이 열려요! 🐼'); return; }
     audio(); mode = 'shop'; wd.pick = null; wd.ask = false;
     $('startScreen').hidden = true; $('wardrobe').hidden = false; $('wardrobe').scrollTop = 0;
     $('wdMsg').textContent = ''; $('wdMsg').className = 'wd-msg';
@@ -5918,7 +5924,7 @@
   $('btnWardrobe').addEventListener('click', openWardrobe);
   $('wdClose').addEventListener('click', closeWardrobe);
   function showStart() {
-    mode = 'start'; renderStagePick(); drawTitlePanda();
+    mode = 'start'; renderStagePick(); drawTitlePanda(); refreshWardrobeBtn();
     $('startScreen').hidden = false; $('startScreen').querySelector('.card').focus({ preventScroll: true });
   }
   function startPlay() {
@@ -6177,7 +6183,7 @@
     migrateSave();
     loadStage(selStage);
     $('coinIcon').src = COIN.toDataURL(); $('pfCoinIcon').src = COIN.toDataURL();
-    $('wdCoinIcon').src = COIN.toDataURL(); drawTitlePanda();
+    $('wdCoinIcon').src = COIN.toDataURL(); drawTitlePanda(); refreshWardrobeBtn();
     refreshSoundUI(); renderStagePick(); updateHUD(); wrapPinyin(document.body);
     if (document.fonts && document.fonts.load) {
       Promise.all([document.fonts.load('11px Jua'), document.fonts.load('15px Jua'), document.fonts.load('700 11px "Noto Sans SC"', '我叫什么名字你'), document.fonts.load(SIGN_PY_FONT, 'Nǐ jiào shénme míngzi')]).then(buildWorld).catch(() => {});
