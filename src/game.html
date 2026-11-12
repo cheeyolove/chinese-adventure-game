@@ -2142,8 +2142,8 @@
   if (CARDS_OK && /^#family-cards/i.test(location.hash || '')) location.replace('cards.html?deck=family');
   // 미니게임 목록: 새 미니게임은 여기에 한 줄씩 더하면 홈 화면 놀이터에 나와요
   const MINIGAMES = [
-    { id: 'number-cards', href: 'cards.html', ico: '🔢', title: '숫자 카드', topic: '一 ~ 十 짝 맞추기', from: '5차시 복습' },
-    { id: 'family-cards', href: 'cards.html?deck=family', ico: '👨‍👩‍👧', title: '가족 호칭 카드', topic: '爸爸 · 妈妈 짝 맞추기', from: '7차시 복습', isNew: true },
+    { id: 'number-cards', href: 'cards.html', ico: '🔢', title: '숫자 카드', topic: '一 ~ 十 짝 맞추기', stage: 'number' },
+    { id: 'family-cards', href: 'cards.html?deck=family', ico: '👨‍👩‍👧', title: '가족 호칭 카드', topic: '爸爸 · 妈妈 짝 맞추기', stage: 'family', isNew: true },   // stage: 어느 수업 복습인지 (날짜·교시는 그 차시 칸과 같게)
   ];
 
   const ALL_STAGES = ['bamboo', 'greet', 'name', 'nation', 'number', 'birthday', 'family', 'gift'];
@@ -4086,8 +4086,8 @@
       m2: { acc: false, ri: 0, targets: shuffle(ids).slice(0, 2), fam: ids.map((id, i) => ({ id, hx: spots[i], x: spots[i], st: 'wait' })), follow: null },
       // 3구역: 这是我____。 2문제
       m3: { acc: false, ri: 0, qs: shuffle(ids).slice(0, 2) },
-      // 4구역: 가족사진 자리 4개 (자리·가족은 무작위)
-      m4: { acc: false, slots: shuffle(ids).slice(0, 4), studio: shuffle(ids) },   // 사진 자리 4개 (가족 6명 중에서 골라요)
+      // 4구역: 가족사진 자리 6개 (자리 순서 무작위)
+      m4: { acc: false, slots: shuffle(ids), studio: shuffle(ids) },   // 사진 자리 6개 (가족 모두, 자리 순서는 무작위)
       party: false, final: false, partyT: 0, flashT: 0, task: null, carry: -1,
     };
   }
@@ -5866,7 +5866,7 @@
     $('miniPick').innerHTML = MINIGAMES.map(g => `<a class="stagecard minicard" id="mini-${g.id}" href="${g.href}">
         ${g.isNew ? '<span class="sc-new">NEW</span>' : ''}
         <span class="sc-ico">${g.ico}</span>
-        <span class="sc-num">${g.from}</span>
+        <span class="sc-num">${(STAGES[g.stage] && (STAGES[g.stage].label || STAGES[g.stage].lessonNo)) || ''} 복습</span>
         <span class="sc-title">${g.title}</span>
         <span class="sc-topic">${g.topic}</span>
       </a>`).join('');
