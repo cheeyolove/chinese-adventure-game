@@ -641,7 +641,7 @@
     .btn { transition: none; }
   }
   /* ===== 9·10차시 아케이드 화면 ===== */
-  #arc { --pd: clamp(40px, min(11vh, 14vw), 108px); --fd: clamp(36px, min(7vh, 11vw), 76px); position: fixed; inset: 0; z-index: 19; display: flex; flex-direction: column; background: #24304d; color: var(--ink); user-select: none; -webkit-user-select: none; touch-action: manipulation; overflow: hidden; }
+  #arc { --pd: clamp(40px, min(11vh, 14vw), 108px); --fd: clamp(46px, min(9vh, 15vw), 100px); position: fixed; inset: 0; z-index: 19; display: flex; flex-direction: column; background: #24304d; color: var(--ink); user-select: none; -webkit-user-select: none; touch-action: manipulation; overflow: hidden; }
   #arc.ar-fest { background: linear-gradient(#1b1f4a, #3b2a6b 45%, #6b3a5c); }
   #arc.ar-diner { background: linear-gradient(#f3d9a4, #e8c27e); }
   .ar-topbar { position: relative; z-index: 6; flex: none; display: flex; align-items: center; gap: 6px; padding: 6px 8px; background: rgba(10, 14, 30, .55); color: #fff; }
@@ -744,6 +744,8 @@
   .fs-stall { display: flex; align-items: flex-end; gap: 4px; min-height: 44px; }
   .fs-own { height: clamp(39px, 7vh, 70px); width: calc(clamp(39px, 7vh, 70px) * .76); }
   .fs-put img { width: var(--fd); height: calc(var(--fd) * .83); image-rendering: pixelated; }
+  .fs-booth.half { background: linear-gradient(#f6c445 0 10px, #fffaf0 10px); }
+  .fs-put { display: flex; gap: 2px; } .fs-put img { width: calc(var(--fd) * .8) !important; height: calc(var(--fd) * .67) !important; }
   .fs-booth.done { background: linear-gradient(#f6c445 0 10px, #fff3c4 10px); box-shadow: 0 0 14px 2px rgba(255, 220, 120, .9); }
   .fs-custs { display: flex; gap: 14px; justify-content: center; width: 100%; max-width: 760px; }
   .fs-cust { flex: 1; min-width: 0; border: 3px solid var(--ink); border-radius: 14px; background: #fffaf0; padding: 6px; display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; font: inherit; color: var(--ink); touch-action: manipulation; }
@@ -864,7 +866,7 @@
     .ar-opt { min-height: 48px; } .ar-go { min-height: 42px; font-size: 15px; } .ar-go.big { min-height: 46px; font-size: 17px; }
     .ar-zh .han { font-size: 19px; } .ar-zh .py { font-size: 12px; } .ar-zh.big .han { font-size: 26px; } .ar-zh.big .py { font-size: 14px; }
     .dn-wall { padding: 3px 8px; } .dn-floor { height: 112px; }
-    #arc { --pd: 44px; --fd: 38px; }
+    #arc { --pd: 44px; --fd: 46px; }
     .ar-ttl { font-size: 13px; margin-bottom: 3px; } .dn-slot { min-height: 46px; } .ar-popcard { padding: 10px 14px; } .ar-popcard h2 { font-size: 20px; } .ar-popcard p { font-size: 15px; margin-bottom: 6px; }
     .ar-opts.likes .py { display: none; } .ar-opts.likes .ar-opt { min-height: 0; padding: 2px; } #fsSay { width: 100%; max-width: 640px; } #fsSay .ar-sent { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 0 8px; padding: 4px 10px; }
     .fs-cimg .ar-pd { width: 34px; height: 45px; } .fs-crowd .ar-pd { width: 22px; height: 29px; } .fs-belt { --belt: 62px; }
@@ -5014,8 +5016,89 @@
       for (const [x, y] of [[-3, -6], [0, -5], [2, -7], [-2, -3], [1, -3], [-4, -4]]) R(x, y, 2, 2, k);
     }
   }
+  // ----- 9·10차시 아케이드용 큰 음식 그림 (64 × 54칸, 외부 이미지 없음) -----
+  // 작은 그림보다 특징을 크게: 만두 = 주름 잡힌 반달 + 간장 종지, 마라탕 = 빨간 국물 그릇 + 재료,
+  // 북경오리 = 윤기 나는 통오리 + 썬 고기·파, 훠궈 = 반반 냄비(빨강/하양) + 불, 버블티 = 투명 컵 + 큰 까만 펄 + 굵은 빨대
+  function drawFoodHD(g, id) {
+    const W = 64, H = 54, K = '#2b2838';
+    const px = (x, y, c) => { g.fillStyle = c; g.fillRect(x, y, 1, 1); };
+    const R = (x, y, w, h, c) => { g.fillStyle = c; g.fillRect(x, y, w, h); };
+    // 모양 채우기 + 테두리 (ins: 칸 가운데가 안에 있는지)
+    const shape = (ins, fill, line = K) => {
+      for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+        const cx = x + 0.5, cy = y + 0.5; if (!ins(cx, cy)) continue;
+        const edge = line && (!ins(cx - 1, cy) || !ins(cx + 1, cy) || !ins(cx, cy - 1) || !ins(cx, cy + 1));
+        px(x, y, edge ? line : (typeof fill === 'function' ? fill(cx, cy) : fill));
+      }
+    };
+    const E = (ex, ey, rx, ry) => (x, y) => ((x - ex) / rx) ** 2 + ((y - ey) / ry) ** 2 <= 1;
+    const and = (...f) => (x, y) => f.every(h => h(x, y));
+    const steam = (xs, y0) => { g.fillStyle = 'rgba(255,255,255,.8)'; for (const x of xs) for (let k = 0; k < 8; k++) g.fillRect(x + (k % 4 < 2 ? 0 : 1), y0 - k, 1, 1); };
+    if (id === 'jiaozi') {
+      shape(E(32, 45, 30, 7.5), (x, y) => (E(32, 44.5, 25, 5)(x, y) ? '#fbfaf5' : '#62aefc'));             // 접시 (파란 테두리)
+      shape(E(55, 30, 7, 4), (x, y) => (E(55, 29.5, 5, 2.4)(x, y) ? '#5a2a0e' : '#fbfaf5'));              // 간장 종지
+      const dump = (cx, cy) => {
+        const top = (x) => cy - 8 * Math.sqrt(Math.max(0, 1 - ((x - cx) / 12) ** 2));
+        shape(and(E(cx, cy, 12, 8), (x, y) => y <= cy + 3), (x, y) => (y < cy - 3 ? '#fffdf5' : y < cy + 1 ? '#f6ecd4' : '#e6d6b3'));
+        for (const dx of [-7, -3.5, 0, 3.5, 7]) { const x = Math.round(cx + dx), t = Math.round(top(x + 0.5)); px(x, t + 1, '#c9b48a'); px(x, t + 2, '#c9b48a'); px(x + 1, t + 1, '#d9c69c'); }   // 주름
+        px(Math.round(cx - 6), Math.round(cy - 3), '#ffffff'); px(Math.round(cx - 5), Math.round(cy - 4), '#ffffff');                                                                   // 반짝
+      };
+      dump(21, 40); dump(42, 40); dump(31, 46);
+      steam([18, 30, 44], 30);
+    }
+    if (id === 'malatang') {
+      shape(and(E(32, 24, 28, 24), (x, y) => y >= 24), (x, y) => (y > 36 && y < 40 ? '#3d7bd9' : '#fbfaf5'));   // 흰 그릇 + 파란 띠
+      shape((x, y) => x >= 23 && x <= 41 && y >= 46 && y <= 51, '#e3e6ec');                                       // 굽
+      shape(E(32, 24, 28, 8), (x, y) => (E(32, 24.5, 25.5, 6.5)(x, y) ? '#d9381e' : '#fbfaf5'));                 // 빨간 국물
+      for (const [x, y] of [[14, 24], [22, 28], [39, 21], [47, 26], [30, 19]]) R(x, y, 3, 1, '#f6a03a');          // 고추기름
+      shape(E(17, 22, 6, 3.2), '#5cc46a', '#2f7a3a');                                                             // 청경채
+      R(14, 22, 7, 1, '#bff0c4');
+      shape((x, y) => x >= 24 && x <= 30 && y >= 20 && y <= 25, '#f6d77a', '#b8902f');                            // 두부
+      shape(E(37, 25, 3.5, 3.5), '#fbfaf5'); shape(E(44, 21, 3.5, 3.5), '#fbfaf5');                              // 어묵볼
+      for (let k = 0; k < 4; k++) R(30 + k * 4, 28 - (k % 2), 4, 1, '#f3e9c0');                                    // 당면
+      shape(E(50, 25, 3.2, 1.6), '#a01818', '#5a0e0e'); shape(E(23, 27, 3, 1.5), '#a01818', '#5a0e0e');          // 마른 고추
+      steam([20, 33, 46], 15);
+    }
+    if (id === 'kaoya') {
+      shape(E(32, 46, 30, 7), (x, y) => (E(32, 45.5, 26, 4.5)(x, y) ? '#fbfaf5' : '#c9a25a'));                   // 접시
+      shape(E(8, 22, 5.5, 5), (x, y) => (y < 20 ? '#e08a3a' : '#b5541c'));                                          // 머리
+      shape(E(13, 30, 4.5, 8), (x, y) => (x < 12 ? '#d07a2c' : '#a4481a'));                                         // 목
+      shape(E(29, 35, 19, 11), (x, y) => (y < 29 ? '#ec9a48' : y < 35 ? '#c9632a' : y < 40 ? '#a4481a' : '#7a3410')); // 통오리 몸통
+      shape(E(42, 41, 7, 4.5), '#9a4515');                                                                         // 다리
+      shape(E(49.5, 43, 2.5, 2), '#fbfaf5');                                                                       // 뼈 끝
+      for (const [x, y] of [[22, 28], [24, 27], [26, 27], [30, 28], [6, 20]]) px(x, y, '#fff1d6');                 // 윤기
+      for (let k = 0; k < 3; k++) { shape(E(50 + k * 4, 43 - k, 4.5, 2), '#b5541c', K); R(47 + k * 4, 42 - k, 6, 1, '#fbf0dc'); }   // 썬 오리고기 (접시 위)
+      for (const [x, y] of [[8, 46], [11, 47], [14, 46]]) R(x, y, 5, 1, '#5cc46a');                               // 파
+    }
+    if (id === 'huoguo') {
+      shape((x, y) => x >= 12 && x <= 51 && y >= 46 && y <= 52, '#4a4f5c');                                        // 버너
+      R(14, 48, 4, 2, '#e5484d');
+      for (const x of [20, 25, 30, 35, 40, 45]) { R(x, 42, 3, 4, '#62aefc'); R(x + 1, 41, 1, 1, '#c4e2ff'); }       // 파란 불꽃
+      shape((x, y) => x >= 1 && x <= 8 && y >= 25 && y <= 30, '#5a6577'); shape((x, y) => x >= 55 && x <= 62 && y >= 25 && y <= 30, '#5a6577');   // 손잡이
+      shape(and(E(32, 26, 26, 16), (x, y) => y >= 26), (x, y) => (x < 22 ? '#b9bec8' : x < 40 ? '#9aa0aa' : '#7c828c'));   // 냄비 몸통
+      const half = (x, y) => x < 32 + 4 * Math.sin((y - 26) / 7 * Math.PI);                                        // 가운데 S자 칸막이
+      shape(E(32, 26, 27, 8.5), (x, y) => (!E(32, 26, 24, 6.5)(x, y) ? '#c9ced6' : Math.abs((x - 32) - 4 * Math.sin((y - 26) / 7 * Math.PI)) < 1 ? '#6b707a' : half(x, y) ? '#d9381e' : '#f3e9d2'));
+      for (const [x, y] of [[17, 25], [22, 28], [26, 22], [14, 27]]) { R(x, y, 3, 1, '#7a0e0e'); px(x + 3, y, '#3f9442'); }   // 빨간 쪽: 고추
+      for (const [x, y] of [[20, 24], [25, 26], [12, 26]]) px(x, y, '#f6c445');
+      for (const [x, y] of [[40, 23], [46, 27], [38, 28]]) { R(x, y, 3, 2, '#8a5a2b'); px(x + 1, y, '#c9a26a'); }          // 하얀 쪽: 버섯
+      for (const [x, y] of [[44, 23], [50, 25], [35, 22]]) px(x, y, '#e5484d');                                        // 구기자
+      R(41, 26, 4, 1, '#5cc46a');
+      steam([18, 32, 46], 16);
+    }
+    if (id === 'naicha') {
+      const L = (y) => 16 + (y - 12) * 0.16, Rr = (y) => 47 - (y - 12) * 0.16;
+      for (let y = 0; y < 13; y++) { const x = 37 + Math.round((12 - y) * 0.35); R(x, y, 5, 1, K); R(x + 1, y, 3, 1, '#ff6b8b'); if (y % 4 === 0) R(x + 1, y, 3, 1, '#fbfaf5'); }   // 굵은 빨대 (뚜껑 위)
+      shape((x, y) => y >= 12 && y <= 52 && x >= L(y) && x <= Rr(y), (x, y) => (y < 17 ? '#f4efe6' : y < 37 ? ((x - L(y)) < 3 ? '#e2c49a' : '#c89a6a') : '#b98a5c'));   // 투명 컵 + 밀크티
+      R(14, 11, 36, 3, K); R(15, 12, 34, 1, '#ffd1e3');                                                             // 뚜껑 비닐
+      for (let y = 17; y < 46; y++) { const x = 36 + Math.round((46 - y) * 0.12); px(x, y, '#a37650'); px(x + 1, y, '#a37650'); }   // 컵 안 빨대
+      for (const [x, y] of [[22, 48], [27, 49], [32, 48], [37, 49], [42, 48], [24, 44], [29, 45], [34, 44], [39, 45], [27, 40], [33, 41], [38, 40]]) {   // 큰 까만 펄
+        shape(E(x, y, 2.6, 2.6), K, null); px(x - 1, y - 1, '#6b6478');
+      }
+      for (const y of [20, 26]) R(Math.ceil(L(y)) + 1, y, 2, 3, '#fff8');                                          // 컵 반사
+    }
+  }
   const FOOD_URL = {};
-  function foodURL(id) { if (FOOD_URL[id]) return FOOD_URL[id]; const c = document.createElement('canvas'); c.width = 36; c.height = 30; const g = c.getContext('2d'); drawFood(g, id, 18, 29, 1); return (FOOD_URL[id] = c.toDataURL()); }
+  function foodURL(id) { if (FOOD_URL[id]) return FOOD_URL[id]; const c = document.createElement('canvas'); c.width = 64; c.height = 54; const g = c.getContext('2d'); drawFoodHD(g, id); return (FOOD_URL[id] = c.toDataURL()); }
   const foodImg = (id) => `<img class="gift-img food-img" src="${foodURL(id)}" alt="음식 그림">`;
   // 모든 그림 보기 버튼은 같은 모양 (정답만 다른 색·크기·반짝임 없음)
   const picOpts = (ids) => ids.map((id, k) => `<button class="pk-opt gift" data-k="${k}">${foodImg(id)}</button>`).join('');
@@ -5321,7 +5404,8 @@
 
   // ----- 라운드 1: 음식 컨베이어 벨트 (MC 주문 3개) -----
   function fsR1() {
-    const q = run.arc; q.r1 = shuffle(FOOD_IDS).slice(0, 3); q.i = 0; AR.onGrab = null;
+    const q = run.arc; q.r1 = shuffle(FOOD_IDS); q.i = 0;   // 다섯 가지 음식을 한 번씩 (5번)
+    AR.onGrab = null;
     beltStart({ speed: 38, pool: () => FOOD_IDS, need: () => (AR.want ? [AR.want] : []) });
     $('fsPanel').innerHTML = `<button class="ar-go big" id="fsGive">🎁 판다 MC에게 건네주기</button>`;
     $('fsGive').addEventListener('click', fsGive1);
@@ -5329,7 +5413,7 @@
   }
   function fsOrder1() {
     const q = run.arc, t = q.r1[q.i], f = foodOf(t); AR.want = t;
-    fsBubble(`<small>주문 ${q.i + 1}/3</small>${zhCard(f.h, f.p, 'big')}${sayBtn(f.h)}`);
+    fsBubble(`<small>주문 ${q.i + 1}/${q.r1.length}</small>${zhCard(f.h, f.p, 'big')}${sayBtn(f.h)}`);
     beltNeed(t);
     arTask(`fs1-${q.i}`, `컨베이어: ${f.h} 잡기`, f.h, [`${f.h}${pp(f.h, '은/는')} ‘${f.ko}’예요. 벨트에서 찾아봐요.`, `${f.ko}: ${f.look}이에요.`]);
     arMsg(isTouch() ? '움직이는 음식을 톡! 눌러서 잡고 → 🎁 건네주기' : '음식을 클릭해서 잡고 → 🎁 건네주기 (키보드: ←→ 이동 · Space 잡기 · Enter 건네주기)');
@@ -5343,11 +5427,11 @@
     AR.held = null; arHeldUI(); fsMcReact(true); arFloat('😋 谢谢！', $('fsMcBox'));
     arRight(`정답! ${f.h} ${f.p} = ${f.ko}`); fsLantern(1); fsFans(1);
     q.i++; AR.want = null; fsBubble('');
-    if (q.i >= 3) arLater(arRoundDone, 1100); else arLater(fsOrder1, 900);
+    if (q.i >= q.r1.length) arLater(arRoundDone, 1100); else arLater(fsOrder1, 900);
   }
   // ----- 라운드 2: 음식 부스 분류 대작전 (중국어 간판 5개) -----
   function fsR2() {
-    const q = run.arc; q.booths = shuffle(FOOD_IDS); q.bdone = []; AR.want = null; AR.onGrab = null;
+    const q = run.arc; q.booths = shuffle(FOOD_IDS); q.bdone = []; q.bn = {}; q.placed = 0; AR.want = null; AR.onGrab = null;   // 부스마다 음식 2개 (모두 10번)
     const left = () => q.booths.filter(id => !q.bdone.includes(id));
     beltStart({ speed: 40, pool: left, need: left });
     fsBubble(`<small>간판을 보고 음식을 넣어 줘요!</small>`);
@@ -5363,22 +5447,23 @@
     if (q.bdone.includes(id)) { arMsg('이 부스는 벌써 완성됐어요! 다른 부스를 골라요.', 'info'); return; }
     if (!AR.held) { arMsg('먼저 벨트에서 음식을 잡아요!', 'info'); return; }
     arLockFor(450);
-    const f = foodOf(AR.held); taskBegin(`fs2-${q.bdone.length}`, `부스 분류: ${f.ko} 그림 → ${f.h}`, f.h);
+    const f = foodOf(AR.held); taskBegin(`fs2-${q.placed}`, `부스 분류: ${f.ko} 그림 → ${f.h}`, f.h);
     if (AR.held !== id) { arWrong('간판의 중국어와 음식이 달라요. 간판을 다시 읽어 봐요!', b); return; }
-    q.bdone.push(id); AR.held = null; arHeldUI(); beltRemoveKind(id);
-    b.classList.add('done'); b.querySelector('.fs-put').innerHTML = `<img src="${foodURL(id)}" alt="">`; arBounce(b.querySelector('.fs-own'), 'hop');
-    arFloat('🎉', b);
-    arRight(`${f.h} 부스 완성! (${q.bdone.length}/5)`); fsLantern(1); fsFans(1);
+    q.bn[id] = (q.bn[id] || 0) + 1; q.placed++; AR.held = null; arHeldUI();
+    b.querySelector('.fs-put').insertAdjacentHTML('beforeend', `<img src="${foodURL(id)}" alt="">`); arBounce(b.querySelector('.fs-own'), 'hop');
+    if (q.bn[id] >= 2) { q.bdone.push(id); beltRemoveKind(id); b.classList.add('done'); arFloat('🎉', b); fsLantern(1); }
+    else { b.classList.add('half'); arFloat('+1', b); }
+    arRight(q.bn[id] >= 2 ? `${f.h} 부스 완성! (${q.placed}/10)` : `${f.h} 부스에 하나 더! (${q.placed}/10)`); fsFans(1);
     if (q.bdone.length >= 5) { AR.belt.need = () => []; arLater(arRoundDone, 1200); } else arSetHints(fsR2Hints);
   }
   function fsR2Hints() {
     const q = run.arc, f = AR.held && foodOf(AR.held);
-    if (!f) return [`남은 간판 ${5 - q.bdone.length}개! 먼저 벨트에서 음식을 하나 잡아요. 그다음 간판을 읽어요.`];
-    taskBegin(`fs2-${q.bdone.length}`, `부스 분류: ${f.ko} 그림 → ${f.h}`, f.h);
+    if (!f) return [`남은 음식 ${10 - q.placed}개! 먼저 벨트에서 음식을 하나 잡아요. 그다음 간판을 읽어요.`];
+    taskBegin(`fs2-${q.placed}`, `부스 분류: ${f.ko} 그림 → ${f.h}`, f.h);
     return [`들고 있는 음식은 ‘${f.ko}’예요. 중국어 이름은 무엇일까요?`, `‘${f.ko}’ = ${f.h} ${f.p} — 이 간판을 찾아요.`];
   }
   // ----- 라운드 3: 우당탕탕 음식 러시 (손님 2명이 동시에, 모두 6번) -----
-  const FS_RUSH = 6;
+  const FS_RUSH = 10;
   function fsR3() {
     const q = run.arc; q.served = 0; q.spawn = 0; q.cust = [null, null]; q.gi = Math.floor(Math.random() * FD_GUEST.length); AR.want = null; AR.onGrab = null;
     beltStart({ speed: 58, pool: () => FOOD_IDS, need: () => q.cust.filter(Boolean).map(c => c.want) });
@@ -5410,6 +5495,7 @@
     if (AR.held !== c.want) { arWrong('이 손님은 다른 음식을 주문했어요. 주문표를 다시 읽어 봐요!', b); return; }
     AR.held = null; arHeldUI(); q.served++; q.cust[k] = null;
     $('fsCb' + k).hidden = true; arBounce($('fsCi' + k), 'leave'); arFloat('♥', b, 'heart'); b.disabled = true;
+    if (AR.belt.speed < 72) AR.belt.speed += 2;   // 조금씩 빨라져요 (최대 72)
     arRight(`${f.h}! 맛있겠다~ (${q.served}/${FS_RUSH})`); fsFans(AR.combo >= 3 ? 2 : 1); if (q.served % 2 === 0) fsLantern(1);
     if (q.served >= FS_RUSH) { AR.belt.need = () => []; arLater(arRoundDone, 1200); return; }
     arLater(() => fsNewCust(k), 750);
@@ -5534,7 +5620,7 @@
     };
     draw();
   }
-  const PZ = { wo: { h: '我', p: 'wǒ' }, yao: { h: '要', p: 'yào' }, zhege: { h: '这个', p: 'zhège' }, duoshao: { h: '多少钱', p: 'duōshao qián' } };
+  const PZ = { ni: { h: '你', p: 'nǐ' }, wo: { h: '我', p: 'wǒ' }, yao: { h: '要', p: 'yào' }, zhege: { h: '这个', p: 'zhège' }, duoshao: { h: '多少钱', p: 'duōshao qián' } };
   // 가격표 (숫자 + 元) 고르기: 점원의 중국어 대답을 듣고
   function dnPriceTags(n, onRight) {
     const tags = shuffle(PRICES); let sel = null;
@@ -5574,35 +5660,44 @@
         const f = foodOf(want); arRight(`주문 접수! ${f.h} ${f.p}`); dnPoint(null); dnSay(g, '😊');
         dnCook(want, () => {
           dnSale(q.price[want], g.el); dnSeat(g, want); dnDecoUp(); q.i1++;
-          if (q.i1 >= 2) arLater(arRoundDone, 1300); else arLater(dnCust1, 700);
+          if (q.i1 >= 3) arLater(arRoundDone, 1300); else arLater(dnCust1, 700);
         });
       }, '손님이 가리킨 그림을 다시 보고, 그 음식의 중국어 이름을 골라요.');
     }, 950);
   }
   // ----- 라운드 2: 내가 손님 (가리키기 → 我 要 这个 조각 배열 → 말하기) -----
   function dnR2() {
-    const q = run.arc; q.pzOn = false; dnStaff('chef');
+    const q = run.arc; q.n2 = 0; dnStaff('chef');
     const me = dnGuy('me', DN_X.door, 'me'); q.me = me; dnMove(me, DN_X.counter);
+    arLater(dnOrder2, 950);
+  }
+  // 내가 주문하기 (두 번: 두 번째는 헷갈리는 조각이 你)
+  function dnOrder2() {
+    const q = run.arc, me = q.me; q.pzOn = false; q.my = null;
     dnPanel(`<div class="dn-wait">👆 메뉴판에서 먹고 싶은 음식을 눌러 가리켜요! (아무거나 좋아요)</div>`);
-    arMsg('이번엔 내가 손님! 먹고 싶은 음식을 메뉴판에서 눌러요.');
-    arLater(() => {
+    arMsg(q.n2 ? '한 번 더 주문해요! 이번엔 다른 음식도 좋아요.' : '이번엔 내가 손님! 먹고 싶은 음식을 메뉴판에서 눌러요.');
+    {
       AR.menuPick = (id) => {
         q.my = id; dnPoint(id); SFX.pop();
         dnSay(me, `👆 ${foodOf(id).ko}!`);
         if (q.pzOn) return;   // 문장을 만드는 중에 가리키는 음식을 바꿔도 돼요
         q.pzOn = true;
-        arTask('dn2', '문장 배열: 我要这个。', '我 / 要 / 这个', ['누가? → 원해요 → 무엇을? 순서로 놓아요.', '我(나) → 要(원해요) → 这个(이것)']);
+        arTask(`dn2-${q.n2}`, '문장 배열: 我要这个。', '我 / 要 / 这个', ['누가? → 원해요 → 무엇을? 순서로 놓아요.', '我(나) → 要(원해요) → 这个(이것)']);
         arMsg('가리킨 음식을 주문해요! 조각을 눌러 문장을 만들어요. (빈칸을 누르면 빠져요)');
-        dnPuzzle(shuffle([PZ.wo, PZ.yao, PZ.zhege, PZ.duoshao]), ['我', '要', '这个'], '。', '문장 조각으로 주문하기 (조각 하나는 쓰지 않아요)', () => {
+        dnPuzzle(shuffle([PZ.wo, PZ.yao, PZ.zhege, q.n2 ? PZ.ni : PZ.duoshao]), ['我', '要', '这个'], '。', '문장 조각으로 주문하기 (조각 하나는 쓰지 않아요)', () => {
           arRight('문장 완성! 我要这个。'); AR.menuPick = null; dnMenuClick(false);
           dnSay(me, `👆${zhCard('我要这个。', 'Wǒ yào zhège.')}`);
           dnSayIt('我要这个。', 'Wǒ yào zhège.', '이거 주세요. (가리키면서 말해요)', '🗣 말했어요!', () => {
-            dnCook(q.my, () => { dnSeat(me, q.my); dnDecoUp(); arMsg('냠냠! 내가 주문한 음식이 나왔어요 😋', 'ok'); arLater(arRoundDone, 1600); });
+            dnCook(q.my, () => {
+              dnSeat(me, q.my); dnDecoUp(); arMsg('냠냠! 내가 주문한 음식이 나왔어요 😋', 'ok'); q.n2++;
+              if (q.n2 >= 2) arLater(arRoundDone, 1600);
+              else arLater(() => { me.el.classList.remove('eating', 'seated'); dnMove(me, DN_X.counter); arLater(dnOrder2, 950); }, 2400);
+            });
           });
         }, ['누가(我) → 원해요(要) → 무엇을(这个) 순서예요.']);
       };
       dnMenuClick(true);
-    }, 950);
+    }
   }
   // ----- 라운드 3: 계산대 (가리키기 → 这个多少钱？ → 점원 대답 듣고 가격표) × 2 -----
   function dnR3() {
@@ -5614,7 +5709,7 @@
   function dnAsk() {
     const q = run.arc, me = q.me; q.ask = null; q.pzOn = false; dnSay(me, '');
     dnPanel(`<div class="dn-wait">👆 가격이 궁금한 음식(?元)을 메뉴판에서 눌러 가리켜요!</div>`);
-    arMsg(`가격이 궁금한 음식을 가리켜요. (${q.k3 + 1}/2)`);
+    arMsg(`가격이 궁금한 음식을 가리켜요. (${q.k3 + 1}/3)`);
     AR.menuPick = (id) => {
       if (q.shown[id]) return;
       q.ask = id; dnPoint(id); SFX.pop();
@@ -5630,7 +5725,7 @@
             arTask(`dn3-p${q.k3}`, `가격 듣기: ${priceZh(n).h} → ${n}元`, `${n}元`, priceHints(n));
             dnPriceTags(n, () => {
               arRight(`${n}元! ${priceZh(n).h} ${priceZh(n).p}`); dnShowPrice(q.ask); dnDecoUp(); q.k3++;
-              if (q.k3 >= 2) { arLater(() => { FOOD_IDS.forEach(id => dnShowPrice(id)); arMsg('점원 판다가 메뉴판에 가격표를 모두 붙였어요! 🏷', 'ok'); }, 700); arLater(arRoundDone, 2000); }
+              if (q.k3 >= 3) { arLater(() => { FOOD_IDS.forEach(id => dnShowPrice(id)); arMsg('점원 판다가 메뉴판에 가격표를 모두 붙였어요! 🏷', 'ok'); }, 700); arLater(arRoundDone, 2000); }
               else arLater(dnAsk, 1000);
             });
             const sentHtml = `<div class="ar-sent clerk mini"><small>점원:</small>${zhCard(s.h, s.p)}${sayBtn(s.h)}</div>`;
@@ -5639,8 +5734,8 @@
           }, 900);
         }, 600);
       };
-      if (q.k3 === 0) {
-        arTask('dn3-s0', '문장 배열: 这个多少钱？', '这个 / 多少钱', ['무엇이? → 얼마예요? 순서로 놓아요.', '这个(이것) → 多少钱(얼마예요)']);
+      if (q.k3 !== 1) {
+        arTask(`dn3-s${q.k3}`, '문장 배열: 这个多少钱？', '这个 / 多少钱', ['무엇이? → 얼마예요? 순서로 놓아요.', '这个(이것) → 多少钱(얼마예요)']);
         arMsg('조각을 눌러 “이거 얼마예요?”를 만들어요!');
         dnPuzzle(shuffle([PZ.zhege, PZ.duoshao, PZ.wo, PZ.yao]), ['这个', '多少钱'], '？', '가격 물어보기 (조각 두 개는 쓰지 않아요)', () => { arRight('문장 완성! 这个多少钱？'); after(); }, ['这个(이것) → 多少钱(얼마예요) 순서예요.']);
       } else {
@@ -5660,7 +5755,7 @@
   function dnR4() {
     const q = run.arc; dnStaff('chef'); AR.menuPick = null; dnMenuClick(false); FOOD_IDS.forEach(id => dnShowPrice(id));
     $('dnGuys').innerHTML = ''; q.seated = [];
-    q.rush = ['name', 'point', 'price', 'yige', 'vip']; q.ri = 0; q.line = [];
+    q.rush = ['name', 'point', 'price', 'name', 'point', 'yige', 'price', 'vip']; q.ri = 0; q.line = []; q.nameN = 0;
     for (let k = 0; k < 3; k++) q.line.push(dnGuy(dnNextCu(), DN_X.door));
     dnLineUp(); arLater(dnRushNext, 1000);
   }
@@ -5679,17 +5774,17 @@
   function dnRushNext() {
     const q = run.arc, t = q.rush[q.ri], g = q.line[0];
     arMsg(`손님 ${q.ri + 1}/${q.rush.length}`);
-    if (t === 'name') return dnRushName(g);
+    if (t === 'name') return dnRushName(g, !q.nameN++);   // 주문 변경은 첫 손님 A에게만
     if (t === 'point') return dnRushPoint(g);
     if (t === 'price') return dnRushPrice(g);
     if (t === 'yige') return dnRushYige(g);
   }
   // 손님 A: 중국어 주문표 → 준비대에서 음식을 트레이에 → (돌발) 주문 변경! → 서빙
-  function dnRushName(g) {
-    const q = run.arc; let want = dnPickWant(), changed = false; AR.tray = null;
+  function dnRushName(g, withChange = true) {
+    const q = run.arc; let want = dnPickWant(), changed = !withChange; AR.tray = null;
     const ticket = () => `📝${zhCard(foodOf(want).h, foodOf(want).p)}${sayBtn(foodOf(want).h)}`;
     dnSay(g, ticket());
-    arTask('dn4-a0', `주문표 읽기: ${foodOf(want).h}`, foodOf(want).h, () => [`주문표 ${foodOf(want).h} ${foodOf(want).p}${pp(foodOf(want).p, '은/는')} 무슨 음식일까요?`, `${foodOf(want).h} = ‘${foodOf(want).ko}’예요.`]);
+    arTask(`dn4-a0-${q.ri}`, `주문표 읽기: ${foodOf(want).h}`, foodOf(want).h, () => [`주문표 ${foodOf(want).h} ${foodOf(want).p}${pp(foodOf(want).p, '은/는')} 무슨 음식일까요?`, `${foodOf(want).h} = ‘${foodOf(want).ko}’예요.`]);
     arMsg('손님의 중국어 주문표를 읽고, 준비대에서 그 음식을 트레이에 올려요!');
     const ord = shuffle(FOOD_IDS);
     const draw = () => {
@@ -5700,7 +5795,7 @@
       $('dnServe').addEventListener('click', () => {
         if (arBusy() || !AR.tray) return; arLockFor(450);
         if (!q.changeDone) { arMsg('잠깐! 손님이 뭔가 말하려고 해요…', 'info'); return; }
-        if (AR.tray !== want) { arWrong(changed ? '손님이 주문을 바꿨어요! 말풍선의 새 주문표를 다시 읽어 봐요.' : '주문표의 중국어를 다시 읽어 봐요.', $('dnTray')); return; }
+        if (AR.tray !== want) { arWrong(withChange ? '손님이 주문을 바꿨어요! 말풍선의 새 주문표를 다시 읽어 봐요.' : '주문표의 중국어를 다시 읽어 봐요.', $('dnTray')); return; }
         const f = foodOf(want); AR.tray = null; arRight(`서빙 완료! ${f.h} ${f.p}`); q.changeDone = false;
         dnRushDone(g, want, q.price[want]);
       });
@@ -5715,14 +5810,14 @@
       arMsg('🔄 주문 변경! 새 주문표를 읽고 트레이의 음식을 바꿔요.', 'bad');
       const ban = document.createElement('div'); ban.className = 'ar-banner'; ban.textContent = '🔄 주문 변경!'; $('arFx').appendChild(ban); setTimeout(() => ban.remove(), 1600);
     };
-    q.changeDone = false;
+    q.changeDone = !withChange;
     draw();
   }
   // 손님 B: 메뉴를 가리키며 我要这个。 → 주문서
   function dnRushPoint(g) {
     const q = run.arc, want = dnPickWant();
     dnPoint(want); dnSay(g, `👆${zhCard('我要这个。', 'Wǒ yào zhège.')}${sayBtn('我要这个。')}`);
-    arTask('dn4-b', `我要这个: 가리킨 그림 → ${foodOf(want).h}`, foodOf(want).h, zhegeHints(want));
+    arTask(`dn4-b-${q.ri}`, `我要这个: 가리킨 그림 → ${foodOf(want).h}`, foodOf(want).h, zhegeHints(want));
     arMsg('손님이 👆 가리킨 메뉴의 중국어 이름을 주문서에 골라요!');
     dnNameSlip(want, '주문서 — 가리킨 음식의 이름은?', () => {
       arRight(`주문 접수! ${foodOf(want).h}`); dnPoint(null); dnSay(g, '😊');
@@ -5733,7 +5828,7 @@
   function dnRushPrice(g) {
     const q = run.arc, want = dnPickWant(), n = q.price[want];
     dnPoint(want); dnSay(g, `👆${zhCard('这个多少钱？', 'Zhège duōshao qián?')}${sayBtn('这个多少钱？')}`);
-    arTask('dn4-c', `가격 말하기: ${n}元 → ${priceZh(n).h}`, priceZh(n).h, priceZhHints(n));
+    arTask(`dn4-c-${q.ri}`, `가격 말하기: ${n}元 → ${priceZh(n).h}`, priceZh(n).h, priceZhHints(n));
     arMsg('손님이 가격을 물어요! 메뉴판의 가격표를 보고 중국어로 대답해요.');
     dnPriceZh(n, `손님이 가리킨 음식의 가격을 중국어로 대답해요`, () => {
       const s = priceSay(n); arRight(`${s.h} ${s.p}`); dnPoint(null);
