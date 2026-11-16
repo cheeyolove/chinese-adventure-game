@@ -373,6 +373,37 @@
     .pk-frame, .pk-grid.photos.six { grid-template-columns: repeat(3, 1fr); }
     .pk-memo-row { grid-template-columns: 1fr; }
   }
+  /* 9·10차시: 음식 그림·메뉴판·문장 조각 */
+  .introdate { font-family: var(--font-display); font-size: 19px; color: #b5121b; margin: 0 0 4px; }
+  .food-img { width: 72px; height: 60px; }
+  /* 칸 너비를 모두 같게 (긴 이름 때문에 한 칸만 커지지 않게) */
+  .pk-grid.gifts5 { grid-template-columns: repeat(5, minmax(0, 1fr)); } .pk-grid.words5 { grid-template-columns: repeat(3, minmax(0, 1fr)); } .pk-grid.words4 { grid-template-columns: repeat(4, minmax(0, 1fr)); } .pk-grid.pieces { grid-template-columns: repeat(4, minmax(0, 1fr)); } .pk-grid.prices { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .pk-grid.words5 .han, .pk-grid.words4 .han, .pk-grid.pieces .han { font-size: 26px; }
+  .cmp2 { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin: 6px 0; }
+  .cmp { display: flex; flex-direction: column; align-items: center; gap: 4px; background: #fff; border: 3px solid var(--ink); border-radius: 12px; padding: 6px 10px; flex: 1 1 0; min-width: 0; max-width: 230px; text-align: center; }   /* 좁은 화면에서도 두 카드가 나란히 */
+  .cmp small { font-size: 15px; line-height: 1.35; } .cmp.big .food-img { width: 132px; height: 110px; }
+  .menu-board { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; background: #2f4a3a; border: 4px solid #3b2716; border-radius: 12px; padding: 8px 8px 16px; margin: 6px auto; max-width: 540px; }
+  .mb-cell { position: relative; background: #fff; border: 3px solid var(--ink); border-radius: 10px; display: flex; align-items: center; justify-content: center; padding: 4px; min-height: 64px; color: var(--ink); }
+  button.mb-cell { cursor: pointer; box-shadow: 0 3px 0 var(--ink); touch-action: manipulation; }
+  .mb-hand { position: absolute; bottom: -18px; right: -2px; font-size: 32px; line-height: 1; animation: poke .8s ease-in-out infinite; pointer-events: none; }
+  @keyframes poke { 50% { transform: translateY(-7px); } }
+  .cust { display: flex; align-items: center; gap: 8px; justify-content: center; }
+  .say-bubble { background: #fff; border: 3px solid var(--ink); border-radius: 14px; padding: 0 8px; }
+  .say-bubble .zline { margin: 4px 0; }
+  .sp-slots { display: flex; gap: 8px; justify-content: center; align-items: flex-end; margin: 10px 0 6px; flex-wrap: wrap; }
+  .sp-slot { min-width: 90px; min-height: 70px; border: 3px dashed #8a5a2b; border-radius: 10px; background: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4px 8px; cursor: pointer; color: var(--ink); touch-action: manipulation; }
+  .sp-slot .han { font-family: var(--font-han); font-size: 30px; } .sp-slot .py { font-size: 15px; font-weight: 700; white-space: nowrap; }
+  .sp-end { font-size: 40px; }
+  .pk-opt.price .pt { font-family: var(--font-display); font-size: 30px; }
+  @media (prefers-reduced-motion: reduce) { .mb-hand { animation: none; } }
+  @media (max-height: 520px), (max-width: 560px) {
+    .food-img { width: 54px; height: 45px; } .introdate { font-size: 16px; }
+    .cmp2 { flex-wrap: nowrap; gap: 8px; } .cmp { padding: 4px 6px; } .cmp small { font-size: 13px; } .cmp .znum .han { font-size: 26px; } .cmp .znum .py { font-size: 14px; }
+    .menu-board { gap: 4px; padding: 6px 6px 14px; } .mb-cell { min-height: 50px; } .mb-hand { font-size: 26px; bottom: -15px; }
+    .sp-slot { min-width: 72px; min-height: 56px; } .sp-slot .han { font-size: 24px; } .sp-end { font-size: 30px; }
+    .pk-grid.words5 .han, .pk-grid.words4 .han, .pk-grid.pieces .han { font-size: 21px; }
+  }
+  @media (max-width: 560px) { .pk-grid.gifts5 { grid-template-columns: repeat(3, minmax(0, 1fr)); } .pk-grid.words5, .pk-grid.words4, .pk-grid.pieces, .pk-grid.prices { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   @media (max-width: 560px) { .bc-months { grid-template-columns: repeat(4, 1fr); } .bc-days { grid-template-columns: repeat(4, 1fr); } .bc-han { font-size: 5.2vw; } .bcard-prev { padding: 6px 20px; } }
   .slabcard { max-width: 640px; }
   .sl-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
@@ -845,6 +876,7 @@
 <div class="overlay" id="intro" hidden>
   <div class="card start" tabindex="-1">
     <h2 style="font-size:24px" id="introTitle">오늘 배울 말</h2>
+    <p class="introdate" id="introDate" hidden></p>
     <p class="saveinfo">카드를 누르면 소리를 들을 수 있어요.</p>
     <div class="introgrid" id="introGrid"></div>
     <button class="btn primary big" id="introGo">▶ 탐험 출발!</button>
@@ -994,7 +1026,7 @@
 
   // Google Fonts (한자는 필요한 글자만 받아옴)
   (function loadFonts() {
-    const han = '熊猫探险队妈麻马骂你们好老师同学中国汉语拼音文我叫什么名字小明韩人是哪谢再见不客气对起没关系晚安早上。？！“”一二三四五六七八九十生日快乐月号几的○爸哥姐弟妹这喜欢苹果饺子辣烫';
+    const han = '熊猫探险队妈麻马骂你们好老师同学中国汉语拼音文我叫什么名字小明韩人是哪谢再见不客气对起没关系晚安早上。？！“”一二三四五六七八九十生日快乐月号几的○爸哥姐弟妹这喜欢苹果饺子辣烫北京烤鸭火锅珍珠奶茶要多少钱块元个';
     // 병음용: 알파벳·성조 모음·숫자만 받아서 파일이 아주 작음
     const py = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜüĀÁǍÀĒÉĚÈĪÍǏÌŌÓǑÒŪÚǓÙÜ0123456789 .,?!’\'-/()%…:→ˉˊˇˋ';
     for (const href of [
@@ -1072,6 +1104,28 @@
     { id: 'gf_malatang', h: '麻辣烫', p: 'málàtàng', t: 0, ko: '마라탕' },
     { id: 'gf_my', h: '我喜欢麻辣烫。', p: 'Wǒ xǐhuan málàtàng.', t: 0, ko: '나는 마라탕을 좋아해요.', sent: true },
     { id: 'gf_ask', h: '你喜欢什么？', p: 'Nǐ xǐhuan shénme?', t: 0, ko: '너는 무엇을 좋아해?', sent: true, bonus: true },
+  ].map(w => [w.id, w]));
+  // 9차시 음식 축제: 饺子·麻辣烫(복습) + 北京烤鸭·火锅·珍珠奶茶 + 我喜欢……。
+  const FDW = Object.fromEntries([
+    { id: 'fd_jiaozi', h: '饺子', p: 'jiǎozi', t: 0, ko: '만두 (8차시 복습)' },
+    { id: 'fd_malatang', h: '麻辣烫', p: 'málàtàng', t: 0, ko: '마라탕 (8차시 복습)' },
+    { id: 'fd_kaoya', h: '北京烤鸭', p: 'Běijīng kǎoyā', t: 0, ko: '북경오리' },
+    { id: 'fd_huoguo', h: '火锅', p: 'huǒguō', t: 0, ko: '훠궈' },
+    { id: 'fd_naicha', h: '珍珠奶茶', p: 'zhēnzhū nǎichá', t: 0, ko: '버블티 (대만에서 시작된 음료)' },
+    { id: 'fd_my', h: '我喜欢北京烤鸭。', p: 'Wǒ xǐhuan Běijīng kǎoyā.', t: 0, ko: '나는 북경오리를 좋아해요.', sent: true },
+    { id: 'fd_ask', h: '你喜欢什么？', p: 'Nǐ xǐhuan shénme?', t: 0, ko: '너는 무엇을 좋아해?', sent: true, bonus: true },
+  ].map(w => [w.id, w]));
+  // 10차시 식당: 我要这个。· 这个多少钱？· 十块/二十块… (一个는 예시로만, 보너스)
+  const DNW = Object.fromEntries([
+    { id: 'dn_zhege', h: '这个', p: 'zhège', t: 0, ko: '이것, 이거' },
+    { id: 'dn_yao', h: '要', p: 'yào', t: 4, ko: '원하다, 필요하다' },
+    { id: 'dn_want', h: '我要这个。', p: 'Wǒ yào zhège.', t: 0, ko: '이거 주세요.', sent: true },
+    { id: 'dn_duoshao', h: '多少钱', p: 'duōshao qián', t: 0, ko: '얼마예요?' },
+    { id: 'dn_price', h: '这个多少钱？', p: 'Zhège duōshao qián?', t: 0, ko: '이거 얼마예요?', sent: true },
+    { id: 'dn_kuai', h: '块', p: 'kuài', t: 4, ko: '위안 (말할 때 많이 쓰는 돈 단위)' },
+    { id: 'dn_yuan', h: '元', p: 'yuán', t: 2, ko: '위안 (돈의 공식 단위)' },
+    { id: 'dn_yige', h: '一个', p: 'yí ge', t: 0, ko: '한 개 (물건 등을 셀 때의 예)', bonus: true },
+    { id: 'dn_yige_s', h: '我要一个。', p: 'Wǒ yào yí ge.', t: 0, ko: '하나 주세요.', sent: true, bonus: true },
   ].map(w => [w.id, w]));
   // 6차시 생일파티: 生日快乐！ · 我的生日是○月○号。 · (듣고 알아듣기) 你的生日是几月几号？
   const BDW = Object.fromEntries([
@@ -1157,7 +1211,7 @@
   const josa = (word, pair) => `${word}${pp(word, pair)}`;
   // 숫자가 아닌 한자의 소리 (게임에 나오는 글자)
   const HAN_PY = { '妈': 'mā', '麻': 'má', '马': 'mǎ', '骂': 'mà', '我': 'wǒ', '你': 'nǐ', '叫': 'jiào', '什': 'shén', '么': 'me', '名': 'míng', '小': 'xiǎo', '明': 'míng', '韩': 'hán', '人': 'rén', '是': 'shì', '哪': 'nǎ', '字': 'zi',
-    '们': 'men', '好': 'hǎo', '老': 'lǎo', '师': 'shī', '同': 'tóng', '学': 'xué', '中': 'zhōng', '国': 'guó', '汉': 'hàn', '语': 'yǔ', '文': 'wén', '拼': 'pīn', '音': 'yīn', '谢': 'xiè', '再': 'zài', '见': 'jiàn', '不': 'bù', '客': 'kè', '气': 'qi', '对': 'duì', '起': 'qǐ', '没': 'méi', '关': 'guān', '系': 'xi', '晚': 'wǎn', '安': 'ān', '早': 'zǎo', '上': 'shang', '生': 'shēng', '日': 'rì', '快': 'kuài', '乐': 'lè', '月': 'yuè', '号': 'hào', '几': 'jǐ', '的': 'de', '爸': 'bà', '哥': 'gē', '姐': 'jiě', '弟': 'dì', '妹': 'mèi', '这': 'zhè', '喜': 'xǐ', '欢': 'huan', '苹': 'píng', '果': 'guǒ', '饺': 'jiǎo', '子': 'zi', '辣': 'là', '烫': 'tàng', '熊': 'xióng', '猫': 'māo' };
+    '们': 'men', '好': 'hǎo', '老': 'lǎo', '师': 'shī', '同': 'tóng', '学': 'xué', '中': 'zhōng', '国': 'guó', '汉': 'hàn', '语': 'yǔ', '文': 'wén', '拼': 'pīn', '音': 'yīn', '谢': 'xiè', '再': 'zài', '见': 'jiàn', '不': 'bù', '客': 'kè', '气': 'qi', '对': 'duì', '起': 'qǐ', '没': 'méi', '关': 'guān', '系': 'xi', '晚': 'wǎn', '安': 'ān', '早': 'zǎo', '上': 'shang', '生': 'shēng', '日': 'rì', '快': 'kuài', '乐': 'lè', '月': 'yuè', '号': 'hào', '几': 'jǐ', '的': 'de', '爸': 'bà', '哥': 'gē', '姐': 'jiě', '弟': 'dì', '妹': 'mèi', '这': 'zhè', '喜': 'xǐ', '欢': 'huan', '苹': 'píng', '果': 'guǒ', '饺': 'jiǎo', '子': 'zi', '辣': 'là', '烫': 'tàng', '熊': 'xióng', '猫': 'māo', '北': 'běi', '京': 'jīng', '烤': 'kǎo', '鸭': 'yā', '火': 'huǒ', '锅': 'guō', '珍': 'zhēn', '珠': 'zhū', '奶': 'nǎi', '茶': 'chá', '要': 'yào', '多': 'duō', '少': 'shao', '钱': 'qián', '块': 'kuài', '元': 'yuán', '个': 'ge' };
   const pyHTML = (w) => `<span class="py t${w.t}">${w.p}</span>`;
   const hanHTML = (w) => `<span class="han">${w.h}</span>`;
 
@@ -1916,6 +1970,24 @@
       paifang: { pillar: '#8a5cd6', hi: '#b38cff', roof: '#c0457a', roof2: '#e8689a', plate: '#fff0a8' },
       skins: ['bud', 'bee', 'bud', 'queen'], mid: 'snail',
     },
+    // 9차시 음식 축제: 해 질 녘 붉은 하늘 + 등불 거리
+    fest: {
+      sky: ['#3b2a5c', '#b0476b', '#f2a35e'], sun: true, clouds: true,
+      far: ['#8a4a6b', '#6d3b5c'], hill: ['#5c3a4a', '#744a5a'], hills: 'houses', near: 'lanterns',
+      ground: { top: '#b9b2a4', hi: '#d8d2c4', edge: '#7f796e', dirt: '#7d6a58', d1: '#6b5948', d2: '#937e6a', deco: 'brick' },
+      plat: 'eave', gate: 'village',
+      paifang: { pillar: '#b8262c', hi: '#e0504f', roof: '#2a2f3d', roof2: '#4a5268', plate: '#f6c445' },
+      skins: ['lantern', 'scroll', 'lantern', 'brush'], mid: 'mscroll',
+    },
+    // 10차시 판다 식당: 밝은 낮 거리
+    diner: {
+      sky: ['#f6b26b', '#ffd9a8', '#fff3dc'], sun: true, clouds: true,
+      far: ['#e7c3a0', '#d6ad86'], hill: ['#8fb07a', '#a5c48f'], hills: 'houses', near: 'lanterns',
+      ground: { top: '#c9b79c', hi: '#e2d3b8', edge: '#8f7d64', dirt: '#7d6a58', d1: '#6b5948', d2: '#937e6a', deco: 'brick' },
+      plat: 'wood', gate: 'village',
+      paifang: { pillar: '#c73a3a', hi: '#e8645a', roof: '#3b2716', roof2: '#6b4424', plate: '#fff0a8' },
+      skins: ['lantern', 'scroll', 'lantern', 'brush'], mid: 'mscroll',
+    },
     cave: {
       sky: ['#120e26', '#2a1f52', '#4b3683'], sun: false, clouds: false,
       far: ['#2b2350', '#3a2f68'], hill: ['#463a78', '#5a4b92'], hills: 'crystals', near: 'stalactites',
@@ -2132,6 +2204,46 @@
       noteIntro: '좋아하는 것을 말해 봐요.<br>· 喜欢 xǐhuan = 좋아하다<br>· <b>我喜欢○○。</b> Wǒ xǐhuan ○○. = 나는 ○○을/를 좋아해요.<br>· 熊猫 xióngmāo 판다 · 苹果 píngguǒ 사과 · 饺子 jiǎozi 만두 · 麻辣烫 málàtàng 마라탕',
       qgen: () => null, makeQueue: () => [],
     },
+    // 9차시: 미션형 (간판 그림 고르기 → 음식 배달 → 麻辣烫·火锅 구별 → 좋아하는 음식). questKit: 'food'
+    food: {
+      id: 'food', status: 'ready', lessonNo: '9차시', label: '11월 17일(화) 1교시', dateFull: '2026. 11. 17.(화) · 1교시 — 9차시', title: '판다의 중국 음식 축제', short: '중국 음식 축제', topic: '北京烤鸭 · 火锅 · 珍珠奶茶', mapName: '판다 음식 축제', isNew: true, theme: 'fest', song: 'village', icon: '🏮',
+      quest: true, questKit: 'food', helpAct: '음식 고르기 · 들기 · 건네주기 (Q: 내려놓기)', clearTitle: '중국 음식 축제 성공!',
+      ...LAYOUT,
+      monsters: [],
+      gates: layoutGates(['축제 문', '음식 거리 문', '음식관 문', '축제의 문']),
+      missions: [
+        { label: '🖼 축제 음식 간판', zone: '축제 입구', cards: ['fd_huoguo', 'fd_kaoya'] },
+        { label: '🍽 음식 배달 대작전', zone: '음식 거리', cards: ['fd_naicha', 'fd_jiaozi'] },
+        { label: '🍲 麻辣烫 · 火锅 구별', zone: '특별 음식관', cards: ['fd_malatang', 'fd_my'] },
+        { label: '💝 좋아하는 음식 말하기', zone: '축제 광장', cards: [], cheer: '중국 음식 축제 성공!' },
+      ],
+      finalText: '축제의 문', decorate: decorateFood,
+      words: FDW, cardOrder: ['fd_jiaozi', 'fd_malatang', 'fd_kaoya', 'fd_huoguo', 'fd_naicha', 'fd_my', 'fd_ask'], cardName: '음식 카드', bonusCards: ['fd_ask'], bossFinale: 'none',
+      introRulesHead: '🗣 바꿔 말해 보기 <small>我喜欢 + 좋아하는 음식</small>',
+      introRules: [{ h: '我喜欢火锅。', p: 'Wǒ xǐhuan huǒguō.', t: 0, ko: '나는 훠궈를 좋아해요.', sent: true }, { h: '我喜欢珍珠奶茶。', p: 'Wǒ xǐhuan zhēnzhū nǎichá.', t: 0, ko: '나는 버블티를 좋아해요.', sent: true }, { h: '我喜欢饺子。', p: 'Wǒ xǐhuan jiǎozi.', t: 0, ko: '나는 만두를 좋아해요.', sent: true }],
+      noteIntro: '중국과 대만의 대표 음식·음료 다섯 가지를 알아봐요.<br>· 饺子 jiǎozi 만두 · 麻辣烫 málàtàng 마라탕 (8차시 복습)<br>· 北京烤鸭 Běijīng kǎoyā 북경오리 · 火锅 huǒguō 훠궈<br>· 珍珠奶茶 zhēnzhū nǎichá 버블티 — 대만에서 시작된 음료예요.<br>· <b>我喜欢○○。</b> Wǒ xǐhuan ○○. = 나는 ○○을/를 좋아해요.',
+      qgen: () => null, makeQueue: () => [],
+    },
+    // 10차시: 미션형 식당 타이쿤 (진열 → 주문 받기·하기 → 가격 묻기 → 손님 4명). questKit: 'diner'. 가격·매출은 연습용 가상 돈
+    diner: {
+      id: 'diner', status: 'ready', lessonNo: '10차시', label: '11월 17일(화) 2교시', dateFull: '2026. 11. 17.(화) · 2교시 — 10차시', title: '판다 식당 타이쿤', short: '판다 식당 타이쿤', topic: '我要这个。 · 多少钱？', mapName: '판다 식당', isNew: true, theme: 'diner', song: 'garden', icon: '🍜',
+      quest: true, questKit: 'diner', helpAct: '음식 들기 · 주문 받기 · 계산 (Q: 내려놓기)', clearTitle: '판다 식당 영업 대성공!',
+      ...LAYOUT,
+      monsters: [],
+      gates: layoutGates(['주방 문', '카운터 문', '계산대 문', '식당 문']),
+      missions: [
+        { label: '🍽 식당 개업 준비', zone: '주방', cards: ['dn_yao', 'dn_zhege'] },
+        { label: '📋 주문받기 · 我要这个。', zone: '주문 카운터', cards: ['dn_want'] },
+        { label: '💰 얼마예요?', zone: '계산대', cards: ['dn_duoshao', 'dn_price', 'dn_kuai', 'dn_yuan'] },
+        { label: '🎉 식당 영업 대성공', zone: '식당 홀', cards: [], cheer: '판다 식당 영업 대성공!' },
+      ],
+      finalText: '식당 문', decorate: decorateDiner,
+      words: DNW, cardOrder: ['dn_zhege', 'dn_yao', 'dn_want', 'dn_duoshao', 'dn_price', 'dn_kuai', 'dn_yuan', 'dn_yige', 'dn_yige_s'], cardName: '식당 카드', bonusCards: ['dn_yige', 'dn_yige_s'], bossFinale: 'none',
+      introRulesHead: '💰 가격 말하기 <small>숫자 + 块 (게임 속 가격은 연습용)</small>',
+      introRules: [{ h: '十块。', p: 'Shí kuài.', t: 0, ko: '10위안이에요.' }, { h: '二十块。', p: 'Èrshí kuài.', t: 0, ko: '20위안이에요.' }, { h: '三十块。', p: 'Sānshí kuài.', t: 0, ko: '30위안이에요.' }, { h: '五十块。', p: 'Wǔshí kuài.', t: 0, ko: '50위안이에요.' }],
+      noteIntro: '식당에서 주문하고 가격을 물어봐요.<br>· <b>我要这个。</b> Wǒ yào zhège. = 이거 주세요. (这个는 손으로 <b>가리키며</b> 말해요)<br>· <b>这个多少钱？</b> Zhège duōshao qián? = 이거 얼마예요?<br>· 대답: 숫자 + 块 → 十块 shí kuài (10위안), 二十块 èrshí kuài (20위안). 元 yuán은 돈의 공식 단위, 块 kuài는 말할 때 많이 써요.<br>· ⭐ 我要一个。 = 하나 주세요. (一个는 물건 등을 셀 때의 예예요)<br>· 게임 속 가격과 매출은 <b>연습용</b>이라 게임 코인과 상관없어요.',
+      qgen: () => null, makeQueue: () => [],
+    },
   };
   // 지역 순서 (시작 화면에 이 순서대로, 준비 안 된 지역은 아예 넣지 않음)
   // 학생 화면에는 status: 'ready'만 보여요. 주소 끝에 #preview(또는 #preview-지역이름)를 붙이면 선생님 미리보기로 전부 보여요
@@ -2146,7 +2258,7 @@
     { id: 'family-cards', href: 'cards.html?deck=family', ico: '👨‍👩‍👧', title: '가족 호칭 카드', topic: '爸爸 · 妈妈 짝 맞추기', stage: 'family', isNew: true },   // stage: 어느 수업 복습인지 (날짜·교시는 그 차시 칸과 같게)
   ];
 
-  const ALL_STAGES = ['bamboo', 'greet', 'name', 'nation', 'number', 'birthday', 'family', 'gift'];
+  const ALL_STAGES = ['bamboo', 'greet', 'name', 'nation', 'number', 'birthday', 'family', 'gift', 'food', 'diner'];
   const STAGE_ORDER = ALL_STAGES.filter(id => PREVIEW || STAGES[id].status === 'ready');
   let THEME = THEMES.forest;
   let STAGE = STAGES.bamboo, PLATFORMS = STAGE.platforms, CHECKPOINTS = STAGE.checkpoints, gates = [], run = null;
@@ -2425,6 +2537,29 @@
     // 선물 축제 광장 깃발
     g.fillStyle = '#5a3a22'; g.fillRect(2720, 140, 3, GY - 140); g.fillRect(3400, 140, 3, GY - 140); g.fillStyle = '#3b3346'; g.fillRect(2722, 142, 680, 1);
     for (let x = 2730; x < 3396; x += 22) { g.fillStyle = ['#e5484d', '#f6c445', '#62aefc', '#5cc46a', '#c084fc'][(x / 22 | 0) % 5]; for (let r = 0; r < 8; r++) g.fillRect(x + Math.floor(r / 2), 143 + r, 10 - r, 1); }
+    drawPaifang(g, GATE_X[3] + 12, STAGE.finalText);
+  }
+  function decorateFood(g) {
+    drawSign(g, 110, ['중국 음식 축제', '출발! →'], 96);
+    // 등불 줄 (네 구역 모두)
+    g.fillStyle = '#3b3346'; g.fillRect(60, 120, 3380, 1);
+    for (let x = 80; x < 3420; x += 56) { g.fillStyle = '#2b2838'; g.fillRect(x + 4, 121, 1, 4); g.fillStyle = '#c92a2a'; g.fillRect(x, 125, 9, 10); g.fillStyle = '#ff6b6b'; g.fillRect(x + 1, 126, 3, 8); g.fillStyle = '#f6c445'; g.fillRect(x + 3, 135, 3, 2); }
+    drawSign(g, 1270, ['음식 거리'], 70); drawSign(g, 1990, ['특별 음식관'], 84); drawSign(g, 2705, ['축제 광장'], 74);
+    // 특별 음식관 건물
+    g.fillStyle = '#3b2716'; g.fillRect(2168, GY - 112, 364, 112); g.fillStyle = '#f3e3c3'; g.fillRect(2170, GY - 110, 360, 110);
+    g.fillStyle = '#b8262c'; g.fillRect(2156, GY - 128, 388, 18); g.fillStyle = '#e0504f'; g.fillRect(2156, GY - 128, 388, 5);
+    g.fillStyle = '#9fd3f5'; g.fillRect(2330, GY - 92, 40, 30); g.fillStyle = '#3b2716'; g.fillRect(2349, GY - 92, 2, 30);
+    drawPaifang(g, GATE_X[3] + 12, STAGE.finalText);
+  }
+  function decorateDiner(g) {
+    drawSign(g, 110, ['판다 식당', '출발! →'], 84);
+    // 주방 벽 타일
+    g.fillStyle = '#e8eef2'; g.fillRect(400, GY - 120, 720, 120); g.fillStyle = '#cfd9e0'; for (let x = 400; x < 1120; x += 20) g.fillRect(x, GY - 120, 1, 120); for (let y = GY - 120; y < GY; y += 20) g.fillRect(400, y, 720, 1);
+    g.fillStyle = '#5a6577'; g.fillRect(380, GY - 46, 30, 46); g.fillStyle = '#ff922b'; g.fillRect(386, GY - 52, 6, 6); g.fillRect(398, GY - 52, 6, 6);
+    drawSign(g, 1268, ['주문 카운터'], 84); drawSign(g, 1990, ['계산대'], 60); drawSign(g, 2705, ['식당 홀'], 60);
+    // 식당 홀 벽과 창문
+    g.fillStyle = '#3b2716'; g.fillRect(2838, GY - 140, 452, 140); g.fillStyle = '#fbf1d6'; g.fillRect(2840, GY - 138, 448, 138);
+    for (const x of [2870, 2990, 3110, 3230]) { g.fillStyle = '#9fd3f5'; g.fillRect(x, GY - 110, 34, 28); g.fillStyle = '#3b2716'; g.fillRect(x + 16, GY - 110, 2, 28); }
     drawPaifang(g, GATE_X[3] + 12, STAGE.finalText);
   }
   function decorateBirthday(g) {
@@ -4587,12 +4722,564 @@
     openTalk(3, '<p>축제 판다에게 말을 걸고, 좋아하는 것을 중국어로 말해 봐요!</p>', { ok: '알겠어요!' });
   }
 
-  // ================= 미션형 지역 모음 (6·7·8차시). STAGE.questKit으로 골라요 =================
+
+  // ================= 9·10차시 공통: 음식 5가지 =================
+  // 饺子·麻辣烫(8차시 복습) + 北京烤鸭·火锅·珍珠奶茶(새로). 珍珠奶茶는 대만에서 시작된 음료예요.
+  const FOOD = [
+    { id: 'jiaozi', h: '饺子', p: 'jiǎozi', ko: '만두', ko2: '만두를', look: '반달 모양 만두가 접시에 담긴 그림' },
+    { id: 'malatang', h: '麻辣烫', p: 'málàtàng', ko: '마라탕', ko2: '마라탕을', look: '여러 재료가 빨간 국물과 함께 한 그릇에 담긴 그림' },
+    { id: 'kaoya', h: '北京烤鸭', p: 'Běijīng kǎoyā', ko: '북경오리', ko2: '북경오리를', look: '갈색으로 구운 오리가 접시에 놓인 그림' },
+    { id: 'huoguo', h: '火锅', p: 'huǒguō', ko: '훠궈', ko2: '훠궈를', look: '불 위의 큰 냄비에 재료를 넣어 익히는 그림' },
+    { id: 'naicha', h: '珍珠奶茶', p: 'zhēnzhū nǎichá', ko: '버블티', ko2: '버블티를', look: '컵 아래에 까만 펄이 든 음료 그림' },
+  ];
+  const FOOD_IDS = FOOD.map(f => f.id);
+  const foodOf = (id) => FOOD.find(f => f.id === id);
+  const foodSent = (id) => { const f = foodOf(id); return { h: `我喜欢${f.h}。`, p: `Wǒ xǐhuan ${f.p}.`, ko: `나는 ${f.ko2} 좋아해요.` }; };
+  const foodName = (id, big) => `<span class="znum${big ? ' big' : ''}"><span class="han">${foodOf(id).h}</span><span class="py t0">${foodOf(id).p}</span></span>`;
+  const sentBox = (h, p, big = true) => `<div class="zline${big ? ' big' : ''}"><span class="znum${big ? ' big' : ''}"><span class="han">${h}</span><span class="py t0">${p}</span></span></div>`;
+  // 음식 그림 (g: 캔버스, cx: 가운데, by: 바닥, s: 배율). 마라탕(한 그릇)과 훠궈(불 위의 큰 냄비)는 모양부터 달라요
+  function drawFood(g, id, cx, by, s = 1) {
+    if (id === 'malatang') return drawGift(g, 'malatang', cx, by, s);
+    const R = (x, y, w, h, c) => { g.fillStyle = c; g.fillRect(Math.round(cx + x * s), Math.round(by + y * s), Math.ceil(w * s), Math.ceil(h * s)); };
+    const k = '#2b2838';
+    if (id === 'jiaozi') {      // 접시 + 반달 만두 3개
+      R(-12, -3, 24, 3, k); R(-11, -3, 22, 2, '#fbfaf5'); R(-11, -2, 22, 1, '#62aefc');
+      for (const x of [-9, -2, 5]) { R(x - 1, -8, 8, 1, '#9c8f78'); R(x, -9, 6, 1, '#9c8f78'); R(x - 1, -7, 8, 3, '#fbf5e6'); R(x, -8, 6, 1, '#fbf5e6'); R(x - 1, -4, 8, 1, '#d9cfb8'); R(x + 1, -8, 1, 1, '#d9cfb8'); R(x + 3, -8, 1, 1, '#d9cfb8'); R(x - 2, -6, 1, 2, '#9c8f78'); R(x + 7, -6, 1, 2, '#9c8f78'); }
+    }
+    if (id === 'kaoya') {       // 접시 + 갈색으로 구운 오리 + 다리
+      R(-13, -3, 26, 3, k); R(-12, -3, 24, 2, '#fbfaf5');
+      R(-9, -11, 16, 8, '#5a2a0e'); R(-8, -10, 14, 6, '#b5541c'); R(-6, -10, 8, 2, '#d9822b'); R(-4, -9, 3, 1, '#f2b66a'); R(-10, -8, 2, 3, '#5a2a0e');
+      R(6, -9, 5, 3, '#5a2a0e'); R(6, -8, 4, 2, '#9a4515'); R(10, -10, 3, 2, '#fbfaf5'); R(12, -11, 1, 2, '#fbfaf5');
+      R(-11, -5, 2, 2, '#5cc46a'); R(9, -5, 2, 2, '#5cc46a');
+    }
+    if (id === 'huoguo') {      // 불(파란 불꽃) 위의 큰 냄비, 손잡이, 두 가지 국물, 고기·채소
+      R(-10, -3, 20, 3, '#5a6577'); R(-8, -4, 16, 1, '#3b4250'); R(-6, -6, 2, 2, '#62aefc'); R(-1, -6, 2, 2, '#62aefc'); R(4, -6, 2, 2, '#62aefc');
+      R(-14, -14, 28, 8, k); R(-13, -13, 26, 6, '#8a8f99'); R(-13, -10, 26, 1, '#6b707a');
+      R(-12, -13, 11, 3, '#d9381e'); R(1, -13, 11, 3, '#f3e9d2'); R(-1, -14, 2, 4, '#5a6577');
+      R(-10, -14, 3, 1, '#ff9fb2'); R(-5, -14, 2, 1, '#3f9442'); R(3, -14, 3, 1, '#ff9fb2'); R(8, -14, 2, 1, '#3f9442'); R(6, -14, 1, 1, '#8a5a2b');
+      R(-17, -12, 3, 2, k); R(14, -12, 3, 2, k);
+      g.fillStyle = 'rgba(255,255,255,.75)'; for (const [x, h] of [[-8, 4], [-2, 5], [5, 4]]) g.fillRect(Math.round(cx + x * s), Math.round(by + (-15 - h) * s), Math.ceil(s), Math.ceil(h * s));
+    }
+    if (id === 'naicha') {      // 뚜껑 있는 컵 + 밀크티 + 까만 펄 + 빨대
+      R(1, -28, 2, 8, '#ff6b8b'); R(-6, -22, 12, 2, k); R(-5, -21, 10, 1, '#fbfaf5');
+      R(-5, -20, 10, 20, k); R(-4, -20, 8, 19, '#d9b48f'); R(-4, -20, 2, 19, '#e8cba9'); R(-4, -15, 8, 2, '#fbfaf5');
+      for (const [x, y] of [[-3, -6], [0, -5], [2, -7], [-2, -3], [1, -3], [-4, -4]]) R(x, y, 2, 2, k);
+    }
+  }
+  const FOOD_URL = {};
+  function foodURL(id) { if (FOOD_URL[id]) return FOOD_URL[id]; const c = document.createElement('canvas'); c.width = 36; c.height = 30; const g = c.getContext('2d'); drawFood(g, id, 18, 29, 1); return (FOOD_URL[id] = c.toDataURL()); }
+  const foodImg = (id) => `<img class="gift-img food-img" src="${foodURL(id)}" alt="음식 그림">`;
+  // 모든 그림 보기 버튼은 같은 모양 (정답만 다른 색·크기·반짝임 없음)
+  const picOpts = (ids) => ids.map((id, k) => `<button class="pk-opt gift" data-k="${k}">${foodImg(id)}</button>`).join('');
+  const nameOpts = (ids, sel) => ids.map((id, k) => `<button class="pk-opt word${k === sel ? ' sel' : ''}" data-k="${k}" aria-pressed="${k === sel}"><span class="han">${foodOf(id).h}</span><span class="py t0">${foodOf(id).p}</span></button>`).join('');
+  const foodHints = (id) => { const f = foodOf(id); return [`${f.h} ${f.p} — 중국어 이름을 다시 읽어 봐요.`, `${f.h}${pp(f.h, '은/는')} ‘${f.ko}’예요.`, `정답: ${f.look}이에요.`]; };
+
+  // ================= 9차시 판다의 중국 음식 축제 (questKit 'food') =================
+  const FD_NPC = [
+    { id: 'fdguide', name: '축제 준비 판다', x: 330, mission: 0, scarf: '#e5484d', hat: 'festival' },
+    { id: 'fdstreet', name: '음식 거리 판다', x: 1290, mission: 1, scarf: '#f08a24', hat: 'chef' },
+    { id: 'fdhall', name: '음식관 판다', x: 2030, mission: 2, scarf: '#3d7bd9', hat: 'beret' },
+    { id: 'fdplaza', name: '광장 판다', x: 2790, mission: 3, scarf: '#8a5cd6', hat: 'party' },
+    // 음식 거리 부스 주인 3명 (이름·모습으로 정답이 드러나지 않게 색으로만 구분)
+    { id: 'fdb1', name: '빨간 부스 판다', scarf: '#e5484d', hat: 'apron' },
+    { id: 'fdb2', name: '노란 부스 판다', scarf: '#f6c445', hat: 'cap' },
+    { id: 'fdb3', name: '초록 부스 판다', scarf: '#3d9a5c', hat: 'strawhat' },
+  ];
+  const FD_BOOTH = [520, 680, 840];                                  // 1구역 간판 부스 3곳
+  const FD_OWNER = [1720, 1820, 1915];                               // 2구역 부스 주인 자리
+  const FD_SHELF = [1345, 1381, 1417, 1453, 1489, 1525, 1561, 1597, 1633, 1669];   // 2구역 음식 보관대 10칸 (5종 × 2, 모두 땅 위)
+  const FD_STALL = [2880, 2990, 3100, 3210];                          // 4구역 축제 부스 (불 켜지는 곳)
+  function fdNew() {
+    const r1 = shuffle(FOOD_IDS).slice(0, 3), r2 = shuffle(FOOD_IDS).slice(0, 3), shelf = shuffle([...FOOD_IDS, ...FOOD_IDS]);
+    const t1 = pick(['malatang', 'huoguo']);
+    return {
+      m1: { acc: false, ri: 0, want: r1, booths: [null, null, null] },                     // 간판 3개
+      m2: { acc: false, want: r2, got: [false, false, false], items: shelf.map((k, i) => ({ kind: k, hx: FD_SHELF[i], hy: GY, x: FD_SHELF[i], y: GY, held: false, gone: false })) },
+      m3: { acc: false, qi: 0, qs: [{ t: t1, type: 'n2p' }, { t: t1 === 'malatang' ? 'huoguo' : 'malatang', type: 'p2n' }, { t: pick(['malatang', 'huoguo']), type: 'n2p' }] },
+      m4: { acc: false, choice: null },
+      carry: null, party: false, final: false, partyT: 0, task: null,
+    };
+  }
+  function fdDrop() { const it = run.q.carry; if (!it) return; it.held = false; it.x = it.hx; it.y = it.hy; run.q.carry = null; }
+  function fdCand() {
+    const q = run.q, a = qAct(), px = P.x + P.w / 2, feet = P.y + P.h, carrying = !!q.carry;
+    const near = (x, y = GY, r = 34) => Math.abs(px - x) < r && feet > y - 46 && feet < y + 8;
+    const drop = carrying ? { label2: '⬇ 내려놓기', act2: () => { fdDrop(); SFX.pop(); } } : {};
+    for (const d of FD_NPC.slice(0, 4)) if (near(d.x)) return { label: '💬 말 걸기', act: () => fdTalk(d), ...drop };
+    if (a === 0 && q.m1.acc && q.m1.ri < 3 && near(FD_BOOTH[q.m1.ri], GY, 40)) return { label: '🖼 간판 그림 고르기', act: fdBoard };
+    if (a === 1) for (const k of [0, 1, 2]) if (near(FD_OWNER[k])) return carrying && !q.m2.got[k] ? { label: '🤲 건네주기', act: () => fdGive(k), ...drop } : { label: '💬 말 걸기', act: () => fdOwnerTalk(k), ...drop };
+    if (a === 1 && q.m2.acc) for (const it of q.m2.items) if (!it.held && !it.gone && near(it.x, it.y, 18)) return { label: carrying ? '🔄 바꿔 들기' : '🍽 들기', act: () => { if (q.carry) fdDrop(); q.carry = it; it.held = true; SFX.coin(); }, ...drop };
+    return carrying ? { label: '', ...drop } : null;
+  }
+  function fdGoal() {
+    const q = run.q, a = qAct(), at = (i) => ({ x: FD_NPC[i].x, y: GY - 44 });
+    if (a < 0) return { tip: '🚪 음식 축제 성공! 마지막 문으로 가요 →', mark: { x: GATE_X[3] + 12, y: GY - 120 } };
+    if (a === 0) { const m = q.m1; if (!m.acc) return { tip: '💬 축제 준비 판다에게 말을 걸어요', mark: at(0) }; return { tip: `🖼 반짝이는 ▼ 부스에서 간판 그림을 골라요 (${m.ri + 1}/3)`, mark: { x: FD_BOOTH[m.ri], y: GY - 100 } }; }
+    if (a === 1) { const m = q.m2, n = m.got.filter(Boolean).length; if (!m.acc) return { tip: '💬 음식 거리 판다에게 말을 걸어요', mark: at(1) }; return { tip: q.carry ? '🤲 이 음식을 주문한 부스에 가져가요' : `🍽 부스 주인이 주문한 음식을 보관대에서 골라 배달해요 (${n}/3)`, mark: null }; }
+    if (a === 2) return { tip: q.m3.acc ? `🍲 음식관 판다와 麻辣烫·火锅 구별하기 (${q.m3.qi + 1}/3)` : '💬 음식관 판다에게 말을 걸어요', mark: at(2) };
+    return { tip: '💬 광장 판다에게 말을 걸어요', mark: at(3) };
+  }
+  function fdTalk(d) {
+    const q = run.q, a = qAct(), i = d.mission;
+    if (q.final || a < 0) { openTalk(i, '<p>멋진 음식 축제야! 마지막 문으로 가 봐 →</p>', { ok: '네!' }); return; }
+    if (i < a) { openTalk(i, '<p>고마워! 다음 구역도 부탁해 →</p>', { ok: '네!' }); return; }
+    if (i > a) { openTalk(i, '<p>앞 구역 친구의 부탁을 먼저 들어줘!</p>', { ok: '네!' }); return; }
+    if (i === 0) {
+      const m = q.m1, t = m.want[m.ri];
+      taskBegin('d1' + m.ri, `간판: ${foodOf(t).h}`, foodOf(t).ko);
+      openTalk(0, `<p>${m.acc ? '다시 말해 줄게!' : '음식 축제 간판을 같이 만들자!'}</p><div class="zline big">${foodName(t, true)} 간판 (${m.ri + 1}/3)</div><p class="qprog">▼ 부스에서 알맞은 음식 그림을 골라요.</p>`, { ok: '고를게요!', hints: foodHints(t), onOk: () => { m.acc = true; } });
+      return;
+    }
+    if (i === 1) {
+      const m = q.m2;
+      if (!m.acc) { openTalk(1, '<p>부스 주인 세 명이 음식을 주문했어!</p><p>주인에게 <b>주문</b>을 듣고, 보관대에서 그 음식을 골라 배달해 줘.</p><p class="qprog">잘못 들면 [⬇ 내려놓기]</p>', { ok: '배달 출발!', onOk: () => { m.acc = true; } }); return; }
+      openTalk(1, `<p>배달한 음식: ${m.got.filter(Boolean).length}/3</p><p class="qprog">부스 주인에게 말을 걸면 주문을 다시 들을 수 있어요.</p>`, { ok: '알겠어요!' });
+      return;
+    }
+    if (i === 2) {
+      const m = q.m3;
+      if (!m.acc) {
+        openTalk(2, `<p>麻辣烫이랑 火锅, 헷갈리지? 게임 속 그림으로 비교해 보자!</p><div class="cmp2"><div class="cmp">${foodImg('malatang')}${foodName('malatang')}<small>여러 재료가 빨간 국물과 함께 <b>한 그릇</b>에</small></div><div class="cmp">${foodImg('huoguo')}${foodName('huoguo')}<small><b>큰 냄비</b>에 재료를 넣어 익혀 먹어요</small></div></div><p class="qprog">가게마다 모습은 조금씩 달라요. 게임에서는 이 그림으로 구별해요!</p>`,
+          { ok: '구별해 볼게요!', onOk: () => { m.acc = true; fdQuiz(); } });
+        return;
+      }
+      fdQuiz(); return;
+    }
+    fdFinal();
+  }
+  // ----- 미션 1: 간판 그림 고르기 (그림 5개, 이름은 안 보여요) -----
+  function fdBoard() {
+    const m = run.q.m1, t = m.want[m.ri], ord = shuffle(FOOD_IDS);
+    taskBegin('d1' + m.ri, `간판: ${foodOf(t).h}`, foodOf(t).ko);
+    openPick({
+      title: `🖼 축제 간판 (${m.ri + 1}/3)`, ask: `<div class="zline big" style="justify-content:center">${foodName(t, true)}</div><p>이 음식의 그림을 골라 간판에 붙여요.</p>`, hints: foodHints(t), closeLabel: '나중에 할게요',
+      render() {
+        $('qpBody').innerHTML = `<div class="pk-grid gifts5">${picOpts(ord)}</div>`;
+        pickBind('.pk-opt', (b) => {
+          const got = ord[+b.dataset.k];
+          if (got === t) {
+            taskEnd(); SFX.correct(); m.booths[m.ri] = t; burst(FD_BOOTH[m.ri], GY - 80, ['#fff0a8', '#e5484d', '#ffffff'], 14, 160); m.ri++; closePick();
+            const done = m.ri >= 3;
+            openTalk(0, `<p>딱 맞아! 간판 완성!</p><div class="cmp2"><div class="cmp">${foodImg(t)}${foodName(t)}<small>${foodOf(t).ko}</small></div></div>${done ? '<p>간판 세 개 모두 완성했어!</p>' : ''}`, { ok: done ? '다음 구역으로!' : '다음 간판!', onOk: () => { if (done) questDone(0); else fdTalk(FD_NPC[0]); } });
+            return;
+          }
+          taskMiss(); SFX.wrong(); pickMsg(`이 그림은 ${foodName(t)}${pp(foodOf(t).h, '이/가')} 아니에요. 다시 골라 봐요!`, 'no');
+        });
+      },
+    });
+  }
+  // ----- 미션 2: 부스 주인이 주문한 음식 배달 -----
+  function fdOwnerTalk(k) {
+    const q = run.q, m = q.m2, id = m.want[k], d = FD_NPC[4 + k];
+    if (!m.acc) { openTalk(4 + k, '<p>음식 거리 판다를 먼저 만나 봐!</p>', { ok: '네!' }); return; }
+    if (m.got[k]) { openTalk(4 + k, `<p>고마워! 음식 준비 끝!</p>${sentBox(foodOf(id).h, foodOf(id).p, false)}`, { ok: '네!' }); return; }
+    taskBegin('d2' + k, `배달: ${d.name} (${foodOf(id).h})`, foodOf(id).ko);
+    openTalk(4 + k, `<p>우리 부스에 이 음식이 필요해!</p><div class="zline big">${foodName(id, true)} 주세요!</div>`, { ok: '가져올게요!', hints: foodHints(id) });
+  }
+  function fdGive(k) {
+    const q = run.q, m = q.m2, it = q.carry, id = m.want[k], d = FD_NPC[4 + k];
+    if (!it) return;
+    taskBegin('d2' + k, `배달: ${d.name} (${foodOf(id).h})`, foodOf(id).ko);
+    if (it.kind === id) {
+      taskEnd(); SFX.correct(); it.gone = true; it.held = false; q.carry = null; m.got[k] = true;
+      burst(FD_OWNER[k], GY - 40, ['#e5484d', '#f6c445', '#ffffff'], 16, 180);
+      const done = m.got.every(Boolean);
+      openTalk(4 + k, `<p>바로 이거야! 고마워!</p>${sentBox(foodOf(id).h, foodOf(id).p)}<p>${foodOf(id).ko}</p>${done ? '<p>세 부스 모두 준비 끝!</p>' : ''}`, { ok: done ? '다음 구역으로!' : '다음 부스로!', onOk: () => { if (done) questDone(1); } });
+      return;
+    }
+    taskMiss(); SFX.wrong(); fdDrop();
+    openTalk(4 + k, `<p>앗, 내가 주문한 건 이게 아니야! 음식은 보관대에 돌려놓았어.</p><div class="zline big">${foodName(id, true)} 주세요!</div>`, { ok: '다시 찾아볼게요!', hints: foodHints(id) });
+  }
+  // ----- 미션 3: 麻辣烫 · 火锅 구별 (이름 → 그림, 그림 → 이름, 이름 → 그림) -----
+  function fdQuiz() {
+    const m = run.q.m3, qq = m.qs[m.qi], t = qq.t, others = shuffle(['jiaozi', 'kaoya', 'naicha']).slice(0, 2);
+    const ord = shuffle(['malatang', 'huoguo', ...others]);
+    taskBegin('d3' + m.qi, qq.type === 'p2n' ? `그림 → 이름: ${foodOf(t).h}` : `이름 → 그림: ${foodOf(t).h}`, foodOf(t).h);
+    const hints = [qq.type === 'p2n' ? '그림을 잘 봐요: 한 그릇에 담겼나요, 불 위의 큰 냄비인가요?' : `${foodOf(t).h} ${foodOf(t).p} — 이름을 다시 읽어 봐요.`, `麻辣烫 = 마라탕(한 그릇), 火锅 = 훠궈(불 위의 큰 냄비)`, `정답: ${foodOf(t).h} ${foodOf(t).p} — ${foodOf(t).look}`];
+    let sel = -1;
+    openPick({
+      title: `🍲 麻辣烫? 火锅? (${m.qi + 1}/3)`,
+      ask: qq.type === 'p2n' ? `<div class="cmp2"><div class="cmp big">${foodImg(t)}</div></div><p>이 음식의 중국어 이름은?</p>` : `<div class="zline big" style="justify-content:center">${foodName(t, true)}</div><p>이 음식의 그림은?</p>`,
+      hints, ok: qq.type === 'p2n' ? '✅ 이 이름이에요!' : null, closeLabel: '나중에 할게요',
+      render() {
+        if (qq.type === 'p2n') {
+          $('qpBody').innerHTML = `<div class="pk-grid words4">${nameOpts(ord, sel)}</div>`;
+          pickBind('.pk-opt', (b) => { sel = +b.dataset.k; SFX.pop(); pickMsg(''); qp.render(); });
+          $('qpOk').disabled = sel < 0;
+        } else {
+          $('qpBody').innerHTML = `<div class="pk-grid prices">${picOpts(ord)}</div>`;
+          pickBind('.pk-opt', (b) => { judge(ord[+b.dataset.k]); });
+        }
+      },
+      onOk() { judge(ord[sel]); },
+    });
+    function judge(got) {
+      if (got === t) {
+        taskEnd(); SFX.correct(); m.qi++; closePick();
+        const done = m.qi >= 3;
+        openTalk(2, `<p>맞아!</p><div class="cmp2"><div class="cmp">${foodImg(t)}${foodName(t)}<small>${foodOf(t).ko}</small></div></div>`, { ok: done ? '다음 구역으로!' : '다음 문제!', onOk: () => { if (done) questDone(2); else fdQuiz(); } });
+        return;
+      }
+      taskMiss(); SFX.wrong(); sel = -1; qp.render();
+      pickMsg(qq.type === 'p2n' ? `‘${foodOf(got).h}’${pp(foodOf(got).h, '은/는')} 이 그림이 아니에요. 다시 골라 봐요!` : `이 그림은 ${foodOf(t).h}${pp(foodOf(t).h, '이/가')} 아니에요. 다시 골라 봐요!`, 'no');
+    }
+  }
+  // ----- 미션 4: 你喜欢什么？ 좋아하는 음식 (정답 없음, 저장·전송 안 함) -----
+  function fdFinal() {
+    const q = run.q, ord = shuffle(FOOD_IDS); let sel = -1;
+    openTalk(3, `<p>음식 축제에 온 걸 환영해!</p>${sentBox('你喜欢什么？', 'Nǐ xǐhuan shénme?')}<p class="qprog">너는 무엇을 좋아해?</p>`, { ok: '골라 볼게요!', onOk: () => {
+      openPick({
+        title: '💝 내가 좋아하는 음식', ask: '<p>정답은 없어요! 좋아하는 것을 하나 골라요.</p>', ok: '✅ 이걸로 말할래요', closeLabel: '나중에 할게요',
+        render() {
+          const f = sel >= 0 ? foodOf(ord[sel]) : null, s = f ? foodSent(f.id) : null;
+          $('qpBody').innerHTML = `<div class="pk-sent"><span class="han">我喜欢</span><span class="pk-blank"><span class="han">${f ? f.h : '____'}</span></span><span class="han">。</span></div>
+            <div class="pk-sent-py">Wǒ xǐhuan <b>${f ? f.p : '____'}</b>.</div>${s ? `<div class="pk-sent-ko">${s.ko}</div>` : ''}
+            <div class="pk-grid gifts5">${ord.map((id, k) => `<button class="pk-opt choose${k === sel ? ' sel' : ''}" data-k="${k}" aria-pressed="${k === sel}">${foodImg(id)}<span class="han">${foodOf(id).h}</span><span class="py t0">${foodOf(id).p}</span></button>`).join('')}</div>`;
+          pickBind('.pk-opt', (b) => { sel = +b.dataset.k; SFX.pop(); qp.render(); });
+          $('qpOk').disabled = sel < 0;
+        },
+        onOk() {
+          const id = ord[sel], s = foodSent(id); q.m4.choice = id; closePick();
+          openTalk(3, `<p>좋아! 중국어로 한 번 말해 볼까?</p>${sentBox(s.h, s.p)}<p>${s.ko}</p><p><b>중국어로 한 번 말해 보세요!</b></p>`, { ok: '🗣 말했어요!', onOk: () => {
+            q.party = true; q.final = true; q.partyT = 0; SFX.gate();
+            for (let k = 0; k < 6; k++) burst(2880 + rnd(-40, 360), GY - rnd(60, 140), ['#e5484d', '#f6c445', '#ff9fb2', '#ffffff'], 18, 220);
+            toast('🏮 중국 음식 축제가 열렸어요!', 3000, true); questDone(3);
+          } });
+        },
+      });
+    } });
+  }
+  function fdUpdate(dt) { const q = run.q; if (q.party) q.partyT += dt; const it = q.carry; if (it) { it.x = P.x + P.w / 2; it.y = P.y - 2; } }
+  function fdDraw() {
+    const q = run.q, a = qAct(), px = P.x + P.w / 2, sx = (x) => Math.round(x - cam), vis = (x) => x - cam > -90 && x - cam < W + 90;
+    // 1구역 간판 부스 (채운 간판은 음식 그림 + 등불)
+    FD_BOOTH.forEach((bx, k) => { if (!vis(bx)) return; const x = sx(bx), f = q.m1.booths[k];
+      ctx.fillStyle = '#5a3a22'; ctx.fillRect(x - 30, GY - 70, 4, 70); ctx.fillRect(x + 26, GY - 70, 4, 70);
+      ctx.fillStyle = '#b8262c'; ctx.fillRect(x - 34, GY - 82, 68, 14); ctx.fillStyle = '#e0504f'; ctx.fillRect(x - 34, GY - 82, 68, 4);
+      ctx.fillStyle = '#3b2716'; ctx.fillRect(x - 22, GY - 66, 44, 30); ctx.fillStyle = f ? '#fff7e8' : '#c99561'; ctx.fillRect(x - 20, GY - 64, 40, 26);
+      if (f) drawFood(ctx, f, x, GY - 40, 0.95); else { ctx.fillStyle = '#8a5a2b'; ctx.font = 'bold 14px Jua, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('?', x, GY - 51); }
+      ctx.fillStyle = '#5a3a22'; ctx.fillRect(x - 28, GY - 22, 56, 6); });
+    // 2구역 보관대와 음식
+    if (vis(1500)) { ctx.fillStyle = '#5a3a22'; ctx.fillRect(sx(1325), GY - 2, 365, 2); }
+    if (a === 1 || a > 1 || a < 0) for (const it of q.m2.items) if (!it.held && !it.gone && vis(it.x)) drawFood(ctx, it.kind, sx(it.x), it.y, 1);
+    // 3구역 음식관 진열 (마라탕 · 훠궈)
+    for (const [x, id] of [[2250, 'malatang'], [2450, 'huoguo']]) if (vis(x)) { ctx.fillStyle = '#3b2716'; ctx.fillRect(sx(x) - 30, GY - 24, 60, 6); ctx.fillStyle = '#5a3a22'; ctx.fillRect(sx(x) - 26, GY - 18, 4, 18); ctx.fillRect(sx(x) + 22, GY - 18, 4, 18); drawFood(ctx, id, sx(x), GY - 24, 1.4); }
+    // 4구역 축제 부스: 마지막에 등불이 켜져요
+    FD_STALL.forEach((x, k) => { if (!vis(x)) return; const on = q.final, c = sx(x);
+      ctx.fillStyle = '#5a3a22'; ctx.fillRect(c - 26, GY - 60, 4, 60); ctx.fillRect(c + 22, GY - 60, 4, 60); ctx.fillStyle = ['#e5484d', '#f6c445', '#3d9a5c', '#8a5cd6'][k]; ctx.fillRect(c - 30, GY - 70, 60, 12);
+      ctx.fillStyle = '#5a3a22'; ctx.fillRect(c - 24, GY - 24, 48, 6); drawFood(ctx, FOOD_IDS[k], c, GY - 24, 0.9);
+      ctx.fillStyle = on ? (Math.sin(time * 6 + k) > 0 ? '#ffd43b' : '#ff922b') : '#6b5b4a'; ctx.fillRect(c - 3, GY - 56, 7, 9); ctx.fillStyle = '#2b2838'; ctx.fillRect(c, GY - 58, 1, 2); });
+    FD_NPC.slice(0, 4).forEach((d, i) => { drawNpc(d, d.x, GY, px >= d.x ? 1 : -1); if (i === a && mode === 'play') drawBubble2(d.x, GY - 44 + Math.sin(time * 4) * 2, '!'); else if (i < a || a < 0) drawBubble2(d.x, GY - 44, '♥', '#ff9fb2'); });
+    FD_NPC.slice(4).forEach((d, k) => { const x = FD_OWNER[k], hop = q.final ? -Math.max(0, Math.sin(q.partyT * 6 + k)) * 6 : 0; drawNpc(d, x, GY + hop, px >= x ? 1 : -1); if (q.m2.got[k]) drawBubble2(x, GY - 44, '♥', '#ff9fb2'); else if (a === 1 && q.m2.acc && mode === 'play') drawBubble2(x, GY - 44 + Math.sin(time * 4 + k) * 2, '?', '#cfe3ff'); });
+    if (q.final) for (let k = 0; k < 24; k++) { const x = Math.round(2760 + ((k * 61 + q.partyT * 40) % 520) - cam), y = Math.round((k * 37 + q.partyT * 70) % 200) + 30; ctx.fillStyle = ['#ff9fb2', '#f6c445', '#e5484d', '#ffffff'][k % 4]; ctx.fillRect(x, y, 3, 3); }
+  }
+  function fdTop() { const q = run.q; if (q.carry) drawHeld((g, x, y) => drawFood(g, q.carry.kind, x, y, 1.2)); else if (q.final && q.m4.choice) drawHeld((g, x, y) => drawFood(g, q.m4.choice, x, y + Math.round(Math.sin(q.partyT * 6) * 2), 1.2)); }
+  function fdRecall() {
+    const q = run.q, a = qAct(); if (a < 0) return; closeMissionPanel();
+    const notYet = () => openTalk(a, `<p>아직 ${FD_NPC[a].name}의 부탁을 듣지 않았어요.</p><p>노란 ▼ 표시를 따라가서 말을 걸어 봐요!</p>`, { ok: '알겠어요!' });
+    if (a === 0) { if (!q.m1.acc) return notYet(); const t = q.m1.want[q.m1.ri]; openTalk(0, `<div class="zline big">${foodName(t, true)} 간판 (${q.m1.ri + 1}/3)</div>`, { hints: foodHints(t) }); return; }
+    if (a === 1) { if (!q.m2.acc) return notYet(); openTalk(1, `<p>부스 주인의 주문</p>${[0, 1, 2].map(k => `<div class="zline">${FD_NPC[4 + k].name}: ${q.m2.got[k] ? '✔ 배달 끝' : foodName(q.m2.want[k])}</div>`).join('')}`, { ok: '알겠어요!' }); return; }
+    if (a === 2) { openTalk(2, `<div class="cmp2"><div class="cmp">${foodImg('malatang')}${foodName('malatang')}<small>한 그릇</small></div><div class="cmp">${foodImg('huoguo')}${foodName('huoguo')}<small>큰 냄비</small></div></div>`, { ok: '알겠어요!' }); return; }
+    openTalk(3, '<p>광장 판다에게 말을 걸고, 좋아하는 음식을 중국어로 말해 봐요!</p>', { ok: '알겠어요!' });
+  }
+
+  // ================= 10차시 판다 식당 타이쿤 (questKit 'diner') =================
+  // 我要这个。(가리키며 주문) · 这个多少钱？(가격 묻기) · 十块/二十块…(가격 듣고 이해). 가격과 매출은 연습용 가상 돈이에요 (게임 코인과 따로)
+  const DN_NPC = [
+    { id: 'dnchef', name: '주방장 판다', x: 330, mission: 0, scarf: '#e5484d', hat: 'chef' },
+    { id: 'dnhost', name: '홀 매니저 판다', x: 1290, mission: 1, scarf: '#3d7bd9', hat: 'cap' },
+    { id: 'dnclerk', name: '계산대 점원 판다', x: 2060, mission: 2, scarf: '#f6c445', hat: 'apron' },
+    { id: 'dnboss', name: '사장님 판다', x: 2770, mission: 3, scarf: '#8a5cd6', hat: 'festival' },
+    // 손님 판다 (모습이 모두 달라요)
+    { id: 'cu1', name: '리본 손님', scarf: '#ff6b8b', hat: 'bow' },
+    { id: 'cu2', name: '안경 손님', scarf: '#62aefc', glasses: true },
+    { id: 'cu3', name: '밀짚모자 손님', scarf: '#5cc46a', hat: 'strawhat' },
+    { id: 'cu4', name: '고깔 손님', scarf: '#f6c445', hat: 'party' },
+    { id: 'cu5', name: '베레모 손님', scarf: '#c084fc', hat: 'beret2' },
+    { id: 'cu6', name: '파란 모자 손님', scarf: '#f08a24', hat: 'cap' },
+    { id: 'cu7', name: '꼬마 손님', scarf: '#e8689a', hat: 'party' },
+  ];
+  const DN_PASS = [440, 485, 530, 575, 620, 665, 710, 755, 800, 845];   // 1구역 주방 음식 10접시 (5종 × 2)
+  const DN_STAND = 1050;                                               // 1구역 진열대
+  const DN_BOARD = 1440, DN_COUNTER = 1620, DN_QUEUE = [1620, 1700, 1780];   // 2구역 메뉴판·주문 카운터·줄
+  const DN_REG = 2250;                                                 // 3구역 계산대
+  const DN_TABLE = [2890, 3010, 3130, 3250];                           // 4구역 손님 자리
+  const PRICES = [10, 20, 30, 40, 50];
+  // 가격: 二十块 èrshí kuài (가게에서 말하는 소리), 표에는 20元
+  const priceZh = (n) => { const z = zhNum(n); return { h: `${z.h}块`, p: `${z.p.replace(/ /g, '')} kuài` }; };
+  const priceSay = (n) => { const z = priceZh(n); return { h: `${z.h}。`, p: `${z.p.charAt(0).toUpperCase()}${z.p.slice(1)}.` }; };
+  function dnNew() {
+    const pr = shuffle(PRICES), price = Object.fromEntries(FOOD_IDS.map((id, i) => [id, pr[i]]));
+    const menu = shuffle(FOOD_IDS);                     // 메뉴판 순서 (판마다 다름)
+    const pass = shuffle([...FOOD_IDS, ...FOOD_IDS]);
+    const pt = shuffle(FOOD_IDS);                       // 가리키는 음식들
+    return {
+      price, menu,
+      m1: { acc: false, ri: 0, want: shuffle(FOOD_IDS).slice(0, 3), stand: [], items: pass.map((k, i) => ({ kind: k, hx: DN_PASS[i], hy: GY, x: DN_PASS[i], y: GY, held: false, gone: false })) },
+      m2: { acc: false, ci: 0, cs: [{ who: 4, type: 'A', t: pt[0] }, { who: 5, type: 'A', t: pt[1] }, { who: -1, type: 'B' }] },
+      m3: { acc: false, ri: 0 },
+      m4: { acc: false, served: [false, false, false, false], cs: [{ who: 7, type: 'name', t: pt[2] }, { who: 8, type: 'point', t: pt[3] }, { who: 9, type: 'price', t: pt[4] }, { who: 10, type: 'combo', t: pick(FOOD_IDS) }] },
+      orders: 0, sales: 0, carry: null, party: false, final: false, partyT: 0, task: null, happy: {},
+    };
+  }
+  function dnDrop() { const it = run.q.carry; if (!it) return; it.held = false; it.x = it.hx; it.y = it.hy; run.q.carry = null; }
+  const dnSale = (id) => { const q = run.q; q.orders++; q.sales += q.price[id]; floatText(P.x + P.w / 2, P.y - 30, `매출 +${q.price[id]}元`, '#fff0a8'); };   // 가상 매출 (게임 코인과 따로)
+  function dnCand() {
+    const q = run.q, a = qAct(), px = P.x + P.w / 2, feet = P.y + P.h, carrying = !!q.carry;
+    const near = (x, y = GY, r = 34) => Math.abs(px - x) < r && feet > y - 46 && feet < y + 8;
+    const drop = carrying ? { label2: '⬇ 내려놓기', act2: () => { dnDrop(); SFX.pop(); } } : {};
+    for (const d of DN_NPC.slice(0, 4)) if (near(d.x)) return { label: '💬 말 걸기', act: () => dnTalk(d), ...drop };
+    if (a === 0 && q.m1.acc && carrying && near(DN_STAND, GY, 44)) return { label: '🍽 진열대에 올리기', act: dnPlace, ...drop };
+    if (a === 0 && q.m1.acc) for (const it of q.m1.items) if (!it.held && !it.gone && near(it.x, it.y, 18)) return { label: carrying ? '🔄 바꿔 들기' : '🍽 들기', act: () => { if (q.carry) dnDrop(); q.carry = it; it.held = true; SFX.coin(); }, ...drop };
+    if (a === 1 && q.m2.acc) { const c = q.m2.cs[q.m2.ci]; if (c && c.type === 'A' && near(DN_COUNTER)) return { label: '📋 주문 받기', act: dnOrderA }; if (c && c.type === 'B' && near(DN_BOARD, GY, 44)) return { label: '🙋 메뉴판에서 주문하기', act: dnOrderB }; }
+    if (a === 2 && q.m3.acc && q.m3.ri < 2 && near(DN_REG, GY, 44)) return { label: '💰 계산대에서 묻기', act: dnAsk };
+    if (a === 3 && q.m4.acc) for (let k = 0; k < 4; k++) if (!q.m4.served[k] && near(DN_TABLE[k])) return { label: '🍽 손님 맞이하기', act: () => dnServe(k) };
+    return carrying ? { label: '', ...drop } : null;
+  }
+  function dnGoal() {
+    const q = run.q, a = qAct(), at = (i) => ({ x: DN_NPC[i].x, y: GY - 44 }), hud = ` · 주문 ${q.orders} · 매출 ${q.sales}元`;
+    if (a < 0) return { tip: `🎉 영업 대성공!${hud} · 마지막 문으로 →`, mark: { x: GATE_X[3] + 12, y: GY - 120 } };
+    if (a === 0) { const m = q.m1; if (!m.acc) return { tip: '💬 주방장 판다에게 말을 걸어요', mark: at(0) }; return { tip: q.carry ? `🍽 진열대에 올려요 (${m.ri + 1}/3)` : `🍽 주방장이 말한 음식을 골라 들어요 (${m.ri + 1}/3)`, mark: q.carry ? { x: DN_STAND, y: GY - 80 } : null }; }
+    if (a === 1) { const m = q.m2, c = m.cs[m.ci]; if (!m.acc) return { tip: '💬 홀 매니저 판다에게 말을 걸어요', mark: at(1) }; return c.type === 'B' ? { tip: `🙋 이번엔 내가 손님! 메뉴판에서 주문해요 (3/3)${hud}`, mark: { x: DN_BOARD, y: GY - 100 } } : { tip: `📋 카운터에서 손님 주문을 받아요 (${m.ci + 1}/3)${hud}`, mark: { x: DN_COUNTER, y: GY - 60 } }; }
+    if (a === 2) return q.m3.acc ? { tip: `💰 계산대에서 가격을 물어봐요 (${q.m3.ri + 1}/2)`, mark: { x: DN_REG, y: GY - 90 } } : { tip: '💬 계산대 점원 판다에게 말을 걸어요', mark: at(2) };
+    if (!q.m4.acc) return { tip: '💬 사장님 판다에게 말을 걸어요', mark: at(3) };
+    return { tip: `🍽 손님을 맞이해요 (${q.m4.served.filter(Boolean).length}/4)${hud}`, mark: null };
+  }
+  function dnTalk(d) {
+    const q = run.q, a = qAct(), i = d.mission;
+    if (q.final || a < 0) { openTalk(i, `<p>영업 대성공! 오늘 주문 ${q.orders}개, 매출 ${q.sales}元!</p><p class="qprog">(게임 속 연습용 돈이에요)</p>`, { ok: '야호!' }); return; }
+    if (i < a) { openTalk(i, '<p>고마워! 다음 일도 부탁해 →</p>', { ok: '네!' }); return; }
+    if (i > a) { openTalk(i, '<p>앞쪽 일을 먼저 끝내 줘!</p>', { ok: '네!' }); return; }
+    if (i === 0) {
+      const m = q.m1, t = m.want[m.ri];
+      taskBegin('n1' + m.ri, `진열: ${foodOf(t).h}`, foodOf(t).ko);
+      openTalk(0, `<p>${m.acc ? '다시 말해 줄게!' : '판다 식당 개업 준비! 진열대에 음식을 올려 줘.'}</p><div class="zline big">${foodName(t, true)} 올려 줘! (${m.ri + 1}/3)</div><p class="qprog">주방 접시에서 골라 들고 → 진열대로</p>`, { ok: '준비할게요!', hints: foodHints(t), onOk: () => { m.acc = true; } });
+      return;
+    }
+    if (i === 1) {
+      const m = q.m2;
+      if (!m.acc) { openTalk(1, `<p>손님이 와요! 카운터에서 주문을 받아 줘.</p>${sentBox('我要这个。', 'Wǒ yào zhège.', false)}<p class="qprog">손님이 메뉴판을 <b>가리키며</b> 말해요. 这个 = 이것</p>`, { ok: '주문 받을게요!', onOk: () => { m.acc = true; } }); return; }
+      openTalk(1, `<p>받은 주문: ${m.ci}/3</p>`, { ok: '알겠어요!' }); return;
+    }
+    if (i === 2) {
+      const m = q.m3;
+      if (!m.acc) { openTalk(2, `<p>이번엔 네가 손님이야! 계산대에서 가격을 물어봐.</p>${sentBox('这个多少钱？', 'Zhège duōshao qián?', false)}<p class="qprog">이거 얼마예요? (게임 속 가격은 연습용이에요)</p>`, { ok: '물어볼게요!', onOk: () => { m.acc = true; } }); return; }
+      openTalk(2, `<p>계산대에서 가격을 물어봐! (${m.ri + 1}/2)</p>`, { ok: '네!' }); return;
+    }
+    const m = q.m4;
+    if (!m.acc) { openTalk(3, '<p>손님 네 명이 자리에 앉았어! 한 명씩 맞이해 줘.</p><p class="qprog">손님마다 하는 말이 달라요.</p>', { ok: '영업 시작!', onOk: () => { m.acc = true; } }); return; }
+    openTalk(3, `<p>맞이한 손님: ${m.served.filter(Boolean).length}/4</p>`, { ok: '네!' });
+  }
+  // ----- 미션 1: 주방 → 진열대 -----
+  function dnPlace() {
+    const q = run.q, m = q.m1, it = q.carry, t = m.want[m.ri];
+    if (!it) return;
+    taskBegin('n1' + m.ri, `진열: ${foodOf(t).h}`, foodOf(t).ko);
+    if (it.kind === t) {
+      taskEnd(); SFX.correct(); it.gone = true; it.held = false; q.carry = null; m.stand.push(t); m.ri++;
+      burst(DN_STAND, GY - 40, ['#fff0a8', '#ffffff'], 12, 150);
+      const done = m.ri >= 3;
+      openTalk(0, `<p>좋아, 진열 완료!</p>${sentBox(foodOf(t).h, foodOf(t).p, false)}<p>${foodOf(t).ko}</p>`, { ok: done ? '개업 준비 끝!' : '다음 음식!', onOk: () => { if (done) questDone(0); else dnTalk(DN_NPC[0]); } });
+      return;
+    }
+    taskMiss(); SFX.wrong(); dnDrop();
+    openTalk(0, `<p>앗, 그 음식이 아니야! 접시는 주방에 돌려놓았어.</p><div class="zline big">${foodName(t, true)} 올려 줘!</div>`, { ok: '다시 고를게요!', hints: foodHints(t) });
+  }
+  // 메뉴판 (그림 5개, 가리키는 손 👉). 손이 가리키는 게 '这个'예요
+  const menuBoard = (point, clickable) => `<div class="menu-board">${run.q.menu.map((id, k) => `<${clickable ? 'button' : 'div'} class="mb-cell${point === id ? ' pointed' : ''}" data-k="${k}">${foodImg(id)}${point === id ? '<span class="mb-hand" aria-label="가리키는 손">👆</span>' : ''}</${clickable ? 'button' : 'div'}>`).join('')}</div>`;
+  const zhegeHints = (t) => ['我要这个。 Wǒ yào zhège. — 这个 = ‘이것’. 손님이 손가락으로 가리킨 음식이에요.', `손님이 가리킨 음식은 ‘${foodOf(t).ko}’예요. 중국어 이름을 찾아봐요.`, `정답: ${foodOf(t).h} ${foodOf(t).p}`];
+  // ----- 미션 2 활동 A: 손님이 가리키며 我要这个。 → 주문서에 음식 이름 -----
+  function dnPointOrder({ who, t, title, onDone, key }) {
+    const ord = shuffle(FOOD_IDS); let sel = -1;
+    taskBegin(key, `我要这个。 (가리킨 음식: ${foodOf(t).h})`, foodOf(t).h);
+    openPick({
+      title, ask: `<div class="cust"><img class="npc-face" src="${npcFaceURL(DN_NPC[who])}" alt=""><div class="say-bubble">${sentBox('我要这个。', 'Wǒ yào zhège.', false)}</div></div>${menuBoard(t, false)}<p>주문서에 손님이 가리킨 음식의 이름을 적어요.</p>`,
+      hints: zhegeHints(t), ok: '📋 주문서 내기', closeLabel: '나중에 할게요',
+      render() { $('qpBody').innerHTML = `<div class="pk-grid words5">${nameOpts(ord, sel)}</div>`; pickBind('.pk-opt', (b) => { sel = +b.dataset.k; SFX.pop(); pickMsg(''); qp.render(); }); $('qpOk').disabled = sel < 0; },
+      onOk() {
+        if (ord[sel] === t) { taskEnd(); SFX.correct(); closePick(); onDone(); return; }
+        taskMiss(); SFX.wrong(); pickMsg(`‘${foodOf(ord[sel]).h}’${pp(foodOf(ord[sel]).h, '은/는')} 손님이 가리킨 음식이 아니에요. 다시 골라 봐요!`, 'no'); sel = -1; qp.render();
+      },
+    });
+  }
+  function dnOrderA() {
+    const q = run.q, m = q.m2, c = m.cs[m.ci];
+    dnPointOrder({ who: c.who, t: c.t, key: 'n2' + m.ci, title: `📋 손님 주문 (${m.ci + 1}/3)`, onDone: () => {
+      q.happy[c.who] = 1; dnSale(c.t); m.ci++;
+      openTalk(c.who, `<p>谢谢！ 맛있겠다!</p>${sentBox(foodOf(c.t).h, foodOf(c.t).p, false)}<p class="qprog">주문 ${q.orders}개 · 오늘 매출 ${q.sales}元 (연습용)</p>`, { ok: '다음 손님!' });
+    } });
+  }
+  // 문장 조각 맞추기 (한자+병음 조각, 모두 같은 모양): pieces = [{h,p}], answer = 조각 순서
+  function sentencePuzzle(pieces, answer) {
+    const st = { order: shuffle(pieces.map((_, i) => i)), slots: answer.map(() => -1) };
+    const html = () => `<div class="sp-slots">${st.slots.map((pi, k) => `<button class="sp-slot" data-s="${k}">${pi >= 0 ? `<span class="han">${pieces[pi].h}</span><span class="py t0">${pieces[pi].p}</span>` : '<span class="pk-q">?</span>'}</button>`).join('')}<span class="sp-end han">${answer.end || ''}</span></div>
+      <div class="pk-grid pieces">${st.order.map(pi => `<button class="pk-opt word${st.slots.includes(pi) ? ' used' : ''}" data-p="${pi}"><span class="han">${pieces[pi].h}</span><span class="py t0">${pieces[pi].p}</span></button>`).join('')}</div>`;
+    const bind = (rerender) => {
+      pickBind('.sp-slot', (b) => { st.slots[+b.dataset.s] = -1; SFX.pop(); pickMsg(''); rerender(); });
+      pickBind('.pk-grid.pieces .pk-opt', (b) => { const pi = +b.dataset.p, at = st.slots.indexOf(pi); if (at >= 0) { st.slots[at] = -1; } else { const e = st.slots.indexOf(-1); if (e >= 0) st.slots[e] = pi; } SFX.pop(); pickMsg(''); rerender(); });
+    };
+    const full = () => !st.slots.includes(-1);
+    const right = () => st.slots.every((pi, k) => pi === answer[k]);
+    const reset = () => { st.slots = answer.map(() => -1); };
+    return { st, html, bind, full, right, reset };
+  }
+  // ----- 미션 2 활동 B: 내가 손님! 메뉴 그림을 가리키고 我 / 要 / 这个 -----
+  function dnOrderB() {
+    const q = run.q, m = q.m2;
+    const pieces = [{ h: '我', p: 'wǒ' }, { h: '要', p: 'yào' }, { h: '这个', p: 'zhège' }, { h: '多少钱', p: 'duōshao qián' }];
+    const ans = [0, 1, 2]; ans.end = '。';
+    const sp = sentencePuzzle(pieces, ans);
+    let pointed = null;
+    taskBegin('n2b', '내가 주문: 我要这个。', '我要这个。');
+    openPick({
+      title: '🙋 내가 주문하기 (3/3)', ask: '<p>① 먹고 싶은 음식을 메뉴판에서 <b>눌러서 가리켜요</b>. ② 조각을 순서대로 눌러 문장을 만들어요.</p>',
+      hints: ['我要这个。 = 我(나) + 要(원하다) + 这个(이것)', '‘이거 주세요’는 我 → 要 → 这个 순서예요. 多少钱은 가격을 물을 때 써요.', '정답: 我要这个。 Wǒ yào zhège.'], ok: '🗣 주문하기', closeLabel: '나중에 할게요',
+      render() {
+        $('qpBody').innerHTML = `${menuBoard(pointed, true)}${pointed ? sp.html() : '<p class="qprog" style="text-align:center">먼저 메뉴판에서 음식을 하나 눌러요.</p>'}`;
+        pickBind('.mb-cell', (b) => { pointed = q.menu[+b.dataset.k]; SFX.pop(); qp.render(); });
+        if (pointed) sp.bind(() => qp.render());
+        $('qpOk').disabled = !(pointed && sp.full());
+      },
+      onOk() {
+        if (sp.right()) {
+          taskEnd(); SFX.correct(); closePick(); m.ci++;
+          openTalk(1, `<p>好！ 주문 접수!</p>${menuBoard(pointed, false)}${sentBox('我要这个。', 'Wǒ yào zhège.')}<p>이거 주세요.</p><p><b>손으로 가리키며 중국어로 한 번 말해 보세요!</b></p>`, { ok: '🗣 말했어요!', onOk: () => questDone(1) });
+          return;
+        }
+        taskMiss(); SFX.wrong(); sp.reset(); qp.render(); pickMsg('순서가 달라요. ‘이거 주세요’를 다시 만들어 봐요!', 'no');
+      },
+    });
+  }
+  // ----- 미션 3: 계산대에서 这个多少钱？ → 二十块。 듣고 가격표 고르기 -----
+  function dnAsk() {
+    const q = run.q, m = q.m3;
+    const pieces = [{ h: '这个', p: 'zhège' }, { h: '多少钱', p: 'duōshao qián' }, { h: '我', p: 'wǒ' }, { h: '要', p: 'yào' }];
+    const ans = [0, 1]; ans.end = '？';
+    const sp = sentencePuzzle(pieces, ans);
+    let pointed = null, step = 1;
+    taskBegin('n3' + m.ri, '가격 묻기: 这个多少钱？', '这个多少钱？');
+    const priceStep = () => {
+      const n = q.price[pointed], ps = priceSay(n), opts = shuffle([n, ...shuffle(PRICES.filter(x => x !== n)).slice(0, 3)]);
+      taskBegin('n3p' + m.ri, `가격 듣기: ${ps.h}`, `${n}元`);
+      openPick({
+        title: `💰 얼마예요? (${m.ri + 1}/2)`, ask: `<div class="cust"><img class="npc-face" src="${npcFaceURL(DN_NPC[2])}" alt=""><div class="say-bubble">${sentBox(ps.h, ps.p, false)}</div></div><p>점원이 말한 가격표를 골라요.</p>`,
+        hints: [`${ps.h} ${ps.p} — 块 kuài는 돈 단위예요. 앞의 숫자를 봐요.`, `${zhNum(n).h} = ${n} (5차시 숫자 규칙: 숫자 + 十)`, `정답: ${n}元`], closeLabel: '나중에 할게요',
+        render() {
+          $('qpBody').innerHTML = `<div class="pk-grid prices">${opts.map((v, k) => `<button class="pk-opt price" data-k="${k}"><span class="pt">${v}元</span></button>`).join('')}</div>`;
+          pickBind('.pk-opt', (b) => {
+            const v = opts[+b.dataset.k];
+            if (v === n) {
+              taskEnd(); SFX.correct(); closePick(); m.ri++;
+              const done = m.ri >= 2;
+              openTalk(2, `<p>맞아요! ${n}위안이에요.</p>${sentBox(ps.h, ps.p, false)}<p class="qprog">(게임 속 연습용 가격이에요)</p>`, { ok: done ? '다음 구역으로!' : '하나 더 물어볼게요!', onOk: () => { if (done) questDone(2); } });
+              return;
+            }
+            taskMiss(); SFX.wrong(); pickMsg(`${v}元이 아니에요. ‘${ps.h}’의 숫자를 다시 봐요!`, 'no');
+          });
+        },
+      });
+    };
+    openPick({
+      title: `💰 계산대에서 묻기 (${m.ri + 1}/2)`, ask: '<p>① 궁금한 음식을 메뉴판에서 <b>눌러서 가리켜요</b>. ② 조각으로 ‘이거 얼마예요?’를 만들어요.</p>',
+      hints: ['这个多少钱？ = 这个(이것) + 多少钱(얼마예요)', '가격을 물을 때는 这个 → 多少钱 순서예요. 我·要는 주문할 때 써요.', '정답: 这个多少钱？ Zhège duōshao qián?'], ok: '🗣 물어보기', closeLabel: '나중에 할게요',
+      render() {
+        $('qpBody').innerHTML = `${menuBoard(pointed, true)}${pointed ? sp.html() : '<p class="qprog" style="text-align:center">먼저 메뉴판에서 음식을 하나 눌러요.</p>'}`;
+        pickBind('.mb-cell', (b) => { pointed = q.menu[+b.dataset.k]; SFX.pop(); qp.render(); });
+        if (pointed) sp.bind(() => qp.render());
+        $('qpOk').disabled = !(pointed && sp.full());
+      },
+      onOk() {
+        if (sp.right()) { taskEnd(); SFX.correct(); closePick(); openTalk(2, `${menuBoard(pointed, false)}${sentBox('这个多少钱？', 'Zhège duōshao qián?')}<p>이거 얼마예요?</p><p><b>중국어로 한 번 말해 보세요!</b></p>`, { ok: '🗣 말했어요!', onOk: priceStep }); return; }
+        taskMiss(); SFX.wrong(); sp.reset(); qp.render(); pickMsg('순서가 달라요. ‘이거 얼마예요?’를 다시 만들어 봐요!', 'no');
+      },
+    });
+    void step;
+  }
+  // ----- 미션 4: 손님 4명 (이름 보고 준비 · 가리키며 주문 · 가격 대답 · 주문 + 가격) -----
+  function dnServe(k) {
+    const q = run.q, m = q.m4, c = m.cs[k], who = c.who, t = c.t;
+    const finish = () => {
+      m.served[k] = true; q.happy[who] = 1; dnSale(t);
+      burst(DN_TABLE[k], GY - 40, ['#ff9fb2', '#f6c445', '#ffffff'], 14, 160);
+      const done = m.served.every(Boolean);
+      openTalk(who, `<p>谢谢！ 맛있어요! 😊</p><p class="qprog">주문 ${q.orders}개 · 오늘 매출 ${q.sales}元 (연습용)</p>${done ? '<p><b>손님 네 명 모두 맞이했어요!</b></p>' : ''}`, { ok: done ? '🎉 영업 마무리!' : '다음 손님!', onOk: () => { if (done) dnParty(); } });
+    };
+    // 가격 대답 (점원이 되어 중국어 가격 고르기): 메뉴 가격표(숫자) → 중국어
+    const priceAnswer = (onOk) => {
+      const n = q.price[t], opts = shuffle([n, ...shuffle(PRICES.filter(x => x !== n)).slice(0, 3)]);
+      taskBegin('n4p' + k, `가격 말하기: ${n}元 → ${priceZh(n).h}`, priceZh(n).h);
+      openPick({
+        title: '💰 손님이 가격을 물어요', ask: `<div class="cust"><img class="npc-face" src="${npcFaceURL(DN_NPC[who])}" alt=""><div class="say-bubble">${sentBox('这个多少钱？', 'Zhège duōshao qián?', false)}</div></div>${menuBoard(t, false)}<p>가격표: 이 음식은 <b class="numbig-s">${n}元</b>. 중국어로 대답해요.</p>`,
+        hints: ['这个多少钱？ = 이거 얼마예요? → 숫자 + 块로 대답해요.', `${n} = ${zhNum(n).h} (숫자 + 十)`, `정답: ${priceZh(n).h} ${priceZh(n).p}`], closeLabel: '나중에 할게요',
+        render() {
+          $('qpBody').innerHTML = `<div class="pk-grid prices">${opts.map((v, j) => `<button class="pk-opt word" data-k="${j}"><span class="han">${priceZh(v).h}</span><span class="py t0">${priceZh(v).p}</span></button>`).join('')}</div>`;
+          pickBind('.pk-opt', (b) => { const v = opts[+b.dataset.k]; if (v === n) { taskEnd(); SFX.correct(); closePick(); onOk(); return; } taskMiss(); SFX.wrong(); pickMsg(`‘${priceZh(v).h}’${pp(priceZh(v).h, '은/는')} ${v}위안이에요. 다시 골라 봐요!`, 'no'); });
+        },
+      });
+    };
+    if (c.type === 'name') {   // 중국어 음식 이름 → 음식 준비 (그림 고르기)
+      const ord = shuffle(FOOD_IDS);
+      taskBegin('n4n', `손님 주문: ${foodOf(t).h}`, foodOf(t).ko);
+      openPick({
+        title: '🍽 손님 1 · 주문표', ask: `<div class="cust"><img class="npc-face" src="${npcFaceURL(DN_NPC[who])}" alt=""><div class="say-bubble">${sentBox(foodOf(t).h, foodOf(t).p, false)}</div></div><p>주문표를 보고 음식을 준비해요.</p>`, hints: foodHints(t), closeLabel: '나중에 할게요',
+        render() { $('qpBody').innerHTML = `<div class="pk-grid gifts5">${picOpts(ord)}</div>`; pickBind('.pk-opt', (b) => { if (ord[+b.dataset.k] === t) { taskEnd(); SFX.correct(); closePick(); finish(); return; } taskMiss(); SFX.wrong(); pickMsg(`이 음식은 ${foodOf(t).h}${pp(foodOf(t).h, '이/가')} 아니에요. 다시 골라 봐요!`, 'no'); }); },
+      });
+      return;
+    }
+    if (c.type === 'point') { dnPointOrder({ who, t, key: 'n4a', title: '🍽 손님 2 · 我要这个。', onDone: finish }); return; }
+    if (c.type === 'price') { priceAnswer(finish); return; }
+    dnPointOrder({ who, t, key: 'n4c', title: '🍽 손님 4 · 주문하고 계산까지', onDone: () => priceAnswer(finish) });
+  }
+  function dnParty() {
+    const q = run.q; q.party = true; q.final = true; q.partyT = 0; SFX.gate();
+    for (let k = 0; k < 6; k++) burst(2880 + rnd(-40, 380), GY - rnd(60, 140), ['#ff9fb2', '#f6c445', '#62aefc', '#ffffff'], 18, 220);
+    for (const x of DN_TABLE) floatText(x, GY - 60, '👏', '#fff0a8');
+    toast(`🎉 판다 식당 영업 대성공! 주문 ${q.orders}개 · 매출 ${q.sales}元`, 3200, true);
+    questDone(3);
+  }
+  function dnUpdate(dt) { const q = run.q; if (q.party) q.partyT += dt; const it = q.carry; if (it) { it.x = P.x + P.w / 2; it.y = P.y - 2; } }
+  function dnDraw() {
+    const q = run.q, a = qAct(), px = P.x + P.w / 2, sx = (x) => Math.round(x - cam), vis = (x) => x - cam > -100 && x - cam < W + 100;
+    // 1구역 주방 접시와 진열대
+    if (vis(640)) { ctx.fillStyle = '#5a3a22'; ctx.fillRect(sx(420), GY - 2, 445, 2); }
+    for (const it of q.m1.items) if (!it.held && !it.gone && vis(it.x)) drawFood(ctx, it.kind, sx(it.x), it.y, 1);
+    if (vis(DN_STAND)) { const x = sx(DN_STAND); ctx.fillStyle = '#3b2716'; ctx.fillRect(x - 46, GY - 34, 92, 6); ctx.fillStyle = '#c99561'; ctx.fillRect(x - 44, GY - 33, 88, 4); ctx.fillStyle = '#5a3a22'; ctx.fillRect(x - 42, GY - 28, 4, 28); ctx.fillRect(x + 38, GY - 28, 4, 28); q.m1.stand.forEach((id, k) => drawFood(ctx, id, x - 28 + k * 28, GY - 34, 0.85)); }
+    // 2구역 메뉴판 (그림만, 순서는 판마다 다름)
+    if (vis(DN_BOARD)) { const x = sx(DN_BOARD); ctx.fillStyle = '#3b2716'; ctx.fillRect(x - 3, GY - 40, 6, 40); ctx.fillRect(x - 64, GY - 112, 128, 74); ctx.fillStyle = '#2f4a3a'; ctx.fillRect(x - 61, GY - 109, 122, 68); q.menu.forEach((id, k) => drawFood(ctx, id, x - 48 + k * 24, GY - 70 + (k % 2) * 22, 0.7)); }
+    if (vis(DN_COUNTER)) { const x = sx(DN_COUNTER); ctx.fillStyle = '#3b2716'; ctx.fillRect(x - 40, GY - 30, 80, 30); ctx.fillStyle = '#c99561'; ctx.fillRect(x - 38, GY - 28, 76, 6); }
+    // 3구역 계산대
+    if (vis(DN_REG)) { const x = sx(DN_REG); ctx.fillStyle = '#3b2716'; ctx.fillRect(x - 36, GY - 32, 72, 32); ctx.fillStyle = '#c99561'; ctx.fillRect(x - 34, GY - 30, 68, 6); ctx.fillStyle = '#5a6577'; ctx.fillRect(x - 12, GY - 50, 24, 18); ctx.fillStyle = '#9fd3f5'; ctx.fillRect(x - 9, GY - 47, 18, 7); ctx.fillStyle = '#f6c445'; ctx.fillRect(x - 9, GY - 38, 18, 4); }
+    // 4구역 식탁
+    DN_TABLE.forEach((x) => { if (!vis(x)) return; const c = sx(x) + 22; ctx.fillStyle = '#5a3a22'; ctx.fillRect(c - 16, GY - 22, 32, 5); ctx.fillRect(c - 2, GY - 17, 4, 17); });
+    // 식당 간판: 영업 성공하면 불이 켜져요
+    if (vis(3060)) { const x = sx(3060), on = q.final && Math.sin(time * 6) > -0.6; ctx.fillStyle = '#3b2716'; ctx.fillRect(x - 70, 108, 140, 30); ctx.fillStyle = on ? '#ffe066' : '#c99561'; ctx.fillRect(x - 67, 111, 134, 24); ctx.fillStyle = on ? '#b5121b' : '#5a3a22'; ctx.font = 'bold 15px Jua, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('🐼 판다 식당', x, 124); }
+    // 사람(판다)들
+    DN_NPC.slice(0, 4).forEach((d, i) => { drawNpc(d, d.x, GY, px >= d.x ? 1 : -1); if (i === a && mode === 'play') drawBubble2(d.x, GY - 44 + Math.sin(time * 4) * 2, '!'); else if (i < a || a < 0) drawBubble2(d.x, GY - 44, '♥', '#ff9fb2'); });
+    // 2구역 손님 줄 (차례대로 앞으로)
+    if (a === 1 || a > 1 || a < 0) [4, 5].forEach((w, j) => { const served = q.m2.ci > j; const x = served ? DN_COUNTER + 220 + j * 34 : DN_QUEUE[j - q.m2.ci < 0 ? 0 : j - q.m2.ci]; if (!vis(x)) return; drawNpc(DN_NPC[w], x, GY + (q.happy[w] ? -Math.max(0, Math.sin(time * 5 + j)) * 3 : 0), -1); if (q.happy[w]) drawBubble2(x, GY - 44, '♥', '#ff9fb2'); else if (a === 1 && j === q.m2.ci && mode === 'play') drawBubble2(x, GY - 44 + Math.sin(time * 4) * 2, '!'); });
+    // 4구역 손님 (식탁 옆)
+    if (a >= 3 || a < 0) q.m4.cs.forEach((c, k) => { const x = DN_TABLE[k], hop = q.final ? -Math.max(0, Math.sin(q.partyT * 6 + k)) * 6 : 0; drawNpc(DN_NPC[c.who], x, GY + hop, 1); if (q.m4.served[k]) { drawFood(ctx, c.t, sx(x) + 22, GY - 22, 0.6); drawBubble2(x, GY - 44 + hop, '♥', '#ff9fb2'); } else if (q.m4.acc && mode === 'play') drawBubble2(x, GY - 44 + Math.sin(time * 4 + k) * 2, '?', '#cfe3ff'); });
+    if (q.final) for (let k = 0; k < 24; k++) { const x = Math.round(2760 + ((k * 61 + q.partyT * 40) % 520) - cam), y = Math.round((k * 37 + q.partyT * 70) % 200) + 30; ctx.fillStyle = ['#ff9fb2', '#f6c445', '#62aefc', '#ffffff'][k % 4]; ctx.fillRect(x, y, 3, 3); }
+  }
+  function dnTop() { const q = run.q; if (q.carry) drawHeld((g, x, y) => drawFood(g, q.carry.kind, x, y, 1.2)); }
+  function dnRecall() {
+    const q = run.q, a = qAct(); if (a < 0) return; closeMissionPanel();
+    const notYet = () => openTalk(a, `<p>아직 ${DN_NPC[a].name}의 부탁을 듣지 않았어요.</p><p>노란 ▼ 표시를 따라가서 말을 걸어 봐요!</p>`, { ok: '알겠어요!' });
+    if (a === 0) { if (!q.m1.acc) return notYet(); const t = q.m1.want[q.m1.ri]; openTalk(0, `<div class="zline big">${foodName(t, true)} 올려 줘! (${q.m1.ri + 1}/3)</div>`, { hints: foodHints(t) }); return; }
+    if (a === 1) { if (!q.m2.acc) return notYet(); openTalk(1, `${sentBox('我要这个。', 'Wǒ yào zhège.', false)}<p>이거 주세요. (这个 = 손으로 가리킨 것)</p><p class="qprog">받은 주문 ${q.m2.ci}/3</p>`, { ok: '알겠어요!' }); return; }
+    if (a === 2) { if (!q.m3.acc) return notYet(); openTalk(2, `${sentBox('这个多少钱？', 'Zhège duōshao qián?', false)}<p>이거 얼마예요?</p><p class="qprog">대답: 숫자 + 块 (예: 二十块 èrshí kuài = 20위안)</p>`, { ok: '알겠어요!' }); return; }
+    if (!q.m4.acc) return notYet();
+    openTalk(3, `<p>손님 ${q.m4.served.filter(Boolean).length}/4 · 오늘 매출 ${q.sales}元 (연습용)</p>`, { ok: '알겠어요!' });
+  }
+
+  // ================= 미션형 지역 모음 (6~10차시). STAGE.questKit으로 골라요 =================
   const QUEST_KITS = {
     bd: { make: bdNew, cand: bdCand, goal: bdGoal, update: bdUpdate, draw: bdDraw, top: null, recall: bdRecall, npcs: BD_NPC, free: () => BD_CANDLES.map(sp => ({ ...sp, r: 24 })) },
     fam: { make: fmNew, cand: fmCand, goal: fmGoal, update: fmUpdate, draw: fmDraw, top: fmTop, recall: fmRecall, npcs: FM_NPC, free: () => [...FM_FOREST.map(x => ({ x, y: GY, r: 30 })), ...FM_STUDIO.map(x => ({ x, y: GY, r: 30 })), { x: FM_BOARD_X, y: GY, r: 44 }] },
     gift: { make: gfNew, cand: gfCand, goal: gfGoal, update: gfUpdate, draw: gfDraw, top: gfTop, recall: gfRecall, npcs: GF_NPC, free: () => [...GF_SHOP, ...GF_Z3].map(sp => ({ ...sp, r: 26 })).concat([...GF_Z2, ...GF_HOUSE].map(x => ({ x, y: GY, r: 26 }))) },
   };
+  QUEST_KITS.food = { make: fdNew, cand: fdCand, goal: fdGoal, update: fdUpdate, draw: fdDraw, top: fdTop, recall: fdRecall, npcs: FD_NPC, free: () => [...FD_BOOTH, ...FD_OWNER, ...FD_SHELF, ...FD_STALL, 2250, 2450].map(x => ({ x, y: GY, r: 26 })) };
+  QUEST_KITS.diner = { make: dnNew, cand: dnCand, goal: dnGoal, update: dnUpdate, draw: dnDraw, top: dnTop, recall: dnRecall, npcs: DN_NPC, free: () => [...DN_PASS, DN_STAND, DN_BOARD, ...DN_QUEUE, DN_REG, ...DN_TABLE].map(x => ({ x, y: GY, r: 30 })) };
   const KIT = () => QUEST_KITS[STAGE.questKit];
 
 
@@ -5833,7 +6520,7 @@
   // ================= 시작 · 지역 선택 =================
   function initialStage() {
     const h = (location.hash || '').slice(1).toLowerCase().replace(/^preview-?/, '');
-    const alias = { s1: 'bamboo', lesson1: 'bamboo', '1': 'bamboo', s2: 'greet', lesson2: 'greet', '2': 'greet', s3: 'name', lesson3: 'name', '3': 'name', s4: 'nation', lesson4: 'nation', '4': 'nation', s5: 'number', lesson5: 'number', '5': 'number', num: 'number', numbers: 'number', s6: 'birthday', lesson6: 'birthday', '6': 'birthday', bd: 'birthday', s7: 'family', lesson7: 'family', '7': 'family', s8: 'gift', lesson8: 'gift', '8': 'gift' };
+    const alias = { s1: 'bamboo', lesson1: 'bamboo', '1': 'bamboo', s2: 'greet', lesson2: 'greet', '2': 'greet', s3: 'name', lesson3: 'name', '3': 'name', s4: 'nation', lesson4: 'nation', '4': 'nation', s5: 'number', lesson5: 'number', '5': 'number', num: 'number', numbers: 'number', s6: 'birthday', lesson6: 'birthday', '6': 'birthday', bd: 'birthday', s7: 'family', lesson7: 'family', '7': 'family', s8: 'gift', lesson8: 'gift', '8': 'gift', s9: 'food', lesson9: 'food', '9': 'food', s10: 'diner', lesson10: 'diner', '10': 'diner' };
     const id = alias[h] || h;
     // 준비 중 지역은 학생 주소로 열리지 않아요 → 공개된 첫 지역으로
     return STAGE_ORDER.includes(id) ? id : STAGE_ORDER[0];
@@ -6036,6 +6723,7 @@
   function openIntro() {
     mode = 'intro'; releaseAll();
     $('introTitle').textContent = `${STAGE.short} · 오늘 배울 말`;
+    $('introDate').hidden = !STAGE.dateFull; $('introDate').textContent = STAGE.dateFull ? `📅 ${STAGE.dateFull}` : '';
     // 기본 학습 → 보너스 순서로 나눠서 보여 줌 (보너스는 아래쪽에 따로 모음)
     const chip = (w) => `<button class="ichip${w.sent ? ' sent' : ''}${w.bonus ? ' bonus' : ''}" data-say="${sayText(w)}"><span class="han">${w.h}</span><span class="py t${w.t}">${w.p}</span><small>${w.hun || w.ko}</small></button>`;
     const iw = STAGE.cardOrder.map(id => STAGE.words[id]), ib = iw.filter(w => w.bonus);
@@ -6222,7 +6910,7 @@
     $('startScreen').querySelector('.card').focus({ preventScroll: true });
     window.__panda = {
       SHOP_ITEMS, buyItem, equipItem, unequipItem, openWardrobe, closeWardrobe, drawWear, get wd() { return wd; },
-      questInteract, openBasket, BD_NPC, BD_CANDLES, BD_CAKE_X, BD_BOARD_X, BD_DESK_X, BD_TABLE_X, bdValid, dateZh, bdSent, openCake, cakeAdd, cakeDel, cakeDone, closeCake, openCal, calOk, closeCal, openBCard, bcOk, closeBCard, bdPlace, openPick, closePick, pickOk, FAM, famOf, famSent, FM_NPC, GIFT, giftOf, gfSent, GF_NPC, GF_FR, FM_BOARD_X, famFace, giftURL, drawGift, fmNewTest: () => fmNew(), gfNewTest: () => gfNew(), get qp() { return qp; }, bdNewTest: () => bdNew(), bdBonus: () => bdBonusLater, basketDrop, closeBasket, zhNum, tokVal, testSpawn: (kind, n, set) => { const q = run.q, list = set ? q.m4.items : q.m3.items; spawnItems(list, kind, n, Q_SPOTS[set]); }, testOpenSlab: (rounds) => openSlab({ title: 'test', rounds, start: 0, tag: 'test', key: (i) => 'test' + i, onRound() {}, onAll() {} }), slabTap, slabKey, ruleHints, boxNums, closeTalk, closeSlab, questRecall, NPC_DEF, useSkill, canSkill, BGM, josa, BUILD, forestBuild, basicQuestion, MA, GREET, NW, P, save, quiz, quick, NQ, numQ, numQueue, NUMS, openQuiz, answer, closeQuiz, closeSpeak, selectStage, startPlay, goHome, askHome, resumeFromPause, loadStage, closeHelp, closeIntro, startNewRun, THEMES, SKINS, STAGES,
+      questInteract, openBasket, BD_NPC, BD_CANDLES, BD_CAKE_X, BD_BOARD_X, BD_DESK_X, BD_TABLE_X, bdValid, dateZh, bdSent, openCake, cakeAdd, cakeDel, cakeDone, closeCake, openCal, calOk, closeCal, openBCard, bcOk, closeBCard, bdPlace, openPick, closePick, pickOk, FAM, famOf, famSent, FM_NPC, GIFT, giftOf, gfSent, GF_NPC, GF_FR, FM_BOARD_X, famFace, giftURL, drawGift, FOOD, foodOf, foodSent, FD_NPC, DN_NPC, priceZh, priceSay, drawFood, foodURL, FD_BOOTH, FD_OWNER, DN_STAND, DN_BOARD, DN_COUNTER, DN_REG, DN_TABLE, fdNewTest: () => fdNew(), dnNewTest: () => dnNew(), fmNewTest: () => fmNew(), gfNewTest: () => gfNew(), get qp() { return qp; }, bdNewTest: () => bdNew(), bdBonus: () => bdBonusLater, basketDrop, closeBasket, zhNum, tokVal, testSpawn: (kind, n, set) => { const q = run.q, list = set ? q.m4.items : q.m3.items; spawnItems(list, kind, n, Q_SPOTS[set]); }, testOpenSlab: (rounds) => openSlab({ title: 'test', rounds, start: 0, tag: 'test', key: (i) => 'test' + i, onRound() {}, onAll() {} }), slabTap, slabKey, ruleHints, boxNums, closeTalk, closeSlab, questRecall, NPC_DEF, useSkill, canSkill, BGM, josa, BUILD, forestBuild, basicQuestion, MA, GREET, NW, P, save, quiz, quick, NQ, numQ, numQueue, NUMS, openQuiz, answer, closeQuiz, closeSpeak, selectStage, startPlay, goHome, askHome, resumeFromPause, loadStage, closeHelp, closeIntro, startNewRun, THEMES, SKINS, STAGES,
       get mode() { return mode; }, get monsters() { return monsters; }, get coins() { return coins; }, get gates() { return gates; },
       get run() { return run; }, get cam() { return cam; }, get floats() { return floats; }, get stage() { return STAGE.id; }, get drops() { return drops; }, get selStage() { return selStage; },
     };
