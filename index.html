@@ -640,6 +640,236 @@
     .fill { transition: none; }
     .btn { transition: none; }
   }
+  /* ===== 9·10차시 아케이드 화면 ===== */
+  #arc { --pd: clamp(40px, min(11vh, 14vw), 108px); --fd: clamp(36px, min(7vh, 11vw), 76px); position: fixed; inset: 0; z-index: 19; display: flex; flex-direction: column; background: #24304d; color: var(--ink); user-select: none; -webkit-user-select: none; touch-action: manipulation; overflow: hidden; }
+  #arc.ar-fest { background: linear-gradient(#1b1f4a, #3b2a6b 45%, #6b3a5c); }
+  #arc.ar-diner { background: linear-gradient(#f3d9a4, #e8c27e); }
+  .ar-topbar { position: relative; z-index: 6; flex: none; display: flex; align-items: center; gap: 6px; padding: 6px 8px; background: rgba(10, 14, 30, .55); color: #fff; }
+  .ar-ib { flex: none; width: 42px; height: 42px; border-radius: 10px; border: 2px solid rgba(255,255,255,.55); background: rgba(255,255,255,.16); color: #fff; font-size: 20px; cursor: pointer; padding: 0; touch-action: manipulation; }
+  .ar-ttl2 { flex: 1; min-width: 0; font-weight: 700; font-size: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ar-stat { flex: none; font-weight: 700; font-size: 14px; white-space: nowrap; background: rgba(255,255,255,.16); border-radius: 999px; padding: 4px 10px; }
+  .ar-stat small { font-size: 11px; opacity: .8; }
+  #arScene { flex: 1; min-height: 0; display: flex; flex-direction: column; position: relative; overflow: hidden; }
+  .ar-bar { flex: none; display: flex; align-items: center; gap: 8px; padding: 6px 10px; background: #fff8e6; border-top: 3px solid var(--ink); min-height: 50px; }
+  #arMsg { flex: 1; min-width: 0; font-size: 16px; font-weight: 700; line-height: 1.3; color: var(--ink); }
+  #arMsg.ok { color: #17703a; } #arMsg.bad { color: #b4410b; } #arMsg.hint { color: #6b2bd1; } #arMsg.info { color: #24508f; }
+  .ar-sbtn { flex: none; min-height: 42px; padding: 0 12px; border-radius: 10px; border: 3px solid var(--ink); background: #fff; font: inherit; font-weight: 700; font-size: 15px; cursor: pointer; color: var(--ink); touch-action: manipulation; }
+  #arHint { background: #efe4ff; }
+  #arHint.nudge { animation: nudge 1s ease-in-out infinite; }
+  @keyframes nudge { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+  .ar-zh { display: inline-flex; flex-direction: column; align-items: center; line-height: 1.1; }
+  .ar-zh .han { font-family: var(--font-han); font-weight: 700; font-size: clamp(22px, 3.4vh, 32px); }
+  .ar-zh .py { font-size: clamp(14px, 2vh, 18px); font-weight: 700; white-space: nowrap; margin-top: 2px; }
+  .ar-zh.big .han { font-size: clamp(30px, 5vh, 46px); } .ar-zh.big .py { font-size: clamp(16px, 2.6vh, 22px); }
+  .ar-say { border: 2px solid var(--ink); background: #fff; border-radius: 8px; font-size: 16px; min-width: 34px; min-height: 32px; cursor: pointer; padding: 0 4px; margin-left: 6px; vertical-align: middle; }
+  .ar-bub { position: relative; background: #fff; border: 3px solid var(--ink); border-radius: 14px; padding: 6px 10px; display: inline-flex; align-items: center; gap: 4px; flex-wrap: wrap; justify-content: center; box-shadow: 0 3px 0 rgba(0,0,0,.25); color: var(--ink); }
+  .ar-bub small { display: block; width: 100%; text-align: center; font-size: 13px; font-weight: 700; }
+  .ar-bub[hidden] { display: none; }
+  .ar-pd { image-rendering: pixelated; height: var(--pd); width: calc(var(--pd) * .76); }
+  .ar-go { min-height: 48px; padding: 0 16px; border-radius: 12px; border: 3px solid var(--ink); background: #f6c445; font: inherit; font-weight: 700; font-size: 17px; cursor: pointer; color: var(--ink); box-shadow: 0 4px 0 var(--ink); touch-action: manipulation; flex: none; }
+  .ar-go:disabled { background: #e3e0d6; color: #8a8576; box-shadow: 0 2px 0 #8a8576; cursor: default; }
+  .ar-go:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 var(--ink); }
+  .ar-go.big { min-height: 56px; font-size: 19px; }
+  .ar-row { display: flex; gap: 8px; align-items: stretch; justify-content: center; width: 100%; }
+  .ar-ttl { font-weight: 700; font-size: 15px; text-align: center; margin: 0 0 5px; color: var(--ink); }
+  .ar-opts { flex: 1; min-width: 0; display: grid; gap: 6px; grid-auto-rows: 1fr; }
+  .ar-opts.five { grid-template-columns: repeat(5, minmax(0, 1fr)); } .ar-opts.four { grid-template-columns: repeat(4, minmax(0, 1fr)); } .ar-opts.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .ar-opt { min-height: clamp(58px, 9vh, 92px); border-radius: 12px; border: 3px solid var(--ink); background: #fffdf6; font: inherit; color: var(--ink); cursor: pointer; padding: 4px 2px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; touch-action: manipulation; min-width: 0; }
+  .ar-opt .ar-zh .py { white-space: normal; text-align: center; }
+  .ar-opt.sel { background: #d9ecff; border-color: #1f5fbf; box-shadow: inset 0 0 0 3px #1f5fbf; }
+  .ar-opt:disabled { opacity: .35; cursor: default; }
+  .ar-opt img { width: var(--fd); height: calc(var(--fd) * .83); max-width: 100%; object-fit: contain; image-rendering: pixelated; }
+  .ar-opt.tag { font-size: 24px; font-weight: 700; }
+  .ar-sent { display: flex; flex-direction: column; align-items: center; gap: 2px; background: #fff; border: 3px solid var(--ink); border-radius: 14px; padding: 8px 14px; flex: 1; min-width: 0; }
+  .ar-sent small { font-size: 14px; font-weight: 700; }
+  .ar-sent.mini { flex-direction: row; gap: 8px; padding: 4px 10px; margin: 0 auto 6px; width: fit-content; }
+  .ar-sent.clerk { background: #fff6d6; }
+  #arPop { position: absolute; inset: 0; z-index: 5; background: rgba(9, 17, 31, .62); display: flex; align-items: center; justify-content: center; padding: 12px; overflow-y: auto; }
+  #arPop[hidden] { display: none; }
+  .ar-popcard { background: #fffaf0; border: 4px solid var(--ink); border-radius: 18px; padding: 16px 18px; max-width: 560px; width: 100%; text-align: center; box-shadow: 0 6px 0 rgba(0,0,0,.35); margin: auto; color: var(--ink); }
+  .ar-popcard h2 { margin: 4px 0 6px; font-size: 24px; }
+  .ar-popcard p { margin: 4px 0 10px; font-size: 17px; line-height: 1.45; }
+  .ar-rno { display: inline-block; background: var(--ink); color: #fff; border-radius: 999px; padding: 2px 12px; font-weight: 700; font-size: 14px; }
+  .ar-reward { font-weight: 700; color: #8a5a00; }
+  .ar-cardsHead { font-weight: 700; font-size: 14px; margin: 4px 0; }
+  .ar-cards { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 6px 0 12px; }
+  .ar-card { display: flex; align-items: center; gap: 6px; background: #fff; border: 3px solid var(--ink); border-radius: 12px; padding: 6px 10px; }
+  .ar-card small { font-size: 13px; font-weight: 700; max-width: 150px; text-align: left; }
+  .ar-card.bonus { background: #fff6d6; }
+  #arFx { position: fixed; inset: 0; pointer-events: none; z-index: 6; overflow: hidden; }
+  .ar-combo { position: absolute; left: 50%; top: 22%; transform: translateX(-50%); font-size: 34px; font-weight: 700; color: #fff0a8; -webkit-text-stroke: 2px #1d2738; text-shadow: 0 4px 0 #1d2738; animation: comboUp 1.2s ease-out forwards; white-space: nowrap; }
+  @keyframes comboUp { 0% { transform: translate(-50%, 20px) scale(.6); opacity: 0; } 20% { transform: translate(-50%, 0) scale(1.15); opacity: 1; } 100% { transform: translate(-50%, -30px) scale(1); opacity: 0; } }
+  .ar-banner { position: absolute; left: 50%; top: 40%; transform: translate(-50%, -50%); background: #e5484d; color: #fff; border: 4px solid var(--ink); border-radius: 16px; padding: 10px 22px; font-size: 28px; font-weight: 700; animation: banner 1.6s ease-out forwards; white-space: nowrap; }
+  .ar-banner.vip { background: linear-gradient(#ffe27a, #d4a017); color: var(--ink); }
+  @keyframes banner { 0% { transform: translate(-50%, -50%) scale(.4); opacity: 0; } 15% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; } 80% { opacity: 1; } 100% { transform: translate(-50%, -80%) scale(1); opacity: 0; } }
+  .ar-float { position: fixed; transform: translateX(-50%); font-size: 24px; font-weight: 700; animation: floatUp 1.2s ease-out forwards; white-space: nowrap; color: #fff; -webkit-text-stroke: 1px #1d2738; }
+  .ar-float.money { color: #ffe27a; font-size: 22px; } .ar-float.heart { color: #ff5d73; font-size: 30px; } .ar-float.clap { font-size: 32px; }
+  @keyframes floatUp { 0% { opacity: 0; margin-top: 0; } 15% { opacity: 1; } 100% { opacity: 0; margin-top: -60px; } }
+  .ar-conf { position: absolute; top: -12px; width: 9px; height: 13px; animation-name: confFall; animation-timing-function: linear; animation-fill-mode: forwards; }
+  @keyframes confFall { 0% { transform: translateY(0) rotate(0); } 100% { transform: translateY(105vh) rotate(540deg); } }
+  .shake { animation: shake .4s; } @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-7px); } 75% { transform: translateX(7px); } }
+  .hop { animation: hop .5s; } @keyframes hop { 0%, 100% { transform: translateY(0); } 40% { transform: translateY(-14px); } }
+  .pop { animation: popIn .35s; } @keyframes popIn { 0% { transform: scale(.6); } 70% { transform: scale(1.08); } 100% { transform: scale(1); } }
+  .cheer { animation: cheer .45s 3; } @keyframes cheer { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+  /* --- 9차시 축제 --- */
+  .fs-top { flex: 1 0 auto; padding: 4px 10px 0; display: flex; flex-direction: column; }
+  .fs-lan { display: flex; justify-content: space-around; height: 22px; border-top: 2px solid #c9a25a; margin: 0 4px; }
+  .fs-lan i { width: 14px; height: 18px; margin-top: 2px; border-radius: 6px; background: #5a3a48; border: 2px solid #2b2838; transition: background .3s, box-shadow .3s; }
+  .fs-lan i.on { background: #ff4d4d; box-shadow: 0 0 10px 3px rgba(255, 140, 90, .8); }
+  .fs-row { flex: 1; display: flex; align-items: flex-end; gap: 8px; min-height: 92px; }
+  .fs-crowd { flex: 1; min-width: 0; display: flex; flex-wrap: wrap-reverse; align-content: flex-start; gap: 0 2px; align-self: stretch; padding-top: 6px; }
+  .fs-crowd .ar-pd { height: clamp(39px, 8vh, 78px); width: calc(clamp(39px, 8vh, 78px) * .76); }
+  .fs-crowd .new { animation: popIn .4s; }
+  .fs-mc { flex: none; display: flex; align-items: flex-end; gap: 4px; }
+  .fs-mc .ar-pd { height: clamp(76px, 16vh, 150px); width: calc(clamp(76px, 16vh, 150px) * .76); }
+  .fs-mc .ar-bub { margin-bottom: clamp(26px, 6vh, 60px); max-width: min(56vw, 460px); font-size: 15px; }
+  .fs-beltbox { flex: none; padding: 6px 0 0; }
+  .fs-belt { --belt: clamp(60px, min(13vh, 19vw), 124px); position: relative; height: var(--belt); background: #4a4f5c; border-top: 6px solid #2b2838; border-bottom: 6px solid #2b2838; overflow: hidden; }
+  .fs-belt[hidden], .fs-lane[hidden] { display: none; }
+  .fs-tread { position: absolute; inset: 0; background: repeating-linear-gradient(90deg, #5d6372 0 18px, #4a4f5c 18px 36px); }
+  .fs-item { position: absolute; top: 6px; left: 0; width: calc(var(--belt) - 12px); height: calc(var(--belt) - 12px); border-radius: 12px; background: #fffaf0; border: 3px solid #2b2838; padding: 2px; cursor: pointer; touch-action: none; will-change: transform; }
+  .fs-item img { width: 100%; height: 100%; object-fit: contain; image-rendering: pixelated; pointer-events: none; }
+  .fs-lane { position: relative; height: calc(clamp(48px, 8vh, 84px) + 8px); }
+  .fs-me { position: absolute; bottom: 0; transform: translateX(-50%); transition: left .18s ease-out; display: flex; flex-direction: column; align-items: center; }
+  .fs-me > img { width: clamp(48px, 8vh, 84px); height: clamp(48px, 8vh, 84px); image-rendering: pixelated; }
+  .fs-me.jump { animation: hop .35s; }
+  .fs-held { position: absolute; bottom: calc(clamp(48px, 8vh, 84px) - 8px); left: 50%; transform: translateX(-50%); pointer-events: none; }
+  .fs-held img { width: var(--fd); height: calc(var(--fd) * .83); image-rendering: pixelated; background: #fffaf0; border: 3px solid #2b2838; border-radius: 10px; }
+  .fs-panel { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; justify-content: safe center; align-items: center; padding: 6px 10px 8px; overflow-y: auto; gap: 6px; }
+  .fs-panel .ar-opts.five { width: 100%; max-width: 640px; }
+  .fs-booths { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; width: 100%; max-width: 900px; }
+  .fs-booth { border: 3px solid var(--ink); border-radius: 12px; background: linear-gradient(#e5484d 0 10px, #fffaf0 10px); padding: 12px 2px 4px; display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; color: var(--ink); font: inherit; touch-action: manipulation; min-width: 0; }
+  .fs-booth .ar-zh .han { font-size: clamp(20px, 3.4vh, 30px); } .fs-booth .ar-zh .py { font-size: 12px; white-space: normal; text-align: center; }
+  .fs-stall { display: flex; align-items: flex-end; gap: 4px; min-height: 44px; }
+  .fs-own { height: clamp(39px, 7vh, 70px); width: calc(clamp(39px, 7vh, 70px) * .76); }
+  .fs-put img { width: var(--fd); height: calc(var(--fd) * .83); image-rendering: pixelated; }
+  .fs-booth.done { background: linear-gradient(#f6c445 0 10px, #fff3c4 10px); box-shadow: 0 0 14px 2px rgba(255, 220, 120, .9); }
+  .fs-custs { display: flex; gap: 14px; justify-content: center; width: 100%; max-width: 760px; }
+  .fs-cust { flex: 1; min-width: 0; border: 3px solid var(--ink); border-radius: 14px; background: #fffaf0; padding: 6px; display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; font: inherit; color: var(--ink); touch-action: manipulation; }
+  .fs-cust:disabled { opacity: .55; }
+  .fs-cust .ar-bub { border-width: 2px; }
+  .fs-cimg .ar-pd { height: clamp(58px, 11vh, 110px); width: calc(clamp(58px, 11vh, 110px) * .76); }
+  .fs-cimg.enter { animation: popIn .45s; } .fs-cimg.leave { animation: leaveR .6s forwards; }
+  @keyframes leaveR { to { transform: translateX(60px); opacity: 0; } }
+  .fs-cno { font-size: 13px; font-weight: 700; }
+  #arc.party.ar-fest { animation: partyBg 1s linear infinite alternate; }
+  @keyframes partyBg { from { filter: brightness(1); } to { filter: brightness(1.18) saturate(1.2); } }
+
+  /* --- 10차시 식당 --- */
+  .dn-wall { flex: none; display: flex; align-items: center; gap: 8px; padding: 6px 10px; background: repeating-linear-gradient(90deg, #f7e7c4 0 26px, #f1dcb0 26px 52px); border-bottom: 5px solid #8a5a2b; }
+  .dn-sign { flex: none; background: #5a2a0e; color: #ffe9b0; border: 3px solid #2b2838; border-radius: 10px; padding: 4px 8px; font-weight: 700; font-size: 15px; writing-mode: horizontal-tb; transition: box-shadow .4s, color .4s; }
+  .dn-sign.lit { color: #fff; box-shadow: 0 0 14px 4px rgba(255, 210, 90, .95); background: #b5541c; }
+  .dn-menu { flex: 1; min-width: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; background: #2f4a3a; border: 4px solid #3b2716; border-radius: 10px; padding: 6px 6px 10px; max-width: 760px; margin: 0 auto; }
+  .dn-mi { position: relative; border: 2px solid #1d2738; border-radius: 8px; background: #fffaf0; padding: 2px; display: flex; flex-direction: column; align-items: center; cursor: default; font: inherit; color: var(--ink); min-width: 0; touch-action: manipulation; }
+  .dn-menu.click .dn-mi:not(:disabled) { cursor: pointer; }
+  .dn-mi:disabled { opacity: 1; }
+  .dn-menu.click .dn-mi:disabled { opacity: .55; }
+  .dn-mi img { width: var(--fd); height: calc(var(--fd) * .83); max-width: 100%; object-fit: contain; image-rendering: pixelated; }
+  .dn-pr { font-size: clamp(13px, 2.2vh, 20px) !important; }
+  .dn-pr { font-size: 13px; font-weight: 700; background: #ffe9b0; border-radius: 6px; padding: 0 4px; }
+  .dn-hand { position: absolute; bottom: -16px; right: -4px; font-size: 28px; line-height: 1; display: none; animation: poke .8s ease-in-out infinite; }
+  .dn-mi.point .dn-hand { display: block; }
+  .dn-deco { flex: none; display: flex; flex-wrap: wrap; width: 92px; gap: 0 2px; font-size: 18px; line-height: 1.15; }
+  .dn-deco span { display: inline-block; }
+  .dn-floor { flex: none; position: relative; height: clamp(126px, 36vh, 340px); background: linear-gradient(#e9c891 0 58%, #b9895a 58%); overflow: hidden; }
+  .dn-door { position: absolute; left: 0; bottom: 30%; font-size: clamp(40px, 9vh, 90px); }
+  .dn-carpet { position: absolute; left: 0; width: 40%; bottom: 8%; height: 14%; background: repeating-linear-gradient(90deg, #c81e3c 0 20px, #e5484d 20px 40px); opacity: 0; transition: opacity .5s; border-radius: 4px; }
+  .dn-carpet.on { opacity: 1; }
+  .dn-counter { position: absolute; left: 35%; bottom: 8%; width: 17%; height: 70%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; }
+  .dn-staff { position: relative; display: flex; align-items: flex-end; }
+
+  .dn-staff.cook { animation: hop .45s 2; }
+  .dn-pan { font-size: clamp(22px, 4vh, 40px); margin-left: -6px; }
+  .dn-top { width: 100%; height: clamp(22px, 4vh, 36px); background: #8a5a2b; border: 3px solid #2b2838; border-radius: 6px; margin-top: -4px; position: relative; z-index: 1; }
+  .dn-tables { z-index: 3; position: absolute; right: 1%; bottom: 6%; width: 44%; display: flex; justify-content: space-around; }
+  .dn-table { position: relative; width: 28%; height: clamp(22px, 4vh, 36px); background: #fbfaf5; border: 3px solid #2b2838; border-radius: 6px; display: flex; justify-content: center; }
+  .dn-table::after { content: ''; position: absolute; top: 100%; left: 45%; width: 10%; height: 12px; background: #2b2838; }
+  .dn-plate { position: absolute; bottom: 14px; }
+  .dn-plate img { width: var(--fd); height: calc(var(--fd) * .83); image-rendering: pixelated; }
+  .dn-plate { bottom: calc(100% - 4px) !important; }
+  .dn-table.eat .dn-plate img { animation: eat 2.6s linear forwards; }
+  @keyframes eat { 0% { transform: scale(1); } 100% { transform: scale(.2); opacity: 0; } }
+  #dnGuys { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
+  .dn-guy.seated { bottom: 7%; }
+  .dn-guy { position: absolute; bottom: 12%; transform: translateX(-50%); transition-property: left; transition-timing-function: linear; display: flex; flex-direction: column; align-items: center; z-index: 2; }
+  .dn-guy.walk .ar-pd { animation: walkBob .3s infinite; }
+  @keyframes walkBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+  .dn-guy.waiting .ar-pd { animation: waitSway 1.6s ease-in-out infinite; }
+  @keyframes waitSway { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-5deg); } 75% { transform: rotate(5deg); } }
+  .dn-guy.eating .ar-pd { animation: walkBob .5s infinite; }
+  .dn-guy.vip .ar-pd { height: calc(var(--pd) * 1.2); width: calc(var(--pd) * .91); filter: drop-shadow(0 0 6px #ffd54a); }
+  .dn-guy.vip::before { content: '👑'; font-size: 22px; margin-bottom: -6px; }
+  .dn-guy.bye { opacity: 0; transition: opacity .6s; }
+  .dn-bub { position: absolute; bottom: 100%; left: 50%; transform: translateX(-30%); white-space: nowrap; pointer-events: auto; font-size: 14px; margin-bottom: 2px; z-index: 3; }
+  .dn-bub .ar-zh .han { font-size: clamp(20px, 3.4vh, 30px); } .dn-bub .ar-zh .py { font-size: clamp(13px, 2vh, 17px); }
+  .ar-alert { color: #c81e3c; display: block; width: 100%; text-align: center; }
+  .dn-panel { flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: safe center; align-items: center; padding: 6px 10px; overflow-y: auto; background: #fff3dc; border-top: 4px solid #8a5a2b; }
+  .dn-panel .ar-row { max-width: 820px; }
+  .dn-wait { font-size: 19px; font-weight: 700; text-align: center; color: var(--ink); }
+  .dn-wait.big { font-size: 24px; }
+  .dn-cook { font-size: 18px; font-weight: 700; } .dn-sizzle { color: #c2410c; animation: hop .4s infinite; display: inline-block; }
+  .dn-tray { flex: none; align-self: center; max-height: 96px; min-width: 78px; min-height: 58px; border: 3px dashed #8a5a2b; border-radius: 50%; background: #fbfaf5; display: flex; flex-direction: column; align-items: center; justify-content: center; font: inherit; font-size: 12px; color: var(--ink); cursor: pointer; padding: 2px 8px; }
+  .dn-tray.full { border-style: solid; }
+  .dn-tray img { width: var(--fd); height: calc(var(--fd) * .83); image-rendering: pixelated; }
+  .dn-pz { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; align-items: center; }
+  .dn-slots { display: flex; gap: 6px; align-items: flex-end; justify-content: center; }
+  .dn-slot { min-width: 76px; min-height: 56px; border: 3px dashed #8a5a2b; border-radius: 10px; background: #fff; font: inherit; color: var(--ink); cursor: pointer; padding: 2px 6px; touch-action: manipulation; }
+  .dn-slot.empty { font-size: 22px; color: #b09a7a; }
+  .dn-slot:not(.empty) { border-style: solid; border-color: var(--ink); }
+  .dn-end { font-family: var(--font-han); font-size: 30px; font-weight: 700; }
+  .dn-pieces { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; width: 100%; max-width: 460px; }
+  .dn-basket { flex: 1; display: flex; gap: 6px; justify-content: center; align-items: center; background: #d9a05b; border: 3px solid #5a3a1e; border-radius: 16px; padding: 6px; }
+  .dn-apple { font-size: 32px; background: none; border: none; cursor: pointer; padding: 2px; min-width: 44px; min-height: 44px; touch-action: manipulation; }
+  .dn-bag { flex: none; min-width: 92px; border: 3px solid var(--ink); border-radius: 12px; background: #fffaf0; font: inherit; font-size: 28px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .dn-bag span { font-size: 18px; }
+  #arc.party.ar-diner .dn-wall { animation: partyBg 1s linear infinite alternate; }
+
+  @media (max-width: 900px) and (min-height: 471px) { .ar-row { flex-wrap: wrap; } .ar-row > .ar-go { flex: 1 1 100%; } }
+  .fs-row { background: radial-gradient(circle at 12% 18%, #fff7 1.5px, transparent 2px), radial-gradient(circle at 37% 8%, #fff8 1.5px, transparent 2px), radial-gradient(circle at 63% 24%, #fff6 1.5px, transparent 2px), radial-gradient(circle at 86% 12%, #fff8 1.5px, transparent 2px),
+    linear-gradient(transparent calc(100% - 16px), #2b2838 calc(100% - 16px) calc(100% - 13px), transparent calc(100% - 13px)),
+    repeating-linear-gradient(90deg, #e5484d 0 22px, #fff1d6 22px 44px) bottom / 100% 13px no-repeat; }
+  @media (max-width: 600px) {
+    .ar-stat { font-size: 12px; padding: 3px 7px; } .ar-stat small { display: none; } .ar-ttl2 { font-size: 13px; }
+    .ar-opts.five { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .ar-opts.four { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .ar-row { flex-wrap: wrap; } .ar-row > .ar-go { flex: 1 1 100%; }
+    .fs-booths { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .dn-deco { display: none; }
+    .dn-pr { white-space: nowrap; font-size: 12px !important; padding: 0 2px; }
+    .dn-guy.waiting { transform: translateX(-50%) scale(.85); transform-origin: bottom center; }
+    .dn-sign { font-size: 12px; padding: 3px 5px; }
+    .fs-mc .ar-bub { max-width: 64vw; }
+    .fs-row { flex-direction: column; align-items: stretch; gap: 2px; }
+    .fs-crowd { flex: none; align-self: auto; min-height: 30px; padding-top: 2px; flex-wrap: wrap; }
+    .fs-crowd .ar-pd { height: 32px; width: 24px; }
+    .fs-mc { justify-content: flex-end; }
+    .fs-mc .ar-zh.big .han { font-size: 28px; } .fs-mc .ar-zh.big .py { font-size: 15px; }
+    .ar-opts.five.likes { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; }
+    .ar-opts.likes .ar-opt { min-height: 0; padding: 4px 1px; } .ar-opts.likes .py { display: none; } .ar-opts.likes .han { font-size: 15px; }
+    #fsSay .ar-zh.big .han { font-size: 28px; } #fsSay .ar-zh.big .py { font-size: 15px; }
+    .fs-own { height: 34px; width: 26px; } .fs-stall { min-height: 34px; } .fs-booth { padding-top: 11px; }
+    .fs-mc .ar-pd { height: clamp(64px, 10vh, 110px); width: calc(clamp(64px, 10vh, 110px) * .76); }
+    .dn-bub { transform: translateX(-20%); }
+  }
+  @media (max-height: 470px) {
+    .ar-topbar { padding: 3px 8px; } .ar-ib { width: 36px; height: 36px; font-size: 17px; }
+    .ar-bar { min-height: 42px; padding: 3px 8px; } #arMsg { font-size: 14px; } .ar-sbtn { min-height: 36px; font-size: 13px; }
+    .fs-lan { height: 14px; } .fs-lan i { width: 10px; height: 12px; }
+    .fs-row { min-height: 64px; } .fs-mc .ar-pd { width: 40px; height: 52px; } .fs-mc .ar-bub { margin-bottom: 10px; padding: 3px 8px; }
+    .fs-crowd .ar-pd { width: 22px; height: 29px; }
+    .fs-lane { height: 44px; } .fs-me > img { width: 38px; height: 38px; } .fs-held { bottom: 30px; }
+    .fs-stall { min-height: 30px; } .fs-own { display: none; }
+    .fs-booth { padding-top: 11px; }
+    .ar-opt { min-height: 48px; } .ar-go { min-height: 42px; font-size: 15px; } .ar-go.big { min-height: 46px; font-size: 17px; }
+    .ar-zh .han { font-size: 19px; } .ar-zh .py { font-size: 12px; } .ar-zh.big .han { font-size: 26px; } .ar-zh.big .py { font-size: 14px; }
+    .dn-wall { padding: 3px 8px; } .dn-floor { height: 112px; }
+    #arc { --pd: 44px; --fd: 38px; }
+    .ar-ttl { font-size: 13px; margin-bottom: 3px; } .dn-slot { min-height: 46px; } .ar-popcard { padding: 10px 14px; } .ar-popcard h2 { font-size: 20px; } .ar-popcard p { font-size: 15px; margin-bottom: 6px; }
+    .ar-opts.likes .py { display: none; } .ar-opts.likes .ar-opt { min-height: 0; padding: 2px; } #fsSay { width: 100%; max-width: 640px; } #fsSay .ar-sent { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 0 8px; padding: 4px 10px; }
+    .fs-cimg .ar-pd { width: 34px; height: 45px; } .fs-crowd .ar-pd { width: 22px; height: 29px; } .fs-belt { --belt: 62px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .dn-hand, .dn-sizzle, #arHint.nudge, .dn-guy.waiting .ar-pd, .dn-guy.walk .ar-pd { animation: none; } }
 </style>
 
 <div id="app">
@@ -687,6 +917,15 @@
 <div id="notice" role="status" aria-live="polite" hidden></div>
 <canvas id="fireworks" aria-hidden="true"></canvas>
 <div id="cheer" role="status" hidden></div>
+
+<!-- 9·10차시 아케이드 화면 (맵 대신 한 화면에서) -->
+<div id="arc" hidden>
+  <div class="ar-topbar"><button class="ar-ib" id="arHome" aria-label="홈으로">🏠</button><div class="ar-ttl2" id="arRound"></div><div class="ar-stat" id="arStat"></div><button class="ar-ib" id="arWords" aria-label="오늘 배우는 말">📖</button><button class="ar-ib" id="arSound" aria-label="소리">🔊</button></div>
+  <div id="arScene"></div>
+  <div class="ar-bar"><button class="ar-sbtn" id="arHint" hidden>💡 힌트</button><div id="arMsg" role="status" aria-live="polite"></div><button class="ar-sbtn" id="arDrop" hidden>✋ 내려놓기</button></div>
+  <div id="arPop" hidden><div class="ar-popcard"><div id="arPopBody"></div><button class="ar-go big" id="arPopGo">시작!</button></div></div>
+  <div id="arFx" aria-hidden="true"></div>
+</div>
 
 <!-- 시작 화면: "어느 지역을 탐험할까?" 하나만 -->
 <div class="overlay" id="startScreen">
@@ -2212,18 +2451,18 @@
       noteIntro: '좋아하는 것을 말해 봐요.<br>· 喜欢 xǐhuan = 좋아하다<br>· <b>我喜欢○○。</b> Wǒ xǐhuan ○○. = 나는 ○○을/를 좋아해요.<br>· 熊猫 xióngmāo 판다 · 苹果 píngguǒ 사과 · 饺子 jiǎozi 만두 · 麻辣烫 málàtàng 마라탕',
       qgen: () => null, makeQueue: () => [],
     },
-    // 9차시: 미션형 (간판 그림 고르기 → 음식 배달 → 麻辣烫·火锅 구별 → 좋아하는 음식). questKit: 'food'
+    // 9차시: 아케이드 (컨베이어 벨트 → 부스 분류 → 음식 러시 → 좋아하는 음식). arcade: 'fest' — 맵을 걷지 않고 한 화면에서
     food: {
-      id: 'food', status: 'ready', lessonNo: '9차시', label: '11월 17일(화) 1교시', dateFull: '2026. 11. 17.(화) · 1교시 — 9차시', title: '판다의 중국 음식 축제', short: '중국 음식 축제', topic: '北京烤鸭 · 火锅 · 珍珠奶茶', mapName: '판다 음식 축제', isNew: true, theme: 'fest', song: 'village', icon: '🏮',
-      quest: true, questKit: 'food', helpAct: '음식 고르기 · 들기 · 건네주기 (Q: 내려놓기)', clearTitle: '중국 음식 축제 성공!',
+      id: 'food', status: 'ready', lessonNo: '9차시', label: '11월 17일(화) 1교시', dateFull: '2026. 11. 17.(화) · 1교시 — 9차시', title: '우당탕탕! 판다 푸드 페스티벌', short: '판다 푸드 페스티벌', topic: '北京烤鸭 · 火锅 · 珍珠奶茶', mapName: '판다 푸드 페스티벌', isNew: true, theme: 'fest', song: 'village', icon: '🏮',
+      quest: true, questKit: 'arc', arcade: 'fest', clearTitle: '중국 음식 축제 대성공!',
       ...LAYOUT,
       monsters: [],
       gates: layoutGates(['축제 문', '음식 거리 문', '음식관 문', '축제의 문']),
       missions: [
-        { label: '🖼 축제 음식 간판', zone: '축제 입구', cards: ['fd_huoguo', 'fd_kaoya'] },
-        { label: '🍽 음식 배달 대작전', zone: '음식 거리', cards: ['fd_naicha', 'fd_jiaozi'] },
-        { label: '🍲 麻辣烫 · 火锅 구별', zone: '특별 음식관', cards: ['fd_malatang', 'fd_my'] },
-        { label: '💝 좋아하는 음식 말하기', zone: '축제 광장', cards: [], cheer: '중국 음식 축제 성공!' },
+        { label: '🎪 음식 컨베이어 벨트', zone: '라운드 1', cards: ['fd_kaoya', 'fd_huoguo'] },
+        { label: '🏮 음식 부스 분류 대작전', zone: '라운드 2', cards: ['fd_naicha', 'fd_jiaozi', 'fd_malatang'] },
+        { label: '💨 우당탕탕 음식 러시', zone: '라운드 3', cards: [] },
+        { label: '💝 내가 좋아하는 음식', zone: '라운드 4', cards: ['fd_my', 'fd_ask'] },
       ],
       finalText: '축제의 문', decorate: decorateFood,
       words: FDW, cardOrder: ['fd_jiaozi', 'fd_malatang', 'fd_kaoya', 'fd_huoguo', 'fd_naicha', 'fd_my', 'fd_ask'], cardName: '음식 카드', bonusCards: ['fd_ask'], bossFinale: 'none',
@@ -2232,18 +2471,18 @@
       noteIntro: '중국과 대만의 대표 음식·음료 다섯 가지를 알아봐요.<br>· 饺子 jiǎozi 만두 · 麻辣烫 málàtàng 마라탕 (8차시 복습)<br>· 北京烤鸭 Běijīng kǎoyā 북경오리 · 火锅 huǒguō 훠궈<br>· 珍珠奶茶 zhēnzhū nǎichá 버블티 — 대만에서 시작된 음료예요.<br>· <b>我喜欢○○。</b> Wǒ xǐhuan ○○. = 나는 ○○을/를 좋아해요.',
       qgen: () => null, makeQueue: () => [],
     },
-    // 10차시: 미션형 식당 타이쿤 (진열 → 주문 받기·하기 → 가격 묻기 → 손님 4명). questKit: 'diner'. 가격·매출은 연습용 가상 돈
+    // 10차시: 아케이드 식당 (첫 손님 → 직접 주문 → 계산대 → 손님 러시·VIP). arcade: 'diner'. 가격·매출은 연습용 가상 돈
     diner: {
-      id: 'diner', status: 'ready', lessonNo: '10차시', label: '11월 17일(화) 2교시', dateFull: '2026. 11. 17.(화) · 2교시 — 10차시', title: '판다 식당 타이쿤', short: '판다 식당 타이쿤', topic: '我要这个。 · 多少钱？', mapName: '판다 식당', isNew: true, theme: 'diner', song: 'garden', icon: '🍜',
-      quest: true, questKit: 'diner', helpAct: '음식 들기 · 주문 받기 · 계산 (Q: 내려놓기)', clearTitle: '판다 식당 영업 대성공!',
+      id: 'diner', status: 'ready', lessonNo: '10차시', label: '11월 17일(화) 2교시', dateFull: '2026. 11. 17.(화) · 2교시 — 10차시', title: '판다 식당 대소동! 주문 폭주!', short: '판다 식당 대소동', topic: '我要这个。 · 多少钱？', mapName: '판다 식당', isNew: true, theme: 'diner', song: 'garden', icon: '🍜',
+      quest: true, questKit: 'arc', arcade: 'diner', clearTitle: '판다 식당 영업 대성공!',
       ...LAYOUT,
       monsters: [],
       gates: layoutGates(['주방 문', '카운터 문', '계산대 문', '식당 문']),
       missions: [
-        { label: '🍽 식당 개업 준비', zone: '주방', cards: ['dn_yao', 'dn_zhege'] },
-        { label: '📋 주문받기 · 我要这个。', zone: '주문 카운터', cards: ['dn_want'] },
-        { label: '💰 얼마예요?', zone: '계산대', cards: ['dn_duoshao', 'dn_price', 'dn_kuai', 'dn_yuan'] },
-        { label: '🎉 식당 영업 대성공', zone: '식당 홀', cards: [], cheer: '판다 식당 영업 대성공!' },
+        { label: '🙋 첫 손님 · 我要这个。', zone: '라운드 1', cards: ['dn_zhege', 'dn_want'] },
+        { label: '🍽 내가 직접 주문하기', zone: '라운드 2', cards: ['dn_yao'] },
+        { label: '💰 계산대 · 这个多少钱？', zone: '라운드 3', cards: ['dn_duoshao', 'dn_price', 'dn_kuai', 'dn_yuan'] },
+        { label: '🔥 손님 러시 · 👑 VIP', zone: '라운드 4', cards: [] },
       ],
       finalText: '식당 문', decorate: decorateDiner,
       words: DNW, cardOrder: ['dn_zhege', 'dn_yao', 'dn_want', 'dn_duoshao', 'dn_price', 'dn_kuai', 'dn_yuan', 'dn_yige', 'dn_yige_s'], cardName: '식당 카드', bonusCards: ['dn_yige', 'dn_yige_s'], bossFinale: 'none',
@@ -2933,6 +3172,7 @@
     if (mode === 'speak') { if (isEnter(c) && !e.repeat) { e.preventDefault(); closeSpeak(); } return; }
     if (e.target && e.target.tagName === 'INPUT') return;
     if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Space'].includes(c) || e.key === ' ') e.preventDefault();
+    if (mode === 'arcade') { arKey(e); return; }
     if (mode === 'cut') return;
     if (mode === 'card') { if ((isEnter(c) || c === 'Space') && !e.repeat) closeCardPop(); return; }
     if (mode === 'quiz') {
@@ -3019,11 +3259,11 @@
     $('setMusic').textContent = save.bgmOn !== false ? '🎵 배경음악: 켜짐' : '🎵 배경음악: 꺼짐';
   }
   // 배경음악: 탐험 중에만, 퀴즈·창이 열리면 작게, 중국어 음성이 나올 때는 더 작게, 🔊 끄면 같이 꺼짐
-  const MUSIC_MODES = ['play', 'cut', 'quiz', 'card', 'speak', 'pause', 'lesson', 'help', 'faint', 'talk', 'slab', 'basket', 'cake', 'cal', 'bcard', 'qpick'];
+  const MUSIC_MODES = ['play', 'cut', 'quiz', 'card', 'speak', 'pause', 'lesson', 'help', 'faint', 'talk', 'slab', 'basket', 'cake', 'cal', 'bcard', 'qpick', 'arcade'];
   function musicWanted() {
     if (!soundOn || save.bgmOn === false || document.hidden || quick.on || !run || !STAGE || !MUSIC_MODES.includes(mode)) return [null, 1];
     if ((mode === 'lesson' && lessonReturn === 'start') || (mode === 'help' && helpReturn === 'menu')) return [null, 1];
-    let vol = mode === 'play' || mode === 'cut' ? 1 : 0.3;
+    let vol = mode === 'play' || mode === 'cut' ? 1 : mode === 'arcade' ? 0.6 : 0.3;
     try { if (window.speechSynthesis && window.speechSynthesis.speaking) vol = Math.min(vol, 0.12); } catch (e) {}
     return [STAGE.song || STAGE.theme, vol];
   }
@@ -4782,503 +5022,804 @@
   const nameOpts = (ids, sel) => ids.map((id, k) => `<button class="pk-opt word${k === sel ? ' sel' : ''}" data-k="${k}" aria-pressed="${k === sel}"><span class="han">${foodOf(id).h}</span><span class="py t0">${foodOf(id).p}</span></button>`).join('');
   const foodHints = (id) => { const f = foodOf(id); return [`${f.h} ${f.p} — 중국어 이름을 다시 읽어 봐요.`, `${f.h}${pp(f.h, '은/는')} ‘${f.ko}’예요.`, `정답: ${f.look}이에요.`]; };
 
-  // ================= 9차시 판다의 중국 음식 축제 (questKit 'food') =================
-  const FD_NPC = [
-    { id: 'fdguide', name: '축제 준비 판다', x: 330, mission: 0, scarf: '#e5484d', hat: 'festival' },
-    { id: 'fdstreet', name: '음식 거리 판다', x: 1290, mission: 1, scarf: '#f08a24', hat: 'chef' },
-    { id: 'fdhall', name: '음식관 판다', x: 2030, mission: 2, scarf: '#3d7bd9', hat: 'beret' },
-    { id: 'fdplaza', name: '광장 판다', x: 2790, mission: 3, scarf: '#8a5cd6', hat: 'party' },
-    // 음식 거리 부스 주인 3명 (이름·모습으로 정답이 드러나지 않게 색으로만 구분)
-    { id: 'fdb1', name: '빨간 부스 판다', scarf: '#e5484d', hat: 'apron' },
-    { id: 'fdb2', name: '노란 부스 판다', scarf: '#f6c445', hat: 'cap' },
-    { id: 'fdb3', name: '초록 부스 판다', scarf: '#3d9a5c', hat: 'strawhat' },
+  // ================= 9·10차시: 아케이드 화면 (STAGE.arcade = 'fest' | 'diner') =================
+  // 맵을 걷지 않고 한 화면에서 놀아요. 미션 4개 = 라운드 4개.
+  // 보상·기록·별은 기존 규칙 그대로: 미션 보상은 save.questEver(처음 한 번만), 결과 보고 report('start'·'mission'·'clear'), 별 save.clears
+  // 가격·매출(元)은 연습용 가상 돈이라 run.arc 안에만 있어요 (저장·코인·시트와 섞이지 않음)
+  // 정답 보기는 모두 같은 모양이에요. 손님의 👆 손짓은 '무엇을 가리키는지' 보여 주는 장면이고, 보기(이름 카드)에는 표시가 없어요.
+  const FD_MC = { id: 'fdmc', name: '판다 MC', scarf: '#e5484d', hat: 'festival' };
+  const FD_OWN = [   // 부스 주인 5명 (자리 순서대로 모습이 정해져서 정답과 상관없어요)
+    { id: 'fdo1', scarf: '#e5484d', hat: 'apron' }, { id: 'fdo2', scarf: '#f6c445', hat: 'chef' }, { id: 'fdo3', scarf: '#3d9a5c', hat: 'strawhat' },
+    { id: 'fdo4', scarf: '#62aefc', hat: 'cap' }, { id: 'fdo5', scarf: '#c084fc', hat: 'beret' },
   ];
-  const FD_BOOTH = [520, 680, 840];                                  // 1구역 간판 부스 3곳
-  const FD_OWNER = [1720, 1820, 1915];                               // 2구역 부스 주인 자리
-  const FD_SHELF = [1345, 1381, 1417, 1453, 1489, 1525, 1561, 1597, 1633, 1669];   // 2구역 음식 보관대 10칸 (5종 × 2, 모두 땅 위)
-  const FD_STALL = [2880, 2990, 3100, 3210];                          // 4구역 축제 부스 (불 켜지는 곳)
-  function fdNew() {
-    const r1 = shuffle(FOOD_IDS).slice(0, 3), r2 = shuffle(FOOD_IDS).slice(0, 3), shelf = shuffle([...FOOD_IDS, ...FOOD_IDS]);
-    const t1 = pick(['malatang', 'huoguo']);
-    return {
-      m1: { acc: false, ri: 0, want: r1, booths: [null, null, null] },                     // 간판 3개
-      m2: { acc: false, want: r2, got: [false, false, false], items: shelf.map((k, i) => ({ kind: k, hx: FD_SHELF[i], hy: GY, x: FD_SHELF[i], y: GY, held: false, gone: false })) },
-      m3: { acc: false, qi: 0, qs: [{ t: t1, type: 'n2p' }, { t: t1 === 'malatang' ? 'huoguo' : 'malatang', type: 'p2n' }, { t: pick(['malatang', 'huoguo']), type: 'n2p' }] },
-      m4: { acc: false, choice: null },
-      carry: null, party: false, final: false, partyT: 0, task: null,
-    };
-  }
-  function fdDrop() { const it = run.q.carry; if (!it) return; it.held = false; it.x = it.hx; it.y = it.hy; run.q.carry = null; }
-  function fdCand() {
-    const q = run.q, a = qAct(), px = P.x + P.w / 2, feet = P.y + P.h, carrying = !!q.carry;
-    const near = (x, y = GY, r = 34) => Math.abs(px - x) < r && feet > y - 46 && feet < y + 8;
-    const drop = carrying ? { label2: '⬇ 내려놓기', act2: () => { fdDrop(); SFX.pop(); } } : {};
-    for (const d of FD_NPC.slice(0, 4)) if (near(d.x)) return { label: '💬 말 걸기', act: () => fdTalk(d), ...drop };
-    if (a === 0 && q.m1.acc && q.m1.ri < 3 && near(FD_BOOTH[q.m1.ri], GY, 40)) return { label: '🖼 간판 그림 고르기', act: fdBoard };
-    if (a === 1) for (const k of [0, 1, 2]) if (near(FD_OWNER[k])) return carrying && !q.m2.got[k] ? { label: '🤲 건네주기', act: () => fdGive(k), ...drop } : { label: '💬 말 걸기', act: () => fdOwnerTalk(k), ...drop };
-    if (a === 1 && q.m2.acc) for (const it of q.m2.items) if (!it.held && !it.gone && near(it.x, it.y, 18)) return { label: carrying ? '🔄 바꿔 들기' : '🍽 들기', act: () => { if (q.carry) fdDrop(); q.carry = it; it.held = true; SFX.coin(); }, ...drop };
-    return carrying ? { label: '', ...drop } : null;
-  }
-  function fdGoal() {
-    const q = run.q, a = qAct(), at = (i) => ({ x: FD_NPC[i].x, y: GY - 44 });
-    if (a < 0) return { tip: '🚪 음식 축제 성공! 마지막 문으로 가요 →', mark: { x: GATE_X[3] + 12, y: GY - 120 } };
-    if (a === 0) { const m = q.m1; if (!m.acc) return { tip: '💬 축제 준비 판다에게 말을 걸어요', mark: at(0) }; return { tip: `🖼 반짝이는 ▼ 부스에서 간판 그림을 골라요 (${m.ri + 1}/3)`, mark: { x: FD_BOOTH[m.ri], y: GY - 100 } }; }
-    if (a === 1) { const m = q.m2, n = m.got.filter(Boolean).length; if (!m.acc) return { tip: '💬 음식 거리 판다에게 말을 걸어요', mark: at(1) }; return { tip: q.carry ? '🤲 이 음식을 주문한 부스에 가져가요' : `🍽 부스 주인이 주문한 음식을 보관대에서 골라 배달해요 (${n}/3)`, mark: null }; }
-    if (a === 2) return { tip: q.m3.acc ? `🍲 음식관 판다와 麻辣烫·火锅 구별하기 (${q.m3.qi + 1}/3)` : '💬 음식관 판다에게 말을 걸어요', mark: at(2) };
-    return { tip: '💬 광장 판다에게 말을 걸어요', mark: at(3) };
-  }
-  function fdTalk(d) {
-    const q = run.q, a = qAct(), i = d.mission;
-    if (q.final || a < 0) { openTalk(i, '<p>멋진 음식 축제야! 마지막 문으로 가 봐 →</p>', { ok: '네!' }); return; }
-    if (i < a) { openTalk(i, '<p>고마워! 다음 구역도 부탁해 →</p>', { ok: '네!' }); return; }
-    if (i > a) { openTalk(i, '<p>앞 구역 친구의 부탁을 먼저 들어줘!</p>', { ok: '네!' }); return; }
-    if (i === 0) {
-      const m = q.m1, t = m.want[m.ri];
-      taskBegin('d1' + m.ri, `간판: ${foodOf(t).h}`, foodOf(t).ko);
-      openTalk(0, `<p>${m.acc ? '다시 말해 줄게!' : '음식 축제 간판을 같이 만들자!'}</p><div class="zline big">${foodName(t, true)} 간판 (${m.ri + 1}/3)</div><p class="qprog">▼ 부스에서 알맞은 음식 그림을 골라요.</p>`, { ok: '고를게요!', hints: foodHints(t), onOk: () => { m.acc = true; } });
-      return;
-    }
-    if (i === 1) {
-      const m = q.m2;
-      if (!m.acc) { openTalk(1, '<p>부스 주인 세 명이 음식을 주문했어!</p><p>주인에게 <b>주문</b>을 듣고, 보관대에서 그 음식을 골라 배달해 줘.</p><p class="qprog">잘못 들면 [⬇ 내려놓기]</p>', { ok: '배달 출발!', onOk: () => { m.acc = true; } }); return; }
-      openTalk(1, `<p>배달한 음식: ${m.got.filter(Boolean).length}/3</p><p class="qprog">부스 주인에게 말을 걸면 주문을 다시 들을 수 있어요.</p>`, { ok: '알겠어요!' });
-      return;
-    }
-    if (i === 2) {
-      const m = q.m3;
-      if (!m.acc) {
-        openTalk(2, `<p>麻辣烫이랑 火锅, 헷갈리지? 게임 속 그림으로 비교해 보자!</p><div class="cmp2"><div class="cmp">${foodImg('malatang')}${foodName('malatang')}<small>여러 재료가 빨간 국물과 함께 <b>한 그릇</b>에</small></div><div class="cmp">${foodImg('huoguo')}${foodName('huoguo')}<small><b>큰 냄비</b>에 재료를 넣어 익혀 먹어요</small></div></div><p class="qprog">가게마다 모습은 조금씩 달라요. 게임에서는 이 그림으로 구별해요!</p>`,
-          { ok: '구별해 볼게요!', onOk: () => { m.acc = true; fdQuiz(); } });
-        return;
-      }
-      fdQuiz(); return;
-    }
-    fdFinal();
-  }
-  // ----- 미션 1: 간판 그림 고르기 (그림 5개, 이름은 안 보여요) -----
-  function fdBoard() {
-    const m = run.q.m1, t = m.want[m.ri], ord = shuffle(FOOD_IDS);
-    taskBegin('d1' + m.ri, `간판: ${foodOf(t).h}`, foodOf(t).ko);
-    openPick({
-      title: `🖼 축제 간판 (${m.ri + 1}/3)`, ask: `<div class="zline big" style="justify-content:center">${foodName(t, true)}</div><p>이 음식의 그림을 골라 간판에 붙여요.</p>`, hints: foodHints(t), closeLabel: '나중에 할게요',
-      render() {
-        $('qpBody').innerHTML = `<div class="pk-grid gifts5">${picOpts(ord)}</div>`;
-        pickBind('.pk-opt', (b) => {
-          const got = ord[+b.dataset.k];
-          if (got === t) {
-            taskEnd(); SFX.correct(); m.booths[m.ri] = t; burst(FD_BOOTH[m.ri], GY - 80, ['#fff0a8', '#e5484d', '#ffffff'], 14, 160); m.ri++; closePick();
-            const done = m.ri >= 3;
-            openTalk(0, `<p>딱 맞아! 간판 완성!</p><div class="cmp2"><div class="cmp">${foodImg(t)}${foodName(t)}<small>${foodOf(t).ko}</small></div></div>${done ? '<p>간판 세 개 모두 완성했어!</p>' : ''}`, { ok: done ? '다음 구역으로!' : '다음 간판!', onOk: () => { if (done) questDone(0); else fdTalk(FD_NPC[0]); } });
-            return;
-          }
-          taskMiss(); SFX.wrong(); pickMsg(`이 그림은 ${foodName(t)}${pp(foodOf(t).h, '이/가')} 아니에요. 다시 골라 봐요!`, 'no');
-        });
-      },
-    });
-  }
-  // ----- 미션 2: 부스 주인이 주문한 음식 배달 -----
-  function fdOwnerTalk(k) {
-    const q = run.q, m = q.m2, id = m.want[k], d = FD_NPC[4 + k];
-    if (!m.acc) { openTalk(4 + k, '<p>음식 거리 판다를 먼저 만나 봐!</p>', { ok: '네!' }); return; }
-    if (m.got[k]) { openTalk(4 + k, `<p>고마워! 음식 준비 끝!</p>${sentBox(foodOf(id).h, foodOf(id).p, false)}`, { ok: '네!' }); return; }
-    taskBegin('d2' + k, `배달: ${d.name} (${foodOf(id).h})`, foodOf(id).ko);
-    openTalk(4 + k, `<p>우리 부스에 이 음식이 필요해!</p><div class="zline big">${foodName(id, true)} 주세요!</div>`, { ok: '가져올게요!', hints: foodHints(id) });
-  }
-  function fdGive(k) {
-    const q = run.q, m = q.m2, it = q.carry, id = m.want[k], d = FD_NPC[4 + k];
-    if (!it) return;
-    taskBegin('d2' + k, `배달: ${d.name} (${foodOf(id).h})`, foodOf(id).ko);
-    if (it.kind === id) {
-      taskEnd(); SFX.correct(); it.gone = true; it.held = false; q.carry = null; m.got[k] = true;
-      burst(FD_OWNER[k], GY - 40, ['#e5484d', '#f6c445', '#ffffff'], 16, 180);
-      const done = m.got.every(Boolean);
-      openTalk(4 + k, `<p>바로 이거야! 고마워!</p>${sentBox(foodOf(id).h, foodOf(id).p)}<p>${foodOf(id).ko}</p>${done ? '<p>세 부스 모두 준비 끝!</p>' : ''}`, { ok: done ? '다음 구역으로!' : '다음 부스로!', onOk: () => { if (done) questDone(1); } });
-      return;
-    }
-    taskMiss(); SFX.wrong(); fdDrop();
-    openTalk(4 + k, `<p>앗, 내가 주문한 건 이게 아니야! 음식은 보관대에 돌려놓았어.</p><div class="zline big">${foodName(id, true)} 주세요!</div>`, { ok: '다시 찾아볼게요!', hints: foodHints(id) });
-  }
-  // ----- 미션 3: 麻辣烫 · 火锅 구별 (이름 → 그림, 그림 → 이름, 이름 → 그림) -----
-  function fdQuiz() {
-    const m = run.q.m3, qq = m.qs[m.qi], t = qq.t, others = shuffle(['jiaozi', 'kaoya', 'naicha']).slice(0, 2);
-    const ord = shuffle(['malatang', 'huoguo', ...others]);
-    taskBegin('d3' + m.qi, qq.type === 'p2n' ? `그림 → 이름: ${foodOf(t).h}` : `이름 → 그림: ${foodOf(t).h}`, foodOf(t).h);
-    const hints = [qq.type === 'p2n' ? '그림을 잘 봐요: 한 그릇에 담겼나요, 불 위의 큰 냄비인가요?' : `${foodOf(t).h} ${foodOf(t).p} — 이름을 다시 읽어 봐요.`, `麻辣烫 = 마라탕(한 그릇), 火锅 = 훠궈(불 위의 큰 냄비)`, `정답: ${foodOf(t).h} ${foodOf(t).p} — ${foodOf(t).look}`];
-    let sel = -1;
-    openPick({
-      title: `🍲 麻辣烫? 火锅? (${m.qi + 1}/3)`,
-      ask: qq.type === 'p2n' ? `<div class="cmp2"><div class="cmp big">${foodImg(t)}</div></div><p>이 음식의 중국어 이름은?</p>` : `<div class="zline big" style="justify-content:center">${foodName(t, true)}</div><p>이 음식의 그림은?</p>`,
-      hints, ok: qq.type === 'p2n' ? '✅ 이 이름이에요!' : null, closeLabel: '나중에 할게요',
-      render() {
-        if (qq.type === 'p2n') {
-          $('qpBody').innerHTML = `<div class="pk-grid words4">${nameOpts(ord, sel)}</div>`;
-          pickBind('.pk-opt', (b) => { sel = +b.dataset.k; SFX.pop(); pickMsg(''); qp.render(); });
-          $('qpOk').disabled = sel < 0;
-        } else {
-          $('qpBody').innerHTML = `<div class="pk-grid prices">${picOpts(ord)}</div>`;
-          pickBind('.pk-opt', (b) => { judge(ord[+b.dataset.k]); });
-        }
-      },
-      onOk() { judge(ord[sel]); },
-    });
-    function judge(got) {
-      if (got === t) {
-        taskEnd(); SFX.correct(); m.qi++; closePick();
-        const done = m.qi >= 3;
-        openTalk(2, `<p>맞아!</p><div class="cmp2"><div class="cmp">${foodImg(t)}${foodName(t)}<small>${foodOf(t).ko}</small></div></div>`, { ok: done ? '다음 구역으로!' : '다음 문제!', onOk: () => { if (done) questDone(2); else fdQuiz(); } });
-        return;
-      }
-      taskMiss(); SFX.wrong(); sel = -1; qp.render();
-      pickMsg(qq.type === 'p2n' ? `‘${foodOf(got).h}’${pp(foodOf(got).h, '은/는')} 이 그림이 아니에요. 다시 골라 봐요!` : `이 그림은 ${foodOf(t).h}${pp(foodOf(t).h, '이/가')} 아니에요. 다시 골라 봐요!`, 'no');
-    }
-  }
-  // ----- 미션 4: 你喜欢什么？ 좋아하는 음식 (정답 없음, 저장·전송 안 함) -----
-  function fdFinal() {
-    const q = run.q, ord = shuffle(FOOD_IDS); let sel = -1;
-    openTalk(3, `<p>음식 축제에 온 걸 환영해!</p>${sentBox('你喜欢什么？', 'Nǐ xǐhuan shénme?')}<p class="qprog">너는 무엇을 좋아해?</p>`, { ok: '골라 볼게요!', onOk: () => {
-      openPick({
-        title: '💝 내가 좋아하는 음식', ask: '<p>정답은 없어요! 좋아하는 것을 하나 골라요.</p>', ok: '✅ 이걸로 말할래요', closeLabel: '나중에 할게요',
-        render() {
-          const f = sel >= 0 ? foodOf(ord[sel]) : null, s = f ? foodSent(f.id) : null;
-          $('qpBody').innerHTML = `<div class="pk-sent"><span class="han">我喜欢</span><span class="pk-blank"><span class="han">${f ? f.h : '____'}</span></span><span class="han">。</span></div>
-            <div class="pk-sent-py">Wǒ xǐhuan <b>${f ? f.p : '____'}</b>.</div>${s ? `<div class="pk-sent-ko">${s.ko}</div>` : ''}
-            <div class="pk-grid gifts5">${ord.map((id, k) => `<button class="pk-opt choose${k === sel ? ' sel' : ''}" data-k="${k}" aria-pressed="${k === sel}">${foodImg(id)}<span class="han">${foodOf(id).h}</span><span class="py t0">${foodOf(id).p}</span></button>`).join('')}</div>`;
-          pickBind('.pk-opt', (b) => { sel = +b.dataset.k; SFX.pop(); qp.render(); });
-          $('qpOk').disabled = sel < 0;
-        },
-        onOk() {
-          const id = ord[sel], s = foodSent(id); q.m4.choice = id; closePick();
-          openTalk(3, `<p>좋아! 중국어로 한 번 말해 볼까?</p>${sentBox(s.h, s.p)}<p>${s.ko}</p><p><b>중국어로 한 번 말해 보세요!</b></p>`, { ok: '🗣 말했어요!', onOk: () => {
-            q.party = true; q.final = true; q.partyT = 0; SFX.gate();
-            for (let k = 0; k < 6; k++) burst(2880 + rnd(-40, 360), GY - rnd(60, 140), ['#e5484d', '#f6c445', '#ff9fb2', '#ffffff'], 18, 220);
-            toast('🏮 중국 음식 축제가 열렸어요!', 3000, true); questDone(3);
-          } });
-        },
-      });
-    } });
-  }
-  function fdUpdate(dt) { const q = run.q; if (q.party) q.partyT += dt; const it = q.carry; if (it) { it.x = P.x + P.w / 2; it.y = P.y - 2; } }
-  function fdDraw() {
-    const q = run.q, a = qAct(), px = P.x + P.w / 2, sx = (x) => Math.round(x - cam), vis = (x) => x - cam > -90 && x - cam < W + 90;
-    // 1구역 간판 부스 (채운 간판은 음식 그림 + 등불)
-    FD_BOOTH.forEach((bx, k) => { if (!vis(bx)) return; const x = sx(bx), f = q.m1.booths[k];
-      ctx.fillStyle = '#5a3a22'; ctx.fillRect(x - 30, GY - 70, 4, 70); ctx.fillRect(x + 26, GY - 70, 4, 70);
-      ctx.fillStyle = '#b8262c'; ctx.fillRect(x - 34, GY - 82, 68, 14); ctx.fillStyle = '#e0504f'; ctx.fillRect(x - 34, GY - 82, 68, 4);
-      ctx.fillStyle = '#3b2716'; ctx.fillRect(x - 22, GY - 66, 44, 30); ctx.fillStyle = f ? '#fff7e8' : '#c99561'; ctx.fillRect(x - 20, GY - 64, 40, 26);
-      if (f) drawFood(ctx, f, x, GY - 40, 0.95); else { ctx.fillStyle = '#8a5a2b'; ctx.font = 'bold 14px Jua, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('?', x, GY - 51); }
-      ctx.fillStyle = '#5a3a22'; ctx.fillRect(x - 28, GY - 22, 56, 6); });
-    // 2구역 보관대와 음식
-    if (vis(1500)) { ctx.fillStyle = '#5a3a22'; ctx.fillRect(sx(1325), GY - 2, 365, 2); }
-    if (a === 1 || a > 1 || a < 0) for (const it of q.m2.items) if (!it.held && !it.gone && vis(it.x)) drawFood(ctx, it.kind, sx(it.x), it.y, 1);
-    // 3구역 음식관 진열 (마라탕 · 훠궈)
-    for (const [x, id] of [[2250, 'malatang'], [2450, 'huoguo']]) if (vis(x)) { ctx.fillStyle = '#3b2716'; ctx.fillRect(sx(x) - 30, GY - 24, 60, 6); ctx.fillStyle = '#5a3a22'; ctx.fillRect(sx(x) - 26, GY - 18, 4, 18); ctx.fillRect(sx(x) + 22, GY - 18, 4, 18); drawFood(ctx, id, sx(x), GY - 24, 1.4); }
-    // 4구역 축제 부스: 마지막에 등불이 켜져요
-    FD_STALL.forEach((x, k) => { if (!vis(x)) return; const on = q.final, c = sx(x);
-      ctx.fillStyle = '#5a3a22'; ctx.fillRect(c - 26, GY - 60, 4, 60); ctx.fillRect(c + 22, GY - 60, 4, 60); ctx.fillStyle = ['#e5484d', '#f6c445', '#3d9a5c', '#8a5cd6'][k]; ctx.fillRect(c - 30, GY - 70, 60, 12);
-      ctx.fillStyle = '#5a3a22'; ctx.fillRect(c - 24, GY - 24, 48, 6); drawFood(ctx, FOOD_IDS[k], c, GY - 24, 0.9);
-      ctx.fillStyle = on ? (Math.sin(time * 6 + k) > 0 ? '#ffd43b' : '#ff922b') : '#6b5b4a'; ctx.fillRect(c - 3, GY - 56, 7, 9); ctx.fillStyle = '#2b2838'; ctx.fillRect(c, GY - 58, 1, 2); });
-    FD_NPC.slice(0, 4).forEach((d, i) => { drawNpc(d, d.x, GY, px >= d.x ? 1 : -1); if (i === a && mode === 'play') drawBubble2(d.x, GY - 44 + Math.sin(time * 4) * 2, '!'); else if (i < a || a < 0) drawBubble2(d.x, GY - 44, '♥', '#ff9fb2'); });
-    FD_NPC.slice(4).forEach((d, k) => { const x = FD_OWNER[k], hop = q.final ? -Math.max(0, Math.sin(q.partyT * 6 + k)) * 6 : 0; drawNpc(d, x, GY + hop, px >= x ? 1 : -1); if (q.m2.got[k]) drawBubble2(x, GY - 44, '♥', '#ff9fb2'); else if (a === 1 && q.m2.acc && mode === 'play') drawBubble2(x, GY - 44 + Math.sin(time * 4 + k) * 2, '?', '#cfe3ff'); });
-    if (q.final) for (let k = 0; k < 24; k++) { const x = Math.round(2760 + ((k * 61 + q.partyT * 40) % 520) - cam), y = Math.round((k * 37 + q.partyT * 70) % 200) + 30; ctx.fillStyle = ['#ff9fb2', '#f6c445', '#e5484d', '#ffffff'][k % 4]; ctx.fillRect(x, y, 3, 3); }
-  }
-  function fdTop() { const q = run.q; if (q.carry) drawHeld((g, x, y) => drawFood(g, q.carry.kind, x, y, 1.2)); else if (q.final && q.m4.choice) drawHeld((g, x, y) => drawFood(g, q.m4.choice, x, y + Math.round(Math.sin(q.partyT * 6) * 2), 1.2)); }
-  function fdRecall() {
-    const q = run.q, a = qAct(); if (a < 0) return; closeMissionPanel();
-    const notYet = () => openTalk(a, `<p>아직 ${FD_NPC[a].name}의 부탁을 듣지 않았어요.</p><p>노란 ▼ 표시를 따라가서 말을 걸어 봐요!</p>`, { ok: '알겠어요!' });
-    if (a === 0) { if (!q.m1.acc) return notYet(); const t = q.m1.want[q.m1.ri]; openTalk(0, `<div class="zline big">${foodName(t, true)} 간판 (${q.m1.ri + 1}/3)</div>`, { hints: foodHints(t) }); return; }
-    if (a === 1) { if (!q.m2.acc) return notYet(); openTalk(1, `<p>부스 주인의 주문</p>${[0, 1, 2].map(k => `<div class="zline">${FD_NPC[4 + k].name}: ${q.m2.got[k] ? '✔ 배달 끝' : foodName(q.m2.want[k])}</div>`).join('')}`, { ok: '알겠어요!' }); return; }
-    if (a === 2) { openTalk(2, `<div class="cmp2"><div class="cmp">${foodImg('malatang')}${foodName('malatang')}<small>한 그릇</small></div><div class="cmp">${foodImg('huoguo')}${foodName('huoguo')}<small>큰 냄비</small></div></div>`, { ok: '알겠어요!' }); return; }
-    openTalk(3, '<p>광장 판다에게 말을 걸고, 좋아하는 음식을 중국어로 말해 봐요!</p>', { ok: '알겠어요!' });
-  }
-
-  // ================= 10차시 판다 식당 타이쿤 (questKit 'diner') =================
-  // 我要这个。(가리키며 주문) · 这个多少钱？(가격 묻기) · 十块/二十块…(가격 듣고 이해). 가격과 매출은 연습용 가상 돈이에요 (게임 코인과 따로)
+  const FD_GUEST = [
+    { id: 'fdg1', scarf: '#ff6b8b', hat: 'bow' }, { id: 'fdg2', scarf: '#62aefc', glasses: true }, { id: 'fdg3', scarf: '#5cc46a', hat: 'strawhat' },
+    { id: 'fdg4', scarf: '#f6c445', hat: 'party' }, { id: 'fdg5', scarf: '#c084fc', hat: 'beret2' }, { id: 'fdg6', scarf: '#f08a24', hat: 'cap' }, { id: 'fdg7', scarf: '#e8689a', hat: 'party' },
+  ];
+  const FD_FAN_COL = ['#e5484d', '#f6c445', '#3d9a5c', '#62aefc', '#c084fc', '#f08a24', '#ff6b8b', '#5cc46a'];
+  const FD_FAN = Array.from({ length: 16 }, (_, i) => ({ id: 'fdf' + i, scarf: FD_FAN_COL[i % 8], hat: [null, 'party', 'bow', 'cap', 'festival', null, 'beret2', 'strawhat'][i % 8], glasses: i % 5 === 3 }));
   const DN_NPC = [
-    { id: 'dnchef', name: '주방장 판다', x: 330, mission: 0, scarf: '#e5484d', hat: 'chef' },
-    { id: 'dnhost', name: '홀 매니저 판다', x: 1290, mission: 1, scarf: '#3d7bd9', hat: 'cap' },
-    { id: 'dnclerk', name: '계산대 점원 판다', x: 2060, mission: 2, scarf: '#f6c445', hat: 'apron' },
-    { id: 'dnboss', name: '사장님 판다', x: 2770, mission: 3, scarf: '#8a5cd6', hat: 'festival' },
-    // 손님 판다 (모습이 모두 달라요)
-    { id: 'cu1', name: '리본 손님', scarf: '#ff6b8b', hat: 'bow' },
-    { id: 'cu2', name: '안경 손님', scarf: '#62aefc', glasses: true },
-    { id: 'cu3', name: '밀짚모자 손님', scarf: '#5cc46a', hat: 'strawhat' },
-    { id: 'cu4', name: '고깔 손님', scarf: '#f6c445', hat: 'party' },
-    { id: 'cu5', name: '베레모 손님', scarf: '#c084fc', hat: 'beret2' },
-    { id: 'cu6', name: '파란 모자 손님', scarf: '#f08a24', hat: 'cap' },
+    { id: 'dnchef', name: '주방장 판다', scarf: '#e5484d', hat: 'chef' },
+    { id: 'dnclerk', name: '점원 판다', scarf: '#f6c445', hat: 'apron' },
+  ];
+  const DN_CU = [
+    { id: 'cu1', name: '리본 손님', scarf: '#ff6b8b', hat: 'bow' }, { id: 'cu2', name: '안경 손님', scarf: '#62aefc', glasses: true },
+    { id: 'cu3', name: '밀짚모자 손님', scarf: '#5cc46a', hat: 'strawhat' }, { id: 'cu4', name: '고깔 손님', scarf: '#f6c445', hat: 'party' },
+    { id: 'cu5', name: '베레모 손님', scarf: '#c084fc', hat: 'beret2' }, { id: 'cu6', name: '파란 모자 손님', scarf: '#f08a24', hat: 'cap' },
     { id: 'cu7', name: '꼬마 손님', scarf: '#e8689a', hat: 'party' },
   ];
-  const DN_PASS = [440, 485, 530, 575, 620, 665, 710, 755, 800, 845];   // 1구역 주방 음식 10접시 (5종 × 2)
-  const DN_STAND = 1050;                                               // 1구역 진열대
-  const DN_BOARD = 1440, DN_COUNTER = 1620, DN_QUEUE = [1620, 1700, 1780];   // 2구역 메뉴판·주문 카운터·줄
-  const DN_REG = 2250;                                                 // 3구역 계산대
-  const DN_TABLE = [2890, 3010, 3130, 3250];                           // 4구역 손님 자리
-  const PRICES = [10, 20, 30, 40, 50];
-  // 가격: 二十块 èrshí kuài (가게에서 말하는 소리), 표에는 20元
+  const DN_VIP = { id: 'dnvip', name: 'VIP 판다', scarf: '#d4a017', hat: 'festival', glasses: true };
+  // 가격: 이미 배운 숫자 범위의 연습용 가격 (十块·二十块·三十块·五十块)
+  const PRICES = [10, 20, 30, 50];
   const priceZh = (n) => { const z = zhNum(n); return { h: `${z.h}块`, p: `${z.p.replace(/ /g, '')} kuài` }; };
   const priceSay = (n) => { const z = priceZh(n); return { h: `${z.h}。`, p: `${z.p.charAt(0).toUpperCase()}${z.p.slice(1)}.` }; };
-  function dnNew() {
-    const pr = shuffle(PRICES), price = Object.fromEntries(FOOD_IDS.map((id, i) => [id, pr[i]]));
-    const menu = shuffle(FOOD_IDS);                     // 메뉴판 순서 (판마다 다름)
-    const pass = shuffle([...FOOD_IDS, ...FOOD_IDS]);
-    const pt = shuffle(FOOD_IDS);                       // 가리키는 음식들
-    return {
-      price, menu,
-      m1: { acc: false, ri: 0, want: shuffle(FOOD_IDS).slice(0, 3), stand: [], items: pass.map((k, i) => ({ kind: k, hx: DN_PASS[i], hy: GY, x: DN_PASS[i], y: GY, held: false, gone: false })) },
-      m2: { acc: false, ci: 0, cs: [{ who: 4, type: 'A', t: pt[0] }, { who: 5, type: 'A', t: pt[1] }, { who: -1, type: 'B' }] },
-      m3: { acc: false, ri: 0 },
-      m4: { acc: false, served: [false, false, false, false], cs: [{ who: 7, type: 'name', t: pt[2] }, { who: 8, type: 'point', t: pt[3] }, { who: 9, type: 'price', t: pt[4] }, { who: 10, type: 'combo', t: pick(FOOD_IDS) }] },
-      orders: 0, sales: 0, carry: null, party: false, final: false, partyT: 0, task: null, happy: {},
-    };
+
+  const AR = { on: false, kind: '', r: -1, lock: 0, combo: 0, miss: 0, hint: 0, hints: null, held: null, belt: null, paused: true, timers: [], popFn: null, menuPick: null, want: null, tray: null };
+  const arLater = (fn, ms) => { const t = setTimeout(() => { AR.timers = AR.timers.filter(x => x !== t); if (AR.on) fn(); }, ms); AR.timers.push(t); return t; };
+  const arLocked = () => performance.now() < AR.lock;
+  const arLockFor = (ms) => { AR.lock = performance.now() + ms; };
+  const arBusy = () => AR.paused || mode !== 'arcade' || arLocked();
+  const zhCard = (h, p, cls = '') => `<span class="ar-zh ${cls}"><span class="han">${h}</span><span class="py t0">${p}</span></span>`;
+  const sayBtn = (h) => `<button class="ar-say" data-say="${h}" aria-label="듣기">🔊</button>`;
+  const faceImg = (d, cls = '') => `<img class="ar-pd ${cls}" src="${npcFaceURL(d)}" alt="">`;
+  function meURL() { const c = document.createElement('canvas'); c.width = 20; c.height = 20; drawPandaWith(c, save.shop.wear); return c.toDataURL(); }
+  const reduceMotion = () => !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+  // ----- 공통 화면 -----
+  function arcOpen() {
+    mode = 'arcade'; releaseAll(); closeMissionPanel();
+    run.arc = run.arc || arcNewData();
+    AR.on = true; AR.kind = STAGE.arcade; AR.combo = 0; AR.held = null; AR.tray = null; AR.want = null; AR.menuPick = null; AR.belt = null;
+    $('arc').hidden = false; $('arc').className = 'ar-' + AR.kind;
+    $('arScene').innerHTML = AR.kind === 'fest' ? fsSceneHTML() : dnSceneHTML();
+    arStat(); arSoundUI(); arMsg(''); arSetHints(null);
+    if (AR.kind === 'fest') { fsLanterns(); fsCrowd(); } else { dnMenuRender(); dnDecoRender(); }
+    const r = run.ms.findIndex(m => !m.complete);
+    arRoundIntro(r < 0 ? 3 : r);
   }
-  function dnDrop() { const it = run.q.carry; if (!it) return; it.held = false; it.x = it.hx; it.y = it.hy; run.q.carry = null; }
-  const dnSale = (id) => { const q = run.q; q.orders++; q.sales += q.price[id]; floatText(P.x + P.w / 2, P.y - 30, `매출 +${q.price[id]}元`, '#fff0a8'); };   // 가상 매출 (게임 코인과 따로)
-  function dnCand() {
-    const q = run.q, a = qAct(), px = P.x + P.w / 2, feet = P.y + P.h, carrying = !!q.carry;
-    const near = (x, y = GY, r = 34) => Math.abs(px - x) < r && feet > y - 46 && feet < y + 8;
-    const drop = carrying ? { label2: '⬇ 내려놓기', act2: () => { dnDrop(); SFX.pop(); } } : {};
-    for (const d of DN_NPC.slice(0, 4)) if (near(d.x)) return { label: '💬 말 걸기', act: () => dnTalk(d), ...drop };
-    if (a === 0 && q.m1.acc && carrying && near(DN_STAND, GY, 44)) return { label: '🍽 진열대에 올리기', act: dnPlace, ...drop };
-    if (a === 0 && q.m1.acc) for (const it of q.m1.items) if (!it.held && !it.gone && near(it.x, it.y, 18)) return { label: carrying ? '🔄 바꿔 들기' : '🍽 들기', act: () => { if (q.carry) dnDrop(); q.carry = it; it.held = true; SFX.coin(); }, ...drop };
-    if (a === 1 && q.m2.acc) { const c = q.m2.cs[q.m2.ci]; if (c && c.type === 'A' && near(DN_COUNTER)) return { label: '📋 주문 받기', act: dnOrderA }; if (c && c.type === 'B' && near(DN_BOARD, GY, 44)) return { label: '🙋 메뉴판에서 주문하기', act: dnOrderB }; }
-    if (a === 2 && q.m3.acc && q.m3.ri < 2 && near(DN_REG, GY, 44)) return { label: '💰 계산대에서 묻기', act: dnAsk };
-    if (a === 3 && q.m4.acc) for (let k = 0; k < 4; k++) if (!q.m4.served[k] && near(DN_TABLE[k])) return { label: '🍽 손님 맞이하기', act: () => dnServe(k) };
-    return carrying ? { label: '', ...drop } : null;
+  function arcNewData() {
+    if (STAGE.arcade === 'fest') return { best: 0, lan: 0, fans: 3 };   // 처음엔 관객 3명 → 성공할수록 늘어나요
+    const pr = shuffle([...PRICES, pick(PRICES)]);
+    return { best: 0, sales: 0, orders: 0, deco: 0, ci: 0, menu: shuffle(FOOD_IDS), price: Object.fromEntries(FOOD_IDS.map((id, i) => [id, pr[i]])), shown: {} };
   }
-  function dnGoal() {
-    const q = run.q, a = qAct(), at = (i) => ({ x: DN_NPC[i].x, y: GY - 44 }), hud = ` · 주문 ${q.orders} · 매출 ${q.sales}元`;
-    if (a < 0) return { tip: `🎉 영업 대성공!${hud} · 마지막 문으로 →`, mark: { x: GATE_X[3] + 12, y: GY - 120 } };
-    if (a === 0) { const m = q.m1; if (!m.acc) return { tip: '💬 주방장 판다에게 말을 걸어요', mark: at(0) }; return { tip: q.carry ? `🍽 진열대에 올려요 (${m.ri + 1}/3)` : `🍽 주방장이 말한 음식을 골라 들어요 (${m.ri + 1}/3)`, mark: q.carry ? { x: DN_STAND, y: GY - 80 } : null }; }
-    if (a === 1) { const m = q.m2, c = m.cs[m.ci]; if (!m.acc) return { tip: '💬 홀 매니저 판다에게 말을 걸어요', mark: at(1) }; return c.type === 'B' ? { tip: `🙋 이번엔 내가 손님! 메뉴판에서 주문해요 (3/3)${hud}`, mark: { x: DN_BOARD, y: GY - 100 } } : { tip: `📋 카운터에서 손님 주문을 받아요 (${m.ci + 1}/3)${hud}`, mark: { x: DN_COUNTER, y: GY - 60 } }; }
-    if (a === 2) return q.m3.acc ? { tip: `💰 계산대에서 가격을 물어봐요 (${q.m3.ri + 1}/2)`, mark: { x: DN_REG, y: GY - 90 } } : { tip: '💬 계산대 점원 판다에게 말을 걸어요', mark: at(2) };
-    if (!q.m4.acc) return { tip: '💬 사장님 판다에게 말을 걸어요', mark: at(3) };
-    return { tip: `🍽 손님을 맞이해요 (${q.m4.served.filter(Boolean).length}/4)${hud}`, mark: null };
+  function arClose() { AR.timers.forEach(clearTimeout); AR.timers = []; AR.on = false; AR.belt = null; AR.paused = true; $('arc').hidden = true; $('arPop').hidden = true; $('arFx').innerHTML = ''; }
+  const AR_ROUNDS = {
+    fest: [
+      { icon: '🎪', name: '음식 컨베이어 벨트', goal: '판다 MC가 중국어로 음식을 부탁해요.<br>움직이는 벨트에서 그 음식을 잡아 건네줘요!' },
+      { icon: '🏮', name: '음식 부스 분류 대작전', goal: '음식을 잡아서 <b>중국어 간판</b>이 맞는 부스에 넣어요.<br>맞힐 때마다 부스가 완성돼요!' },
+      { icon: '💨', name: '우당탕탕 음식 러시!', goal: '벨트가 빨라졌어요! 손님 두 명의 <b>중국어 주문표</b>를 읽고<br>맞는 손님에게 음식을 줘요. (시간 제한은 없어요)' },
+      { icon: '💝', name: '내가 좋아하는 음식!', goal: '판다 MC가 물어봐요: 你喜欢什么？<br>좋아하는 음식을 골라 대답해요. <b>정답은 없어요!</b>' },
+    ],
+    diner: [
+      { icon: '🙋', name: '첫 손님 등장!', goal: '손님이 메뉴판을 👆 가리키며 “我要这个。”라고 해요.<br>가리킨 음식의 <b>중국어 이름</b>을 주문서에 골라요!' },
+      { icon: '🍽', name: '내가 직접 주문하기!', goal: '이번엔 내가 손님! 먹고 싶은 음식을 가리키고<br><b>문장 조각</b>으로 “我要这个。”를 만들어요.' },
+      { icon: '💰', name: '계산대 대소동!', goal: '“这个多少钱？”으로 가격을 물어요.<br>점원의 <b>중국어 대답</b>을 듣고 가격표를 골라요!' },
+      { icon: '🔥', name: '손님 러시!', goal: '손님이 줄을 섰어요! 손님마다 부탁이 달라요.<br>돌발 상황과 👑 VIP 손님도 와요!' },
+    ],
+  };
+  function arRoundIntro(r) {
+    AR.r = r; AR.paused = true; AR.held = null; AR.tray = null; AR.menuPick = null; arSetHints(null); arHeldUI();
+    const R = AR_ROUNDS[AR.kind][r];
+    $('arRound').textContent = `라운드 ${r + 1}/4 · ${R.name}`;
+    arPop(`<div class="ar-rno">라운드 ${r + 1} / 4</div><h2>${R.icon} ${R.name}</h2><p>${R.goal}</p>`, '시작! ▶', () => { AR.paused = false; (AR.kind === 'fest' ? [fsR1, fsR2, fsR3, fsR4] : [dnR1, dnR2, dnR3, dnR4])[r](); });
   }
-  function dnTalk(d) {
-    const q = run.q, a = qAct(), i = d.mission;
-    if (q.final || a < 0) { openTalk(i, `<p>영업 대성공! 오늘 주문 ${q.orders}개, 매출 ${q.sales}元!</p><p class="qprog">(게임 속 연습용 돈이에요)</p>`, { ok: '야호!' }); return; }
-    if (i < a) { openTalk(i, '<p>고마워! 다음 일도 부탁해 →</p>', { ok: '네!' }); return; }
-    if (i > a) { openTalk(i, '<p>앞쪽 일을 먼저 끝내 줘!</p>', { ok: '네!' }); return; }
-    if (i === 0) {
-      const m = q.m1, t = m.want[m.ri];
-      taskBegin('n1' + m.ri, `진열: ${foodOf(t).h}`, foodOf(t).ko);
-      openTalk(0, `<p>${m.acc ? '다시 말해 줄게!' : '판다 식당 개업 준비! 진열대에 음식을 올려 줘.'}</p><div class="zline big">${foodName(t, true)} 올려 줘! (${m.ri + 1}/3)</div><p class="qprog">주방 접시에서 골라 들고 → 진열대로</p>`, { ok: '준비할게요!', hints: foodHints(t), onOk: () => { m.acc = true; } });
+  function arPop(html, btn, fn) {
+    $('arPopBody').innerHTML = html; $('arPopGo').innerHTML = btn; AR.popFn = fn; AR.paused = true;
+    bindSoundButtons($('arPopBody')); wrapPinyin($('arPopBody'));
+    $('arPop').hidden = false; $('arPop').scrollTop = 0; setTimeout(() => { try { $('arPopGo').focus({ preventScroll: true }); } catch (e) {} }, 30);
+  }
+  function arPopGo() {
+    if ($('arPop').hidden || mode !== 'arcade') return;
+    $('arPop').hidden = true; const f = AR.popFn; AR.popFn = null; AR.paused = false; if (f) f();
+  }
+  function arMsg(html, kind = '') { const m = $('arMsg'); m.innerHTML = html; m.className = kind; wrapPinyin(m); }
+  function arStat() {
+    const a = run.arc || {};
+    $('arStat').innerHTML = AR.kind === 'fest' ? `🔥 콤보 <b>${AR.combo}</b> · 👏 관객 <b>${Math.min(16, a.fans || 0)}</b>` : `📋 주문 <b>${a.orders || 0}</b> · 💰 매출 <b>${a.sales || 0}元</b><small> 연습용</small>`;
+  }
+  function arSoundUI() { $('arSound').textContent = soundOn ? '🔊' : '🔇'; }
+  function arSetHints(fn) { AR.hints = fn; AR.hint = 0; $('arHint').hidden = !fn; $('arHint').classList.remove('nudge'); }
+  function arHint() {
+    if (!AR.hints || AR.paused) return;
+    const list = typeof AR.hints === 'function' ? AR.hints() : AR.hints; if (!list || !list.length) return;
+    taskHint(); arMsg('💡 ' + list[Math.min(AR.hint, list.length - 1)], 'hint'); AR.hint++; $('arHint').classList.remove('nudge');
+    SFX.pop();
+  }
+  function arTask(key, label, right, hints, guided = false) { taskBegin(key, label, right, guided); arSetHints(hints); AR.miss = 0; }
+  function arWrong(msg, el) {
+    SFX.wrong(); taskMiss(); AR.combo = 0; AR.miss++; arMsg(msg, 'bad'); arStat();
+    if (el) { el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); }
+    if (AR.miss >= 2 && AR.hints) $('arHint').classList.add('nudge');
+  }
+  function arRight(msg) {
+    SFX.correct(); taskEnd(); AR.combo++; AR.miss = 0;
+    run.arc.best = Math.max(run.arc.best || 0, AR.combo);
+    arMsg(msg, 'ok'); arSetHints(null); arStat();
+    if (AR.combo >= 2) arCombo(AR.combo);
+  }
+  function arCombo(n) {
+    const el = document.createElement('div'); el.className = 'ar-combo'; el.textContent = n >= 5 ? `콤보 ×${n}! 대단해요!` : `콤보 ×${n}!`;
+    $('arFx').appendChild(el); setTimeout(() => el.remove(), 1200);
+    if (n >= 3) tone(1319, 0, 0.1, 'square', 0.04);
+  }
+  function arFloat(text, host, cls = '') {
+    if (!host) return; const r = host.getBoundingClientRect(), el = document.createElement('div');
+    el.className = 'ar-float ' + cls; el.textContent = text; el.style.left = `${r.left + r.width / 2}px`; el.style.top = `${r.top}px`;
+    $('arFx').appendChild(el); setTimeout(() => el.remove(), 1200);
+  }
+  function arConfetti(n = 70) {
+    if (reduceMotion()) n = 20;
+    const cols = ['#f6c445', '#ff6f86', '#62aefc', '#4fd08c', '#b38cff', '#fff0a8'];
+    for (let i = 0; i < n; i++) {
+      const el = document.createElement('i'); el.className = 'ar-conf';
+      el.style.left = `${Math.random() * 100}%`; el.style.background = pick(cols); el.style.animationDelay = `${Math.random() * 0.6}s`; el.style.animationDuration = `${1.6 + Math.random() * 1.2}s`;
+      $('arFx').appendChild(el); setTimeout(() => el.remove(), 3400);
+    }
+  }
+  const arBounce = (el, cls = 'hop') => { if (!el) return; el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); };
+  // 라운드 끝: 미션 완료 (보상은 처음 한 번만) → 카드 → 다음 라운드
+  function arRoundDone() {
+    const i = AR.r, s = run.ms[i], M = STAGE.missions[i];
+    if (!s || s.complete) return;
+    s.done = s.need; s.complete = true; AR.held = null; AR.tray = null; arHeldUI();
+    const ever = save.questEver[STAGE.id] = save.questEver[STAGE.id] || [];
+    const first = !ever.includes(i);
+    if (first) { ever.push(i); addCoins(5); addExp(20); }
+    M.cards.forEach(id => { save.cards[id] = true; }); writeSave();
+    report('mission', { mission: `${i + 1}/${run.ms.length}` });
+    setTimeout(() => SFX.level(), 200);
+    const last = run.ms.every(m => m.complete);
+    const cards = M.cards.map(id => { const w = STAGE.words[id]; return `<div class="ar-card">${zhCard(w.h, w.p)}<small>${w.ko}</small>${sayBtn(w.h)}</div>`; }).join('');
+    const reward = first ? '🪙 +5 코인 · ✨ +20 EXP' : '성공! (미션 보상은 처음 한 번만 받아요)';
+    if (last) {
+      run.cleared = true; run.end = performance.now(); run.clearN = (run.clearN || 0) + 1;
+      const stars = calcStars();
+      save.clears[STAGE.id] = Math.max(save.clears[STAGE.id] || 0, stars.n); writeSave();
+      report('clear', { mission: `${run.ms.length}/${run.ms.length}`, stars: stars.n });
+      arPop(`<h2>🎉 ${STAGE.clearTitle}</h2><p class="ar-reward">${reward}</p>${cards ? `<div class="ar-cards">${cards}</div>` : ''}`, '결과 보기 ▶', () => { arClose(); showClear(stars); });
       return;
     }
-    if (i === 1) {
-      const m = q.m2;
-      if (!m.acc) { openTalk(1, `<p>손님이 와요! 카운터에서 주문을 받아 줘.</p>${sentBox('我要这个。', 'Wǒ yào zhège.', false)}<p class="qprog">손님이 메뉴판을 <b>가리키며</b> 말해요. 这个 = 이것</p>`, { ok: '주문 받을게요!', onOk: () => { m.acc = true; } }); return; }
-      openTalk(1, `<p>받은 주문: ${m.ci}/3</p>`, { ok: '알겠어요!' }); return;
-    }
-    if (i === 2) {
-      const m = q.m3;
-      if (!m.acc) { openTalk(2, `<p>이번엔 네가 손님이야! 계산대에서 가격을 물어봐.</p>${sentBox('这个多少钱？', 'Zhège duōshao qián?', false)}<p class="qprog">이거 얼마예요? (게임 속 가격은 연습용이에요)</p>`, { ok: '물어볼게요!', onOk: () => { m.acc = true; } }); return; }
-      openTalk(2, `<p>계산대에서 가격을 물어봐! (${m.ri + 1}/2)</p>`, { ok: '네!' }); return;
-    }
-    const m = q.m4;
-    if (!m.acc) { openTalk(3, '<p>손님 네 명이 자리에 앉았어! 한 명씩 맞이해 줘.</p><p class="qprog">손님마다 하는 말이 달라요.</p>', { ok: '영업 시작!', onOk: () => { m.acc = true; } }); return; }
-    openTalk(3, `<p>맞이한 손님: ${m.served.filter(Boolean).length}/4</p>`, { ok: '네!' });
+    arPop(`<h2>🎉 라운드 ${i + 1} 성공!</h2><p class="ar-reward">${reward}</p>${cards ? `<div class="ar-cardsHead">${josa(STAGE.cardName, '을/를')} 얻었어요 · 따라 말해 봐요</div><div class="ar-cards">${cards}</div>` : ''}`, '다음 라운드 ▶', () => arRoundIntro(i + 1));
   }
-  // ----- 미션 1: 주방 → 진열대 -----
-  function dnPlace() {
-    const q = run.q, m = q.m1, it = q.carry, t = m.want[m.ri];
-    if (!it) return;
-    taskBegin('n1' + m.ri, `진열: ${foodOf(t).h}`, foodOf(t).ko);
-    if (it.kind === t) {
-      taskEnd(); SFX.correct(); it.gone = true; it.held = false; q.carry = null; m.stand.push(t); m.ri++;
-      burst(DN_STAND, GY - 40, ['#fff0a8', '#ffffff'], 12, 150);
-      const done = m.ri >= 3;
-      openTalk(0, `<p>좋아, 진열 완료!</p>${sentBox(foodOf(t).h, foodOf(t).p, false)}<p>${foodOf(t).ko}</p>`, { ok: done ? '개업 준비 끝!' : '다음 음식!', onOk: () => { if (done) questDone(0); else dnTalk(DN_NPC[0]); } });
-      return;
-    }
-    taskMiss(); SFX.wrong(); dnDrop();
-    openTalk(0, `<p>앗, 그 음식이 아니야! 접시는 주방에 돌려놓았어.</p><div class="zline big">${foodName(t, true)} 올려 줘!</div>`, { ok: '다시 고를게요!', hints: foodHints(t) });
+  function arHome() {
+    if (mode !== 'arcade') return;
+    mode = 'pause'; AR.paused = true; $('homeAsk').hidden = false; $('homeNo').focus({ preventScroll: true });
   }
-  // 메뉴판 (그림 5개, 가리키는 손 👉). 손이 가리키는 게 '这个'예요
-  const menuBoard = (point, clickable) => `<div class="menu-board">${run.q.menu.map((id, k) => `<${clickable ? 'button' : 'div'} class="mb-cell${point === id ? ' pointed' : ''}" data-k="${k}">${foodImg(id)}${point === id ? '<span class="mb-hand" aria-label="가리키는 손">👆</span>' : ''}</${clickable ? 'button' : 'div'}>`).join('')}</div>`;
-  const zhegeHints = (t) => ['我要这个。 Wǒ yào zhège. — 这个 = ‘이것’. 손님이 손가락으로 가리킨 음식이에요.', `손님이 가리킨 음식은 ‘${foodOf(t).ko}’예요. 중국어 이름을 찾아봐요.`, `정답: ${foodOf(t).h} ${foodOf(t).p}`];
-  // ----- 미션 2 활동 A: 손님이 가리키며 我要这个。 → 주문서에 음식 이름 -----
-  function dnPointOrder({ who, t, title, onDone, key }) {
-    const ord = shuffle(FOOD_IDS); let sel = -1;
-    taskBegin(key, `我要这个。 (가리킨 음식: ${foodOf(t).h})`, foodOf(t).h);
-    openPick({
-      title, ask: `<div class="cust"><img class="npc-face" src="${npcFaceURL(DN_NPC[who])}" alt=""><div class="say-bubble">${sentBox('我要这个。', 'Wǒ yào zhège.', false)}</div></div>${menuBoard(t, false)}<p>주문서에 손님이 가리킨 음식의 이름을 적어요.</p>`,
-      hints: zhegeHints(t), ok: '📋 주문서 내기', closeLabel: '나중에 할게요',
-      render() { $('qpBody').innerHTML = `<div class="pk-grid words5">${nameOpts(ord, sel)}</div>`; pickBind('.pk-opt', (b) => { sel = +b.dataset.k; SFX.pop(); pickMsg(''); qp.render(); }); $('qpOk').disabled = sel < 0; },
-      onOk() {
-        if (ord[sel] === t) { taskEnd(); SFX.correct(); closePick(); onDone(); return; }
-        taskMiss(); SFX.wrong(); pickMsg(`‘${foodOf(ord[sel]).h}’${pp(foodOf(ord[sel]).h, '은/는')} 손님이 가리킨 음식이 아니에요. 다시 골라 봐요!`, 'no'); sel = -1; qp.render();
-      },
+  function arWords() {
+    if (mode !== 'arcade' || !$('arPop').hidden) return;
+    const keep = AR.popFn;
+    const chips = STAGE.cardOrder.map(id => STAGE.words[id]).map(w => `<div class="ar-card${w.bonus ? ' bonus' : ''}">${zhCard(w.h, w.p)}<small>${w.bonus ? '⭐ ' : ''}${w.ko}</small>${sayBtn(w.h)}</div>`).join('');
+    arPop(`<h2>📖 오늘 배우는 말</h2><div class="ar-cards">${chips}</div>`, '돌아가기', () => { AR.popFn = keep; });
+  }
+  // 키보드: Enter = 큰 버튼, 1~5 = 번호 칸, H = 힌트, Esc = 홈
+  //  9차시 벨트: ← → 판다 이동, Space·E·↓ = 잡기, Q·Backspace = 내려놓기
+  function arKey(e) {
+    const c = e.code; if (e.repeat && !/^Arrow/.test(c)) return;
+    if (!$('arPop').hidden) { if (isEnter(c) || c === 'Space') { e.preventDefault(); arPopGo(); } return; }
+    if (c === 'Escape') { arHome(); return; }
+    if (c === 'KeyH') { arHint(); return; }
+    const d = /^(Digit|Numpad)([1-5])$/.exec(c);
+    if (d) { const b = $('arScene').querySelector(`[data-key="${d[2]}"]:not([disabled])`); if (b) b.click(); return; }
+    if (AR.belt) {
+      if (c === 'ArrowLeft' || c === 'ArrowRight') { beltMoveCatch(c === 'ArrowLeft' ? -1 : 1); return; }
+      if (c === 'Space' || c === 'KeyE' || c === 'ArrowDown') { e.preventDefault(); beltGrabNear(); return; }
+      if (c === 'KeyQ' || c === 'Backspace') { e.preventDefault(); beltPut(); return; }
+    }
+    if (isEnter(c)) {
+      const a = document.activeElement;
+      if (a && a.closest && a.closest('#arScene') && a.tagName === 'BUTTON') return;   // 포커스한 버튼은 브라우저가 Enter로 눌러요
+      const g = $('arScene').querySelector('.ar-go:not([disabled])'); if (g) { e.preventDefault(); g.click(); }
+    }
+  }
+  function arcUpdate(dt) { if (AR.belt && !AR.paused) beltUpdate(dt); }
+
+  // ================= 9차시 우당탕탕! 판다 푸드 페스티벌 =================
+  function fsSceneHTML() {
+    return `<div class="fs-top"><div class="fs-lan" id="fsLan">${'<i></i>'.repeat(12)}</div>
+      <div class="fs-row"><div class="fs-crowd" id="fsCrowd"></div>
+      <div class="fs-mc" id="fsMcBox"><div class="ar-bub" id="fsBub" hidden></div>${faceImg(FD_MC, 'fs-mcimg')}</div></div></div>
+      <div class="fs-beltbox"><div class="fs-belt" id="fsBelt"><div class="fs-tread" id="fsTread"></div></div>
+      <div class="fs-lane" id="fsLane"><div class="fs-me" id="fsMe"><div class="fs-held" id="fsHeld"></div><img src="${meURL()}" alt="내 판다"></div></div></div>
+      <div class="fs-panel" id="fsPanel"></div>`;
+  }
+  function fsLanterns() { const n = Math.min(12, run.arc.lan || 0); $('fsLan').querySelectorAll('i').forEach((el, k) => el.classList.toggle('on', k < n)); }
+  function fsLantern(n) { run.arc.lan = Math.min(12, (run.arc.lan || 0) + n); fsLanterns(); }
+  function fsCrowd() {
+    const n = Math.min(16, run.arc.fans || 0);
+    const box = $('fsCrowd'); while (box.children.length < n) { const d = FD_FAN[box.children.length]; box.insertAdjacentHTML('beforeend', faceImg(d, 'fs-fan new')); }
+    arStat();
+  }
+  function fsFans(n) { run.arc.fans = (run.arc.fans || 0) + n; fsCrowd(); if (AR.combo >= 3) { const c = $('fsCrowd'); arBounce(c, 'cheer'); } }
+  function fsBubble(html) { const b = $('fsBub'); b.innerHTML = html; b.hidden = !html; bindSoundButtons(b); wrapPinyin(b); arBounce(b, 'pop'); }
+  function fsMcReact(ok) { const el = $('fsMcBox'); arBounce(el, ok ? 'hop' : 'shake'); }
+
+  // ----- 컨베이어 벨트 (왼쪽 → 오른쪽으로 흘러요). 음식 버튼은 모두 같은 모양 -----
+  function beltStart({ speed, pool, need }) {
+    const el = $('fsBelt'); el.querySelectorAll('.fs-item').forEach(x => x.remove()); el.hidden = false; $('fsLane').hidden = false;
+    const n = 8, p = pool(); let ids = [];
+    while (ids.length < n) ids = ids.concat(shuffle(p));
+    ids = ids.slice(0, n);
+    AR.belt = { slots: [], off: 0, speed: speed * (reduceMotion() ? 0.6 : 1), pool, need, uid: 0, catchX: null, S: 100, L: 800, iw: 70 };
+    for (const id of ids) {
+      const b = document.createElement('button'); b.className = 'fs-item'; b.type = 'button'; b.tabIndex = -1; b.setAttribute('aria-label', '음식 그림');
+      b.innerHTML = '<img alt="">';
+      const s = { id, uid: ++AR.belt.uid, el: b, x: -999 }; b.querySelector('img').src = foodURL(id);
+      // 움직이는 음식은 누르는 순간(pointerdown) 잡아요. 어떤 기기에서 pointerdown이 안 오면 click으로 한 번만 (두 번 잡지 않게)
+      b.addEventListener('pointerdown', (e) => { e.preventDefault(); AR.downT = performance.now(); beltGrab(s); });
+      b.addEventListener('click', () => { if (performance.now() - (AR.downT || 0) > 700) beltGrab(s); });
+      el.appendChild(b); AR.belt.slots.push(s);
+    }
+    AR.belt.off = Math.random() * 300;
+    beltUpdate(0);
+    AR.belt.catchX = el.clientWidth / 2; beltCatchUI();
+  }
+  function beltStop() { if (!AR.belt) return; $('fsBelt').querySelectorAll('.fs-item').forEach(x => x.remove()); AR.belt = null; AR.held = null; arHeldUI(); }
+  function beltUpdate(dt) {
+    const B = AR.belt, el = $('fsBelt'); if (!B || !el) return;
+    const bw = el.clientWidth, iw = Math.max(40, el.clientHeight - 12), n = B.slots.length;
+    B.iw = iw; B.S = Math.max(iw * 1.45, (bw + iw) / (n - 1)); B.L = B.S * n;
+    B.off = (B.off + B.speed * dt) % B.L;
+    B.slots.forEach((s, k) => {
+      const x = ((B.off + k * B.S) % B.L) - iw;
+      if (x < s.x - B.L / 2) beltWrap(s);   // 오른쪽 끝을 지나 왼쪽으로 다시 들어옴
+      s.x = x;
+      s.el.style.transform = `translateX(${x.toFixed(1)}px)`; s.el.hidden = !s.id;
+    });
+    $('fsTread').style.backgroundPositionX = `${B.off.toFixed(1)}px`;
+  }
+  // 다시 들어오는 칸: 빈칸이면 채우고, 지금 필요한 음식이 벨트에 없으면 그 음식으로
+  function beltWrap(s) {
+    // 필요한 음식이 지금 화면에 하나도 없으면 들어오는 칸에 넣어요 (오래 기다리지 않게)
+    const bw = $('fsBelt').clientWidth;
+    const B = AR.belt, need = B.need().filter(id => !B.slots.some(t => t.id === id && t !== s && t.x > -B.iw && t.x < bw) && AR.held !== id), pool = B.pool();
+    if (!pool.length) { s.id = null; return; }
+    if (need.length) beltSet(s, need[0]);
+    else if (!s.id || !pool.includes(s.id)) beltSet(s, pick(pool));
+  }
+  function beltSet(s, id) { s.id = id; s.uid = ++AR.belt.uid; if (id) s.el.querySelector('img').src = foodURL(id); s.el.hidden = !id; }
+  // 주문이 바뀌면: 그 음식이 벨트에 없을 때 화면 밖(왼쪽) 칸에 넣어 곧 들어오게
+  function beltNeed(id) {
+    const B = AR.belt; if (!B || B.slots.some(s => s.id === id) || AR.held === id) return;
+    // 화면 밖 칸 중에서 가장 먼저 왼쪽으로 들어올 칸 (p = 고리 위 위치, 들어오는 지점 p = iw)
+    const bw = $('fsBelt').clientWidth, wait = (s) => (((B.iw - (s.x + B.iw)) % B.L) + B.L) % B.L;
+    const off = B.slots.filter(s => s.x + B.iw <= 0 || s.x >= bw).sort((a, b) => wait(a) - wait(b));
+    beltSet(off[0] || B.slots.reduce((a, b) => (wait(a) < wait(b) ? a : b)), id);
+  }
+  function beltRemoveKind(id) { const B = AR.belt; if (!B) return; B.slots.forEach(s => { if (s.id === id) beltSet(s, null); }); }
+  function beltGrab(s) {
+    if (arBusy() || !AR.belt || !s.id) return;
+    const old = AR.held; AR.held = s.id;
+    if (old) beltSet(s, old); else beltSet(s, null);   // 들고 있던 음식은 그 자리에 내려놓고 바꿔 들어요
+    AR.belt.catchX = s.x + AR.belt.iw / 2; beltCatchUI(true);
+    AR.grabs = (AR.grabs || 0) + 1; SFX.pop(); arHeldUI(); arLockFor(150);
+    if (AR.onGrab) AR.onGrab();
+  }
+  function beltGrabNear() {
+    const B = AR.belt; if (!B || arBusy()) return;
+    const c = B.catchX, s = B.slots.filter(s => s.id).map(s => ({ s, d: Math.abs(s.x + B.iw / 2 - c) })).sort((a, b) => a.d - b.d)[0];
+    if (s && s.d < B.iw * 0.9) beltGrab(s.s); else arMsg('판다 바로 위에 음식이 오면 Space로 잡아요!', 'info');
+  }
+  function beltMoveCatch(dir) {
+    const B = AR.belt; if (!B || AR.paused) return;
+    B.catchX = clamp((B.catchX || 0) + dir * 32, 20, $('fsBelt').clientWidth - 20); beltCatchUI();
+  }
+  function beltCatchUI(jump) {
+    const me = $('fsMe'), B = AR.belt; if (!B || !me) return;
+    me.style.left = `${B.catchX}px`; if (jump) arBounce(me, 'jump');
+  }
+  function beltPut() {
+    if (!AR.held || !AR.belt || AR.paused) return;
+    const B = AR.belt, bw = $('fsBelt').clientWidth;
+    const empty = B.slots.filter(s => !s.id).sort((a, b) => (a.x < 0 || a.x > bw ? -1 : 1) - (b.x < 0 || b.x > bw ? -1 : 1))[0];
+    if (empty) beltSet(empty, AR.held);
+    AR.held = null; arHeldUI(); SFX.pop(); arMsg('음식을 벨트에 내려놓았어요. 다른 음식을 잡아 봐요!', 'info');
+  }
+  function arHeldUI() {
+    const h = $('fsHeld'); if (h) h.innerHTML = AR.held ? `<img src="${foodURL(AR.held)}" alt="들고 있는 음식">` : '';
+    $('arDrop').hidden = !(AR.belt && AR.held);
+  }
+
+  // ----- 라운드 1: 음식 컨베이어 벨트 (MC 주문 3개) -----
+  function fsR1() {
+    const q = run.arc; q.r1 = shuffle(FOOD_IDS).slice(0, 3); q.i = 0; AR.onGrab = null;
+    beltStart({ speed: 38, pool: () => FOOD_IDS, need: () => (AR.want ? [AR.want] : []) });
+    $('fsPanel').innerHTML = `<button class="ar-go big" id="fsGive">🎁 판다 MC에게 건네주기</button>`;
+    $('fsGive').addEventListener('click', fsGive1);
+    fsOrder1();
+  }
+  function fsOrder1() {
+    const q = run.arc, t = q.r1[q.i], f = foodOf(t); AR.want = t;
+    fsBubble(`<small>주문 ${q.i + 1}/3</small>${zhCard(f.h, f.p, 'big')}${sayBtn(f.h)}`);
+    beltNeed(t);
+    arTask(`fs1-${q.i}`, `컨베이어: ${f.h} 잡기`, f.h, [`${f.h}${pp(f.h, '은/는')} ‘${f.ko}’예요. 벨트에서 찾아봐요.`, `${f.ko}: ${f.look}이에요.`]);
+    arMsg(isTouch() ? '움직이는 음식을 톡! 눌러서 잡고 → 🎁 건네주기' : '음식을 클릭해서 잡고 → 🎁 건네주기 (키보드: ←→ 이동 · Space 잡기 · Enter 건네주기)');
+  }
+  function fsGive1() {
+    if (arBusy()) return;
+    if (!AR.held) { arMsg('먼저 벨트 위의 음식을 눌러서 잡아요!', 'info'); return; }
+    arLockFor(500);
+    const q = run.arc, t = AR.want, f = foodOf(t);
+    if (AR.held !== t) { fsMcReact(false); arWrong(`MC 판다가 고개를 저어요. 주문한 “${f.h}”가 아니에요. 다른 음식을 잡아 봐요!`, $('fsGive')); return; }
+    AR.held = null; arHeldUI(); fsMcReact(true); arFloat('😋 谢谢！', $('fsMcBox'));
+    arRight(`정답! ${f.h} ${f.p} = ${f.ko}`); fsLantern(1); fsFans(1);
+    q.i++; AR.want = null; fsBubble('');
+    if (q.i >= 3) arLater(arRoundDone, 1100); else arLater(fsOrder1, 900);
+  }
+  // ----- 라운드 2: 음식 부스 분류 대작전 (중국어 간판 5개) -----
+  function fsR2() {
+    const q = run.arc; q.booths = shuffle(FOOD_IDS); q.bdone = []; AR.want = null; AR.onGrab = null;
+    const left = () => q.booths.filter(id => !q.bdone.includes(id));
+    beltStart({ speed: 40, pool: left, need: left });
+    fsBubble(`<small>간판을 보고 음식을 넣어 줘요!</small>`);
+    $('fsPanel').innerHTML = `<div class="fs-booths">${q.booths.map((id, k) => `<button class="fs-booth" data-key="${k + 1}" data-b="${k}"><span class="fs-sign">${zhCard(foodOf(id).h, foodOf(id).p)}</span><span class="fs-stall">${faceImg(FD_OWN[k], 'fs-own')}<span class="fs-put"></span></span></button>`).join('')}</div>`;
+    $('fsPanel').querySelectorAll('.fs-booth').forEach(b => b.addEventListener('click', () => fsPut(+b.dataset.b)));
+    wrapPinyin($('fsPanel'));
+    arSetHints(fsR2Hints);
+    arMsg('음식을 잡고 → 중국어 간판이 맞는 부스를 눌러요!');
+  }
+  function fsPut(k) {
+    if (arBusy()) return;
+    const q = run.arc, id = q.booths[k], b = $('fsPanel').querySelector(`[data-b="${k}"]`);
+    if (q.bdone.includes(id)) { arMsg('이 부스는 벌써 완성됐어요! 다른 부스를 골라요.', 'info'); return; }
+    if (!AR.held) { arMsg('먼저 벨트에서 음식을 잡아요!', 'info'); return; }
+    arLockFor(450);
+    const f = foodOf(AR.held); taskBegin(`fs2-${q.bdone.length}`, `부스 분류: ${f.ko} 그림 → ${f.h}`, f.h);
+    if (AR.held !== id) { arWrong('간판의 중국어와 음식이 달라요. 간판을 다시 읽어 봐요!', b); return; }
+    q.bdone.push(id); AR.held = null; arHeldUI(); beltRemoveKind(id);
+    b.classList.add('done'); b.querySelector('.fs-put').innerHTML = `<img src="${foodURL(id)}" alt="">`; arBounce(b.querySelector('.fs-own'), 'hop');
+    arFloat('🎉', b);
+    arRight(`${f.h} 부스 완성! (${q.bdone.length}/5)`); fsLantern(1); fsFans(1);
+    if (q.bdone.length >= 5) { AR.belt.need = () => []; arLater(arRoundDone, 1200); } else arSetHints(fsR2Hints);
+  }
+  function fsR2Hints() {
+    const q = run.arc, f = AR.held && foodOf(AR.held);
+    if (!f) return [`남은 간판 ${5 - q.bdone.length}개! 먼저 벨트에서 음식을 하나 잡아요. 그다음 간판을 읽어요.`];
+    taskBegin(`fs2-${q.bdone.length}`, `부스 분류: ${f.ko} 그림 → ${f.h}`, f.h);
+    return [`들고 있는 음식은 ‘${f.ko}’예요. 중국어 이름은 무엇일까요?`, `‘${f.ko}’ = ${f.h} ${f.p} — 이 간판을 찾아요.`];
+  }
+  // ----- 라운드 3: 우당탕탕 음식 러시 (손님 2명이 동시에, 모두 6번) -----
+  const FS_RUSH = 6;
+  function fsR3() {
+    const q = run.arc; q.served = 0; q.spawn = 0; q.cust = [null, null]; q.gi = Math.floor(Math.random() * FD_GUEST.length); AR.want = null; AR.onGrab = null;
+    beltStart({ speed: 58, pool: () => FOOD_IDS, need: () => q.cust.filter(Boolean).map(c => c.want) });
+    fsBubble(`<small>손님이 몰려와요! 우당탕탕~</small>`);
+    $('fsPanel').innerHTML = `<div class="fs-custs">${[0, 1].map(k => `<button class="fs-cust" data-key="${k + 1}" data-c="${k}"><span class="ar-bub sm" id="fsCb${k}"></span><span class="fs-cimg" id="fsCi${k}"></span><span class="fs-cno">손님 ${k + 1}</span></button>`).join('')}</div>`;
+    $('fsPanel').querySelectorAll('.fs-cust').forEach(b => b.addEventListener('click', (e) => { if (e.target.closest('.ar-say')) return; fsServe(+b.dataset.c); }));
+    fsNewCust(0); arLater(() => fsNewCust(1), 450);
+    arSetHints(() => { const cs = q.cust.filter(Boolean); taskBegin(`fs3-${q.served}`, '음식 러시: 주문표 읽기', cs.map(c => foodOf(c.want).h).join('/')); return ['두 손님의 중국어 주문표를 천천히 읽어요. 🔊으로 들어도 돼요.', `주문표 뜻: ${cs.map(c => `${foodOf(c.want).h} = ${foodOf(c.want).ko}`).join(' · ')}`]; });
+    arMsg('벨트가 빨라졌어요! 음식을 잡고 → 그 음식을 주문한 손님을 눌러요.');
+  }
+  function fsNewCust(k) {
+    const q = run.arc; if (q.spawn >= FS_RUSH || q.cust[k]) return;
+    const other = q.cust[1 - k]; let want, guard = 0;
+    do { want = pick(FOOD_IDS); } while (((other && other.want === want) || want === q.lastWant) && guard++ < 30);
+    q.lastWant = want; q.spawn++;
+    const look = FD_GUEST[q.gi++ % FD_GUEST.length]; q.cust[k] = { want, look };
+    const f = foodOf(want), img = $('fsCi' + k), bub = $('fsCb' + k);
+    img.innerHTML = faceImg(look); arBounce(img, 'enter');
+    bub.innerHTML = `📝${zhCard(f.h, f.p)}${sayBtn(f.h)}`; bub.hidden = false; bindSoundButtons(bub); wrapPinyin(bub); arBounce(bub, 'pop');
+    $('fsPanel').querySelector(`[data-c="${k}"]`).disabled = false;
+    beltNeed(want);
+  }
+  function fsServe(k) {
+    if (arBusy()) return;
+    const q = run.arc, c = q.cust[k], b = $('fsPanel').querySelector(`[data-c="${k}"]`); if (!c) return;
+    if (!AR.held) { arMsg('먼저 벨트에서 음식을 잡아요!', 'info'); return; }
+    arLockFor(450);
+    const f = foodOf(c.want); taskBegin(`fs3-${q.served}`, `음식 러시: ${f.h} 주문`, f.h);
+    if (AR.held !== c.want) { arWrong('이 손님은 다른 음식을 주문했어요. 주문표를 다시 읽어 봐요!', b); return; }
+    AR.held = null; arHeldUI(); q.served++; q.cust[k] = null;
+    $('fsCb' + k).hidden = true; arBounce($('fsCi' + k), 'leave'); arFloat('♥', b, 'heart'); b.disabled = true;
+    arRight(`${f.h}! 맛있겠다~ (${q.served}/${FS_RUSH})`); fsFans(AR.combo >= 3 ? 2 : 1); if (q.served % 2 === 0) fsLantern(1);
+    if (q.served >= FS_RUSH) { AR.belt.need = () => []; arLater(arRoundDone, 1200); return; }
+    arLater(() => fsNewCust(k), 750);
+  }
+  // ----- 라운드 4: 좋아하는 음식 (자유 선택, 기록하지 않음) → 축제 피날레 -----
+  function fsR4() {
+    beltStop(); $('fsBelt').hidden = true; $('fsLane').hidden = true; AR.want = null;
+    fsBubble(`${zhCard('你喜欢什么？', 'Nǐ xǐhuan shénme?', 'big')}${sayBtn('你喜欢什么？')}<small>너는 무엇을 좋아해?</small>`);
+    arTask('fs4', '좋아하는 음식 말하기 (자유 선택)', '어떤 음식이든 정답', null, true);
+    const ids = shuffle(FOOD_IDS);
+    $('fsPanel').innerHTML = `<div class="ar-opts five likes">${ids.map((id, k) => `<button class="ar-opt pic" data-key="${k + 1}" data-v="${id}"><img src="${foodURL(id)}" alt="">${zhCard(foodOf(id).h, foodOf(id).p)}</button>`).join('')}</div><div id="fsSay"></div>`;
+    wrapPinyin($('fsPanel'));
+    $('fsPanel').querySelectorAll('.ar-opt').forEach(b => b.addEventListener('click', () => fsLike(b.dataset.v)));
+    arMsg('좋아하는 음식을 하나 골라요. 어떤 음식을 골라도 정답이에요!');
+  }
+  function fsLike(id) {
+    if (arBusy()) return;
+    $('fsPanel').querySelectorAll('.ar-opt').forEach(b => { const on = b.dataset.v === id; b.classList.toggle('sel', on); b.setAttribute('aria-pressed', on); });
+    const s = foodSent(id); SFX.pop();
+    $('fsSay').innerHTML = `<div class="ar-row"><div class="ar-sent">${zhCard(s.h, s.p, 'big')}${sayBtn(s.h)}<small>${s.ko}</small></div><button class="ar-go big" id="fsSaid">🗣 소리 내어<br>말했어요!</button></div>`;
+    bindSoundButtons($('fsSay')); wrapPinyin($('fsSay'));
+    $('fsSaid').addEventListener('click', fsFinale);
+    arMsg('문장을 큰 소리로 말해 보세요! 다른 음식으로 바꿔도 돼요.', 'ok');
+  }
+  function fsFinale() {
+    if (arBusy()) return; arLockFor(4000);
+    taskEnd(); $('fsPanel').querySelectorAll('button').forEach(b => { b.disabled = true; });
+    run.arc.lan = 12; fsLanterns(); run.arc.fans = Math.max(16, run.arc.fans || 0); fsCrowd();
+    fsBubble(`${zhCard('太棒了！', 'Tài bàng le!')}<small>최고예요! 축제 시작!</small>`);
+    arBounce($('fsCrowd'), 'cheer'); $('arc').classList.add('party'); arConfetti(90);
+    for (let k = 0; k < 6; k++) arLater(() => arFloat(pick(['👏', '🎉', '👏', '✨']), $('fsCrowd'), 'clap'), k * 250);
+    celebrate('중국 음식 축제 대성공!', 3000); arMsg('🎆 축제가 열렸어요! 모두 박수~ 👏', 'ok');
+    arLater(() => { $('arc').classList.remove('party'); arRoundDone(); }, 3000);
+  }
+
+  // ================= 10차시 판다 식당 대소동! 주문 폭주! =================
+  // 화면: 위 = 간판·메뉴판·장식 / 가운데 = 식당 바닥(문 → 줄 → 카운터 → 식탁) / 아래 = 할 일 칸 (주문서·준비대·문장 조각·가격표)
+  function dnSceneHTML() {
+    return `<div class="dn-wall"><div class="dn-sign" id="dnSign">🐼 판다 식당</div><div class="dn-menu" id="dnMenu"></div><div class="dn-deco" id="dnDeco"></div></div>
+      <div class="dn-floor" id="dnFloor"><div class="dn-door">🚪</div><div class="dn-carpet" id="dnCarpet"></div>
+        <div class="dn-counter"><div class="dn-staff" id="dnStaff">${faceImg(DN_NPC[0], 'dn-chef')}<span class="dn-pan" id="dnPan">🍳</span></div><div class="dn-top"></div></div>
+        <div class="dn-tables">${[0, 1, 2].map(k => `<div class="dn-table" id="dnT${k}"><span class="dn-plate"></span></div>`).join('')}</div>
+        <div id="dnGuys"></div></div>
+      <div class="dn-panel" id="dnPanel"></div>`;
+  }
+  // 메뉴판: 그림만 (이름은 학생이 중국어로 찾아요). 가격은 계산대 라운드에서 물어본 뒤 붙어요
+  function dnMenuRender() {
+    const q = run.arc;
+    $('dnMenu').innerHTML = q.menu.map((id, k) => `<button class="dn-mi" data-m="${id}" aria-label="메뉴 그림 ${k + 1}"><img src="${foodURL(id)}" alt=""><span class="dn-pr">${q.shown[id] ? `${q.price[id]}元` : '?元'}</span><span class="dn-hand" aria-hidden="true">👆</span></button>`).join('');
+    $('dnMenu').querySelectorAll('.dn-mi').forEach(b => b.addEventListener('click', () => { if (arBusy() || !AR.menuPick) return; AR.menuPick(b.dataset.m); }));
+    dnMenuClick(!!AR.menuPick);
+  }
+  function dnMenuClick(on, onlyHidden) { $('dnMenu').classList.toggle('click', on); $('dnMenu').querySelectorAll('.dn-mi').forEach(b => { b.disabled = !on || (onlyHidden && run.arc.shown[b.dataset.m]); }); }
+  function dnPoint(id) { $('dnMenu').querySelectorAll('.dn-mi').forEach(b => b.classList.toggle('point', b.dataset.m === id)); }
+  function dnShowPrice(id) { run.arc.shown[id] = true; const b = $('dnMenu').querySelector(`[data-m="${id}"]`); if (b) { b.querySelector('.dn-pr').textContent = `${run.arc.price[id]}元`; arBounce(b, 'pop'); } }
+  const DN_DECO = ['🏮', '🪴', '🏮', '🎈', '💐', '🏮', '🎏', '🪴', '🏮', '🎊', '✨', '🎈'];
+  function dnDecoRender() { const n = Math.min(DN_DECO.length, run.arc.deco || 0); $('dnDeco').innerHTML = DN_DECO.slice(0, n).map(e => `<span>${e}</span>`).join(''); $('dnSign').classList.toggle('lit', n >= 6); }
+  function dnDecoUp(n = 1) { run.arc.deco = (run.arc.deco || 0) + n; dnDecoRender(); const last = $('dnDeco').lastElementChild; if (last) arBounce(last, 'pop'); }
+  function dnSale(n, host) { const q = run.arc; q.orders++; q.sales += n; arStat(); arFloat(`+${n}元`, host || $('dnStaff'), 'money'); tone(1568, 0, 0.08, 'square', 0.04); tone(2093, 0.07, 0.1, 'square', 0.04); }
+  // 손님: 문에서 걸어 들어와요 (left %)
+  const DN_X_WIDE = { door: 3, q1: 10, q2: 19, counter: 30, tables: [62, 76, 90] };
+  const DN_X_NARROW = { door: 2, q1: 5, q2: 15, counter: 27, tables: [62, 76, 90] };   // 휴대폰 세로: 줄 선 손님이 겹치지 않게
+  const DN_X = new Proxy({}, { get: (_, k) => ((innerWidth < 600 ? DN_X_NARROW : DN_X_WIDE)[k]) });
+  function dnGuy(look, x = DN_X.door, cls = '') {
+    const el = document.createElement('div'); el.className = 'dn-guy ' + cls; el.style.left = `${x}%`;
+    el.innerHTML = `<div class="ar-bub dn-bub" hidden></div><img class="ar-pd" src="${look === 'me' ? meURL() : npcFaceURL(look)}" alt="">`;
+    $('dnGuys').appendChild(el);
+    const g = { el, look, x };
+    return g;
+  }
+  function dnMove(g, x, ms = 900) { g.x = x; g.el.classList.add('walk'); g.el.style.transitionDuration = `${ms}ms`; requestAnimationFrame(() => { g.el.style.left = `${x}%`; }); arLater(() => g.el.classList.remove('walk'), ms); }
+  function dnSay(g, html) { const b = g.el.querySelector('.dn-bub'); b.innerHTML = html; b.hidden = !html; if (html) { bindSoundButtons(b); wrapPinyin(b); arBounce(b, 'pop'); } }
+  // 음식을 받으면 식탁에 앉아 먹고 ♥를 남기고 나가요
+  function dnSeat(g, food) {
+    const q = run.arc; q.seat = ((q.seat == null ? -1 : q.seat) + 1) % 3; const k = q.seat;
+    const prev = q.seated && q.seated[k]; if (prev && prev.el.isConnected) dnLeave(prev);
+    q.seated = q.seated || []; q.seated[k] = g; dnSay(g, '');
+    dnMove(g, DN_X.tables[k], 800);
+    arLater(() => { const t = $('dnT' + k); t.querySelector('.dn-plate').innerHTML = `<img src="${foodURL(food)}" alt="">`; t.classList.add('eat'); g.el.classList.add('eating', 'seated'); }, 820);
+    arLater(() => { const t = $('dnT' + k); if (q.seated[k] !== g) return; t.querySelector('.dn-plate').innerHTML = ''; t.classList.remove('eat'); g.el.classList.remove('eating'); arFloat('♥', g.el, 'heart'); }, 3600);
+  }
+  function dnLeave(g) { g.el.classList.add('bye'); setTimeout(() => g.el.remove(), 700); }
+  function dnStaff(which) { const st = $('dnStaff'); st.querySelector('img').src = npcFaceURL(DN_NPC[which === 'clerk' ? 1 : 0]); }
+  function dnCook(id, cb) {
+    $('dnPanel').innerHTML = `<div class="dn-cook">🍳 주방장 판다가 요리하고 있어요… <span class="dn-sizzle">지글지글</span></div>`;
+    $('dnStaff').classList.add('cook'); tone(220, 0, 0.3, 'sawtooth', 0.02, 180);
+    arLater(() => {
+      $('dnStaff').classList.remove('cook'); SFX.pop();
+      $('dnPanel').innerHTML = `<div class="ar-row"><div class="dn-tray full"><img src="${foodURL(id)}" alt=""><small>요리 완성!</small></div><button class="ar-go big" id="dnServeGo">🍽 서빙하기</button></div>`;
+      $('dnServeGo').addEventListener('click', () => { if (arBusy()) return; arLockFor(600); cb(); });
+    }, 900);
+  }
+  function dnPanel(html) { $('dnPanel').innerHTML = html; bindSoundButtons($('dnPanel')); wrapPinyin($('dnPanel')); }
+  const zhegeHints = (id) => { const f = foodOf(id); return ['这个 = ‘이것’. 손님이 👆 손가락으로 가리킨 그림을 봐요.', `가리킨 그림은 ‘${f.ko}’예요. 중국어 이름은 무엇일까요?`, `정답: ${f.h} ${f.p}`]; };
+  // 주문서: 중국어 이름 카드 5장 중 고르기 (모두 같은 모양) → 보내기
+  function dnNameSlip(want, title, onRight, wrongMsg) {
+    const ord = shuffle(FOOD_IDS); let sel = null;
+    dnPanel(`<div class="ar-ttl">📋 ${title}</div><div class="ar-row"><div class="ar-opts five">${ord.map((id, k) => `<button class="ar-opt" data-key="${k + 1}" data-v="${id}" aria-pressed="false">${zhCard(foodOf(id).h, foodOf(id).p)}</button>`).join('')}</div><button class="ar-go" id="dnSlipGo" disabled>주문서 보내기 ✉</button></div>`);
+    const opts = $('dnPanel').querySelectorAll('.ar-opt');
+    opts.forEach(b => b.addEventListener('click', () => { if (AR.paused) return; sel = b.dataset.v; opts.forEach(x => { x.classList.toggle('sel', x === b); x.setAttribute('aria-pressed', x === b); }); $('dnSlipGo').disabled = false; SFX.pop(); }));
+    $('dnSlipGo').addEventListener('click', () => {
+      if (arBusy() || !sel) return; arLockFor(450);
+      if (sel !== want) { arWrong(wrongMsg, $('dnSlipGo')); return; }
+      onRight();
     });
   }
-  function dnOrderA() {
-    const q = run.q, m = q.m2, c = m.cs[m.ci];
-    dnPointOrder({ who: c.who, t: c.t, key: 'n2' + m.ci, title: `📋 손님 주문 (${m.ci + 1}/3)`, onDone: () => {
-      q.happy[c.who] = 1; dnSale(c.t); m.ci++;
-      openTalk(c.who, `<p>谢谢！ 맛있겠다!</p>${sentBox(foodOf(c.t).h, foodOf(c.t).p, false)}<p class="qprog">주문 ${q.orders}개 · 오늘 매출 ${q.sales}元 (연습용)</p>`, { ok: '다음 손님!' });
-    } });
-  }
-  // 문장 조각 맞추기 (한자+병음 조각, 모두 같은 모양): pieces = [{h,p}], answer = 조각 순서
-  function sentencePuzzle(pieces, answer) {
-    const st = { order: shuffle(pieces.map((_, i) => i)), slots: answer.map(() => -1) };
-    const html = () => `<div class="sp-slots">${st.slots.map((pi, k) => `<button class="sp-slot" data-s="${k}">${pi >= 0 ? `<span class="han">${pieces[pi].h}</span><span class="py t0">${pieces[pi].p}</span>` : '<span class="pk-q">?</span>'}</button>`).join('')}<span class="sp-end han">${answer.end || ''}</span></div>
-      <div class="pk-grid pieces">${st.order.map(pi => `<button class="pk-opt word${st.slots.includes(pi) ? ' used' : ''}" data-p="${pi}"><span class="han">${pieces[pi].h}</span><span class="py t0">${pieces[pi].p}</span></button>`).join('')}</div>`;
-    const bind = (rerender) => {
-      pickBind('.sp-slot', (b) => { st.slots[+b.dataset.s] = -1; SFX.pop(); pickMsg(''); rerender(); });
-      pickBind('.pk-grid.pieces .pk-opt', (b) => { const pi = +b.dataset.p, at = st.slots.indexOf(pi); if (at >= 0) { st.slots[at] = -1; } else { const e = st.slots.indexOf(-1); if (e >= 0) st.slots[e] = pi; } SFX.pop(); pickMsg(''); rerender(); });
+  // 문장 조각: 조각을 누르면 빈칸에 차례로, 빈칸을 누르면 다시 빼요 (정답 칸·조각은 색으로 알려 주지 않아요)
+  function dnPuzzle(pieces, answer, end, title, onRight, hintLines) {
+    const st = { slots: answer.map(() => -1) };
+    const draw = () => {
+      dnPanel(`<div class="ar-ttl">🧩 ${title}</div><div class="ar-row"><div class="dn-pz"><div class="dn-slots">${st.slots.map((pi, s) => `<button class="dn-slot${pi < 0 ? ' empty' : ''}" data-s="${s}">${pi < 0 ? '?' : zhCard(pieces[pi].h, pieces[pi].p)}</button>`).join('')}<span class="dn-end">${end}</span></div>
+        <div class="dn-pieces">${pieces.map((pc, k) => `<button class="ar-opt piece" data-key="${k + 1}" data-k="${k}"${st.slots.includes(k) ? ' disabled' : ''}>${zhCard(pc.h, pc.p)}</button>`).join('')}</div></div>
+        <button class="ar-go" id="dnPzGo"${st.slots.includes(-1) ? ' disabled' : ''}>완성! ✔</button></div>`);
+      $('dnPanel').querySelectorAll('.piece').forEach(b => b.addEventListener('click', () => { if (AR.paused) return; const s = st.slots.indexOf(-1); if (s < 0) return; st.slots[s] = +b.dataset.k; SFX.pop(); draw(); }));
+      $('dnPanel').querySelectorAll('.dn-slot').forEach(b => b.addEventListener('click', () => { if (AR.paused) return; st.slots[+b.dataset.s] = -1; SFX.pop(); draw(); }));
+      $('dnPzGo').addEventListener('click', () => {
+        if (arBusy() || st.slots.includes(-1)) return; arLockFor(450);
+        const got = st.slots.map(i => pieces[i].h);
+        if (got.join('|') !== answer.join('|')) { arWrong(`순서가 조금 달라요. ${hintLines[0]}`, $('dnPanel').querySelector('.dn-slots')); return; }
+        onRight();
+      });
     };
-    const full = () => !st.slots.includes(-1);
-    const right = () => st.slots.every((pi, k) => pi === answer[k]);
-    const reset = () => { st.slots = answer.map(() => -1); };
-    return { st, html, bind, full, right, reset };
+    draw();
   }
-  // ----- 미션 2 활동 B: 내가 손님! 메뉴 그림을 가리키고 我 / 要 / 这个 -----
-  function dnOrderB() {
-    const q = run.q, m = q.m2;
-    const pieces = [{ h: '我', p: 'wǒ' }, { h: '要', p: 'yào' }, { h: '这个', p: 'zhège' }, { h: '多少钱', p: 'duōshao qián' }];
-    const ans = [0, 1, 2]; ans.end = '。';
-    const sp = sentencePuzzle(pieces, ans);
-    let pointed = null;
-    taskBegin('n2b', '내가 주문: 我要这个。', '我要这个。');
-    openPick({
-      title: '🙋 내가 주문하기 (3/3)', ask: '<p>① 먹고 싶은 음식을 메뉴판에서 <b>눌러서 가리켜요</b>. ② 조각을 순서대로 눌러 문장을 만들어요.</p>',
-      hints: ['我要这个。 = 我(나) + 要(원하다) + 这个(이것)', '‘이거 주세요’는 我 → 要 → 这个 순서예요. 多少钱은 가격을 물을 때 써요.', '정답: 我要这个。 Wǒ yào zhège.'], ok: '🗣 주문하기', closeLabel: '나중에 할게요',
-      render() {
-        $('qpBody').innerHTML = `${menuBoard(pointed, true)}${pointed ? sp.html() : '<p class="qprog" style="text-align:center">먼저 메뉴판에서 음식을 하나 눌러요.</p>'}`;
-        pickBind('.mb-cell', (b) => { pointed = q.menu[+b.dataset.k]; SFX.pop(); qp.render(); });
-        if (pointed) sp.bind(() => qp.render());
-        $('qpOk').disabled = !(pointed && sp.full());
-      },
-      onOk() {
-        if (sp.right()) {
-          taskEnd(); SFX.correct(); closePick(); m.ci++;
-          openTalk(1, `<p>好！ 주문 접수!</p>${menuBoard(pointed, false)}${sentBox('我要这个。', 'Wǒ yào zhège.')}<p>이거 주세요.</p><p><b>손으로 가리키며 중국어로 한 번 말해 보세요!</b></p>`, { ok: '🗣 말했어요!', onOk: () => questDone(1) });
-          return;
-        }
-        taskMiss(); SFX.wrong(); sp.reset(); qp.render(); pickMsg('순서가 달라요. ‘이거 주세요’를 다시 만들어 봐요!', 'no');
-      },
-    });
+  const PZ = { wo: { h: '我', p: 'wǒ' }, yao: { h: '要', p: 'yào' }, zhege: { h: '这个', p: 'zhège' }, duoshao: { h: '多少钱', p: 'duōshao qián' } };
+  // 가격표 (숫자 + 元) 고르기: 점원의 중국어 대답을 듣고
+  function dnPriceTags(n, onRight) {
+    const tags = shuffle(PRICES); let sel = null;
+    dnPanel(`<div class="ar-ttl">🏷 점원이 말한 가격표를 골라요</div><div class="ar-row"><div class="ar-opts four">${tags.map((v, k) => `<button class="ar-opt tag" data-key="${k + 1}" data-v="${v}" aria-pressed="false">${v}元</button>`).join('')}</div><button class="ar-go" id="dnTagGo" disabled>이 가격표! ✔</button></div>`);
+    const opts = $('dnPanel').querySelectorAll('.ar-opt');
+    opts.forEach(b => b.addEventListener('click', () => { if (AR.paused) return; sel = +b.dataset.v; opts.forEach(x => { x.classList.toggle('sel', x === b); x.setAttribute('aria-pressed', x === b); }); $('dnTagGo').disabled = false; SFX.pop(); }));
+    $('dnTagGo').addEventListener('click', () => { if (arBusy() || sel == null) return; arLockFor(450); if (sel !== n) { arWrong('점원의 말을 다시 읽어 봐요. 块 앞의 숫자가 얼마일까요?', $('dnTagGo')); return; } onRight(); });
   }
-  // ----- 미션 3: 계산대에서 这个多少钱？ → 二十块。 듣고 가격표 고르기 -----
-  function dnAsk() {
-    const q = run.q, m = q.m3;
-    const pieces = [{ h: '这个', p: 'zhège' }, { h: '多少钱', p: 'duōshao qián' }, { h: '我', p: 'wǒ' }, { h: '要', p: 'yào' }];
-    const ans = [0, 1]; ans.end = '？';
-    const sp = sentencePuzzle(pieces, ans);
-    let pointed = null, step = 1;
-    taskBegin('n3' + m.ri, '가격 묻기: 这个多少钱？', '这个多少钱？');
-    const priceStep = () => {
-      const n = q.price[pointed], ps = priceSay(n), opts = shuffle([n, ...shuffle(PRICES.filter(x => x !== n)).slice(0, 3)]);
-      taskBegin('n3p' + m.ri, `가격 듣기: ${ps.h}`, `${n}元`);
-      openPick({
-        title: `💰 얼마예요? (${m.ri + 1}/2)`, ask: `<div class="cust"><img class="npc-face" src="${npcFaceURL(DN_NPC[2])}" alt=""><div class="say-bubble">${sentBox(ps.h, ps.p, false)}</div></div><p>점원이 말한 가격표를 골라요.</p>`,
-        hints: [`${ps.h} ${ps.p} — 块 kuài는 돈 단위예요. 앞의 숫자를 봐요.`, `${zhNum(n).h} = ${n} (5차시 숫자 규칙: 숫자 + 十)`, `정답: ${n}元`], closeLabel: '나중에 할게요',
-        render() {
-          $('qpBody').innerHTML = `<div class="pk-grid prices">${opts.map((v, k) => `<button class="pk-opt price" data-k="${k}"><span class="pt">${v}元</span></button>`).join('')}</div>`;
-          pickBind('.pk-opt', (b) => {
-            const v = opts[+b.dataset.k];
-            if (v === n) {
-              taskEnd(); SFX.correct(); closePick(); m.ri++;
-              const done = m.ri >= 2;
-              openTalk(2, `<p>맞아요! ${n}위안이에요.</p>${sentBox(ps.h, ps.p, false)}<p class="qprog">(게임 속 연습용 가격이에요)</p>`, { ok: done ? '다음 구역으로!' : '하나 더 물어볼게요!', onOk: () => { if (done) questDone(2); } });
-              return;
-            }
-            taskMiss(); SFX.wrong(); pickMsg(`${v}元이 아니에요. ‘${ps.h}’의 숫자를 다시 봐요!`, 'no');
+  // 중국어 가격 대답 고르기: 메뉴판의 30元 → 三十块
+  function dnPriceZh(n, title, onRight) {
+    const tags = shuffle(PRICES); let sel = null;
+    dnPanel(`<div class="ar-ttl">💬 ${title}</div><div class="ar-row"><div class="ar-opts four">${tags.map((v, k) => `<button class="ar-opt" data-key="${k + 1}" data-v="${v}" aria-pressed="false">${zhCard(priceZh(v).h, priceZh(v).p)}</button>`).join('')}</div><button class="ar-go" id="dnZhGo" disabled>이렇게 대답! ✔</button></div>`);
+    const opts = $('dnPanel').querySelectorAll('.ar-opt');
+    opts.forEach(b => b.addEventListener('click', () => { if (AR.paused) return; sel = +b.dataset.v; opts.forEach(x => { x.classList.toggle('sel', x === b); x.setAttribute('aria-pressed', x === b); }); $('dnZhGo').disabled = false; SFX.pop(); }));
+    $('dnZhGo').addEventListener('click', () => { if (arBusy() || sel == null) return; arLockFor(450); if (sel !== n) { arWrong('메뉴판 가격표의 숫자를 다시 봐요. 숫자 + 块로 말해요.', $('dnZhGo')); return; } onRight(); });
+  }
+  const priceHints = (n) => [`块 앞의 숫자를 봐요: ${zhNum(n).h} ${zhNum(n).p}`, `${zhNum(n).h} = ${n} → ${n}元`];
+  const priceZhHints = (n) => ['这个多少钱？ = 이거 얼마예요? → 숫자 + 块로 대답해요.', `${n} = ${zhNum(n).h} (${zhNum(n).p})`, `정답: ${priceZh(n).h} ${priceZh(n).p}`];
+  function dnSayIt(h, p, ko, btn, onDone) {
+    dnPanel(`<div class="ar-row"><div class="ar-sent">${zhCard(h, p, 'big')}${sayBtn(h)}<small>${ko}</small></div><button class="ar-go big" id="dnSaid">${btn}</button></div>`);
+    $('dnSaid').addEventListener('click', () => { if (arBusy()) return; arLockFor(500); onDone(); });
+  }
+  function dnNextCu() { const q = run.arc; return DN_CU[(q.ci++) % DN_CU.length]; }
+  function dnPickWant(not) { let w, g = 0; do { w = pick(FOOD_IDS); } while ((w === not || w === run.arc.lastWant) && g++ < 30); run.arc.lastWant = w; return w; }
+
+  // ----- 라운드 1: 첫 손님 (가리키며 我要这个。 → 주문서에 중국어 이름) × 2 -----
+  function dnR1() { const q = run.arc; q.i1 = 0; dnStaff('chef'); AR.menuPick = null; dnMenuClick(false); dnCust1(); }
+  function dnCust1() {
+    const q = run.arc, look = dnNextCu(), g = dnGuy(look), want = dnPickWant();
+    dnPanel(`<div class="dn-wait">🚪 딸랑~ 손님이 들어와요!</div>`); arMsg('손님이 들어와요…'); SFX.meet();
+    dnMove(g, DN_X.counter);
+    arLater(() => {
+      dnPoint(want); dnSay(g, `👆${zhCard('我要这个。', 'Wǒ yào zhège.')}${sayBtn('我要这个。')}`);
+      arTask(`dn1-${q.i1}`, `我要这个: 가리킨 그림 → ${foodOf(want).h}`, foodOf(want).h, zhegeHints(want));
+      arMsg('손님이 👆 가리킨 메뉴를 봐요. 그 음식의 중국어 이름을 주문서에 골라요!');
+      dnNameSlip(want, '주문서 — 손님이 가리킨 음식의 이름은?', () => {
+        const f = foodOf(want); arRight(`주문 접수! ${f.h} ${f.p}`); dnPoint(null); dnSay(g, '😊');
+        dnCook(want, () => {
+          dnSale(q.price[want], g.el); dnSeat(g, want); dnDecoUp(); q.i1++;
+          if (q.i1 >= 2) arLater(arRoundDone, 1300); else arLater(dnCust1, 700);
+        });
+      }, '손님이 가리킨 그림을 다시 보고, 그 음식의 중국어 이름을 골라요.');
+    }, 950);
+  }
+  // ----- 라운드 2: 내가 손님 (가리키기 → 我 要 这个 조각 배열 → 말하기) -----
+  function dnR2() {
+    const q = run.arc; q.pzOn = false; dnStaff('chef');
+    const me = dnGuy('me', DN_X.door, 'me'); q.me = me; dnMove(me, DN_X.counter);
+    dnPanel(`<div class="dn-wait">👆 메뉴판에서 먹고 싶은 음식을 눌러 가리켜요! (아무거나 좋아요)</div>`);
+    arMsg('이번엔 내가 손님! 먹고 싶은 음식을 메뉴판에서 눌러요.');
+    arLater(() => {
+      AR.menuPick = (id) => {
+        q.my = id; dnPoint(id); SFX.pop();
+        dnSay(me, `👆 ${foodOf(id).ko}!`);
+        if (q.pzOn) return;   // 문장을 만드는 중에 가리키는 음식을 바꿔도 돼요
+        q.pzOn = true;
+        arTask('dn2', '문장 배열: 我要这个。', '我 / 要 / 这个', ['누가? → 원해요 → 무엇을? 순서로 놓아요.', '我(나) → 要(원해요) → 这个(이것)']);
+        arMsg('가리킨 음식을 주문해요! 조각을 눌러 문장을 만들어요. (빈칸을 누르면 빠져요)');
+        dnPuzzle(shuffle([PZ.wo, PZ.yao, PZ.zhege, PZ.duoshao]), ['我', '要', '这个'], '。', '문장 조각으로 주문하기 (조각 하나는 쓰지 않아요)', () => {
+          arRight('문장 완성! 我要这个。'); AR.menuPick = null; dnMenuClick(false);
+          dnSay(me, `👆${zhCard('我要这个。', 'Wǒ yào zhège.')}`);
+          dnSayIt('我要这个。', 'Wǒ yào zhège.', '이거 주세요. (가리키면서 말해요)', '🗣 말했어요!', () => {
+            dnCook(q.my, () => { dnSeat(me, q.my); dnDecoUp(); arMsg('냠냠! 내가 주문한 음식이 나왔어요 😋', 'ok'); arLater(arRoundDone, 1600); });
           });
-        },
+        }, ['누가(我) → 원해요(要) → 무엇을(这个) 순서예요.']);
+      };
+      dnMenuClick(true);
+    }, 950);
+  }
+  // ----- 라운드 3: 계산대 (가리키기 → 这个多少钱？ → 점원 대답 듣고 가격표) × 2 -----
+  function dnR3() {
+    const q = run.arc; q.k3 = 0; dnStaff('clerk');
+    $('dnGuys').innerHTML = ''; q.seated = []; [0, 1, 2].forEach(k => { const t = $('dnT' + k); t.classList.remove('eat'); t.querySelector('.dn-plate').innerHTML = ''; });
+    const me = dnGuy('me', DN_X.door, 'me'); q.me = me; dnMove(me, DN_X.counter);
+    arLater(dnAsk, 950);
+  }
+  function dnAsk() {
+    const q = run.arc, me = q.me; q.ask = null; q.pzOn = false; dnSay(me, '');
+    dnPanel(`<div class="dn-wait">👆 가격이 궁금한 음식(?元)을 메뉴판에서 눌러 가리켜요!</div>`);
+    arMsg(`가격이 궁금한 음식을 가리켜요. (${q.k3 + 1}/2)`);
+    AR.menuPick = (id) => {
+      if (q.shown[id]) return;
+      q.ask = id; dnPoint(id); SFX.pop();
+      if (q.pzOn) return; q.pzOn = true;
+      const after = () => {
+        AR.menuPick = null; dnMenuClick(false);
+        const n = q.price[q.ask], s = priceSay(n), clerk = $('dnStaff');
+        dnSay(me, `👆${zhCard('这个多少钱？', 'Zhège duōshao qián?')}`);
+        arLater(() => {
+          arFloat('💬', clerk);
+          dnPanel(`<div class="ar-row"><div class="ar-sent clerk"><small>점원 판다:</small>${zhCard(s.h, s.p, 'big')}${sayBtn(s.h)}</div></div>`);
+          arLater(() => {
+            arTask(`dn3-p${q.k3}`, `가격 듣기: ${priceZh(n).h} → ${n}元`, `${n}元`, priceHints(n));
+            dnPriceTags(n, () => {
+              arRight(`${n}元! ${priceZh(n).h} ${priceZh(n).p}`); dnShowPrice(q.ask); dnDecoUp(); q.k3++;
+              if (q.k3 >= 2) { arLater(() => { FOOD_IDS.forEach(id => dnShowPrice(id)); arMsg('점원 판다가 메뉴판에 가격표를 모두 붙였어요! 🏷', 'ok'); }, 700); arLater(arRoundDone, 2000); }
+              else arLater(dnAsk, 1000);
+            });
+            const sentHtml = `<div class="ar-sent clerk mini"><small>점원:</small>${zhCard(s.h, s.p)}${sayBtn(s.h)}</div>`;
+            $('dnPanel').insertAdjacentHTML('afterbegin', sentHtml); bindSoundButtons($('dnPanel')); wrapPinyin($('dnPanel'));
+            arMsg('점원 판다가 중국어로 대답했어요. 그 가격표를 골라요!');
+          }, 900);
+        }, 600);
+      };
+      if (q.k3 === 0) {
+        arTask('dn3-s0', '문장 배열: 这个多少钱？', '这个 / 多少钱', ['무엇이? → 얼마예요? 순서로 놓아요.', '这个(이것) → 多少钱(얼마예요)']);
+        arMsg('조각을 눌러 “이거 얼마예요?”를 만들어요!');
+        dnPuzzle(shuffle([PZ.zhege, PZ.duoshao, PZ.wo, PZ.yao]), ['这个', '多少钱'], '？', '가격 물어보기 (조각 두 개는 쓰지 않아요)', () => { arRight('문장 완성! 这个多少钱？'); after(); }, ['这个(이것) → 多少钱(얼마예요) 순서예요.']);
+      } else {
+        const opts = shuffle([{ h: '这个多少钱？', p: 'Zhège duōshao qián?', ok: true }, { h: '我要这个。', p: 'Wǒ yào zhège.' }, { h: '你好！', p: 'Nǐ hǎo!' }]);
+        arTask('dn3-s1', '가격 묻는 말 고르기: 这个多少钱？', '这个多少钱？', ['가격을 물어보는 말은 ‘얼마예요?’예요.', '多少钱 = 얼마예요 → 这个多少钱？']);
+        arMsg('가격을 물어보는 말은 무엇일까요?');
+        let sel = -1;
+        dnPanel(`<div class="ar-ttl">💬 가격을 물어보는 말을 골라요</div><div class="ar-row"><div class="ar-opts three">${opts.map((o, k) => `<button class="ar-opt" data-key="${k + 1}" data-k="${k}" aria-pressed="false">${zhCard(o.h, o.p)}</button>`).join('')}</div><button class="ar-go" id="dnAskGo" disabled>이렇게 물어보기 ✔</button></div>`);
+        const bs = $('dnPanel').querySelectorAll('.ar-opt');
+        bs.forEach(b => b.addEventListener('click', () => { if (AR.paused) return; sel = +b.dataset.k; bs.forEach(x => { x.classList.toggle('sel', x === b); x.setAttribute('aria-pressed', x === b); }); $('dnAskGo').disabled = false; SFX.pop(); }));
+        $('dnAskGo').addEventListener('click', () => { if (arBusy() || sel < 0) return; arLockFor(450); if (!opts[sel].ok) { arWrong('그 말은 가격을 묻는 말이 아니에요. 다시 골라요!', $('dnAskGo')); return; } arRight('맞아요! 这个多少钱？'); after(); });
+      }
+    };
+    dnMenuClick(true, true);
+  }
+  // ----- 라운드 4: 손님 러시 (A 이름 주문표 + 주문 변경 · B 这个 · C 가격 · ⭐ 一个 · 👑 VIP) -----
+  function dnR4() {
+    const q = run.arc; dnStaff('chef'); AR.menuPick = null; dnMenuClick(false); FOOD_IDS.forEach(id => dnShowPrice(id));
+    $('dnGuys').innerHTML = ''; q.seated = [];
+    q.rush = ['name', 'point', 'price', 'yige', 'vip']; q.ri = 0; q.line = [];
+    for (let k = 0; k < 3; k++) q.line.push(dnGuy(dnNextCu(), DN_X.door));
+    dnLineUp(); arLater(dnRushNext, 1000);
+  }
+  function dnLineUp() { const q = run.arc; q.line.forEach((g, k) => { dnMove(g, k === 0 ? DN_X.counter : k === 1 ? DN_X.q2 : DN_X.q1, 900); g.el.classList.toggle('waiting', k > 0); }); }
+  function dnRushDone(g, food, price) {
+    const q = run.arc;
+    if (price) dnSale(price, g.el);
+    if (food) dnSeat(g, food); else dnLeave(g);
+    dnDecoUp(); q.ri++;
+    if (q.ri >= q.rush.length) return;
+    if (q.line[0] === g) q.line.shift();
+    const regular = q.rush.slice(q.ri).filter(t => t !== 'vip').length;
+    if (q.line.length < Math.min(3, regular)) q.line.push(dnGuy(dnNextCu(), DN_X.door));
+    if (q.rush[q.ri] === 'vip') { dnLineUp(); arLater(dnVipEnter, 900); } else { dnLineUp(); arLater(dnRushNext, 1000); }
+  }
+  function dnRushNext() {
+    const q = run.arc, t = q.rush[q.ri], g = q.line[0];
+    arMsg(`손님 ${q.ri + 1}/${q.rush.length}`);
+    if (t === 'name') return dnRushName(g);
+    if (t === 'point') return dnRushPoint(g);
+    if (t === 'price') return dnRushPrice(g);
+    if (t === 'yige') return dnRushYige(g);
+  }
+  // 손님 A: 중국어 주문표 → 준비대에서 음식을 트레이에 → (돌발) 주문 변경! → 서빙
+  function dnRushName(g) {
+    const q = run.arc; let want = dnPickWant(), changed = false; AR.tray = null;
+    const ticket = () => `📝${zhCard(foodOf(want).h, foodOf(want).p)}${sayBtn(foodOf(want).h)}`;
+    dnSay(g, ticket());
+    arTask('dn4-a0', `주문표 읽기: ${foodOf(want).h}`, foodOf(want).h, () => [`주문표 ${foodOf(want).h} ${foodOf(want).p}${pp(foodOf(want).p, '은/는')} 무슨 음식일까요?`, `${foodOf(want).h} = ‘${foodOf(want).ko}’예요.`]);
+    arMsg('손님의 중국어 주문표를 읽고, 준비대에서 그 음식을 트레이에 올려요!');
+    const ord = shuffle(FOOD_IDS);
+    const draw = () => {
+      dnPanel(`<div class="ar-ttl">🍳 준비대 → 트레이 (트레이를 누르면 비워요)</div><div class="ar-row"><div class="ar-opts five">${ord.map((id, k) => `<button class="ar-opt pic" data-key="${k + 1}" data-v="${id}"><img src="${foodURL(id)}" alt="음식 그림"></button>`).join('')}</div>
+        <button class="dn-tray${AR.tray ? ' full' : ''}" id="dnTray">${AR.tray ? `<img src="${foodURL(AR.tray)}" alt="트레이 위 음식">` : '<small>빈 트레이</small>'}</button><button class="ar-go" id="dnServe"${AR.tray ? '' : ' disabled'}>🍽 서빙</button></div>`);
+      $('dnPanel').querySelectorAll('.ar-opt').forEach(b => b.addEventListener('click', () => { if (AR.paused) return; AR.tray = b.dataset.v; SFX.pop(); draw(); if (!changed) { changed = true; arLater(change, 700); } }));
+      $('dnTray').addEventListener('click', () => { if (AR.paused || !AR.tray) return; AR.tray = null; SFX.pop(); draw(); });
+      $('dnServe').addEventListener('click', () => {
+        if (arBusy() || !AR.tray) return; arLockFor(450);
+        if (!q.changeDone) { arMsg('잠깐! 손님이 뭔가 말하려고 해요…', 'info'); return; }
+        if (AR.tray !== want) { arWrong(changed ? '손님이 주문을 바꿨어요! 말풍선의 새 주문표를 다시 읽어 봐요.' : '주문표의 중국어를 다시 읽어 봐요.', $('dnTray')); return; }
+        const f = foodOf(want); AR.tray = null; arRight(`서빙 완료! ${f.h} ${f.p}`); q.changeDone = false;
+        dnRushDone(g, want, q.price[want]);
       });
     };
-    openPick({
-      title: `💰 계산대에서 묻기 (${m.ri + 1}/2)`, ask: '<p>① 궁금한 음식을 메뉴판에서 <b>눌러서 가리켜요</b>. ② 조각으로 ‘이거 얼마예요?’를 만들어요.</p>',
-      hints: ['这个多少钱？ = 这个(이것) + 多少钱(얼마예요)', '가격을 물을 때는 这个 → 多少钱 순서예요. 我·要는 주문할 때 써요.', '정답: 这个多少钱？ Zhège duōshao qián?'], ok: '🗣 물어보기', closeLabel: '나중에 할게요',
-      render() {
-        $('qpBody').innerHTML = `${menuBoard(pointed, true)}${pointed ? sp.html() : '<p class="qprog" style="text-align:center">먼저 메뉴판에서 음식을 하나 눌러요.</p>'}`;
-        pickBind('.mb-cell', (b) => { pointed = q.menu[+b.dataset.k]; SFX.pop(); qp.render(); });
-        if (pointed) sp.bind(() => qp.render());
-        $('qpOk').disabled = !(pointed && sp.full());
-      },
-      onOk() {
-        if (sp.right()) { taskEnd(); SFX.correct(); closePick(); openTalk(2, `${menuBoard(pointed, false)}${sentBox('这个多少钱？', 'Zhège duōshao qián?')}<p>이거 얼마예요?</p><p><b>중국어로 한 번 말해 보세요!</b></p>`, { ok: '🗣 말했어요!', onOk: priceStep }); return; }
-        taskMiss(); SFX.wrong(); sp.reset(); qp.render(); pickMsg('순서가 달라요. ‘이거 얼마예요?’를 다시 만들어 봐요!', 'no');
-      },
+    // 돌발 이벤트 A: 주문 변경! (트레이에 처음 음식을 올린 뒤)
+    const change = () => {
+      run.q.task = null;   // 바뀌기 전 주문은 채점하지 않아요
+      want = dnPickWant(want); q.changeDone = true;
+      dnSay(g, `<b class="ar-alert">🔄 주문 변경!</b>${ticket()}`); arBounce(g.el, 'hop'); tone(880, 0, 0.12, 'square', 0.05); tone(660, 0.12, 0.12, 'square', 0.05);
+      const f = foodOf(want);
+      arTask('dn4-a1', `주문 변경: ${f.h}`, f.h, [`새 주문표 ${f.h} ${f.p}를 읽어요. 트레이를 누르면 비울 수 있어요.`, `${f.h} = ‘${f.ko}’예요.`]);
+      arMsg('🔄 주문 변경! 새 주문표를 읽고 트레이의 음식을 바꿔요.', 'bad');
+      const ban = document.createElement('div'); ban.className = 'ar-banner'; ban.textContent = '🔄 주문 변경!'; $('arFx').appendChild(ban); setTimeout(() => ban.remove(), 1600);
+    };
+    q.changeDone = false;
+    draw();
+  }
+  // 손님 B: 메뉴를 가리키며 我要这个。 → 주문서
+  function dnRushPoint(g) {
+    const q = run.arc, want = dnPickWant();
+    dnPoint(want); dnSay(g, `👆${zhCard('我要这个。', 'Wǒ yào zhège.')}${sayBtn('我要这个。')}`);
+    arTask('dn4-b', `我要这个: 가리킨 그림 → ${foodOf(want).h}`, foodOf(want).h, zhegeHints(want));
+    arMsg('손님이 👆 가리킨 메뉴의 중국어 이름을 주문서에 골라요!');
+    dnNameSlip(want, '주문서 — 가리킨 음식의 이름은?', () => {
+      arRight(`주문 접수! ${foodOf(want).h}`); dnPoint(null); dnSay(g, '😊');
+      dnCook(want, () => dnRushDone(g, want, q.price[want]));
+    }, '손님이 가리킨 그림을 다시 보고, 그 음식의 중국어 이름을 골라요.');
+  }
+  // 손님 C: 这个多少钱？ → 메뉴판 가격(30元)을 보고 중국어로 대답 (三十块)
+  function dnRushPrice(g) {
+    const q = run.arc, want = dnPickWant(), n = q.price[want];
+    dnPoint(want); dnSay(g, `👆${zhCard('这个多少钱？', 'Zhège duōshao qián?')}${sayBtn('这个多少钱？')}`);
+    arTask('dn4-c', `가격 말하기: ${n}元 → ${priceZh(n).h}`, priceZh(n).h, priceZhHints(n));
+    arMsg('손님이 가격을 물어요! 메뉴판의 가격표를 보고 중국어로 대답해요.');
+    dnPriceZh(n, `손님이 가리킨 음식의 가격을 중국어로 대답해요`, () => {
+      const s = priceSay(n); arRight(`${s.h} ${s.p}`); dnPoint(null);
+      dnSay(g, `${zhCard('我要这个。', 'Wǒ yào zhège.')}`);
+      arLater(() => dnCook(want, () => dnRushDone(g, want, n)), 700);
     });
-    void step;
   }
-  // ----- 미션 4: 손님 4명 (이름 보고 준비 · 가리키며 주문 · 가격 대답 · 주문 + 가격) -----
-  function dnServe(k) {
-    const q = run.q, m = q.m4, c = m.cs[k], who = c.who, t = c.t;
-    const finish = () => {
-      m.served[k] = true; q.happy[who] = 1; dnSale(t);
-      burst(DN_TABLE[k], GY - 40, ['#ff9fb2', '#f6c445', '#ffffff'], 14, 160);
-      const done = m.served.every(Boolean);
-      openTalk(who, `<p>谢谢！ 맛있어요! 😊</p><p class="qprog">주문 ${q.orders}개 · 오늘 매출 ${q.sales}元 (연습용)</p>${done ? '<p><b>손님 네 명 모두 맞이했어요!</b></p>' : ''}`, { ok: done ? '🎉 영업 마무리!' : '다음 손님!', onOk: () => { if (done) dnParty(); } });
-    };
-    // 가격 대답 (점원이 되어 중국어 가격 고르기): 메뉴 가격표(숫자) → 중국어
-    const priceAnswer = (onOk) => {
-      const n = q.price[t], opts = shuffle([n, ...shuffle(PRICES.filter(x => x !== n)).slice(0, 3)]);
-      taskBegin('n4p' + k, `가격 말하기: ${n}元 → ${priceZh(n).h}`, priceZh(n).h);
-      openPick({
-        title: '💰 손님이 가격을 물어요', ask: `<div class="cust"><img class="npc-face" src="${npcFaceURL(DN_NPC[who])}" alt=""><div class="say-bubble">${sentBox('这个多少钱？', 'Zhège duōshao qián?', false)}</div></div>${menuBoard(t, false)}<p>가격표: 이 음식은 <b class="numbig-s">${n}元</b>. 중국어로 대답해요.</p>`,
-        hints: ['这个多少钱？ = 이거 얼마예요? → 숫자 + 块로 대답해요.', `${n} = ${zhNum(n).h} (숫자 + 十)`, `정답: ${priceZh(n).h} ${priceZh(n).p}`], closeLabel: '나중에 할게요',
-        render() {
-          $('qpBody').innerHTML = `<div class="pk-grid prices">${opts.map((v, j) => `<button class="pk-opt word" data-k="${j}"><span class="han">${priceZh(v).h}</span><span class="py t0">${priceZh(v).p}</span></button>`).join('')}</div>`;
-          pickBind('.pk-opt', (b) => { const v = opts[+b.dataset.k]; if (v === n) { taskEnd(); SFX.correct(); closePick(); onOk(); return; } taskMiss(); SFX.wrong(); pickMsg(`‘${priceZh(v).h}’${pp(priceZh(v).h, '은/는')} ${v}위안이에요. 다시 골라 봐요!`, 'no'); });
-        },
+  // ⭐ 돌발 이벤트 B: 一个 — 바구니의 사과(셀 수 있는 물건)를 한 개만
+  function dnRushYige(g) {
+    const q = run.arc; let bag = 0;
+    dnSay(g, `👆🍎${zhCard('我要一个。', 'Wǒ yào yí ge.')}${sayBtn('我要一个。')}`);
+    arTask('dn4-yige', '⭐ 보너스: 我要一个。 → 사과 한 개', '1개', ['一个 yí ge = ‘한 개’예요. 사과를 몇 개 담을까요?', '사과를 딱 한 개만 담아요.'], true);
+    arMsg('⭐ 보너스 상황! 손님이 바구니의 사과를 가리켜요. 一个는 셀 수 있는 물건 ‘한 개’예요.');
+    const draw = () => {
+      dnPanel(`<div class="ar-ttl">⭐ 보너스 · 사과 바구니 (사과를 누르면 봉투에 담겨요)</div><div class="ar-row"><div class="dn-basket">${'<button class="dn-apple" aria-label="사과">🍎</button>'.repeat(5 - bag)}</div>
+        <button class="dn-bag" id="dnBag" aria-label="봉투 (누르면 하나 빼요)">🛍<span>${'🍎'.repeat(bag) || '빈 봉투'}</span></button><button class="ar-go" id="dnBagGo"${bag ? '' : ' disabled'}>건네주기 ✔</button></div>`);
+      $('dnPanel').querySelectorAll('.dn-apple').forEach(b => b.addEventListener('click', () => { if (AR.paused) return; bag++; SFX.pop(); draw(); }));
+      $('dnBag').addEventListener('click', () => { if (AR.paused || !bag) return; bag--; SFX.pop(); draw(); });
+      $('dnBagGo').addEventListener('click', () => {
+        if (arBusy() || !bag) return; arLockFor(450);
+        if (bag !== 1) { arWrong('一个 yí ge는 ‘한 개’예요. 봉투를 누르면 하나씩 뺄 수 있어요.', $('dnBag')); return; }
+        arRight('딱 한 개! 我要一个。 = 하나 주세요.'); save.cards.dn_yige = true; save.cards.dn_yige_s = true; writeSave();
+        dnRushDone(g, null, 10);
       });
     };
-    if (c.type === 'name') {   // 중국어 음식 이름 → 음식 준비 (그림 고르기)
-      const ord = shuffle(FOOD_IDS);
-      taskBegin('n4n', `손님 주문: ${foodOf(t).h}`, foodOf(t).ko);
-      openPick({
-        title: '🍽 손님 1 · 주문표', ask: `<div class="cust"><img class="npc-face" src="${npcFaceURL(DN_NPC[who])}" alt=""><div class="say-bubble">${sentBox(foodOf(t).h, foodOf(t).p, false)}</div></div><p>주문표를 보고 음식을 준비해요.</p>`, hints: foodHints(t), closeLabel: '나중에 할게요',
-        render() { $('qpBody').innerHTML = `<div class="pk-grid gifts5">${picOpts(ord)}</div>`; pickBind('.pk-opt', (b) => { if (ord[+b.dataset.k] === t) { taskEnd(); SFX.correct(); closePick(); finish(); return; } taskMiss(); SFX.wrong(); pickMsg(`이 음식은 ${foodOf(t).h}${pp(foodOf(t).h, '이/가')} 아니에요. 다시 골라 봐요!`, 'no'); }); },
-      });
-      return;
-    }
-    if (c.type === 'point') { dnPointOrder({ who, t, key: 'n4a', title: '🍽 손님 2 · 我要这个。', onDone: finish }); return; }
-    if (c.type === 'price') { priceAnswer(finish); return; }
-    dnPointOrder({ who, t, key: 'n4c', title: '🍽 손님 4 · 주문하고 계산까지', onDone: () => priceAnswer(finish) });
+    draw();
   }
-  function dnParty() {
-    const q = run.q; q.party = true; q.final = true; q.partyT = 0; SFX.gate();
-    for (let k = 0; k < 6; k++) burst(2880 + rnd(-40, 380), GY - rnd(60, 140), ['#ff9fb2', '#f6c445', '#62aefc', '#ffffff'], 18, 220);
-    for (const x of DN_TABLE) floatText(x, GY - 60, '👏', '#fff0a8');
-    toast(`🎉 판다 식당 영업 대성공! 주문 ${q.orders}개 · 매출 ${q.sales}元`, 3200, true);
-    questDone(3);
+  // 👑 돌발 이벤트 C: VIP 판다 — 가리킨 음식 이름 → 빈칸 문장 완성 → 가격 대답 → 서빙 → 식당 전체 축하
+  function dnVipEnter() {
+    const q = run.arc;
+    const ban = document.createElement('div'); ban.className = 'ar-banner vip'; ban.textContent = '👑 VIP 판다 방문!'; $('arFx').appendChild(ban); setTimeout(() => ban.remove(), 1800);
+    $('dnCarpet').classList.add('on'); [523, 659, 784, 1047].forEach((f, i) => tone(f, i * 0.1, 0.2, 'triangle', 0.07));
+    const g = dnGuy(DN_VIP, DN_X.door, 'vip'); q.vip = g;
+    q.line.forEach((x, k) => dnMove(x, k ? DN_X.q2 : DN_X.q1));
+    dnMove(g, DN_X.counter, 1400);
+    arMsg('👑 VIP 손님이 왔어요! 특별 주문을 완벽하게 해결해요!', 'info');
+    arLater(dnVip1, 1500);
   }
-  function dnUpdate(dt) { const q = run.q; if (q.party) q.partyT += dt; const it = q.carry; if (it) { it.x = P.x + P.w / 2; it.y = P.y - 2; } }
-  function dnDraw() {
-    const q = run.q, a = qAct(), px = P.x + P.w / 2, sx = (x) => Math.round(x - cam), vis = (x) => x - cam > -100 && x - cam < W + 100;
-    // 1구역 주방 접시와 진열대
-    if (vis(640)) { ctx.fillStyle = '#5a3a22'; ctx.fillRect(sx(420), GY - 2, 445, 2); }
-    for (const it of q.m1.items) if (!it.held && !it.gone && vis(it.x)) drawFood(ctx, it.kind, sx(it.x), it.y, 1);
-    if (vis(DN_STAND)) { const x = sx(DN_STAND); ctx.fillStyle = '#3b2716'; ctx.fillRect(x - 46, GY - 34, 92, 6); ctx.fillStyle = '#c99561'; ctx.fillRect(x - 44, GY - 33, 88, 4); ctx.fillStyle = '#5a3a22'; ctx.fillRect(x - 42, GY - 28, 4, 28); ctx.fillRect(x + 38, GY - 28, 4, 28); q.m1.stand.forEach((id, k) => drawFood(ctx, id, x - 28 + k * 28, GY - 34, 0.85)); }
-    // 2구역 메뉴판 (그림만, 순서는 판마다 다름)
-    if (vis(DN_BOARD)) { const x = sx(DN_BOARD); ctx.fillStyle = '#3b2716'; ctx.fillRect(x - 3, GY - 40, 6, 40); ctx.fillRect(x - 64, GY - 112, 128, 74); ctx.fillStyle = '#2f4a3a'; ctx.fillRect(x - 61, GY - 109, 122, 68); q.menu.forEach((id, k) => drawFood(ctx, id, x - 48 + k * 24, GY - 70 + (k % 2) * 22, 0.7)); }
-    if (vis(DN_COUNTER)) { const x = sx(DN_COUNTER); ctx.fillStyle = '#3b2716'; ctx.fillRect(x - 40, GY - 30, 80, 30); ctx.fillStyle = '#c99561'; ctx.fillRect(x - 38, GY - 28, 76, 6); }
-    // 3구역 계산대
-    if (vis(DN_REG)) { const x = sx(DN_REG); ctx.fillStyle = '#3b2716'; ctx.fillRect(x - 36, GY - 32, 72, 32); ctx.fillStyle = '#c99561'; ctx.fillRect(x - 34, GY - 30, 68, 6); ctx.fillStyle = '#5a6577'; ctx.fillRect(x - 12, GY - 50, 24, 18); ctx.fillStyle = '#9fd3f5'; ctx.fillRect(x - 9, GY - 47, 18, 7); ctx.fillStyle = '#f6c445'; ctx.fillRect(x - 9, GY - 38, 18, 4); }
-    // 4구역 식탁
-    DN_TABLE.forEach((x) => { if (!vis(x)) return; const c = sx(x) + 22; ctx.fillStyle = '#5a3a22'; ctx.fillRect(c - 16, GY - 22, 32, 5); ctx.fillRect(c - 2, GY - 17, 4, 17); });
-    // 식당 간판: 영업 성공하면 불이 켜져요
-    if (vis(3060)) { const x = sx(3060), on = q.final && Math.sin(time * 6) > -0.6; ctx.fillStyle = '#3b2716'; ctx.fillRect(x - 70, 108, 140, 30); ctx.fillStyle = on ? '#ffe066' : '#c99561'; ctx.fillRect(x - 67, 111, 134, 24); ctx.fillStyle = on ? '#b5121b' : '#5a3a22'; ctx.font = 'bold 15px Jua, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText('🐼 판다 식당', x, 124); }
-    // 사람(판다)들
-    DN_NPC.slice(0, 4).forEach((d, i) => { drawNpc(d, d.x, GY, px >= d.x ? 1 : -1); if (i === a && mode === 'play') drawBubble2(d.x, GY - 44 + Math.sin(time * 4) * 2, '!'); else if (i < a || a < 0) drawBubble2(d.x, GY - 44, '♥', '#ff9fb2'); });
-    // 2구역 손님 줄 (차례대로 앞으로)
-    if (a === 1 || a > 1 || a < 0) [4, 5].forEach((w, j) => { const served = q.m2.ci > j; const x = served ? DN_COUNTER + 220 + j * 34 : DN_QUEUE[j - q.m2.ci < 0 ? 0 : j - q.m2.ci]; if (!vis(x)) return; drawNpc(DN_NPC[w], x, GY + (q.happy[w] ? -Math.max(0, Math.sin(time * 5 + j)) * 3 : 0), -1); if (q.happy[w]) drawBubble2(x, GY - 44, '♥', '#ff9fb2'); else if (a === 1 && j === q.m2.ci && mode === 'play') drawBubble2(x, GY - 44 + Math.sin(time * 4) * 2, '!'); });
-    // 4구역 손님 (식탁 옆)
-    if (a >= 3 || a < 0) q.m4.cs.forEach((c, k) => { const x = DN_TABLE[k], hop = q.final ? -Math.max(0, Math.sin(q.partyT * 6 + k)) * 6 : 0; drawNpc(DN_NPC[c.who], x, GY + hop, 1); if (q.m4.served[k]) { drawFood(ctx, c.t, sx(x) + 22, GY - 22, 0.6); drawBubble2(x, GY - 44 + hop, '♥', '#ff9fb2'); } else if (q.m4.acc && mode === 'play') drawBubble2(x, GY - 44 + Math.sin(time * 4 + k) * 2, '?', '#cfe3ff'); });
-    if (q.final) for (let k = 0; k < 24; k++) { const x = Math.round(2760 + ((k * 61 + q.partyT * 40) % 520) - cam), y = Math.round((k * 37 + q.partyT * 70) % 200) + 30; ctx.fillStyle = ['#ff9fb2', '#f6c445', '#62aefc', '#ffffff'][k % 4]; ctx.fillRect(x, y, 3, 3); }
+  function dnVip1() {
+    const q = run.arc, g = q.vip, want = dnPickWant(); q.vipWant = want;
+    dnPoint(want); dnSay(g, `👆${zhCard('我要这个。', 'Wǒ yào zhège.')}${sayBtn('我要这个。')}`);
+    arTask('dn4-v1', `VIP 我要这个: 가리킨 그림 → ${foodOf(want).h}`, foodOf(want).h, zhegeHints(want));
+    arMsg('👑 VIP 1단계: 가리킨 음식의 중국어 이름을 주문서에!');
+    dnNameSlip(want, 'VIP 주문서 — 가리킨 음식의 이름은?', () => { arRight(`1단계 성공! ${foodOf(want).h}`); dnPoint(null); arLater(dnVip2, 600); }, '손님이 가리킨 그림을 다시 보고, 중국어 이름을 골라요.');
   }
-  function dnTop() { const q = run.q; if (q.carry) drawHeld((g, x, y) => drawFood(g, q.carry.kind, x, y, 1.2)); }
-  function dnRecall() {
-    const q = run.q, a = qAct(); if (a < 0) return; closeMissionPanel();
-    const notYet = () => openTalk(a, `<p>아직 ${DN_NPC[a].name}의 부탁을 듣지 않았어요.</p><p>노란 ▼ 표시를 따라가서 말을 걸어 봐요!</p>`, { ok: '알겠어요!' });
-    if (a === 0) { if (!q.m1.acc) return notYet(); const t = q.m1.want[q.m1.ri]; openTalk(0, `<div class="zline big">${foodName(t, true)} 올려 줘! (${q.m1.ri + 1}/3)</div>`, { hints: foodHints(t) }); return; }
-    if (a === 1) { if (!q.m2.acc) return notYet(); openTalk(1, `${sentBox('我要这个。', 'Wǒ yào zhège.', false)}<p>이거 주세요. (这个 = 손으로 가리킨 것)</p><p class="qprog">받은 주문 ${q.m2.ci}/3</p>`, { ok: '알겠어요!' }); return; }
-    if (a === 2) { if (!q.m3.acc) return notYet(); openTalk(2, `${sentBox('这个多少钱？', 'Zhège duōshao qián?', false)}<p>이거 얼마예요?</p><p class="qprog">대답: 숫자 + 块 (예: 二十块 èrshí kuài = 20위안)</p>`, { ok: '알겠어요!' }); return; }
-    if (!q.m4.acc) return notYet();
-    openTalk(3, `<p>손님 ${q.m4.served.filter(Boolean).length}/4 · 오늘 매출 ${q.sales}元 (연습용)</p>`, { ok: '알겠어요!' });
+  function dnVip2() {
+    const g = run.arc.vip, opts = shuffle([{ h: '要', p: 'yào', ok: true }, { h: '叫', p: 'jiào' }, { h: '是', p: 'shì' }]); let sel = -1;
+    dnSay(g, `${zhCard('我 ＿ 这个。', 'Wǒ ＿ zhège.')}<small>앗, 한 글자를 잊었어요!</small>`);
+    arTask('dn4-v2', 'VIP 문장 완성: 我要这个。', '要', ['VIP는 “이거 주세요”라고 말하고 싶어요. ‘원하다’는 무엇일까요?', '要 yào = 원하다 → 我要这个。']);
+    arMsg('👑 VIP 2단계: 빈칸에 들어갈 조각을 골라 문장을 완성해요!');
+    dnPanel(`<div class="ar-ttl">🧩 我 ＿ 这个。 빈칸 채우기</div><div class="ar-row"><div class="ar-opts three">${opts.map((o, k) => `<button class="ar-opt" data-key="${k + 1}" data-k="${k}" aria-pressed="false">${zhCard(o.h, o.p)}</button>`).join('')}</div><button class="ar-go" id="dnVipGo" disabled>완성! ✔</button></div>`);
+    const bs = $('dnPanel').querySelectorAll('.ar-opt');
+    bs.forEach(b => b.addEventListener('click', () => { if (AR.paused) return; sel = +b.dataset.k; bs.forEach(x => { x.classList.toggle('sel', x === b); x.setAttribute('aria-pressed', x === b); }); $('dnVipGo').disabled = false; SFX.pop(); }));
+    $('dnVipGo').addEventListener('click', () => {
+      if (arBusy() || sel < 0) return; arLockFor(450);
+      if (!opts[sel].ok) { arWrong('그 글자를 넣으면 ‘이거 주세요’가 안 돼요. 다시 골라요!', $('dnVipGo')); return; }
+      arRight('2단계 성공! 我要这个。'); dnSay(g, zhCard('我要这个。', 'Wǒ yào zhège.')); arLater(dnVip3, 700);
+    });
   }
+  function dnVip3() {
+    const q = run.arc, g = q.vip, want = q.vipWant, n = q.price[want];
+    dnPoint(want); dnSay(g, `👆${zhCard('这个多少钱？', 'Zhège duōshao qián?')}${sayBtn('这个多少钱？')}`);
+    arTask('dn4-v3', `VIP 가격 말하기: ${n}元 → ${priceZh(n).h}`, priceZh(n).h, priceZhHints(n));
+    arMsg('👑 VIP 3단계: 메뉴판 가격표를 보고 중국어로 대답해요!');
+    dnPriceZh(n, 'VIP에게 가격을 중국어로 알려 줘요', () => {
+      const s = priceSay(n); arRight(`3단계 성공! ${s.h} ${s.p}`); dnPoint(null);
+      dnCook(want, () => dnVipParty(g, want, n));
+    });
+  }
+  function dnVipParty(g, want, n) {
+    arLockFor(4000);
+    dnSale(n, g.el); dnSeat(g, want); run.arc.deco = DN_DECO.length; dnDecoRender(); $('dnSign').classList.add('lit');
+    $('dnGuys').querySelectorAll('.dn-guy').forEach(x => arBounce(x, 'cheer'));
+    $('arc').classList.add('party'); arConfetti(100);
+    for (let k = 0; k < 6; k++) arLater(() => arFloat(pick(['👏', '♥', '🎉', '✨']), $('dnFloor'), 'clap'), k * 250);
+    dnPanel(`<div class="dn-wait big">🎉 판다 식당 영업 대성공! 모두 박수~ 👏</div>`);
+    celebrate('판다 식당 영업 대성공!', 3000); arMsg(`오늘 매출 ${run.arc.sales}元 (연습용 가상 돈) · 손님 ${run.arc.orders}명`, 'ok');
+    arLater(() => { $('arc').classList.remove('party'); arRoundDone(); }, 3100);
+  }
+  // 아케이드 버튼 연결
+  $('arPopGo').addEventListener('click', arPopGo);
+  $('arHome').addEventListener('click', arHome);
+  $('arHint').addEventListener('click', arHint);
+  $('arWords').addEventListener('click', arWords);
+  $('arDrop').addEventListener('click', beltPut);
+  $('arSound').addEventListener('click', () => { toggleSound(); arSoundUI(); });
 
   // ================= 미션형 지역 모음 (6~10차시). STAGE.questKit으로 골라요 =================
   const QUEST_KITS = {
@@ -5286,8 +5827,8 @@
     fam: { make: fmNew, cand: fmCand, goal: fmGoal, update: fmUpdate, draw: fmDraw, top: fmTop, recall: fmRecall, npcs: FM_NPC, free: () => [...FM_FOREST.map(x => ({ x, y: GY, r: 30 })), ...FM_STUDIO.map(x => ({ x, y: GY, r: 30 })), { x: FM_BOARD_X, y: GY, r: 44 }] },
     gift: { make: gfNew, cand: gfCand, goal: gfGoal, update: gfUpdate, draw: gfDraw, top: gfTop, recall: gfRecall, npcs: GF_NPC, free: () => [...GF_SHOP, ...GF_Z3].map(sp => ({ ...sp, r: 26 })).concat([...GF_Z2, ...GF_HOUSE].map(x => ({ x, y: GY, r: 26 }))) },
   };
-  QUEST_KITS.food = { make: fdNew, cand: fdCand, goal: fdGoal, update: fdUpdate, draw: fdDraw, top: fdTop, recall: fdRecall, npcs: FD_NPC, free: () => [...FD_BOOTH, ...FD_OWNER, ...FD_SHELF, ...FD_STALL, 2250, 2450].map(x => ({ x, y: GY, r: 26 })) };
-  QUEST_KITS.diner = { make: dnNew, cand: dnCand, goal: dnGoal, update: dnUpdate, draw: dnDraw, top: dnTop, recall: dnRecall, npcs: DN_NPC, free: () => [...DN_PASS, DN_STAND, DN_BOARD, ...DN_QUEUE, DN_REG, ...DN_TABLE].map(x => ({ x, y: GY, r: 30 })) };
+  // 9·10차시는 맵 미션 대신 아케이드 화면이라 맵에서 할 일이 없어요
+  QUEST_KITS.arc = { make: () => ({ task: null }), cand: () => null, goal: () => ({ tip: '' }), update() {}, draw() {}, top: null, recall() {}, npcs: [], free: () => [] };
   const KIT = () => QUEST_KITS[STAGE.questKit];
 
 
@@ -6464,7 +7005,8 @@
     const list = [
       [true, `${STAGE.mapName} 클리어`],
       [rate >= 0.7, `${STAGE.quest ? '혼자 힌트 없이 처음에 해결' : '한 번에 맞힌 문제'} 70% 이상 (${Math.round(rate * 100)}%)`],
-      [run.coins >= STAGE.coinStar, `보너스 동전 ${STAGE.coinStar}개 이상 (${run.coins}개)`],
+      STAGE.arcade ? [((run.arc && run.arc.best) || 0) >= 4, `연속 성공 콤보 4 이상 (최고 ${((run.arc && run.arc.best) || 0)})`]
+        : [run.coins >= STAGE.coinStar, `보너스 동전 ${STAGE.coinStar}개 이상 (${run.coins}개)`],
     ];
     return { n: list.filter(x => x[0]).length, list };
   }
@@ -6659,6 +7201,11 @@
     loadStage(selStage, true); startPlay();
   }
   function enterPlay() {
+    if (STAGE.arcade) {   // 9·10차시: 맵 대신 아케이드 화면
+      run.hello = run.hello || 0;
+      if (!run.hello) { run.hello = 1; report('start'); }
+      arcOpen(); return;
+    }
     mode = 'play'; focusStage();
     run.hello = run.hello || 0;
     if (!run.hello) { run.hello = 1; report('start'); setTimeout(() => { if (mode === 'play') toast(STAGE.quest ? '친구 판다들의 부탁을 들어줘요! 노란 ▼를 따라가요' : '몬스터를 모두 물리치면 문이 열려요! 오른쪽으로 출발 →', 2600, true); }, 400); }
@@ -6693,6 +7240,16 @@
   function openHelp(from) {
     helpReturn = from; mode = 'help'; releaseAll(); closeMissionPanel();
     const mon = sprOf({ skin: THEME.skins[0], tone: 1 }).toDataURL();
+    if (STAGE.arcade) {
+      $('helpGrid').innerHTML = (isTouch() ? `
+      <div class="hitem"><div class="ico">👆</div>음식·카드·버튼을 손가락으로 톡!</div>` : `
+      <div class="hitem"><div class="ico">🖱</div>음식·카드·버튼을 클릭 (Enter: 큰 버튼 · 1~5: 번호 칸)</div>`) + `
+      <div class="hitem"><div class="ico">💡</div>막히면 힌트 버튼</div>
+      <div class="hitem"><div class="ico">📖</div>오늘 배우는 말 다시 보기</div>`;
+      $('helpOk').textContent = from === 'first' ? '알겠어요! 출발' : '알겠어요!';
+      $('help').hidden = false; $('help').scrollTop = 0; $('helpOk').focus({ preventScroll: true });
+      return;
+    }
     if (STAGE.quest) {
       $('helpGrid').innerHTML = (isTouch() ? `
       <div class="hitem"><div class="ico"><span class="tb">◀</span><span class="tb">▶</span><span class="tb j">점프</span></div>걷기 · 점프</div>
@@ -6755,11 +7312,14 @@
   }
   function resumeFromPause() {
     if (mode !== 'pause') return;
-    $('homeAsk').hidden = true; mode = 'play'; focusStage();
+    $('homeAsk').hidden = true;
+    if (STAGE.arcade && !$('arc').hidden) { mode = 'arcade'; AR.paused = !$('arPop').hidden; return; }
+    mode = 'play'; focusStage();
   }
   // 홈으로: 열린 창·퀴즈·음성·입력을 모두 정리하고 시작 화면으로 (탐험 상태는 지역별로 보관)
   function goHome() {
     for (const id of ['quiz', 'cardPop', 'speak', 'lesson', 'result', 'help', 'homeAsk', 'intro', 'faint', 'settings', 'confirmReset', 'nameAsk', 'talk', 'basket', 'slab', 'cake', 'cal', 'bcard', 'qpick', 'wardrobe']) $(id).hidden = true;
+    if (AR.on || !$('arc').hidden) arClose();
     quick.on = false; quiz.lock = false; releaseAll(); closeMissionPanel();
     try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (e) {}
     clearTimeout(Voice.chk); clearTimeout(toastTimer); $('toast').hidden = true; $('focusHint').hidden = true;
@@ -6853,7 +7413,9 @@
     $('rStars').textContent = '★'.repeat(stars.n) + '☆'.repeat(3 - stars.n); $('rStars').hidden = false;
     $('rScore').innerHTML = `${run.firstTry}<small> / ${run.asked}</small>`;
     $('rScoreLabel').textContent = STAGE.quest ? `혼자 힌트 없이 처음에 해결한 과제 (안내 ${run.guided || 0}개 · 힌트 ${run.hints || 0}개 따로)` : '한 번에 맞힌 문제';
-    fillGrid([[save.level, '레벨'], [run.coins, '이번에 모은 동전'], [fmtTime(run.end - run.start), '탐험 시간']]);
+    const ac = run.arc || {};
+    fillGrid(STAGE.arcade ? [[save.level, '레벨'], STAGE.arcade === 'diner' ? [`${ac.sales || 0}元`, '오늘 매출 (연습용)'] : [ac.best || 0, '최고 콤보'], [fmtTime(run.end - run.start), '플레이 시간']]
+      : [[save.level, '레벨'], [run.coins, '이번에 모은 동전'], [fmtTime(run.end - run.start), '탐험 시간']]);
     $('rList').innerHTML = stars.list.map(([ok, txt]) => `<li class="${ok ? 'ok' : ''}">${ok ? '★' : '☆'} ${txt}</li>`).join(''); $('rList').hidden = false;
     if (run.name) { $('rName').innerHTML = `<span class="han">我叫${run.name.replace(/[<>&"]/g, '')}。</span><span class="py t0">Wǒ jiào ${run.name.replace(/[<>&"]/g, '')}.</span>`; $('rName').hidden = false; }
     $('rStamp').textContent = stars.n === 3 ? '최고예요! 太棒了!' : stars.n === 2 ? '잘했어요! 很好!' : '해냈어요! 加油!';
@@ -6910,15 +7472,17 @@
       const dt = Math.min(0.033, (now - last) / 1000); last = now; time += dt;
       if (mode === 'play') { update(dt); updateFx(dt); }
       else if (mode === 'cut') updateFx(dt);
+      else if (mode === 'arcade') arcUpdate(dt);
       const [song, vol] = musicWanted(); BGM.sync(song, vol);
-      render(); questSyncUI();
+      if ($('arc').hidden) render();   // 아케이드 화면이 덮고 있을 때는 맵을 그리지 않아요
+      questSyncUI();
       requestAnimationFrame(frame);
     }
     requestAnimationFrame(frame);
     $('startScreen').querySelector('.card').focus({ preventScroll: true });
     window.__panda = {
       SHOP_ITEMS, buyItem, equipItem, unequipItem, openWardrobe, closeWardrobe, drawWear, get wd() { return wd; },
-      questInteract, openBasket, BD_NPC, BD_CANDLES, BD_CAKE_X, BD_BOARD_X, BD_DESK_X, BD_TABLE_X, bdValid, dateZh, bdSent, openCake, cakeAdd, cakeDel, cakeDone, closeCake, openCal, calOk, closeCal, openBCard, bcOk, closeBCard, bdPlace, openPick, closePick, pickOk, FAM, famOf, famSent, FM_NPC, GIFT, giftOf, gfSent, GF_NPC, GF_FR, FM_BOARD_X, famFace, giftURL, drawGift, FOOD, foodOf, foodSent, FD_NPC, DN_NPC, priceZh, priceSay, drawFood, foodURL, FD_BOOTH, FD_OWNER, DN_STAND, DN_BOARD, DN_COUNTER, DN_REG, DN_TABLE, fdNewTest: () => fdNew(), dnNewTest: () => dnNew(), fmNewTest: () => fmNew(), gfNewTest: () => gfNew(), get qp() { return qp; }, bdNewTest: () => bdNew(), bdBonus: () => bdBonusLater, basketDrop, closeBasket, zhNum, tokVal, testSpawn: (kind, n, set) => { const q = run.q, list = set ? q.m4.items : q.m3.items; spawnItems(list, kind, n, Q_SPOTS[set]); }, testOpenSlab: (rounds) => openSlab({ title: 'test', rounds, start: 0, tag: 'test', key: (i) => 'test' + i, onRound() {}, onAll() {} }), slabTap, slabKey, ruleHints, boxNums, closeTalk, closeSlab, questRecall, NPC_DEF, useSkill, canSkill, BGM, josa, BUILD, forestBuild, basicQuestion, MA, GREET, NW, P, save, quiz, quick, NQ, numQ, numQueue, NUMS, openQuiz, answer, closeQuiz, closeSpeak, selectStage, startPlay, goHome, askHome, resumeFromPause, loadStage, closeHelp, closeIntro, startNewRun, THEMES, SKINS, STAGES,
+      questInteract, openBasket, BD_NPC, BD_CANDLES, BD_CAKE_X, BD_BOARD_X, BD_DESK_X, BD_TABLE_X, bdValid, dateZh, bdSent, openCake, cakeAdd, cakeDel, cakeDone, closeCake, openCal, calOk, closeCal, openBCard, bcOk, closeBCard, bdPlace, openPick, closePick, pickOk, FAM, famOf, famSent, FM_NPC, GIFT, giftOf, gfSent, GF_NPC, GF_FR, FM_BOARD_X, famFace, giftURL, drawGift, FOOD, foodOf, foodSent, FD_MC, DN_NPC, priceZh, priceSay, drawFood, foodURL, AR, arcOpen, arPopGo, arHint, arKey, PRICES, FD_GUEST, DN_CU, get arDbg() { return { belt: AR.belt, held: AR.held, tray: AR.tray, want: AR.want, r: AR.r, paused: AR.paused, combo: AR.combo }; }, beltGrab, beltPut, fsPut, fsServe, fsGive1, fmNewTest: () => fmNew(), gfNewTest: () => gfNew(), get qp() { return qp; }, bdNewTest: () => bdNew(), bdBonus: () => bdBonusLater, basketDrop, closeBasket, zhNum, tokVal, testSpawn: (kind, n, set) => { const q = run.q, list = set ? q.m4.items : q.m3.items; spawnItems(list, kind, n, Q_SPOTS[set]); }, testOpenSlab: (rounds) => openSlab({ title: 'test', rounds, start: 0, tag: 'test', key: (i) => 'test' + i, onRound() {}, onAll() {} }), slabTap, slabKey, ruleHints, boxNums, closeTalk, closeSlab, questRecall, NPC_DEF, useSkill, canSkill, BGM, josa, BUILD, forestBuild, basicQuestion, MA, GREET, NW, P, save, quiz, quick, NQ, numQ, numQueue, NUMS, openQuiz, answer, closeQuiz, closeSpeak, selectStage, startPlay, goHome, askHome, resumeFromPause, loadStage, closeHelp, closeIntro, startNewRun, THEMES, SKINS, STAGES,
       get mode() { return mode; }, get monsters() { return monsters; }, get coins() { return coins; }, get gates() { return gates; },
       get run() { return run; }, get cam() { return cam; }, get floats() { return floats; }, get stage() { return STAGE.id; }, get drops() { return drops; }, get selStage() { return selStage; },
     };
