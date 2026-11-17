@@ -202,13 +202,23 @@
       if (!o) { o = { key, name: r.name || '(닉네임 없음)', lesson: r.lesson, start: r.t, last: r.t, mission: 0, total: 4, first: 0, asked: 0, stars: 0, wrong: '', secs: 0, device: r.device, clear: null }; by.set(key, o); }
       o.last = r.t; o.device = r.device || o.device;
       if (r.kind === '입장') { if (o.clear) { o.clear = null; o.mission = 0; o.first = 0; o.asked = 0; o.wrong = ''; o.stars = 0; } continue; }
-      const m = /^(\d+)\s*\/\s*(\d+)$/.exec(r.mission || '');
-      if (m) { o.mission = +m[1]; o.total = +m[2]; }
+      const m = parseMission(r.mission);
+      if (m) { o.mission = m[0]; o.total = m[1]; }
       o.first = r.first; o.asked = r.asked; o.wrong = r.wrong; o.secs = r.secs;
       o.hints = r.hints == null ? null : r.hints; o.guided = r.guided == null ? null : r.guided;   // 5차시(기록 방식 2)만 있어요
       if (r.kind === '클리어') { o.clear = r.t; o.stars = r.stars; o.mission = o.total; }
     }
     return [...by.values()];
+  }
+  // 미션 칸 "1/4": Google 시트가 날짜(1월 4일)로 바꿔 저장해서 "Sun Jan 04 2026 …"로 돌아오는 경우가 있어요 → 월·일을 다시 "미션/전체"로 읽어요
+  const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  function parseMission(v) {
+    v = String(v || '').trim();
+    let m = /^(\d+)\s*\/\s*(\d+)$/.exec(v);
+    if (!m) { const d = /\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.?\s+(\d{1,2})\b/.exec(v); if (d) m = [0, MON.indexOf(d[1]) + 1, d[2]]; }
+    if (!m) return null;
+    const a = +m[1], b = +m[2];
+    return b >= 1 && b <= 12 && a >= 0 && a <= b ? [a, b] : null;
   }
   const isMini = (r) => r.kind === '미니게임' || /^mini-/.test(r.stage || '');
   const rateOf = (o) => o.asked ? Math.round(o.first / o.asked * 100) : null;
@@ -217,13 +227,14 @@
   function render() {
     const all = group(data);
     // 차시 목록
-    const lessons = [...new Set(all.map(o => o.lesson))].sort();
+    const byNum = (a, b) => String(a).localeCompare(String(b), 'ko', { numeric: true });   // 1차시 → 2차시 → … → 10차시 (글자 순서면 10차시가 1차시 앞에 와요)
+    const lessons = [...new Set(all.map(o => o.lesson))].sort(byNum);
     const sel = $('lesson'), cur = sel.value;
     sel.innerHTML = '<option value="">전체</option>' + lessons.map(l => `<option value="${esc(l)}">${esc(l)}</option>`).join('');
     sel.value = lessons.includes(cur) ? cur : '';
     const list = all.filter(o => !sel.value || o.lesson === sel.value);
     const sort = $('sort').value;
-    const cmpName = (a, b) => a.lesson.localeCompare(b.lesson) || a.name.localeCompare(b.name, 'ko');
+    const cmpName = (a, b) => byNum(a.lesson, b.lesson) || a.name.localeCompare(b.name, 'ko');
     list.sort(sort === 'rate' ? (a, b) => (rateOf(b) ?? -1) - (rateOf(a) ?? -1) || cmpName(a, b)
       : sort === 'rateLow' ? (a, b) => (rateOf(a) ?? 101) - (rateOf(b) ?? 101) || cmpName(a, b)
       : sort === 'prog' ? (a, b) => (b.clear ? 9 : b.mission) - (a.clear ? 9 : a.mission) || cmpName(a, b)
