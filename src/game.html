@@ -2144,7 +2144,9 @@
   // 상점 아이템 목록 (kind: 'wear' = 옷장. 나중에 'room' = 판다 방 가구를 같은 목록에 더할 수 있어요)
   // 가격 근거: 지역마다 첫 탐험에 받을 수 있는 코인이 1~4차시 93개, 5~8차시 50~65개(모두 합쳐 603개)
   //   → 리본 30(한 지역 절반쯤) … 왕관 200(서너 지역을 모아야 하는 목표). 6개 합계 590 = 지금 1~6차시 최대치(488)보다 많음
-  const WEAR_SLOTS = { head: '머리', face: '얼굴', neck: '목', back: '등' };
+  // 슬롯: 기존 4개(머리·얼굴·목·등) + 학생 요청 아이템용 5개(손·발·몸·탈것·친구). 슬롯마다 하나만 장착
+  const WEAR_SLOTS = { head: '머리', face: '얼굴', neck: '목', back: '등', hand: '손', feet: '발', body: '몸', ride: '탈것', pet: '친구' };
+  const WEAR_SLOT_LABEL = { head: '머리 장식', face: '얼굴 장식', neck: '목 장식', back: '등 장식', hand: '손에 들기', feet: '신발', body: '옷', ride: '탈것 (꾸미기용)', pet: '함께하는 친구' };
   const SHOP_ITEMS = [
     { id: 'w_ribbon', kind: 'wear', slot: 'head', name: '빨간 리본', price: 30 },
     { id: 'w_glasses', kind: 'wear', slot: 'face', name: '동그란 안경', price: 50 },
@@ -2152,6 +2154,18 @@
     { id: 'w_bluehat', kind: 'wear', slot: 'head', name: '파란 모자', price: 100 },
     { id: 'w_bag', kind: 'wear', slot: 'back', name: '탐험 가방', price: 130 },
     { id: 'w_crown', kind: 'wear', slot: 'head', name: '황금 왕관', price: 200 },
+    // 학생 요청 아이템 11종 (2026-11-17). 가격: 9·10차시 한 판 75코인 기준 — 손 소품 40~120, 옷·신발 60~110, 친구·탈것 150~220
+    { id: 'w_pencil', kind: 'wear', slot: 'hand', name: '커다란 색연필', price: 40 },
+    { id: 'w_book', kind: 'wear', slot: 'hand', name: '그림책', price: 50 },
+    { id: 'w_sword', kind: 'wear', slot: 'hand', name: '장난감 검', price: 60 },
+    { id: 'w_bubble', kind: 'wear', slot: 'hand', name: '비눗방울 장난감 총', price: 70 },
+    { id: 'w_trophy', kind: 'wear', slot: 'hand', name: '황금 트로피', price: 120 },
+    { id: 'w_headband', kind: 'wear', slot: 'head', name: '토끼 머리띠', price: 45 },
+    { id: 'w_shoes', kind: 'wear', slot: 'feet', name: '알록달록 운동화', price: 60 },
+    { id: 'w_dress', kind: 'wear', slot: 'body', name: '파스텔 드레스', price: 110 },
+    { id: 'w_tiger', kind: 'wear', slot: 'pet', name: '호랑이 친구', price: 150 },
+    { id: 'w_bike', kind: 'wear', slot: 'ride', name: '미니 자전거', price: 160 },
+    { id: 'w_car', kind: 'wear', slot: 'ride', name: '미니 자동차', price: 220 },
   ];
   const SHOP_BY_ID = Object.fromEntries(SHOP_ITEMS.map(it => [it.id, it]));
   // save.shop = { v: 1, owned: [아이템 ID…], wear: { head, face, neck, back } }  (나중에 room: { 자리: 가구 ID } 를 더할 자리)
@@ -2197,20 +2211,70 @@
     w_scarf: { layer: 'front', draw(R) { R(3, 11, 10, 2, '#2b6fd6'); R(3, 11, 10, 1, '#62aefc'); R(5, 11, 1, 2, '#fbfaf5'); R(9, 11, 1, 2, '#fbfaf5'); R(10, 13, 2, 2, '#2b6fd6'); R(10, 15, 2, 1, '#fbfaf5'); } },
     w_bluehat: { layer: 'front', draw(R) { R(4, -1, 8, 3, '#2b6fd6'); R(5, -1, 6, 1, '#62aefc'); R(3, 2, 10, 1, '#1d4fa0'); R(7, -2, 2, 1, '#fbfaf5'); } },
     w_crown: { layer: 'front', draw(R) { const g = '#f6c445', d = '#c99a1e'; R(4, 0, 8, 2, g); R(4, 1, 8, 1, d); R(4, -2, 1, 2, g); R(7, -2, 2, 2, g); R(11, -2, 1, 2, g); R(6, 0, 1, 1, '#e5484d'); R(9, 0, 1, 1, '#62aefc'); } },
-    w_bag: { layer: 'back', draw(R) { R(-2, 9, 6, 7, '#5a3a22'); R(-1, 10, 4, 5, '#a0652a'); R(-1, 10, 4, 2, '#c4843f'); R(0, 12, 2, 1, '#f6c445'); R(-1, 14, 4, 1, '#7a4a1e'); } },
+    w_bag: { layer: 'back', box: [-2, 9, 16, 16], draw(R) { R(-2, 9, 6, 7, '#5a3a22'); R(-1, 10, 4, 5, '#a0652a'); R(-1, 10, 4, 2, '#c4843f'); R(0, 12, 2, 1, '#f6c445'); R(-1, 14, 4, 1, '#7a4a1e'); } },
   };
-  // g: 캔버스, (sx, sy): 판다 그림 왼쪽 위, s: 한 칸 크기(게임 화면 2), wear: { head, face, neck, back }
-  function drawWear(g, sx, sy, s, face, wear, layer) {
+  // ----- 학생 요청 아이템 11종 그림 (판다 16칸 기준, 오른손은 x 12~14·y 12~13 부근) -----
+  // box = 판다 칸(0~16) 밖으로 나가는 범위 [x0, y0, x1, y1] (미리보기 캔버스 크기를 맞출 때 써요)
+  // 탈것·친구는 그림만이에요: 판다의 크기·속도·점프·충돌 판정(P.w·P.h)은 그대로
+  const WK = '#2b2838';
+  Object.assign(WEAR_ART, {
+    w_pencil: { layer: 'front', box: [0, 0, 17, 16], draw(R) { R(14, 0, 2, 2, '#ff9fb2'); R(14, 2, 2, 1, '#c0c6cf'); R(14, 3, 2, 8, '#f6c445'); R(15, 3, 1, 8, '#e0a820'); R(14, 5, 2, 1, '#3d7bd9'); R(14, 8, 2, 1, '#e5484d'); R(14, 11, 2, 1, '#f2c48d'); R(14, 12, 1, 1, '#f2c48d'); R(14, 13, 1, 1, WK); } },
+    w_book: { layer: 'front', draw(R) { R(3, 11, 10, 4, '#e5484d'); R(4, 11, 4, 3, '#fbfaf5'); R(8, 11, 4, 3, '#fbfaf5'); R(7, 11, 2, 3, '#d9dde3'); R(5, 12, 2, 1, '#9aa0aa'); R(9, 12, 2, 1, '#9aa0aa'); R(5, 13, 1, 1, '#62aefc'); R(10, 13, 1, 1, '#5cc46a'); } },
+    w_sword: { layer: 'front', box: [0, 0, 18, 16], draw(R) { R(14, 1, 1, 1, '#dfe6ee'); R(14, 2, 2, 8, '#dfe6ee'); R(15, 2, 1, 8, '#b0bac6'); R(14, 3, 1, 5, '#ffffff'); R(12, 10, 6, 1, '#f6c445'); R(12, 10, 1, 1, '#c99a1e'); R(17, 10, 1, 1, '#c99a1e'); R(14, 11, 2, 2, '#7a4a22'); R(14, 13, 2, 1, '#f6c445'); } },
+    w_bubble: { layer: 'front', box: [0, 1, 20, 16], draw(R) {
+      R(12, 9, 6, 3, '#4fd0c0'); R(12, 9, 6, 1, '#bff3ea'); R(18, 10, 1, 1, '#f08a24'); R(14, 7, 2, 2, '#c084fc'); R(13, 12, 2, 2, '#ff8fab');   // 장난감 몸통·물통·손잡이
+      for (const [x, y] of [[18, 6], [16, 3], [19, 2]]) { R(x, y, 2, 2, '#bfe6ff'); R(x, y, 1, 1, '#ffffff'); }                          // 비눗방울
+    } },
+    w_trophy: { layer: 'front', box: [0, 0, 20, 16], draw(R) { R(13, 5, 6, 4, '#f6c445'); R(13, 5, 6, 1, '#fff0a8'); R(12, 6, 1, 2, '#c99a1e'); R(19, 6, 1, 2, '#c99a1e'); R(15, 6, 2, 2, '#fff6c4'); R(15, 9, 2, 2, '#c99a1e'); R(14, 11, 4, 2, '#7a4a22'); R(14, 11, 4, 1, '#a0652a'); R(19, 3, 1, 1, '#ffffff'); R(12, 4, 1, 1, '#ffffff'); } },
+    w_headband: { layer: 'front', box: [0, -5, 16, 16], draw(R) { R(4, 1, 8, 1, '#ff6b8b'); R(5, -4, 2, 5, '#fbfaf5'); R(5, -3, 1, 3, '#ff9fb2'); R(9, -4, 2, 5, '#fbfaf5'); R(10, -3, 1, 3, '#ff9fb2'); R(7, 0, 2, 1, '#f6c445'); } },
+    // 운동화: 걸을 때·점프할 때 발 모양(마지막 줄)에 맞춰 신겨요
+    w_shoes: { layer: 'front', box: [0, 0, 17, 17], draw(R, frame) {
+      const row = (PANDA_BODY[frame] || PANDA_BODY.idle)[4];
+      for (let x = 0; x < 16; x++) { if (row[x] !== 'k' || (x > 0 && row[x - 1] === 'k')) continue; let n = 0; while (row[x + n] === 'k') n++; R(x, 14, n, 1, '#ff6b8b'); R(x, 15, n + 1, 1, '#e5484d'); R(x + n, 15, 1, 1, '#fbfaf5'); R(x + 1, 14, 1, 1, '#fbfaf5'); R(x, 16, n + 1, 1, '#3d7bd9'); }
+    } },
+    w_dress: { layer: 'front', draw(R) { R(4, 12, 8, 1, '#c4b5fd'); R(3, 13, 10, 1, '#c4b5fd'); R(2, 14, 12, 1, '#d8ccff'); for (let x = 2; x < 14; x += 2) R(x, 14, 1, 1, '#fbfaf5'); R(7, 12, 2, 1, '#ff8fab'); R(4, 13, 1, 1, '#e2d6ff'); } },
+    w_tiger: { layer: 'back', box: [-14, 5, 16, 16], draw(R) {
+      R(-14, 9, 2, 1, '#f08a24'); R(-14, 10, 1, 2, '#f08a24'); R(-14, 9, 1, 1, WK);                                   // 꼬리
+      R(-12, 11, 8, 4, '#f08a24'); R(-11, 11, 1, 3, WK); R(-9, 11, 1, 3, WK); R(-7, 11, 1, 2, WK); R(-11, 14, 6, 1, '#fbe0b8');   // 몸·줄무늬·배
+      R(-11, 15, 2, 1, '#f08a24'); R(-7, 15, 2, 1, '#f08a24');                                                       // 다리
+      R(-6, 7, 6, 5, '#f08a24'); R(-6, 6, 2, 1, '#c96a10'); R(-2, 6, 2, 1, '#c96a10'); R(-4, 7, 1, 1, WK); R(-3, 7, 1, 1, WK);   // 머리·귀·이마 줄무늬
+      R(-5, 10, 4, 2, '#fbfaf5'); R(-5, 9, 1, 1, WK); R(-2, 9, 1, 1, WK); R(-4, 10, 2, 1, '#ff8fab'); R(-6, 9, 1, 1, '#fbe0b8'); R(-1, 9, 1, 1, '#fbe0b8');   // 얼굴
+    } },
+    w_bike: { layer: 'back', box: [-3, 0, 19, 17], draw(R) {
+      const wheel = (x, y) => { R(x + 1, y, 3, 1, WK); R(x + 1, y + 4, 3, 1, WK); R(x, y + 1, 1, 3, WK); R(x + 4, y + 1, 1, 3, WK); R(x + 2, y + 2, 1, 1, '#9aa0aa'); };
+      wheel(-3, 12); wheel(14, 12);
+      R(-1, 13, 17, 1, '#3d7bd9'); R(7, 10, 1, 4, '#3d7bd9'); R(5, 9, 5, 1, WK); R(15, 8, 1, 6, '#3d7bd9'); R(14, 7, 3, 1, WK);   // 몸체·안장·핸들
+    } },
+    w_car: { layer: 'front', box: [-2, 0, 19, 17], draw(R) {
+      R(13, 7, 3, 3, '#9cd3f0'); R(13, 7, 3, 1, WK); R(16, 7, 1, 3, WK);                                               // 앞유리
+      R(-1, 10, 18, 1, '#e5484d'); R(-2, 11, 20, 3, '#e5484d'); R(-1, 11, 18, 1, '#ff8a8a'); R(6, 11, 1, 3, '#a51d24');   // 동그란 차체
+      R(17, 12, 1, 1, '#fff0a8'); R(-2, 12, 1, 1, '#f6c445');                                                          // 앞불·뒷불
+      for (const x of [-1, 12]) { R(x, 14, 4, 3, WK); R(x + 1, 15, 2, 1, '#9aa0aa'); }                                 // 바퀴
+    } },
+  });
+  // 그리는 순서: 뒤(친구·자전거·가방) → 판다 → 앞(옷·신발·자동차·목·얼굴·머리·손)
+  const WEAR_ORDER = { back: ['pet', 'ride', 'back'], front: ['body', 'feet', 'ride', 'neck', 'face', 'head', 'hand'] };
+  // g: 캔버스, (sx, sy): 판다 그림 왼쪽 위, s: 한 칸 크기(게임 화면 2), wear: { head, face, … }, frame: 판다 그림 종류(운동화용), skip: 빼고 그릴 슬롯
+  function drawWear(g, sx, sy, s, face, wear, layer, frame = 'idle', skip = null) {
     if (!wear) return;
     const R = (x, y, w, h, c) => { const mx = face < 0 ? 16 - x - w : x; g.fillStyle = c; g.fillRect(Math.round(sx + mx * s), Math.round(sy + y * s), w * s, h * s); };
-    for (const slot of ['back', 'neck', 'face', 'head']) { const a = WEAR_ART[wear[slot]]; if (a && a.layer === layer) a.draw(R); }
+    for (const slot of WEAR_ORDER[layer]) { if (skip && skip.includes(slot)) continue; const a = WEAR_ART[wear[slot]]; if (a && a.layer === layer) a.draw(R, frame); }
   }
-  // 작은 판다 그림 (16 × 20칸: 위 4칸은 모자 자리)
+  // 장착한 꾸미기가 판다 칸 밖으로 얼마나 나가는지 (미리보기 캔버스 크기)
+  function wearBox(wear) {
+    let x0 = 0, y0 = -4, x1 = 16, y1 = 16;
+    for (const id of Object.values(wear || {})) { const a = WEAR_ART[id]; if (a && a.box) { x0 = Math.min(x0, a.box[0]); y0 = Math.min(y0, a.box[1]); x1 = Math.max(x1, a.box[2]); y1 = Math.max(y1, a.box[3]); } }
+    return [x0, y0, x1, y1];
+  }
+  // 작은 판다 그림: 꾸미기가 다 들어가게 정사각형 캔버스 크기를 맞춰요 (최소 20칸)
   function drawPandaWith(c, wear) {
-    const g = c.getContext('2d'); g.imageSmoothingEnabled = false; g.clearRect(0, 0, c.width, c.height);
-    const ox = Math.floor((c.width - 16) / 2), oy = c.height - 16;
+    const [x0, y0, x1, y1] = wearBox(wear), w = x1 - x0, h = y1 - y0, S = Math.max(20, w + 2, h + 2);
+    if (c.width !== S || c.height !== S) { c.width = S; c.height = S; }
+    const g = c.getContext('2d'); g.imageSmoothingEnabled = false; g.clearRect(0, 0, S, S);
+    const ox = -x0 + Math.floor((S - w) / 2), oy = S - 1 - y1;
     drawWear(g, ox, oy, 1, 1, wear, 'back'); g.drawImage(PANDA.idle, ox, oy); drawWear(g, ox, oy, 1, 1, wear, 'front');
   }
+  const PANDA_KEY = new Map(Object.entries(PANDA).map(([k, v]) => [v, k]));   // 판다 그림 → 종류 (운동화가 발 모양을 따라가게)
 
   // ================= 월드 · 지역 =================
   // 지역(스테이지)마다 맵·몬스터·문을 데이터로 정의합니다.
@@ -3114,11 +3178,25 @@
     else bob = Math.sin(time * 3) > 0.6 ? -1 : 0;
     const x = Math.round(P.x + P.w / 2 - 16 - cam), y = Math.round(P.y + P.h - 32 + bob);
     ctx.fillStyle = 'rgba(30,40,30,.25)'; if (P.onGround) ctx.fillRect(x + 7, Math.round(P.y + P.h) - 2, 18, 3);
-    const wear = save.shop && save.shop.wear;   // 판다 옷장 꾸미기 (그림만, 능력치에는 영향 없음)
-    drawWear(ctx, x, y, 2, P.face, wear, 'back');
+    const wear = save.shop && save.shop.wear;   // 판다 옷장 꾸미기 (그림만, 능력치·충돌에는 영향 없음)
+    const fr = PANDA_KEY.get(spr) || 'idle';
+    drawWear(ctx, x, y, 2, P.face, wear, 'back', fr, ['pet']);   // 호랑이 친구는 아래 drawPet에서 따라오게
     if (P.face > 0) ctx.drawImage(spr, x, y, 32, 32);
     else { ctx.save(); ctx.translate(x + 32, y); ctx.scale(-1, 1); ctx.drawImage(spr, 0, 0, 32, 32); ctx.restore(); }
-    drawWear(ctx, x, y, 2, P.face, wear, 'front');
+    drawWear(ctx, x, y, 2, P.face, wear, 'front', fr);
+  }
+  // 🐯 호랑이 친구: 판다 뒤쪽에서 조금 늦게 따라와요 (그림만, 충돌·문제·이동과 상관없음)
+  const PET = { x: null, y: 0 };
+  function drawPet() {
+    const id = save.shop && save.shop.wear && save.shop.wear.pet; if (!id) { PET.x = null; return; }
+    const tx = P.x + P.w / 2 - P.face * 30, ty = P.y + P.h;
+    if (PET.x == null || Math.abs(PET.x - tx) > 200) { PET.x = tx; PET.y = ty; }
+    PET.x += (tx - PET.x) * 0.12; PET.y += (ty - PET.y) * 0.25;
+    const face = tx >= PET.x - 2 ? 1 : -1, hop = Math.abs(tx - PET.x) > 3 ? (Math.floor(time * 10) % 2 ? -2 : 0) : 0;
+    // 호랑이 그림은 x -14~-1칸(가운데 -7) → 판다 그림 기준 위치를 거꾸로 계산
+    const sx = Math.round(PET.x - cam - (face > 0 ? -7 : 23) * 2), sy = Math.round(PET.y - 32 + hop);
+    ctx.fillStyle = 'rgba(30,40,30,.2)'; ctx.fillRect(Math.round(PET.x - cam) - 9, Math.round(PET.y) - 2, 18, 2);
+    drawWear(ctx, sx, sy, 2, face, { pet: id }, 'back');
   }
   function drawCoinAt(x, y, t) {
     const sw = Math.max(2, Math.round(20 * Math.abs(Math.cos(t))));
@@ -3135,7 +3213,7 @@
     for (const c of coins) if (!c.taken) { if (c.ghost) ctx.globalAlpha = 0.3; drawCoinAt(c.x, c.y + Math.sin(time * 3 + c.x) * 2, time * 3 + c.x * 0.1); ctx.globalAlpha = 1; }
     for (const m of monsters) drawMonster(m);
     if (STAGE.quest && run && run.q) drawQuest();
-    drawPlayer();
+    drawPet(); drawPlayer();
     if (STAGE.quest && run && run.q) drawQuestTop();
     drawBolts();
     for (const d of drops) drawCoinAt(d.x, d.y - 10, time * 10 + d.x);
@@ -7366,7 +7444,7 @@
     $('wdList').innerHTML = SHOP_ITEMS.filter(x => x.kind === 'wear').map(x => {
       const on = save.shop.wear[x.slot] === x.id, own = owns(x.id);
       const chip = on ? '<span class="wd-chip on">장착 중</span>' : own ? '<span class="wd-chip own">보유 중</span>' : `<span class="wd-chip">🪙 ${x.price}</span>`;
-      return `<button class="wd-item${wd.pick === x.id ? ' sel' : ''}" data-id="${x.id}" aria-pressed="${wd.pick === x.id}"><canvas width="22" height="22"></canvas><span class="nm">${x.name}</span><span class="sl">${WEAR_SLOTS[x.slot]} 장식</span>${chip}</button>`;
+      return `<button class="wd-item${wd.pick === x.id ? ' sel' : ''}" data-id="${x.id}" aria-pressed="${wd.pick === x.id}"><canvas width="22" height="22"></canvas><span class="nm">${x.name}</span><span class="sl">${WEAR_SLOT_LABEL[x.slot]}</span>${chip}</button>`;
     }).join('');
     $('wdList').querySelectorAll('.wd-item').forEach(b => {
       const x = SHOP_BY_ID[b.dataset.id]; drawPandaWith(b.querySelector('canvas'), { [x.slot]: x.id });
@@ -7734,11 +7812,18 @@
   function hsDrawPanda(g, bottom) {
     const s = 2, walking = !!HS.walk || (!HS.decor && !HS.act && HS.pandaWait <= 0);
     const spr = walking ? (Math.floor(HS.pandaT * 6) % 2 ? PANDA.walk1 : PANDA.walk2) : PANDA.idle;
-    const x = Math.round(HS.pandaX), y = bottom - 16 * s, face = HS.pandaDir;
+    const x = Math.round(HS.pandaX), face = HS.pandaDir;
     g.fillStyle = 'rgba(60,30,10,.2)'; g.fillRect(x + 4, bottom - 2, 24, 3);
-    const cv = document.createElement('canvas'); cv.width = 16; cv.height = 20; const cg = cv.getContext('2d'); cg.imageSmoothingEnabled = false;
-    drawWear(cg, 0, 4, 1, 1, save.shop.wear, 'back'); cg.drawImage(spr, 0, 4); drawWear(cg, 0, 4, 1, 1, save.shop.wear, 'front');
-    g.save(); if (face < 0) { g.translate(x + 32, 0); g.scale(-1, 1); g.drawImage(cv, 0, y - 8, 32, 40); } else g.drawImage(cv, x, y - 8, 32, 40); g.restore();
+    g.drawImage(hsPandaPic(spr, face), x - 28, bottom - 44, 88, 56);   // 꾸미기(호랑이 친구·탈것 포함)까지 같이
+  }
+  // 집 안 판다 그림 (44 × 28칸, 판다는 (14, 6)): face 방향으로 그린 그림 — 꾸미기가 판다 칸 밖으로 나가도 잘리지 않게
+  function hsPandaPic(spr, face, skip = null) {
+    const cv = document.createElement('canvas'); cv.width = 44; cv.height = 28; const cg = cv.getContext('2d'); cg.imageSmoothingEnabled = false;
+    const fr = PANDA_KEY.get(spr) || 'idle', w = save.shop.wear;
+    drawWear(cg, 14, 6, 1, face, w, 'back', fr, skip);
+    if (face < 0) { cg.save(); cg.translate(30, 0); cg.scale(-1, 1); cg.drawImage(spr, 0, 6); cg.restore(); } else cg.drawImage(spr, 14, 6);
+    drawWear(cg, 14, 6, 1, face, w, 'front', fr, skip);
+    return cv;
   }
   // ================= 2차: 생활하기 (가구를 톡 → 판다가 가서 사용) =================
   // 모든 좌표는 그 가구의 지금 자리(gx·gy)와 크기(fw·fd·sw·sh)로 계산해요 → 가구를 옮겨도 그대로 작동
@@ -7883,9 +7968,7 @@
   }
   // 서 있는 판다를 원하는 자리에 (앉은 판다용 — 걷는 판다와 같은 그림·꾸미기)
   function hsDrawPandaAt(g, x, bottom, face) {
-    const cv = document.createElement('canvas'); cv.width = 16; cv.height = 20; const cg = cv.getContext('2d'); cg.imageSmoothingEnabled = false;
-    drawWear(cg, 0, 4, 1, 1, save.shop.wear, 'back'); cg.drawImage(PANDA.idle, 0, 4); drawWear(cg, 0, 4, 1, 1, save.shop.wear, 'front');
-    g.save(); if (face < 0) { g.translate(x + 32, 0); g.scale(-1, 1); g.drawImage(cv, 0, bottom - 40, 32, 40); } else g.drawImage(cv, x, bottom - 40, 32, 40); g.restore();
+    g.drawImage(hsPandaPic(PANDA.idle, face, ['ride', 'pet', 'feet']), x - 28, bottom - 44, 88, 56);   // 소파에 앉을 때는 탈것·친구·신발은 빼요
   }
   // ----- 아래쪽 버튼 (상태마다 바뀜) -----
   function hsRender() {
@@ -8375,7 +8458,7 @@
     requestAnimationFrame(frame);
     $('startScreen').querySelector('.card').focus({ preventScroll: true });
     window.__panda = {
-      SHOP_ITEMS, buyItem, equipItem, unequipItem, openWardrobe, closeWardrobe, drawWear, get wd() { return wd; },
+      SHOP_ITEMS, buyItem, equipItem, unequipItem, openWardrobe, closeWardrobe, drawWear, drawPandaWith, get PET() { return PET; }, get wd() { return wd; },
       questInteract, openBasket, BD_NPC, BD_CANDLES, BD_CAKE_X, BD_BOARD_X, BD_DESK_X, BD_TABLE_X, bdValid, dateZh, bdSent, openCake, cakeAdd, cakeDel, cakeDone, closeCake, openCal, calOk, closeCal, openBCard, bcOk, closeBCard, bdPlace, openPick, closePick, pickOk, FAM, famOf, famSent, FM_NPC, GIFT, giftOf, gfSent, GF_NPC, GF_FR, FM_BOARD_X, famFace, giftURL, drawGift, FOOD, foodOf, foodSent, FD_MC, DN_NPC, priceZh, priceSay, drawFood, foodURL, questDone, payOnce, arRoundDone, FURNITURE, buyFurniture, homeCanPlace, homeFreeSpot, openHouse, closeHouse, get HS() { return HS; }, hsConfirm, hsUse, hsWake, AR, arcOpen, arPopGo, arHint, arKey, PRICES, FD_GUEST, DN_CU, get arDbg() { return { belt: AR.belt, held: AR.held, tray: AR.tray, want: AR.want, r: AR.r, paused: AR.paused, combo: AR.combo }; }, beltGrab, beltPut, fsPut, fsServe, fsGive1, fmNewTest: () => fmNew(), gfNewTest: () => gfNew(), get qp() { return qp; }, bdNewTest: () => bdNew(), bdBonus: () => bdBonusLater, basketDrop, closeBasket, zhNum, tokVal, testSpawn: (kind, n, set) => { const q = run.q, list = set ? q.m4.items : q.m3.items; spawnItems(list, kind, n, Q_SPOTS[set]); }, testOpenSlab: (rounds) => openSlab({ title: 'test', rounds, start: 0, tag: 'test', key: (i) => 'test' + i, onRound() {}, onAll() {} }), slabTap, slabKey, ruleHints, boxNums, closeTalk, closeSlab, questRecall, NPC_DEF, useSkill, canSkill, BGM, josa, BUILD, forestBuild, basicQuestion, MA, GREET, NW, P, save, quiz, quick, NQ, numQ, numQueue, NUMS, openQuiz, answer, closeQuiz, closeSpeak, selectStage, startPlay, goHome, askHome, resumeFromPause, loadStage, closeHelp, closeIntro, startNewRun, THEMES, SKINS, STAGES,
       get mode() { return mode; }, get monsters() { return monsters; }, get coins() { return coins; }, get gates() { return gates; },
       get run() { return run; }, get cam() { return cam; }, get floats() { return floats; }, get stage() { return STAGE.id; }, get drops() { return drops; }, get selStage() { return selStage; },
