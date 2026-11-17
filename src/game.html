@@ -5307,6 +5307,8 @@
   }
   const arBounce = (el, cls = 'hop') => { if (!el) return; el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); };
   // 라운드 끝: 미션 완료 (보상은 처음 한 번만) → 카드 → 다음 라운드
+  // 9·10차시 보상: 라운드마다 +15, 마지막 라운드 뒤 차시 완료 보너스 +15 (한 차시 75). 탐험마다 다시, 같은 탐험에서는 한 번만 (payOnce)
+  const AR_ROUND_COIN = 15, AR_CLEAR_BONUS = 15;
   function arRoundDone() {
     const i = AR.r, s = run.ms[i], M = STAGE.missions[i];
     if (!s || s.complete) return;
@@ -5314,20 +5316,22 @@
     const ever = save.questEver[STAGE.id] = save.questEver[STAGE.id] || [];
     const first = !ever.includes(i);
     if (first) { ever.push(i); addExp(20); }   // 경험치는 처음 한 번만
-    const paid = payOnce('mission' + i, 5);     // 코인은 탐험할 때마다 (같은 탐험에서는 한 번만)
+    const paid = payOnce('mission' + i, AR_ROUND_COIN);     // 코인은 탐험할 때마다 (같은 탐험에서는 한 번만)
     if (paid) SFX.coin();
     M.cards.forEach(id => { save.cards[id] = true; }); writeSave();
     report('mission', { mission: `${i + 1}/${run.ms.length}` });
     setTimeout(() => SFX.level(), 200);
     const last = run.ms.every(m => m.complete);
     const cards = M.cards.map(id => { const w = STAGE.words[id]; return `<div class="ar-card">${zhCard(w.h, w.p)}<small>${w.ko}</small>${sayBtn(w.h)}</div>`; }).join('');
-    const reward = paid ? (first ? '정답! 🪙 +5 코인 · ✨ +20 EXP' : '정답! 🪙 +5 코인') : '성공!';
+    const reward = paid ? `🎉 라운드 성공! 🪙 +${AR_ROUND_COIN}코인${first ? ' · ✨ +20 EXP' : ''}` : '🎉 라운드 성공!';
     if (last) {
+      const bonus = payOnce('clear', AR_CLEAR_BONUS);   // 차시 완료 보너스: 마지막 라운드 보상과 따로, 한 번만
+      const bonusTxt = bonus ? `<p class="ar-reward">🏆 차시 완료 보너스 🪙 +${AR_CLEAR_BONUS}코인</p>` : '';
       run.cleared = true; run.end = performance.now(); run.clearN = (run.clearN || 0) + 1;
       const stars = calcStars();
       save.clears[STAGE.id] = Math.max(save.clears[STAGE.id] || 0, stars.n); writeSave();
       report('clear', { mission: `${run.ms.length}/${run.ms.length}`, stars: stars.n });
-      arPop(`<h2>🎉 ${STAGE.clearTitle}</h2><p class="ar-reward">${reward}</p>${cards ? `<div class="ar-cards">${cards}</div>` : ''}`, '결과 보기 ▶', () => { arClose(); showClear(stars); });
+      arPop(`<h2>🎉 ${STAGE.clearTitle}</h2><p class="ar-reward">${reward}</p>${bonusTxt}${cards ? `<div class="ar-cards">${cards}</div>` : ''}`, '결과 보기 ▶', () => { arClose(); showClear(stars); });
       return;
     }
     arPop(`<h2>🎉 라운드 ${i + 1} 성공!</h2><p class="ar-reward">${reward}</p>${cards ? `<div class="ar-cardsHead">${josa(STAGE.cardName, '을/를')} 얻었어요 · 따라 말해 봐요</div><div class="ar-cards">${cards}</div>` : ''}`, '다음 라운드 ▶', () => arRoundIntro(i + 1));
@@ -8197,7 +8201,7 @@
     $('startScreen').querySelector('.card').focus({ preventScroll: true });
     window.__panda = {
       SHOP_ITEMS, buyItem, equipItem, unequipItem, openWardrobe, closeWardrobe, drawWear, get wd() { return wd; },
-      questInteract, openBasket, BD_NPC, BD_CANDLES, BD_CAKE_X, BD_BOARD_X, BD_DESK_X, BD_TABLE_X, bdValid, dateZh, bdSent, openCake, cakeAdd, cakeDel, cakeDone, closeCake, openCal, calOk, closeCal, openBCard, bcOk, closeBCard, bdPlace, openPick, closePick, pickOk, FAM, famOf, famSent, FM_NPC, GIFT, giftOf, gfSent, GF_NPC, GF_FR, FM_BOARD_X, famFace, giftURL, drawGift, FOOD, foodOf, foodSent, FD_MC, DN_NPC, priceZh, priceSay, drawFood, foodURL, questDone, payOnce, FURNITURE, buyFurniture, homeCanPlace, homeFreeSpot, openHouse, closeHouse, get HS() { return HS; }, hsConfirm, AR, arcOpen, arPopGo, arHint, arKey, PRICES, FD_GUEST, DN_CU, get arDbg() { return { belt: AR.belt, held: AR.held, tray: AR.tray, want: AR.want, r: AR.r, paused: AR.paused, combo: AR.combo }; }, beltGrab, beltPut, fsPut, fsServe, fsGive1, fmNewTest: () => fmNew(), gfNewTest: () => gfNew(), get qp() { return qp; }, bdNewTest: () => bdNew(), bdBonus: () => bdBonusLater, basketDrop, closeBasket, zhNum, tokVal, testSpawn: (kind, n, set) => { const q = run.q, list = set ? q.m4.items : q.m3.items; spawnItems(list, kind, n, Q_SPOTS[set]); }, testOpenSlab: (rounds) => openSlab({ title: 'test', rounds, start: 0, tag: 'test', key: (i) => 'test' + i, onRound() {}, onAll() {} }), slabTap, slabKey, ruleHints, boxNums, closeTalk, closeSlab, questRecall, NPC_DEF, useSkill, canSkill, BGM, josa, BUILD, forestBuild, basicQuestion, MA, GREET, NW, P, save, quiz, quick, NQ, numQ, numQueue, NUMS, openQuiz, answer, closeQuiz, closeSpeak, selectStage, startPlay, goHome, askHome, resumeFromPause, loadStage, closeHelp, closeIntro, startNewRun, THEMES, SKINS, STAGES,
+      questInteract, openBasket, BD_NPC, BD_CANDLES, BD_CAKE_X, BD_BOARD_X, BD_DESK_X, BD_TABLE_X, bdValid, dateZh, bdSent, openCake, cakeAdd, cakeDel, cakeDone, closeCake, openCal, calOk, closeCal, openBCard, bcOk, closeBCard, bdPlace, openPick, closePick, pickOk, FAM, famOf, famSent, FM_NPC, GIFT, giftOf, gfSent, GF_NPC, GF_FR, FM_BOARD_X, famFace, giftURL, drawGift, FOOD, foodOf, foodSent, FD_MC, DN_NPC, priceZh, priceSay, drawFood, foodURL, questDone, payOnce, arRoundDone, FURNITURE, buyFurniture, homeCanPlace, homeFreeSpot, openHouse, closeHouse, get HS() { return HS; }, hsConfirm, AR, arcOpen, arPopGo, arHint, arKey, PRICES, FD_GUEST, DN_CU, get arDbg() { return { belt: AR.belt, held: AR.held, tray: AR.tray, want: AR.want, r: AR.r, paused: AR.paused, combo: AR.combo }; }, beltGrab, beltPut, fsPut, fsServe, fsGive1, fmNewTest: () => fmNew(), gfNewTest: () => gfNew(), get qp() { return qp; }, bdNewTest: () => bdNew(), bdBonus: () => bdBonusLater, basketDrop, closeBasket, zhNum, tokVal, testSpawn: (kind, n, set) => { const q = run.q, list = set ? q.m4.items : q.m3.items; spawnItems(list, kind, n, Q_SPOTS[set]); }, testOpenSlab: (rounds) => openSlab({ title: 'test', rounds, start: 0, tag: 'test', key: (i) => 'test' + i, onRound() {}, onAll() {} }), slabTap, slabKey, ruleHints, boxNums, closeTalk, closeSlab, questRecall, NPC_DEF, useSkill, canSkill, BGM, josa, BUILD, forestBuild, basicQuestion, MA, GREET, NW, P, save, quiz, quick, NQ, numQ, numQueue, NUMS, openQuiz, answer, closeQuiz, closeSpeak, selectStage, startPlay, goHome, askHome, resumeFromPause, loadStage, closeHelp, closeIntro, startNewRun, THEMES, SKINS, STAGES,
       get mode() { return mode; }, get monsters() { return monsters; }, get coins() { return coins; }, get gates() { return gates; },
       get run() { return run; }, get cam() { return cam; }, get floats() { return floats; }, get stage() { return STAGE.id; }, get drops() { return drops; }, get selStage() { return selStage; },
     };
