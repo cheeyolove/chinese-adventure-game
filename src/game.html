@@ -126,7 +126,7 @@
 
   /* start: 지역 고르기 하나에만 집중 */
   .start { display: flex; flex-direction: column; gap: 14px; text-align: center; align-items: center; }
-  .st-top { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+  .st-top { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; } .st-right { flex-wrap: wrap; justify-content: flex-end; }
   .profile { display: inline-flex; align-items: center; gap: 8px; background: var(--paper-2); border-radius: 99px; padding: 3px 12px 3px 4px; font-family: var(--font-display); font-size: 15px; }
   .profile canvas { width: 30px; height: 30px; image-rendering: pixelated; background: #fff; border-radius: 50%; }
   .profile img { width: 16px; height: 16px; image-rendering: pixelated; vertical-align: -2px; margin-right: 3px; }
@@ -866,6 +866,51 @@
     .fs-cimg .ar-pd { width: 34px; height: 45px; } .fs-crowd .ar-pd { width: 22px; height: 29px; } .fs-belt { --belt: 62px; }
   }
   @media (prefers-reduced-motion: reduce) { .dn-hand, .dn-sizzle, #arHint.nudge, .dn-guy.waiting .ar-pd, .dn-guy.walk .ar-pd { animation: none; } }
+  /* ===== 🏠 나의 판다 집 ===== */
+  #house { position: fixed; inset: 0; z-index: 19; display: flex; flex-direction: column; background: linear-gradient(#ffe9d6, #f6d3b0); color: var(--ink); user-select: none; -webkit-user-select: none; }
+  #house[hidden] { display: none; }
+  .hs-top { flex: none; display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: #7a4a22; color: #fff; }
+  .hs-top h2 { flex: 1; min-width: 0; margin: 0; font-size: 21px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .hs-home { min-height: 44px; font-size: 17px; padding: 4px 14px; }
+  .hs-coin { flex: none; background: #fff3c4; color: var(--ink); border: 3px solid var(--ink); border-radius: 99px; padding: 3px 14px; font-family: var(--font-display); font-size: 20px; }
+  .hs-stage { flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; padding: 8px; }
+  .hs-frame { position: relative; }
+  #hsCanvas { display: block; width: min(calc(100vw - 16px), calc((100dvh - 200px) * 1.538)); height: auto; aspect-ratio: 320 / 208; image-rendering: pixelated; border: 4px solid var(--ink); border-radius: 12px; background: #fde8d7; touch-action: none; cursor: pointer; }
+  #hsHint { position: absolute; left: 50%; top: 8px; transform: translateX(-50%); background: rgba(29, 39, 56, .82); color: #fff; border-radius: 99px; padding: 4px 14px; font-size: 15px; font-weight: 700; white-space: nowrap; pointer-events: none; }
+  #hsMsg { flex: none; text-align: center; font-size: 17px; font-weight: 700; min-height: 1.4em; padding: 0 10px; color: #24508f; } #hsMsg.ok { color: #1f7a3a; } #hsMsg.no { color: #b5121b; }
+  .hs-bar { flex: none; display: flex; gap: 8px; justify-content: center; align-items: center; flex-wrap: wrap; padding: 8px 10px 12px; }
+  .hs-bar .btn { min-height: 52px; font-size: 19px; padding: 6px 18px; }
+  .hs-bar .btn.sm, .hs-pad .btn { min-width: 52px; padding: 6px 10px; }
+  .hs-pad { display: inline-flex; gap: 6px; }
+  #hsSheet { position: absolute; left: 0; right: 0; bottom: 0; top: 60px; background: rgba(29, 39, 56, .55); display: flex; align-items: flex-start; justify-content: center; padding: 10px; overflow-y: auto; }
+  #hsSheet[hidden] { display: none; }
+  .hs-sheetcard { background: var(--paper); border: 4px solid var(--ink); border-radius: 18px; padding: 12px 14px; width: 100%; max-width: 900px; position: relative; }
+  .hs-sheethead { display: flex; align-items: center; gap: 10px; } .hs-sheethead h3 { flex: 1; margin: 0; font-size: 24px; } .hs-sheethead .btn { min-height: 46px; font-size: 17px; }
+  #hsSheetMsg { text-align: center; font-weight: 700; font-size: 18px; min-height: 1.4em; color: #1f7a3a; margin: 4px 0; } #hsSheetMsg.no { color: #b5121b; }
+  .hs-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+  .hs-card { border: 3px solid var(--ink); border-radius: 14px; background: #fff; padding: 6px 6px 8px; display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; font-family: var(--font-display); }
+  .hs-card.own { background: #f1fbf2; }
+  .hs-card canvas { width: 96px; height: 72px; image-rendering: pixelated; }
+  .hs-card b { font-size: 17px; }
+  .hs-card .btn { min-height: 44px; font-size: 17px; padding: 4px 16px; }
+  .hs-chip { font-size: 15px; border-radius: 99px; padding: 1px 10px; background: var(--paper-2); } .hs-chip.own { background: #dff5e1; color: #1f7a3a; }
+  .hs-note { font-size: 15px; font-weight: 700; color: #1f7a3a; min-height: 44px; display: flex; align-items: center; } .hs-note.no { color: #b5121b; }
+  .hs-empty { grid-column: 1 / -1; text-align: center; font-size: 18px; }
+  #hsAsk { position: sticky; bottom: 0; margin-top: 10px; background: #fff7d6; border: 3px solid var(--ink); border-radius: 14px; padding: 10px; text-align: center; }
+  #hsAsk[hidden] { display: none; }
+  #hsAsk p { margin: 0 0 8px; font-size: 19px; font-weight: 700; } #hsAsk .btn { min-height: 52px; font-size: 19px; padding: 6px 24px; margin: 0 6px; }
+  @media (max-width: 600px) {
+    .hs-top h2 { font-size: 16px; } .hs-home { font-size: 15px; padding: 4px 10px; } .hs-coin { font-size: 17px; padding: 2px 10px; }
+    .hs-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    #hsCanvas { width: calc(100vw - 16px); }
+    .hs-bar .btn { font-size: 17px; padding: 6px 12px; }
+  }
+  @media (max-height: 470px) {
+    .hs-top { padding: 4px 10px; } .hs-home { min-height: 38px; } #hsSheet { top: 48px; }
+    #hsCanvas { width: min(calc(100vw - 16px), calc((100dvh - 150px) * 1.538)); }
+    .hs-bar { padding: 4px 8px 6px; } .hs-bar .btn { min-height: 44px; font-size: 16px; }
+    #hsMsg { font-size: 14px; }
+  }
 </style>
 
 <div id="app">
@@ -928,7 +973,7 @@
   <div class="card start" tabindex="-1">
     <div class="st-top">
       <div class="profile" title="내 판다"><canvas id="titlePanda" width="20" height="20"></canvas><b id="pfName"></b><span>Lv.<b id="pfLv">1</b></span><span><img id="pfCoinIcon" alt="코인"><b id="pfCoin">0</b></span></div>
-      <span class="st-right"><button class="btn small wdbtn" id="btnWardrobe">🐼 판다 옷장</button><button class="iconbtn" id="btnSettings" aria-label="설정" title="설정">⚙</button></span>
+      <span class="st-right"><button class="btn small wdbtn" id="btnHouse">🏠 나의 판다 집</button><button class="btn small wdbtn" id="btnWardrobe">🐼 판다 옷장</button><button class="iconbtn" id="btnSettings" aria-label="설정" title="설정">⚙</button></span>
     </div>
     <h1><small>熊猫探险队</small>판다 탐험대</h1>
     <h2 class="st-q">어느 지역을 탐험할까?</h2>
@@ -962,6 +1007,20 @@
     <div class="wd-dock"><div class="wd-act" id="wdAct"></div><div class="wd-msg" id="wdMsg" aria-live="polite"></div></div>
     <div class="wd-btns"><button class="btn primary" id="wdClose">🏠 홈으로</button></div>
   </div>
+</div>
+
+<!-- 🏠 나의 판다 집 (가구 상점 · 꾸미기) -->
+<div id="house" hidden>
+  <div class="hs-top"><button class="btn hs-home" id="hsHome">🏠 홈으로</button><h2 id="hsTitle">🏠 판다 집</h2><span class="hs-coin" title="내 코인 (옷장과 같은 지갑)">🪙 <b id="hsCoin">0</b></span></div>
+  <div class="hs-stage"><div class="hs-frame"><canvas id="hsCanvas" width="320" height="208" aria-label="판다 집 안"></canvas><div id="hsHint" hidden></div></div></div>
+  <div id="hsMsg" role="status" aria-live="polite"></div>
+  <div class="hs-bar" id="hsBar"></div>
+  <div id="hsSheet" hidden><div class="hs-sheetcard">
+    <div class="hs-sheethead"><h3 id="hsSheetTitle"></h3><button class="btn" id="hsSheetClose">✖ 닫기</button></div>
+    <div id="hsSheetMsg" aria-live="polite"></div>
+    <div class="hs-list" id="hsList"></div>
+    <div id="hsAsk" hidden><p id="hsAskText"></p><div><button class="btn" id="hsNo">취소</button><button class="btn primary" id="hsYes">구매</button></div></div>
+  </div></div>
 </div>
 
 <!-- 설정 -->
@@ -2058,7 +2117,7 @@
   const SAVE_KEY = 'panda-explorers-v1';
   // coins: 지금 가진 코인(나중에 상점에서 쓰는 지갑) · totalEarned: 지금까지 모은 코인 합계
   // coinsEver / dropsEver: 지역별로 이미 받은 동전 번호 (새로고침·홈·새 탐험으로 같은 동전을 또 받지 못하게)
-  const SAVE_DEFAULT = () => ({ level: 1, exp: 0, coins: 0, totalEarned: 0, maxHp: 100, correct: 0, wrong: 0, words: {}, cards: {}, clears: {}, coinsEver: {}, dropsEver: {}, skillEver: {}, questEver: {}, skillTip: false, helpSeen: false, bgmOn: true, playerName: '', nameSkipped: false, shop: SHOP_DEFAULT() });
+  const SAVE_DEFAULT = () => ({ level: 1, exp: 0, coins: 0, totalEarned: 0, maxHp: 100, correct: 0, wrong: 0, words: {}, cards: {}, clears: {}, coinsEver: {}, dropsEver: {}, skillEver: {}, questEver: {}, skillTip: false, helpSeen: false, bgmOn: true, playerName: '', nameSkipped: false, shop: SHOP_DEFAULT(), home: HOME_DEFAULT() });
   const save = SAVE_DEFAULT();
   // 예전 저장(버전 1 초기)에 없던 칸을 안전하게 채움
   function migrateSave() {
@@ -2070,7 +2129,7 @@
     if (typeof save.bgmOn !== 'boolean') save.bgmOn = true;
     save.playerName = typeof save.playerName === 'string' ? save.playerName.replace(/[<>&"]/g, '').slice(0, 12) : '';
     save.totalEarned = Math.max(typeof save.totalEarned === 'number' ? save.totalEarned : 0, save.coins);
-    migrateShop();
+    migrateShop(); migrateHome();
   }
   function loadSave() {
     try { const s = JSON.parse(localStorage.getItem(SAVE_KEY) || 'null'); if (s && typeof s.level === 'number') Object.assign(save, s); } catch (e) {}
@@ -3213,6 +3272,7 @@
     if (mode === 'pause') { if ((c === 'Escape' || isEnter(c)) && !e.repeat) { e.preventDefault(); resumeFromPause(); } return; }
     if (mode === 'menu') { if (c === 'Escape' && !e.repeat) closeMenus(); return; }
     if (mode === 'shop') { if (c === 'Escape' && !e.repeat) closeWardrobe(); return; }
+    if (mode === 'house') { if (!e.repeat || /^Arrow/.test(c)) houseKey(e); return; }
     if (mode === 'name') return;
     if (mode === 'lesson') { if (c === 'KeyH' || c === 'Escape') closeLesson(); return; }
     if (mode === 'result') { if ((isEnter(c) || c === 'Escape' || c === 'KeyR') && !e.repeat) { e.preventDefault(); closeResult(); } return; }
@@ -7329,9 +7389,513 @@
   function wdSay(t, no) { $('wdMsg').textContent = t; $('wdMsg').className = 'wd-msg' + (no ? ' no' : ''); }
   $('btnWardrobe').addEventListener('click', openWardrobe);
   $('wdClose').addEventListener('click', closeWardrobe);
+  // ================= 🏠 나의 판다 집 (1차: 가구 상점 · 자유 배치 · 이동 · 보관 · 저장) =================
+  // 코인은 옷장과 같은 지갑(save.coins). 저장은 save.home 한 칸만 새로 써요 (다른 칸은 건드리지 않음)
+  // save.home = { v: 1, owned: { 가구ID: 개수 }, placed: [{ uid, id, gx, gy }], nextUid }
+  //   - owned는 '개수'라서 나중에 같은 가구를 여러 개 살 수 있게 늘리기 쉬워요 (1차는 종류별 1개만)
+  //   - placed의 uid로 하나하나 구별해요 (나중에 의자 4개도 가능). 2차 상호작용(눕기·켜기)은 항목에 state를 더하면 돼요
+  // 방: 320 × 208 (16px 칸 20 × 13). 벽 0~5줄(벽 장식은 1~4줄), 바닥 6~12줄
+  const HS_W = 320, HS_H = 208, HS_C = 16, HS_COLS = 20, HS_FLOOR = 6, HS_ROWS = 13;
+  // layer: 'floor' 바닥 가구(서로 겹치지 않음) · 'rug' 러그(가구 아래에 깔 수 있음, 러그끼리는 겹치지 않음) · 'wall' 벽 장식
+  // fw·fd = 차지하는 칸(가로·깊이), sw·sh = 그림 크기(px). 가격 근거는 보고서 참고 (문제를 맞혀 한 판에 1~4차시 46·5~10차시 20코인)
+  const FURNITURE = [
+    { id: 'f_bed', name: '작은 침대', price: 80, layer: 'floor', fw: 5, fd: 2, sw: 80, sh: 44 },
+    { id: 'f_sofa', name: '푹신한 소파', price: 100, layer: 'floor', fw: 4, fd: 2, sw: 64, sh: 40 },
+    { id: 'f_desk', name: '나무 책상', price: 70, layer: 'floor', fw: 3, fd: 2, sw: 48, sh: 38 },
+    { id: 'f_chair', name: '나무 의자', price: 40, layer: 'floor', fw: 1, fd: 1, sw: 16, sh: 30 },
+    { id: 'f_shelf', name: '책장', price: 90, layer: 'floor', fw: 3, fd: 1, sw: 48, sh: 58 },
+    { id: 'f_tv', name: '텔레비전', price: 150, layer: 'floor', fw: 3, fd: 1, sw: 48, sh: 46 },
+    { id: 'f_fridge', name: '냉장고', price: 130, layer: 'floor', fw: 2, fd: 1, sw: 32, sh: 62 },
+    { id: 'f_plant_s', name: '작은 화분', price: 35, layer: 'floor', fw: 1, fd: 1, sw: 16, sh: 26 },
+    { id: 'f_plant_l', name: '큰 화분', price: 60, layer: 'floor', fw: 2, fd: 1, sw: 32, sh: 48 },
+    { id: 'f_rug', name: '동그란 러그', price: 45, layer: 'rug', fw: 4, fd: 3, sw: 64, sh: 48 },
+    { id: 'f_lamp', name: '스탠드 조명', price: 55, layer: 'floor', fw: 1, fd: 1, sw: 16, sh: 54 },
+    { id: 'f_clock', name: '벽시계', price: 50, layer: 'wall', fw: 2, fd: 2, sw: 32, sh: 32 },
+    { id: 'f_table', name: '작은 탁자', price: 55, layer: 'floor', fw: 2, fd: 1, sw: 32, sh: 26 },
+    { id: 'f_bear', name: '곰 인형', price: 65, layer: 'floor', fw: 2, fd: 1, sw: 32, sh: 30 },
+    { id: 'f_toybox', name: '장난감 상자', price: 75, layer: 'floor', fw: 2, fd: 1, sw: 32, sh: 28 },
+  ];
+  const FURN_BY_ID = Object.fromEntries(FURNITURE.map(f => [f.id, f]));
+  const HOME_MAX_EACH = 1;   // 1차: 종류별 1개
+  // 벽에서 장식을 걸 수 없는 칸 (창문·문)
+  const HS_WINDOW = { gx: 3, gy: 1, w: 4, h: 3 }, HS_DOOR = { gx: 16, gy: 1, w: 3, h: 5 };
+  function HOME_DEFAULT() { return { v: 1, owned: {}, placed: [], nextUid: 1 }; }
+  // 예전 저장에는 home 칸이 없어요 → 빈 집으로 채워요. 이상한 값(모르는 가구·방 밖·사지 않은 가구 배치)은 안전하게 정리
+  function migrateHome() {
+    const h = (save.home && typeof save.home === 'object' && !Array.isArray(save.home)) ? save.home : HOME_DEFAULT();
+    const owned = {};
+    if (h.owned && typeof h.owned === 'object' && !Array.isArray(h.owned)) for (const [id, n] of Object.entries(h.owned)) if (FURN_BY_ID[id] && Number.isInteger(n) && n > 0) owned[id] = Math.min(n, 99);
+    h.owned = owned;
+    const placed = [], cnt = {};
+    let maxUid = 0;
+    for (const p of (Array.isArray(h.placed) ? h.placed : [])) {
+      if (!p || !FURN_BY_ID[p.id] || !Number.isInteger(p.gx) || !Number.isInteger(p.gy) || !Number.isInteger(p.uid)) continue;
+      if ((cnt[p.id] || 0) >= (owned[p.id] || 0)) continue;   // 가진 개수보다 많이 놓인 건 빼요
+      if (!homeInBounds(FURN_BY_ID[p.id], p.gx, p.gy)) continue;
+      cnt[p.id] = (cnt[p.id] || 0) + 1; maxUid = Math.max(maxUid, p.uid);
+      placed.push({ uid: p.uid, id: p.id, gx: p.gx, gy: p.gy });
+    }
+    h.placed = placed;
+    h.nextUid = Math.max(Number.isInteger(h.nextUid) ? h.nextUid : 1, maxUid + 1);
+    h.v = 1; save.home = h;
+  }
+  const homeOwned = (id) => (save.home.owned[id] || 0);
+  const homePlacedCount = (id) => save.home.placed.filter(p => p.id === id).length;
+  const homeStored = (id) => homeOwned(id) - homePlacedCount(id);
+  // 가구 구매: ID만 받고 가격은 목록에서 읽어요. 코인은 한 번만 줄고 음수가 되지 않아요
+  function buyFurniture(id) {
+    const f = Object.prototype.hasOwnProperty.call(FURN_BY_ID, id) ? FURN_BY_ID[id] : null;
+    if (!f || !Number.isInteger(f.price) || f.price <= 0) return { ok: false, why: 'bad' };
+    if (homeOwned(id) >= HOME_MAX_EACH) return { ok: false, why: 'owned' };
+    const coins = Math.max(0, Math.floor(Number(save.coins) || 0));
+    if (coins < f.price) return { ok: false, why: 'poor', need: f.price - coins };
+    save.coins = coins - f.price;
+    save.home.owned[id] = homeOwned(id) + 1;
+    writeSave(); updateHUD();
+    return { ok: true };
+  }
+  // ----- 배치 규칙 -----
+  function homeInBounds(f, gx, gy) {
+    if (gx < 0 || gx + f.fw > HS_COLS) return false;
+    if (f.layer === 'wall') return gy >= 1 && gy + f.fd <= HS_FLOOR - 1;
+    return gy >= HS_FLOOR && gy + f.fd <= HS_ROWS;
+  }
+  const rectHit = (a, b) => a.gx < b.gx + b.w && b.gx < a.gx + a.w && a.gy < b.gy + b.h && b.gy < a.gy + a.h;
+  // ignoreUid: 옮기는 중인 자기 자신은 빼고 검사
+  function homeCanPlace(id, gx, gy, ignoreUid) {
+    const f = FURN_BY_ID[id]; if (!f || !homeInBounds(f, gx, gy)) return false;
+    const me = { gx, gy, w: f.fw, h: f.fd };
+    if (f.layer === 'wall' && (rectHit(me, HS_WINDOW) || rectHit(me, HS_DOOR))) return false;
+    return !save.home.placed.some(p => {
+      if (p.uid === ignoreUid) return false;
+      const o = FURN_BY_ID[p.id]; if (o.layer !== f.layer) return false;   // 러그는 가구 아래에 깔 수 있어요
+      return rectHit(me, { gx: p.gx, gy: p.gy, w: o.fw, h: o.fd });
+    });
+  }
+  // 빈자리 찾기 (방 가운데부터)
+  function homeFreeSpot(id, ignoreUid) {
+    const f = FURN_BY_ID[id], cands = [];
+    for (let gy = 0; gy < HS_ROWS; gy++) for (let gx = 0; gx < HS_COLS; gx++) if (homeCanPlace(id, gx, gy, ignoreUid)) cands.push({ gx, gy });
+    const cx = (HS_COLS - f.fw) / 2, cy = f.layer === 'wall' ? 2 : 9 - f.fd / 2;
+    cands.sort((a, b) => Math.hypot(a.gx - cx, (a.gy - cy) * 1.5) - Math.hypot(b.gx - cx, (b.gy - cy) * 1.5));
+    return cands[0] || null;
+  }
+
+  // ----- 가구 그림 (외부 이미지 없이 코드로) -----
+  function drawFurniture(g, id) {
+    const f = FURN_BY_ID[id], W = f.sw, H = f.sh, K = '#2b2838';
+    const R = (x, y, w, h, c) => { g.fillStyle = c; g.fillRect(x, y, w, h); };
+    const px = (x, y, c) => R(x, y, 1, 1, c);
+    const shape = (ins, fill, line = K) => {
+      for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+        const cx = x + 0.5, cy = y + 0.5; if (!ins(cx, cy)) continue;
+        const edge = line && (!ins(cx - 1, cy) || !ins(cx + 1, cy) || !ins(cx, cy - 1) || !ins(cx, cy + 1));
+        px(x, y, edge ? line : (typeof fill === 'function' ? fill(cx, cy) : fill));
+      }
+    };
+    const E = (ex, ey, rx, ry) => (x, y) => ((x - ex) / rx) ** 2 + ((y - ey) / ry) ** 2 <= 1;
+    const box = (x0, y0, w, h) => (x, y) => x >= x0 && x < x0 + w && y >= y0 && y < y0 + h;
+    const box2 = (x0, y0, w, h, fill) => shape(box(x0, y0, w, h), fill);
+    const wood = '#b97a3e', woodL = '#d9a066', woodD = '#7a4a22';
+    if (id === 'f_bed') {
+      box2(0, 2, 9, 40, (x, y) => (y < 6 ? woodL : wood));                // 머리판
+      box2(71, 18, 9, 24, (x, y) => (y < 22 ? woodL : wood));             // 발판
+      box2(6, 30, 68, 10, wood); R(7, 31, 66, 2, woodL);                   // 침대 틀
+      box2(7, 20, 66, 11, '#fbfaf5');                                      // 매트리스
+      shape(E(17, 18, 9, 5), '#fffdf5'); R(12, 16, 6, 1, '#e6e1d4');      // 베개
+      box2(26, 16, 47, 16, (x, y) => (y < 19 ? '#8fc4ff' : (Math.floor(x / 6) % 2 ? '#62aefc' : '#4f95e8')));   // 이불(줄무늬)
+      R(27, 17, 45, 1, '#c4e2ff');
+      box2(8, 40, 4, 4, woodD); box2(68, 40, 4, 4, woodD);                 // 다리
+    }
+    if (id === 'f_sofa') {
+      box2(6, 2, 52, 22, (x, y) => (y < 6 ? '#ffb3c7' : '#ff8fab'));      // 등받이
+      R(31, 5, 1, 17, '#e06a8a');                                          // 쿠션 나눔
+      box2(4, 20, 56, 12, '#ff9fb8'); R(5, 21, 54, 2, '#ffc7d6'); R(31, 21, 1, 10, '#e06a8a');   // 앉는 쿠션
+      box2(0, 12, 11, 22, (x, y) => (y < 15 ? '#ffc7d6' : '#f27a9b')); box2(53, 12, 11, 22, (x, y) => (y < 15 ? '#ffc7d6' : '#f27a9b'));   // 팔걸이
+      shape(E(20, 15, 6, 5), '#fff1a8'); shape(E(44, 15, 6, 5), '#c4e2ff');                     // 작은 쿠션
+      box2(4, 33, 4, 6, woodD); box2(56, 33, 4, 6, woodD);
+    }
+    if (id === 'f_desk') {
+      box2(0, 8, 48, 6, (x, y) => (y < 10 ? woodL : wood));               // 상판
+      box2(29, 13, 17, 23, wood); box2(31, 16, 13, 8, woodL); box2(31, 26, 13, 8, woodL);   // 서랍
+      R(36, 19, 3, 2, K); R(36, 29, 3, 2, K);
+      box2(3, 13, 4, 23, woodD);                                           // 다리
+      box2(6, 1, 12, 8, '#e5484d'); R(7, 2, 10, 1, '#ff8a8a'); box2(8, 4, 12, 5, '#3d7bd9');   // 책 두 권
+      box2(36, 0, 3, 9, '#5cc46a'); shape(E(37.5, 1.5, 3, 2), '#f6c445');  // 연필꽂이 + 연필
+    }
+    if (id === 'f_chair') {
+      box2(1, 0, 4, 22, (x, y) => (y < 3 ? woodL : wood));                 // 등받이
+      R(2, 5, 2, 2, woodD); R(2, 11, 2, 2, woodD);
+      box2(1, 17, 15, 4, (x, y) => (y < 18 ? woodL : wood));               // 앉는 판
+      box2(2, 21, 3, 9, woodD); box2(12, 21, 3, 9, woodD);                 // 다리
+    }
+    if (id === 'f_shelf') {
+      box2(0, 0, 48, 58, wood); box2(3, 3, 42, 52, '#5a3a1e');             // 틀 + 안쪽
+      for (const y of [19, 36]) box2(2, y, 44, 3, woodL);                  // 칸
+      const cols = ['#e5484d', '#3d7bd9', '#f6c445', '#5cc46a', '#c084fc', '#f08a24', '#fbfaf5', '#62aefc'];
+      for (let row = 0; row < 3; row++) {
+        let x = 4, k = row * 3; const base = [19, 36, 55][row];
+        while (x < 40) { const w = 3 + ((k * 7) % 3), h = 10 + ((k * 5) % 6); if (x + w > 44) break; box2(x, base - h, w, h, cols[k % cols.length]); x += w + ((k % 4) === 2 ? 3 : 0); k++; }
+      }
+    }
+    if (id === 'f_tv') {
+      box2(0, 0, 48, 30, '#3b4250'); box2(3, 3, 42, 24, (x, y) => (y < 8 ? '#3d6fa8' : '#1f3b63'));   // 화면
+      for (let k = 0; k < 6; k++) R(7 + k, 6 + k, 3, 1, '#7fb6e8');        // 반사
+      R(40, 27, 3, 2, '#e5484d');                                          // 전원 불
+      box2(20, 30, 8, 4, '#5a6577');                                       // 받침
+      box2(2, 34, 44, 12, wood); R(3, 35, 42, 2, woodL); R(23, 39, 2, 4, woodD);   // 장식장
+    }
+    if (id === 'f_fridge') {
+      shape((x, y) => box(1, 0, 30, 60)(x, y) && !((x < 3 || x > 29) && (y < 2 || y > 58)), (x, y) => (x < 6 ? '#ffffff' : x > 25 ? '#d9dde3' : '#eef1f5'));   // 몸통
+      R(2, 21, 28, 2, K);                                                  // 위·아래 문 나눔
+      box2(24, 6, 3, 11, '#9aa0aa'); box2(24, 26, 3, 16, '#9aa0aa');       // 손잡이
+      R(6, 8, 6, 5, '#ff8fab'); R(14, 10, 4, 4, '#f6c445');                // 자석 메모
+      box2(3, 59, 5, 3, '#5a6577'); box2(24, 59, 5, 3, '#5a6577');
+    }
+    if (id === 'f_plant_s') {
+      shape(E(5, 9, 4, 6), '#5cc46a', '#2f7a3a'); shape(E(11, 8, 4, 6), '#4fae5c', '#2f7a3a'); shape(E(8, 5, 3, 5), '#7fd37f', '#2f7a3a');   // 잎
+      shape((x, y) => y >= 14 && y < 26 && x >= 2 + (y - 14) * 0.15 && x < 14 - (y - 14) * 0.15, (x, y) => (y < 17 ? '#e08a3a' : '#c96a2b'));   // 화분
+    }
+    if (id === 'f_plant_l') {
+      R(15, 10, 2, 22, '#2f7a3a');
+      for (const [x, y, rx, ry, c] of [[8, 12, 7, 9, '#4fae5c'], [24, 10, 7, 9, '#5cc46a'], [16, 5, 6, 8, '#7fd37f'], [9, 26, 6, 6, '#5cc46a'], [23, 25, 6, 6, '#4fae5c']]) { shape(E(x, y, rx, ry), c, '#2f7a3a'); R(Math.round(x), Math.round(y - ry + 2), 1, ry * 2 - 3, '#2f7a3a'); }
+      shape((x, y) => y >= 30 && y < 48 && x >= 5 + (y - 30) * 0.2 && x < 27 - (y - 30) * 0.2, (x, y) => (y < 34 ? '#f2f2f2' : '#d9dde3'));   // 흰 화분
+      R(9, 38, 14, 2, '#62aefc');
+    }
+    if (id === 'f_rug') {
+      shape(E(32, 24, 31, 22), (x, y) => (E(32, 24, 25, 17)(x, y) ? (E(32, 24, 14, 9)(x, y) ? '#fff1a8' : '#ffb3c7') : '#c084fc'));   // 동그란 러그 (테두리 무늬)
+      for (let k = 0; k < 16; k++) { const a = k / 16 * Math.PI * 2; px(Math.round(32 + Math.cos(a) * 28), Math.round(24 + Math.sin(a) * 19.5), '#fbfaf5'); }
+    }
+    if (id === 'f_lamp') {
+      shape((x, y) => y >= 2 && y < 16 && x >= 4 - (y - 2) * 0.25 && x < 12 + (y - 2) * 0.25, (x, y) => (y < 6 ? '#fff6c4' : '#f6c445'));   // 갓
+      R(7, 16, 2, 34, '#5a6577');                                          // 기둥
+      shape(E(8, 51, 6, 2.5), '#3b4250');                                  // 받침
+      g.fillStyle = 'rgba(255,240,150,.35)'; g.fillRect(2, 16, 12, 4);
+    }
+    if (id === 'f_clock') {
+      shape(E(16, 16, 15, 15), (x, y) => (E(16, 16, 12, 12)(x, y) ? '#fbfaf5' : '#e5484d'));   // 빨간 테두리 시계
+      for (const [x, y] of [[16, 6], [26, 16], [16, 26], [6, 16]]) R(x - 1, y - 1, 2, 2, K);   // 12·3·6·9
+      R(15, 9, 2, 8, K);                                                   // 긴바늘
+      for (let k = 0; k < 6; k++) R(16 + k, 16, 1, 2, K);                  // 짧은바늘
+      R(15, 15, 3, 3, '#f6c445');
+    }
+    if (id === 'f_table') {
+      shape(E(16, 8, 15, 5), (x, y) => (y < 7 ? woodL : wood));            // 동그란 상판
+      box2(14, 12, 4, 10, woodD);                                          // 기둥
+      shape(E(16, 23, 9, 2.5), woodD);                                     // 받침
+      shape(E(10, 3, 3, 3), '#fbfaf5'); R(9, 1, 3, 1, '#62aefc');          // 컵
+    }
+    if (id === 'f_bear') {
+      shape(E(8, 5, 4, 4), '#b97a3e'); shape(E(24, 5, 4, 4), '#b97a3e');   // 귀
+      R(7, 4, 2, 2, '#ffc7d6'); R(23, 4, 2, 2, '#ffc7d6');
+      shape(E(16, 23, 11, 7), '#c98a4e');                                  // 몸
+      shape(E(16, 23, 6, 4.5), '#f2d2a9', null);                           // 배
+      shape(E(16, 12, 10, 8), '#d99a5c');                                  // 머리
+      shape(E(16, 15, 4, 3), '#f2d2a9', null); R(15, 13, 3, 2, K);         // 주둥이·코
+      R(11, 10, 2, 2, K); R(20, 10, 2, 2, K);                              // 눈
+      R(13, 21, 6, 2, '#e5484d'); R(15, 20, 2, 4, '#e5484d');              // 리본
+      shape(E(6, 22, 3, 4), '#c98a4e'); shape(E(26, 22, 3, 4), '#c98a4e'); // 팔
+    }
+    if (id === 'f_toybox') {
+      shape(E(8, 6, 5, 5), (x, y) => (x < 8 ? '#e5484d' : '#fbfaf5'));    // 공
+      box2(19, 1, 8, 8, '#f6c445'); R(21, 3, 4, 4, '#3d7bd9');             // 블록
+      box2(1, 10, 30, 18, (x, y) => (Math.floor((x + 1) / 6) % 2 ? '#62aefc' : '#8fc4ff'));   // 상자(줄무늬)
+      box2(0, 8, 32, 4, '#3d7bd9'); R(1, 9, 30, 1, '#8fc4ff');             // 뚜껑 테두리
+      shape(E(16, 19, 4, 4), '#f6c445'); R(15, 18, 2, 2, '#e5484d');       // 별 무늬
+    }
+  }
+  const FURN_SPR = {};
+  function furnSprite(id) {
+    if (FURN_SPR[id]) return FURN_SPR[id];
+    const f = FURN_BY_ID[id], c = document.createElement('canvas'); c.width = f.sw; c.height = f.sh;
+    const g = c.getContext('2d'); g.imageSmoothingEnabled = false; drawFurniture(g, id);
+    return (FURN_SPR[id] = c);
+  }
+  function furnThumb(canvas, id) {
+    const f = FURN_BY_ID[id], s = furnSprite(id), g = canvas.getContext('2d'); g.imageSmoothingEnabled = false;
+    g.clearRect(0, 0, canvas.width, canvas.height);
+    const k = Math.min(2.5, (canvas.width - 4) / f.sw, (canvas.height - 4) / f.sh);
+    g.drawImage(s, Math.round((canvas.width - f.sw * k) / 2), Math.round((canvas.height - f.sh * k) / 2), Math.round(f.sw * k), Math.round(f.sh * k));
+  }
+
+  // ----- 집 화면 상태 -----
+  // view: 구경 · decor: 꾸미기. ghost = 놓으려는(또는 옮기는) 가구 미리보기 { id, uid(옮길 때), gx, gy }
+  const HS = { on: false, decor: false, sel: null, ghost: null, sheet: null, ask: null, busy: 0, drag: null, pandaX: 150, pandaDir: 1, pandaT: 0, pandaWait: 1, raf: 0, last: 0 };
+  const houseOpenOk = () => wardrobeOpen();   // 옷장과 같이: 탐험을 하나 끝내면 열려요
+  function refreshHouseBtn() { const on = houseOpenOk(); $('btnHouse').textContent = on ? '🏠 나의 판다 집' : '🔒 나의 판다 집'; $('btnHouse').classList.toggle('locked', !on); }
+  function openHouse() {
+    if (mode !== 'start') return;
+    if (!houseOpenOk()) { notice('탐험을 하나 끝내면 판다 집이 열려요! 🏠'); return; }
+    audio(); mode = 'house';
+    Object.assign(HS, { on: true, decor: false, sel: null, ghost: null, sheet: null, ask: null, drag: null });
+    $('startScreen').hidden = true; $('house').hidden = false;
+    $('hsTitle').textContent = `🏠 ${save.playerName ? save.playerName + '의 ' : ''}판다 집`;
+    hsMsg(save.home.placed.length ? '' : '🛍️ 가구 상점에서 가구를 사서 집을 꾸며 보세요!');
+    hsRender();
+    if (!HS.raf) { HS.last = performance.now(); HS.raf = requestAnimationFrame(hsFrame); }
+  }
+  // 나가기: 놓던 가구·옮기던 가구는 취소(저장된 배치는 그대로), 열린 창 닫기
+  function closeHouse() {
+    if (mode !== 'house') return;
+    Object.assign(HS, { on: false, decor: false, sel: null, ghost: null, sheet: null, ask: null, drag: null });
+    $('house').hidden = true; $('hsSheet').hidden = true;
+    if (HS.raf) { cancelAnimationFrame(HS.raf); HS.raf = 0; }
+    showStart();
+  }
+  function hsMsg(t, kind = '') { $('hsMsg').textContent = t; $('hsMsg').className = kind; }
+  function hsFrame(now) {
+    HS.raf = 0; if (!HS.on) return;
+    const dt = Math.min(0.05, (now - HS.last) / 1000); HS.last = now;
+    // 판다는 바닥에서 천천히 왔다 갔다 (꾸미기 중에는 가만히)
+    if (!HS.decor && !HS.sheet) {
+      if (HS.pandaWait > 0) HS.pandaWait -= dt;
+      else { HS.pandaX += HS.pandaDir * 22 * dt; HS.pandaT += dt; if (HS.pandaX < 20 || HS.pandaX > HS_W - 36) { HS.pandaDir *= -1; HS.pandaX = clamp(HS.pandaX, 20, HS_W - 36); } if (Math.random() < dt * 0.25) { HS.pandaWait = 1 + Math.random() * 2; if (Math.random() < 0.5) HS.pandaDir *= -1; } }
+    }
+    hsDraw();
+    HS.raf = requestAnimationFrame(hsFrame);
+  }
+  // ----- 방 그리기 -----
+  function hsDraw() {
+    const c = $('hsCanvas'), g = c.getContext('2d'); g.imageSmoothingEnabled = false;
+    const R = (x, y, w, h, col) => { g.fillStyle = col; g.fillRect(x, y, w, h); };
+    const fy = HS_FLOOR * HS_C;
+    // 벽 (파스텔 줄무늬) + 걸레받이
+    for (let x = 0; x < HS_W; x += 16) R(x, 0, 16, fy, (x / 16) % 2 ? '#fde8d7' : '#fbe0cc');
+    R(0, fy - 6, HS_W, 6, '#d9a066'); R(0, fy - 6, HS_W, 1, '#f2c48d');
+    // 바닥 (나무 판자)
+    for (let y = fy; y < HS_H; y += 8) { R(0, y, HS_W, 8, (y / 8) % 2 ? '#d9a066' : '#cf9459'); for (let x = ((y / 8) % 2) * 24; x < HS_W; x += 48) R(x, y, 1, 8, '#b97a3e'); }
+    // 창문 (하늘·구름) · 문
+    const w = HS_WINDOW; R(w.gx * 16 - 2, w.gy * 16 - 2, w.w * 16 + 4, w.h * 16 + 4, '#7a4a22');
+    R(w.gx * 16, w.gy * 16, w.w * 16, w.h * 16, '#9cd3f0'); R(w.gx * 16 + 6, w.gy * 16 + 10, 14, 5, '#ffffff'); R(w.gx * 16 + 34, w.gy * 16 + 24, 18, 5, '#ffffff');
+    R(w.gx * 16 + w.w * 8 - 1, w.gy * 16, 2, w.h * 16, '#7a4a22'); R(w.gx * 16, w.gy * 16 + w.h * 8 - 1, w.w * 16, 2, '#7a4a22');
+    R(w.gx * 16 - 4, (w.gy + w.h) * 16 + 2, w.w * 16 + 8, 3, '#b97a3e');
+    const d = HS_DOOR; R(d.gx * 16 - 2, d.gy * 16 - 2, d.w * 16 + 4, d.h * 16 + 2, '#7a4a22'); R(d.gx * 16, d.gy * 16, d.w * 16, d.h * 16, '#b97a3e');
+    R(d.gx * 16 + 4, d.gy * 16 + 4, d.w * 16 - 8, 24, '#c98a4e'); R(d.gx * 16 + 4, d.gy * 16 + 34, d.w * 16 - 8, 36, '#c98a4e'); R(d.gx * 16 + d.w * 16 - 9, d.gy * 16 + 40, 4, 4, '#f6c445');
+    // 꾸미기 중: 놓을 수 있는 칸을 점선 격자로
+    if (HS.decor) {
+      g.fillStyle = 'rgba(255,255,255,.45)';
+      const lay = HS.ghost ? FURN_BY_ID[HS.ghost.id].layer : null;
+      for (let gy = 1; gy < HS_ROWS; gy++) for (let gx = 0; gx < HS_COLS; gx++) {
+        const wall = gy < HS_FLOOR; if (wall && gy > 4) continue;
+        if (lay && (lay === 'wall') !== wall) continue;
+        g.fillRect(gx * 16, gy * 16, 1, 1); g.fillRect(gx * 16 + 8, gy * 16 + 8, 1, 1);
+      }
+    }
+    const moving = HS.ghost && HS.ghost.uid;
+    const list = save.home.placed.filter(p => p.uid !== moving);
+    const drawItem = (p, alpha = 1) => {
+      const f = FURN_BY_ID[p.id], s = furnSprite(p.id);
+      const x = p.gx * 16, bottom = (p.gy + f.fd) * 16;
+      g.globalAlpha = alpha;
+      if (f.layer === 'floor') { g.fillStyle = 'rgba(60,30,10,.18)'; g.fillRect(x + 2, bottom - 3, f.fw * 16 - 4, 3); }
+      if (f.layer === 'rug') g.drawImage(s, x, p.gy * 16, f.fw * 16, f.fd * 16);
+      else if (f.layer === 'wall') g.drawImage(s, x, p.gy * 16);
+      else g.drawImage(s, x + Math.floor((f.fw * 16 - f.sw) / 2), bottom - f.sh);
+      g.globalAlpha = 1;
+      if (HS.decor && HS.sel === p.uid) { g.strokeStyle = '#2b6fd6'; g.lineWidth = 2; const top = f.layer === 'floor' ? bottom - f.sh : p.gy * 16; g.strokeRect(x - 1, top - 1, f.fw * 16 + 2, bottom - top + 2); }
+    };
+    // 그리는 순서: 벽 장식 → 러그 → 바닥 가구·판다 (뒤에 있는 것부터 = 아래쪽 줄이 앞)
+    for (const p of list) if (FURN_BY_ID[p.id].layer === 'wall') drawItem(p);
+    for (const p of list) if (FURN_BY_ID[p.id].layer === 'rug') drawItem(p);
+    const pandaBottom = HS_H - 3;   // 판다는 맨 앞줄을 걸어 다녀서 가구에 가려지지 않아요
+    const order = list.filter(p => FURN_BY_ID[p.id].layer === 'floor').map(p => ({ p, z: (p.gy + FURN_BY_ID[p.id].fd) * 16 }));
+    order.push({ panda: true, z: pandaBottom }); order.sort((a, b) => a.z - b.z);
+    for (const o of order) { if (o.panda) hsDrawPanda(g, pandaBottom); else drawItem(o.p); }
+    // 미리보기(놓으려는 가구): 칸을 초록(놓을 수 있음)/빨강(놓을 수 없음)으로
+    if (HS.ghost) {
+      const gh = HS.ghost, f = FURN_BY_ID[gh.id], okk = homeCanPlace(gh.id, gh.gx, gh.gy, gh.uid);
+      g.fillStyle = okk ? 'rgba(80,200,120,.45)' : 'rgba(230,60,60,.45)';
+      g.fillRect(gh.gx * 16, gh.gy * 16, f.fw * 16, f.fd * 16);
+      drawItem(gh, 0.8);
+      g.strokeStyle = okk ? '#1f9a4f' : '#d02020'; g.lineWidth = 2; g.setLineDash([3, 2]); g.strokeRect(gh.gx * 16 + 1, gh.gy * 16 + 1, f.fw * 16 - 2, f.fd * 16 - 2); g.setLineDash([]);
+    }
+  }
+  // 판다: 기존 판다 그림 + 옷장에서 장착한 꾸미기 (2배 크기)
+  function hsDrawPanda(g, bottom) {
+    const s = 2, walking = !HS.decor && HS.pandaWait <= 0;
+    const spr = walking ? (Math.floor(HS.pandaT * 6) % 2 ? PANDA.walk1 : PANDA.walk2) : PANDA.idle;
+    const x = Math.round(HS.pandaX), y = bottom - 16 * s, face = HS.pandaDir;
+    g.fillStyle = 'rgba(60,30,10,.2)'; g.fillRect(x + 4, bottom - 2, 24, 3);
+    const cv = document.createElement('canvas'); cv.width = 16; cv.height = 20; const cg = cv.getContext('2d'); cg.imageSmoothingEnabled = false;
+    drawWear(cg, 0, 4, 1, 1, save.shop.wear, 'back'); cg.drawImage(spr, 0, 4); drawWear(cg, 0, 4, 1, 1, save.shop.wear, 'front');
+    g.save(); if (face < 0) { g.translate(x + 32, 0); g.scale(-1, 1); g.drawImage(cv, 0, y - 8, 32, 40); } else g.drawImage(cv, x, y - 8, 32, 40); g.restore();
+  }
+  // ----- 아래쪽 버튼 (상태마다 바뀜) -----
+  function hsRender() {
+    $('hsCoin').textContent = save.coins;
+    const bar = $('hsBar');
+    let html = '';
+    if (!HS.decor) html = `<button class="btn" id="hsShopBtn">🛍️ 가구 상점</button><button class="btn primary" id="hsDecorBtn">🪑 꾸미기</button><button class="btn" id="hsInvBtn">📦 내 가구</button>`;
+    else if (HS.ghost) html = `<span class="hs-pad"><button class="btn sm" data-mv="-1,0" aria-label="왼쪽">◀</button><button class="btn sm" data-mv="0,-1" aria-label="위">▲</button><button class="btn sm" data-mv="0,1" aria-label="아래">▼</button><button class="btn sm" data-mv="1,0" aria-label="오른쪽">▶</button></span><button class="btn primary" id="hsOk">✔ 배치 확정</button><button class="btn" id="hsCancel">✖ 취소</button>`;
+    else if (HS.sel) html = `<button class="btn primary" id="hsMove">✋ 이동</button><button class="btn" id="hsStore">📦 보관</button><button class="btn" id="hsUnsel">✖ 취소</button>`;
+    else html = `<button class="btn primary" id="hsInvBtn">📦 내 가구 놓기</button><button class="btn" id="hsDecorEnd">✔ 꾸미기 끝</button>`;
+    bar.innerHTML = html;
+    const on = (id, fn) => { const b = $(id); if (b) b.addEventListener('click', () => { if (mode !== 'house') return; fn(); }); };
+    on('hsShopBtn', () => hsOpenSheet('shop'));
+    on('hsInvBtn', () => hsOpenSheet('inv'));
+    on('hsDecorBtn', () => { HS.decor = true; HS.sel = null; hsMsg('가구를 눌러 고르거나, 📦 내 가구에서 놓을 가구를 골라요.'); hsRender(); });
+    on('hsDecorEnd', () => { HS.decor = false; HS.sel = null; hsMsg('멋진 집이에요! 🐼'); hsRender(); });
+    on('hsMove', hsStartMove);
+    on('hsStore', hsStore);
+    on('hsUnsel', () => { HS.sel = null; hsMsg(''); hsRender(); });
+    on('hsOk', hsConfirm);
+    on('hsCancel', hsCancel);
+    bar.querySelectorAll('[data-mv]').forEach(b => b.addEventListener('click', () => { const [dx, dy] = b.dataset.mv.split(',').map(Number); hsNudge(dx, dy); }));
+    $('hsHint').hidden = !HS.decor;
+    $('hsHint').textContent = HS.ghost ? (FURN_BY_ID[HS.ghost.id].layer === 'wall' ? '벽의 원하는 곳을 톡! (끌어서 옮겨도 돼요)' : '바닥의 원하는 곳을 톡! (끌어서 옮겨도 돼요)') : HS.sel ? '이 가구를 옮기거나 보관할까요?' : '꾸미기 모드';
+  }
+  // ----- 상점·보관함 창 -----
+  function hsOpenSheet(kind) {
+    if (HS.ghost) return;   // 놓는 중에는 먼저 확정·취소
+    HS.sheet = kind; HS.ask = null; HS.sel = null; HS.sheetMsg = ''; $('hsSheet').hidden = false; hsSheetRender();
+  }
+  function hsCloseSheet() { HS.sheet = null; HS.ask = null; $('hsSheet').hidden = true; hsRender(); }
+  function hsSheetRender() {
+    $('hsCoin').textContent = save.coins;
+    const shop = HS.sheet === 'shop';
+    $('hsSheetTitle').textContent = shop ? '🛍️ 가구 상점' : '📦 내 가구 보관함';
+    let list = '';
+    if (shop) {
+      list = FURNITURE.map(f => {
+        const own = homeOwned(f.id) >= HOME_MAX_EACH, poor = save.coins < f.price;
+        const chip = own ? '<span class="hs-chip own">보유 중</span>' : `<span class="hs-chip">🪙 ${f.price}</span>`;
+        const btn = own ? '<span class="hs-note">✔ 보유 중</span>' : poor ? `<span class="hs-note no">코인이 부족해요!</span>` : `<button class="btn primary sm hs-buy" data-id="${f.id}">구매</button>`;
+        return `<div class="hs-card${own ? ' own' : ''}"><canvas width="96" height="72" data-id="${f.id}"></canvas><b>${f.name}</b>${chip}${btn}</div>`;
+      }).join('');
+    } else {
+      const ids = FURNITURE.filter(f => homeOwned(f.id) > 0);
+      list = ids.length ? ids.map(f => {
+        const left = homeStored(f.id);
+        return `<div class="hs-card"><canvas width="96" height="72" data-id="${f.id}"></canvas><b>${f.name}</b>${left > 0 ? `<button class="btn primary sm hs-place" data-id="${f.id}">🏠 놓기</button>` : '<span class="hs-note">집에 있어요</span>'}</div>`;
+      }).join('') : '<p class="hs-empty">아직 가구가 없어요. 🛍️ 가구 상점에서 사 보세요!</p>';
+    }
+    $('hsList').innerHTML = list;
+    $('hsList').querySelectorAll('canvas[data-id]').forEach(c => furnThumb(c, c.dataset.id));
+    // 구매 확인
+    const f = HS.ask && FURN_BY_ID[HS.ask];
+    $('hsAsk').hidden = !f;
+    if (f) $('hsAskText').textContent = `'${f.name}'${pp(f.name, '을/를')} ${f.price}코인에 구매할까요? (🪙 ${save.coins} → ${save.coins - f.price})`;
+    $('hsList').querySelectorAll('.hs-buy').forEach(b => b.addEventListener('click', () => { if (mode !== 'house' || HS.ask) return; HS.ask = b.dataset.id; HS.busy = performance.now() + 350; hsSheetRender(); }));
+    $('hsList').querySelectorAll('.hs-place').forEach(b => b.addEventListener('click', () => { if (mode !== 'house') return; hsStartPlace(b.dataset.id); }));
+    $('hsSheetMsg').textContent = HS.sheetMsg || ''; $('hsSheetMsg').className = HS.sheetMsgNo ? 'no' : '';
+  }
+  function hsSheetSay(t, no) { HS.sheetMsg = t; HS.sheetMsgNo = !!no; }
+  function hsBuyYes() {
+    if (mode !== 'house' || !HS.ask || performance.now() < HS.busy) return;
+    const id = HS.ask; HS.ask = null;
+    const r = buyFurniture(id);   // 성공이 확정된 뒤에만 완료 메시지
+    if (r.ok) { SFX.correct(); hsSheetSay('구매 완료! 내 가구 보관함에 추가되었어요.'); }
+    else if (r.why === 'poor') { SFX.wrong(); hsSheetSay('코인이 부족해요!', true); }
+    else if (r.why === 'owned') hsSheetSay('이미 가지고 있어요!');
+    hsSheetRender();
+  }
+  // ----- 놓기 · 옮기기 · 보관 -----
+  function hsStartPlace(id) {
+    if (homeStored(id) <= 0) return;   // 가지고 있지 않거나 이미 집에 놓인 가구는 또 놓을 수 없어요
+    const spot = homeFreeSpot(id) || { gx: 0, gy: FURN_BY_ID[id].layer === 'wall' ? 1 : HS_FLOOR };
+    HS.sheet = null; $('hsSheet').hidden = true;
+    HS.decor = true; HS.sel = null; HS.ghost = { id, uid: null, gx: spot.gx, gy: spot.gy };
+    hsMsg(`${FURN_BY_ID[id].name}: 놓을 곳을 톡! 하고 ✔ 배치 확정`); SFX.pop(); hsRender();
+  }
+  function hsStartMove() {
+    const p = save.home.placed.find(x => x.uid === HS.sel); if (!p) return;
+    HS.ghost = { id: p.id, uid: p.uid, gx: p.gx, gy: p.gy }; HS.sel = null;
+    hsMsg(`${FURN_BY_ID[p.id].name}: 새 자리를 톡! 하고 ✔ 배치 확정`); hsRender();
+  }
+  function hsConfirm() {
+    const gh = HS.ghost; if (!gh) return;
+    if (!homeCanPlace(gh.id, gh.gx, gh.gy, gh.uid)) { SFX.wrong(); hsMsg('여기는 놓을 수 없어요! 초록색이 되는 곳을 골라요.', 'no'); return; }
+    if (gh.uid) { const p = save.home.placed.find(x => x.uid === gh.uid); if (p) { p.gx = gh.gx; p.gy = gh.gy; } }
+    else {
+      if (homeStored(gh.id) <= 0) { HS.ghost = null; hsRender(); return; }   // 같은 가구 중복 배치 방지
+      save.home.placed.push({ uid: save.home.nextUid++, id: gh.id, gx: gh.gx, gy: gh.gy });
+    }
+    writeSave(); HS.ghost = null; HS.drag = null; SFX.correct();
+    hsMsg('배치 완료! 💾 저장했어요.', 'ok'); hsRender();
+  }
+  function hsCancel() { HS.ghost = null; HS.drag = null; hsMsg('취소했어요.'); hsRender(); }
+  function hsStore() {
+    const i = save.home.placed.findIndex(x => x.uid === HS.sel); if (i < 0) return;
+    const p = save.home.placed[i]; save.home.placed.splice(i, 1); writeSave();
+    HS.sel = null; SFX.pop(); hsMsg(`${FURN_BY_ID[p.id].name}${pp(FURN_BY_ID[p.id].name, '을/를')} 보관함에 넣었어요. (코인은 그대로예요)`, 'ok'); hsRender();
+  }
+  function hsNudge(dx, dy) {
+    const gh = HS.ghost; if (!gh) return; const f = FURN_BY_ID[gh.id];
+    const nx = gh.gx + dx, ny = gh.gy + dy;
+    if (homeInBounds(f, nx, ny)) { gh.gx = nx; gh.gy = ny; }
+  }
+  // 화면 좌표 → 방 칸
+  function hsCell(e) {
+    const c = $('hsCanvas'), r = c.getBoundingClientRect();
+    return { x: (e.clientX - r.left) * HS_W / r.width, y: (e.clientY - r.top) * HS_H / r.height };
+  }
+  // 톡한 곳이 가구의 가운데가 되게 (방 밖으로 나가지 않게 맞춤)
+  function hsMoveGhostTo(pt) {
+    const gh = HS.ghost, f = FURN_BY_ID[gh.id];
+    let gx = Math.round(pt.x / HS_C - f.fw / 2), gy = Math.round(pt.y / HS_C - f.fd / 2);
+    gx = clamp(gx, 0, HS_COLS - f.fw);
+    gy = f.layer === 'wall' ? clamp(gy, 1, HS_FLOOR - 1 - f.fd) : clamp(gy, HS_FLOOR, HS_ROWS - f.fd);
+    gh.gx = gx; gh.gy = gy;
+  }
+  // 집에 놓인 가구 중 톡한 곳에 보이는 가구 (앞에 있는 것 먼저)
+  function hsPick(pt) {
+    const hits = save.home.placed.map(p => {
+      const f = FURN_BY_ID[p.id], x = p.gx * 16, bottom = (p.gy + f.fd) * 16, top = f.layer === 'floor' ? bottom - f.sh : p.gy * 16;
+      return { p, f, z: f.layer === 'wall' ? 0 : f.layer === 'rug' ? 1 : 2 + bottom / 1000, ok: pt.x >= x && pt.x < x + f.fw * 16 && pt.y >= top && pt.y < bottom };
+    }).filter(h => h.ok).sort((a, b) => b.z - a.z);
+    return hits[0] ? hits[0].p : null;
+  }
+  function hsPointerDown(e) {
+    if (mode !== 'house' || HS.sheet) return;
+    const pt = hsCell(e);
+    if (HS.ghost) { e.preventDefault(); hsMoveGhostTo(pt); HS.drag = { id: e.pointerId }; try { $('hsCanvas').setPointerCapture(e.pointerId); } catch (er) {} return; }
+    if (!HS.decor) return;
+    const p = hsPick(pt);
+    HS.sel = p ? p.uid : null; if (p) SFX.pop();
+    hsMsg(p ? `${FURN_BY_ID[p.id].name}${pp(FURN_BY_ID[p.id].name, '을/를')} 골랐어요.` : '');
+    hsRender();
+    // PC: 고른 가구를 바로 끌어서 옮길 수도 있어요
+    if (p) { HS.pendingDrag = { uid: p.uid, x: pt.x, y: pt.y, id: e.pointerId }; }
+  }
+  function hsPointerMove(e) {
+    if (mode !== 'house') return;
+    const pt = hsCell(e);
+    if (HS.pendingDrag && !HS.ghost && Math.hypot(pt.x - HS.pendingDrag.x, pt.y - HS.pendingDrag.y) > 6) {
+      const p = save.home.placed.find(x => x.uid === HS.pendingDrag.uid);
+      if (p) { HS.sel = p.uid; hsStartMove(); HS.drag = { id: e.pointerId }; try { $('hsCanvas').setPointerCapture(e.pointerId); } catch (er) {} }
+      HS.pendingDrag = null;
+    }
+    if (HS.ghost && HS.drag) hsMoveGhostTo(pt);
+  }
+  function hsPointerUp() { HS.drag = null; HS.pendingDrag = null; }
+  function houseKey(e) {
+    const c = e.code;
+    if (!$('hsSheet').hidden) {
+      if (c === 'Escape') { if (HS.ask) { HS.ask = null; hsSheetRender(); } else hsCloseSheet(); }
+      else if (isEnter(c) && HS.ask) { e.preventDefault(); hsBuyYes(); }
+      return;
+    }
+    if (HS.ghost) {
+      const mv = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[c];
+      if (mv) { e.preventDefault(); hsNudge(mv[0], mv[1]); return; }
+      if (isEnter(c)) { e.preventDefault(); hsConfirm(); return; }
+      if (c === 'Escape') { hsCancel(); return; }
+      return;
+    }
+    if (c === 'Escape') { if (HS.sel) { HS.sel = null; hsRender(); } else if (HS.decor) { HS.decor = false; hsRender(); } else closeHouse(); }
+  }
+  $('btnHouse').addEventListener('click', openHouse);
+  $('hsHome').addEventListener('click', closeHouse);
+  $('hsSheetClose').addEventListener('click', () => { if (mode === 'house') hsCloseSheet(); });
+  $('hsYes').addEventListener('click', hsBuyYes);
+  $('hsNo').addEventListener('click', () => { if (mode !== 'house') return; HS.ask = null; hsSheetSay(''); hsSheetRender(); });
+  $('hsCanvas').addEventListener('pointerdown', hsPointerDown);
+  $('hsCanvas').addEventListener('pointermove', hsPointerMove);
+  $('hsCanvas').addEventListener('pointerup', hsPointerUp);
+  $('hsCanvas').addEventListener('pointercancel', hsPointerUp);
   function showStart() {
     if (/^#minigames/i.test(location.hash || '')) setTimeout(() => { try { $('miniZone').scrollIntoView({ block: 'start' }); } catch (e) {} }, 60);
-    mode = 'start'; renderStagePick(); drawTitlePanda(); refreshWardrobeBtn();
+    mode = 'start'; renderStagePick(); drawTitlePanda(); refreshWardrobeBtn(); refreshHouseBtn();
     $('startScreen').hidden = false; $('startScreen').querySelector('.card').focus({ preventScroll: true });
   }
   function startPlay() {
@@ -7611,9 +8175,10 @@
     migrateSave();
     loadStage(selStage);
     $('coinIcon').src = COIN.toDataURL(); $('pfCoinIcon').src = COIN.toDataURL();
-    $('wdCoinIcon').src = COIN.toDataURL(); drawTitlePanda(); refreshWardrobeBtn();
+    $('wdCoinIcon').src = COIN.toDataURL(); drawTitlePanda(); refreshWardrobeBtn(); refreshHouseBtn();
     refreshSoundUI(); renderStagePick(); updateHUD(); wrapPinyin(document.body);
     if (/^#minigames/i.test(location.hash || '')) setTimeout(() => { try { $('miniZone').scrollIntoView({ block: 'start' }); } catch (e) {} }, 120);   // 미니게임에서 돌아오면 놀이터 위치로
+    if (/^#house/i.test(location.hash || '')) setTimeout(() => { if (mode === 'start') openHouse(); }, 150);   // #house: 바로 판다 집으로 (열린 학생만)
     if (document.fonts && document.fonts.load) {
       Promise.all([document.fonts.load('11px Jua'), document.fonts.load('15px Jua'), document.fonts.load('700 11px "Noto Sans SC"', '我叫什么名字你'), document.fonts.load(SIGN_PY_FONT, 'Nǐ jiào shénme míngzi')]).then(buildWorld).catch(() => {});
     }
@@ -7632,7 +8197,7 @@
     $('startScreen').querySelector('.card').focus({ preventScroll: true });
     window.__panda = {
       SHOP_ITEMS, buyItem, equipItem, unequipItem, openWardrobe, closeWardrobe, drawWear, get wd() { return wd; },
-      questInteract, openBasket, BD_NPC, BD_CANDLES, BD_CAKE_X, BD_BOARD_X, BD_DESK_X, BD_TABLE_X, bdValid, dateZh, bdSent, openCake, cakeAdd, cakeDel, cakeDone, closeCake, openCal, calOk, closeCal, openBCard, bcOk, closeBCard, bdPlace, openPick, closePick, pickOk, FAM, famOf, famSent, FM_NPC, GIFT, giftOf, gfSent, GF_NPC, GF_FR, FM_BOARD_X, famFace, giftURL, drawGift, FOOD, foodOf, foodSent, FD_MC, DN_NPC, priceZh, priceSay, drawFood, foodURL, questDone, payOnce, AR, arcOpen, arPopGo, arHint, arKey, PRICES, FD_GUEST, DN_CU, get arDbg() { return { belt: AR.belt, held: AR.held, tray: AR.tray, want: AR.want, r: AR.r, paused: AR.paused, combo: AR.combo }; }, beltGrab, beltPut, fsPut, fsServe, fsGive1, fmNewTest: () => fmNew(), gfNewTest: () => gfNew(), get qp() { return qp; }, bdNewTest: () => bdNew(), bdBonus: () => bdBonusLater, basketDrop, closeBasket, zhNum, tokVal, testSpawn: (kind, n, set) => { const q = run.q, list = set ? q.m4.items : q.m3.items; spawnItems(list, kind, n, Q_SPOTS[set]); }, testOpenSlab: (rounds) => openSlab({ title: 'test', rounds, start: 0, tag: 'test', key: (i) => 'test' + i, onRound() {}, onAll() {} }), slabTap, slabKey, ruleHints, boxNums, closeTalk, closeSlab, questRecall, NPC_DEF, useSkill, canSkill, BGM, josa, BUILD, forestBuild, basicQuestion, MA, GREET, NW, P, save, quiz, quick, NQ, numQ, numQueue, NUMS, openQuiz, answer, closeQuiz, closeSpeak, selectStage, startPlay, goHome, askHome, resumeFromPause, loadStage, closeHelp, closeIntro, startNewRun, THEMES, SKINS, STAGES,
+      questInteract, openBasket, BD_NPC, BD_CANDLES, BD_CAKE_X, BD_BOARD_X, BD_DESK_X, BD_TABLE_X, bdValid, dateZh, bdSent, openCake, cakeAdd, cakeDel, cakeDone, closeCake, openCal, calOk, closeCal, openBCard, bcOk, closeBCard, bdPlace, openPick, closePick, pickOk, FAM, famOf, famSent, FM_NPC, GIFT, giftOf, gfSent, GF_NPC, GF_FR, FM_BOARD_X, famFace, giftURL, drawGift, FOOD, foodOf, foodSent, FD_MC, DN_NPC, priceZh, priceSay, drawFood, foodURL, questDone, payOnce, FURNITURE, buyFurniture, homeCanPlace, homeFreeSpot, openHouse, closeHouse, get HS() { return HS; }, hsConfirm, AR, arcOpen, arPopGo, arHint, arKey, PRICES, FD_GUEST, DN_CU, get arDbg() { return { belt: AR.belt, held: AR.held, tray: AR.tray, want: AR.want, r: AR.r, paused: AR.paused, combo: AR.combo }; }, beltGrab, beltPut, fsPut, fsServe, fsGive1, fmNewTest: () => fmNew(), gfNewTest: () => gfNew(), get qp() { return qp; }, bdNewTest: () => bdNew(), bdBonus: () => bdBonusLater, basketDrop, closeBasket, zhNum, tokVal, testSpawn: (kind, n, set) => { const q = run.q, list = set ? q.m4.items : q.m3.items; spawnItems(list, kind, n, Q_SPOTS[set]); }, testOpenSlab: (rounds) => openSlab({ title: 'test', rounds, start: 0, tag: 'test', key: (i) => 'test' + i, onRound() {}, onAll() {} }), slabTap, slabKey, ruleHints, boxNums, closeTalk, closeSlab, questRecall, NPC_DEF, useSkill, canSkill, BGM, josa, BUILD, forestBuild, basicQuestion, MA, GREET, NW, P, save, quiz, quick, NQ, numQ, numQueue, NUMS, openQuiz, answer, closeQuiz, closeSpeak, selectStage, startPlay, goHome, askHome, resumeFromPause, loadStage, closeHelp, closeIntro, startNewRun, THEMES, SKINS, STAGES,
       get mode() { return mode; }, get monsters() { return monsters; }, get coins() { return coins; }, get gates() { return gates; },
       get run() { return run; }, get cam() { return cam; }, get floats() { return floats; }, get stage() { return STAGE.id; }, get drops() { return drops; }, get selStage() { return selStage; },
     };
