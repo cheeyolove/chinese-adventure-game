@@ -890,6 +890,10 @@
   .hs-bar .btn { min-height: 52px; font-size: 19px; padding: 6px 18px; }
   .hs-bar .btn.sm, .hs-pad .btn { min-width: 52px; padding: 6px 10px; }
   .hs-pad { display: inline-flex; gap: 6px; }
+  .hs-seg { display: inline-flex; border: 3px solid var(--ink); border-radius: 14px; overflow: hidden; }
+  .hs-seg .btn { border: 0; border-radius: 0; box-shadow: none; background: #fff; min-height: 46px; }
+  .hs-seg .btn + .btn { border-left: 3px solid var(--ink); }
+  .hs-seg .btn.on { background: #f6c445; }
   #hsSheet { position: absolute; left: 0; right: 0; bottom: 0; top: 60px; background: rgba(29, 39, 56, .55); display: flex; align-items: flex-start; justify-content: center; padding: 10px; overflow-y: auto; }
   #hsSheet[hidden] { display: none; }
   .hs-sheetcard { background: var(--paper); border: 4px solid var(--ink); border-radius: 18px; padding: 12px 14px; width: 100%; max-width: 900px; position: relative; }
@@ -7632,14 +7636,21 @@
 
   // ----- 집 화면 상태 -----
   // view: 구경 · decor: 꾸미기. ghost = 놓으려는(또는 옮기는) 가구 미리보기 { id, uid(옮길 때), gx, gy }
-  const HS = { on: false, decor: false, sel: null, ghost: null, sheet: null, ask: null, busy: 0, drag: null, pandaX: 150, pandaDir: 1, pandaT: 0, pandaWait: 1, raf: 0, last: 0 };
+  const HS = { on: false, decor: false, sel: null, ghost: null, sheet: null, ask: null, busy: 0, drag: null, pandaX: 150, pandaDir: 1, pandaT: 0, pandaWait: 1, raf: 0, last: 0,
+    // 2차 생활하기 (저장하지 않는 그 순간의 상태): act = 잠자기·앉기, walk = 가구까지 걸어가는 중, tv·fridge·lamp = 가구별(uid) 켜짐·열림, fx = 떠오르는 Zzz·♥
+    act: null, walk: null, tv: {}, fridge: {}, lamp: {}, fx: [], time: 0 };
+  // 생활하기에서 쓸 수 있는 가구 (가구 ID → 동작). 나머지 가구는 판다가 가서 구경해요
+  const FURN_USE = { f_bed: 'sleep', f_sofa: 'sit', f_tv: 'tv', f_fridge: 'fridge', f_lamp: 'lamp' };
+  // 잠자는 판다 얼굴: 기존 판다 머리에서 눈만 감은 모양으로 (눈 주위 검은 부분을 감은 눈 선으로)
+  const PANDA_SLEEP_HEAD = makeSprite(PANDA_HEAD.map((r, i) => (i === 5 ? '.kwwwwwwwwwwwwk.' : i === 6 ? '.kwkkkwwwwkkkwk.' : i === 7 ? '.kwwkwwwwwwkwwk.' : r)), PANDA_PAL);
+  const hsResetLife = () => { HS.act = null; HS.walk = null; HS.tv = {}; HS.fridge = {}; HS.lamp = {}; HS.fx = []; };
   const houseOpenOk = () => wardrobeOpen();   // 옷장과 같이: 탐험을 하나 끝내면 열려요
   function refreshHouseBtn() { const on = houseOpenOk(); $('btnHouse').textContent = on ? '🏠 나의 판다 집' : '🔒 나의 판다 집'; $('btnHouse').classList.toggle('locked', !on); }
   function openHouse() {
     if (mode !== 'start') return;
     if (!houseOpenOk()) { notice('탐험을 하나 끝내면 판다 집이 열려요! 🏠'); return; }
     audio(); mode = 'house';
-    Object.assign(HS, { on: true, decor: false, sel: null, ghost: null, sheet: null, ask: null, drag: null });
+    Object.assign(HS, { on: true, decor: false, sel: null, ghost: null, sheet: null, ask: null, drag: null }); hsResetLife();   // 들어오면 생활하기 모드, TV·조명은 꺼진 채로
     $('startScreen').hidden = true; $('house').hidden = false;
     $('hsTitle').textContent = `🏠 ${save.playerName ? save.playerName + '의 ' : ''}판다 집`;
     hsMsg(save.home.placed.length ? '' : '🛍️ 가구 상점에서 가구를 사서 집을 꾸며 보세요!');
@@ -7649,7 +7660,7 @@
   // 나가기: 놓던 가구·옮기던 가구는 취소(저장된 배치는 그대로), 열린 창 닫기
   function closeHouse() {
     if (mode !== 'house') return;
-    Object.assign(HS, { on: false, decor: false, sel: null, ghost: null, sheet: null, ask: null, drag: null });
+    Object.assign(HS, { on: false, decor: false, sel: null, ghost: null, sheet: null, ask: null, drag: null }); hsResetLife();   // 자던 판다·켜진 TV는 나갈 때 정리
     $('house').hidden = true; $('hsSheet').hidden = true;
     if (HS.raf) { cancelAnimationFrame(HS.raf); HS.raf = 0; }
     showStart();
@@ -7658,8 +7669,10 @@
   function hsFrame(now) {
     HS.raf = 0; if (!HS.on) return;
     const dt = Math.min(0.05, (now - HS.last) / 1000); HS.last = now;
-    // 판다는 바닥에서 천천히 왔다 갔다 (꾸미기 중에는 가만히)
-    if (!HS.decor && !HS.sheet) {
+    HS.time += dt;
+    hsLifeUpdate(dt);
+    // 판다는 바닥에서 천천히 왔다 갔다 (꾸미기 중·가구를 쓰는 중에는 가만히)
+    if (!HS.decor && !HS.sheet && !HS.act && !HS.walk) {
       if (HS.pandaWait > 0) HS.pandaWait -= dt;
       else { HS.pandaX += HS.pandaDir * 22 * dt; HS.pandaT += dt; if (HS.pandaX < 20 || HS.pandaX > HS_W - 36) { HS.pandaDir *= -1; HS.pandaX = clamp(HS.pandaX, 20, HS_W - 36); } if (Math.random() < dt * 0.25) { HS.pandaWait = 1 + Math.random() * 2; if (Math.random() < 0.5) HS.pandaDir *= -1; } }
     }
@@ -7704,6 +7717,7 @@
       else if (f.layer === 'wall') g.drawImage(s, x, p.gy * 16);
       else g.drawImage(s, x + Math.floor((f.fw * 16 - f.sw) / 2), bottom - f.sh);
       g.globalAlpha = 1;
+      if (alpha === 1 && f.layer === 'floor') hsDrawUse(g, p, f, s, x + Math.floor((f.fw * 16 - f.sw) / 2), bottom - f.sh);   // TV·냉장고·조명·잠자는/앉은 판다
       if (HS.decor && HS.sel === p.uid) { g.strokeStyle = '#2b6fd6'; g.lineWidth = 2; const top = f.layer === 'floor' ? bottom - f.sh : p.gy * 16; g.strokeRect(x - 1, top - 1, f.fw * 16 + 2, bottom - top + 2); }
     };
     // 그리는 순서: 벽 장식 → 러그 → 바닥 가구·판다 (뒤에 있는 것부터 = 아래쪽 줄이 앞)
@@ -7712,7 +7726,9 @@
     const pandaBottom = HS_H - 3;   // 판다는 맨 앞줄을 걸어 다녀서 가구에 가려지지 않아요
     const order = list.filter(p => FURN_BY_ID[p.id].layer === 'floor').map(p => ({ p, z: (p.gy + FURN_BY_ID[p.id].fd) * 16 }));
     order.push({ panda: true, z: pandaBottom }); order.sort((a, b) => a.z - b.z);
-    for (const o of order) { if (o.panda) hsDrawPanda(g, pandaBottom); else drawItem(o.p); }
+    for (const o of order) { if (o.panda) { if (!(HS.act && HS.act.on)) hsDrawPanda(g, pandaBottom); } else drawItem(o.p); }   // 침대·소파를 쓰는 동안 판다는 그 가구 안에서만 그려요 (두 곳에 동시에 나오지 않게)
+    hsDrawLight(g, list);
+    hsDrawFx(g);
     // 미리보기(놓으려는 가구): 칸을 초록(놓을 수 있음)/빨강(놓을 수 없음)으로
     if (HS.ghost) {
       const gh = HS.ghost, f = FURN_BY_ID[gh.id], okk = homeCanPlace(gh.id, gh.gx, gh.gy, gh.uid);
@@ -7724,7 +7740,7 @@
   }
   // 판다: 기존 판다 그림 + 옷장에서 장착한 꾸미기 (2배 크기)
   function hsDrawPanda(g, bottom) {
-    const s = 2, walking = !HS.decor && HS.pandaWait <= 0;
+    const s = 2, walking = !!HS.walk || (!HS.decor && !HS.act && HS.pandaWait <= 0);
     const spr = walking ? (Math.floor(HS.pandaT * 6) % 2 ? PANDA.walk1 : PANDA.walk2) : PANDA.idle;
     const x = Math.round(HS.pandaX), y = bottom - 16 * s, face = HS.pandaDir;
     g.fillStyle = 'rgba(60,30,10,.2)'; g.fillRect(x + 4, bottom - 2, 24, 3);
@@ -7732,34 +7748,184 @@
     drawWear(cg, 0, 4, 1, 1, save.shop.wear, 'back'); cg.drawImage(spr, 0, 4); drawWear(cg, 0, 4, 1, 1, save.shop.wear, 'front');
     g.save(); if (face < 0) { g.translate(x + 32, 0); g.scale(-1, 1); g.drawImage(cv, 0, y - 8, 32, 40); } else g.drawImage(cv, x, y - 8, 32, 40); g.restore();
   }
+  // ================= 2차: 생활하기 (가구를 톡 → 판다가 가서 사용) =================
+  // 모든 좌표는 그 가구의 지금 자리(gx·gy)와 크기(fw·fd·sw·sh)로 계산해요 → 가구를 옮겨도 그대로 작동
+  const hsFurnBox = (p) => { const f = FURN_BY_ID[p.id], bottom = (p.gy + f.fd) * 16; return { f, sx: p.gx * 16 + Math.floor((f.fw * 16 - f.sw) / 2), top: bottom - f.sh, bottom, cx: p.gx * 16 + f.fw * 8 }; };
+  const hsStandX = (p) => clamp(hsFurnBox(p).cx - 16, 4, HS_W - 36);   // 가구 앞에 서는 자리 (판다 왼쪽 끝 x)
+  function hsFx(text, x, y, col = '#ffffff') { HS.fx.push({ text, x, y, t: 0, col }); if (HS.fx.length > 12) HS.fx.shift(); }
+  // 가구 사용: 걷기 → 도착하면 동작. 이미 쓰는 중이면 먼저 일어나요 (동작이 겹치지 않게)
+  function hsUse(p) {
+    const use = FURN_USE[p.id];
+    if (HS.act) {
+      const same = HS.act.uid === p.uid;
+      hsWake(true);
+      if (same) return;   // 자는 침대·앉은 소파를 다시 누르면 일어나기만
+    }
+    const tx = hsStandX(p);
+    HS.pandaDir = tx >= HS.pandaX ? 1 : -1; HS.pandaWait = 0;
+    HS.walk = { tx, uid: p.uid, t: 0, use };
+    hsRender();
+  }
+  // 도착: 동작 시작
+  function hsArrive(w) {
+    const p = save.home.placed.find(x => x.uid === w.uid);
+    if (!p || HS.decor) return;   // 그사이 보관했거나 꾸미기로 바꿨으면 아무것도 안 해요
+    const b = hsFurnBox(p);
+    if (w.use === 'sleep') { HS.act = { type: 'sleep', uid: p.uid, on: true, t: 0 }; tone(392, 0, 0.18, 'triangle', 0.05); tone(330, 0.16, 0.24, 'triangle', 0.05); hsMsg('쿨쿨… 판다가 낮잠을 자요 💤'); }
+    else if (w.use === 'sit') { HS.act = { type: 'sit', uid: p.uid, on: true, t: 0 }; SFX.pop(); hsFx('♥', b.cx, b.top - 6, '#ff6b8b'); hsMsg('판다가 소파에서 쉬어요 ☺'); }
+    else if (w.use === 'tv') { const on = !HS.tv[p.uid]; HS.tv[p.uid] = on ? { t: 0 } : null; tone(on ? 880 : 440, 0, 0.08, 'square', 0.04); hsMsg(on ? 'TV를 켰어요 📺' : 'TV를 껐어요'); }
+    else if (w.use === 'fridge') { const on = !HS.fridge[p.uid]; HS.fridge[p.uid] = on; tone(on ? 660 : 520, 0, 0.1, 'triangle', 0.05); hsMsg(on ? '냉장고 문을 열었어요 🧊' : '냉장고 문을 닫았어요'); }
+    else if (w.use === 'lamp') { const on = !HS.lamp[p.uid]; HS.lamp[p.uid] = on; tone(on ? 1047 : 523, 0, 0.08, 'triangle', 0.05); hsMsg(on ? '불을 켰어요 💡' : '불을 껐어요'); }
+    else { hsFx('♥', b.cx, b.top - 4, '#ff6b8b'); SFX.pop(); hsMsg(`판다가 ${FURN_BY_ID[p.id].name}${pp(FURN_BY_ID[p.id].name, '을/를')} 구경해요`); }
+    hsRender();
+  }
+  // 일어나기: 판다는 그 가구 앞에 서요 (그림은 한 곳에만)
+  function hsWake(silent) {
+    const a = HS.act; if (!a) return;
+    const p = save.home.placed.find(x => x.uid === a.uid);
+    HS.act = null;
+    if (p) HS.pandaX = hsStandX(p);
+    HS.pandaWait = 1.2;
+    if (!silent) { SFX.pop(); hsMsg(a.type === 'sleep' ? '잘 잤다! 🐼' : '영차! 일어났어요 🐼'); hsRender(); }
+  }
+  // 꾸미기로 바꾸거나 가구를 옮기기·보관하기 전: 동작을 끝내고 그 가구 상태를 정리
+  function hsStopLife(uid) {
+    if (HS.act && (uid == null || HS.act.uid === uid)) hsWake(true);
+    if (HS.walk && (uid == null || HS.walk.uid === uid)) HS.walk = null;
+    if (uid == null) { HS.fridge = {}; } else { delete HS.tv[uid]; delete HS.fridge[uid]; delete HS.lamp[uid]; }
+  }
+  function hsLifeUpdate(dt) {
+    const w = HS.walk;
+    if (w) {
+      w.t += dt; HS.pandaT += dt;
+      const d = w.tx - HS.pandaX, step = 110 * dt;
+      if (Math.abs(d) <= step || w.t > 1.8) { HS.pandaX = w.tx; HS.walk = null; hsArrive(w); }   // 멀면 1.8초 뒤 바로 도착 (막히지 않게)
+      else { HS.pandaX += Math.sign(d) * step; HS.pandaDir = Math.sign(d); }
+    }
+    const a = HS.act;
+    if (a) {
+      a.t += dt;
+      const p = save.home.placed.find(x => x.uid === a.uid);
+      if (!p) { HS.act = null; }
+      else if (a.type === 'sleep') {
+        if ((a.zt = (a.zt || 0) + dt) > 0.9) { a.zt = 0; const b = hsFurnBox(p); hsFx(Math.random() < 0.5 ? 'Z' : 'z', b.sx + 24 + Math.random() * 6, b.top + 6, '#ffffff'); }
+        if (a.t > 20) hsWake();   // 20초 뒤 저절로 일어나요
+      } else if (a.type === 'sit') {
+        if ((a.ht = (a.ht || 0) + dt) > 3) { a.ht = 0; const b = hsFurnBox(p); hsFx(Math.random() < 0.5 ? '♥' : '✦', b.cx + (Math.random() * 16 - 8), b.top - 4, Math.random() < 0.5 ? '#ff6b8b' : '#fff0a8'); }
+      }
+    }
+    for (const t of Object.values(HS.tv)) if (t) t.t += dt;
+    HS.fx.forEach(f => { f.t += dt; }); HS.fx = HS.fx.filter(f => f.t < 2.2);
+  }
+  // 판다 머리만 (잠자기·눈 깜빡임용): 옷장 꾸미기 중 머리·얼굴 장식은 같이, 목·등 장식은 이불·소파에 가려지니 빼요
+  function hsDrawHead(g, x, y, sleepy) {
+    const cv = document.createElement('canvas'); cv.width = 16; cv.height = 16; const cg = cv.getContext('2d'); cg.imageSmoothingEnabled = false;
+    cg.drawImage(sleepy ? PANDA_SLEEP_HEAD : PANDA.idle, 0, 0, 16, 11, 0, 4, 16, 11);
+    drawWear(cg, 0, 4, 1, 1, { head: save.shop.wear.head, face: save.shop.wear.face }, 'front');
+    g.drawImage(cv, 0, 0, 16, 15, x, y - 8, 32, 30);
+  }
+  // 가구 위에 그리는 생활 모습 (가구를 그린 바로 다음에 → 앞뒤 순서가 그 가구와 같아요)
+  function hsDrawUse(g, p, f, s, sx, top) {
+    const R = (x, y, w, h, c) => { g.fillStyle = c; g.fillRect(Math.round(x), Math.round(y), w, h); };
+    const a = HS.act && HS.act.uid === p.uid ? HS.act : null;
+    if (p.id === 'f_bed' && a) {
+      // 베개 위에 감은 눈 판다 머리 → 이불 아래 몸(볼록) → 이불을 다시 덮어요
+      hsDrawHead(g, sx + 1, top + 7, true);
+      g.fillStyle = '#4f95e8'; g.fillRect(sx + 35, top + 11, 32, 7); g.fillRect(sx + 39, top + 9, 22, 2);   // 이불 아래 몸 (볼록)
+      g.drawImage(s, 34, 16, 39, 16, sx + 34, top + 16, 39, 16);                                             // 이불을 다시 덮어요
+      R(sx + 36, top + 11, 28, 1, '#8fc4ff'); R(sx + 33, top + 18, 3, 12, '#4f95e8'); R(sx + 33, top + 18, 3, 1, '#c4e2ff');
+    }
+    if (p.id === 'f_sofa' && a) {
+      // 앉은 판다: 소파 등받이 앞, 앉는 쿠션·팔걸이 뒤 (다리는 쿠션에 가려져요)
+      const bob = Math.floor(a.t * 2) % 2, blink = (a.t % 3.2) < 0.16;
+      const px = sx + 16, bottom = top + 25 + bob;
+      hsDrawPandaAt(g, px, bottom, 1);
+      if (blink) hsDrawHead(g, px, bottom - 32, true);
+      g.drawImage(s, 0, 20, 64, 20, sx, top + 20, 64, 20);
+    }
+    if (p.id === 'f_tv' && HS.tv[p.uid]) {
+      // 켜진 화면: 3초마다 바뀌는 그림 (판다 얼굴 · 대나무 숲 · 물고기 · 반짝이는 별), 켤 때 하얗게 번쩍
+      const t = HS.tv[p.uid].t, X = sx + 3, Y = top + 3, Wd = 42, Ht = 24;
+      if (t < 0.18) { R(X, Y, Wd, Ht, '#ffffff'); return; }
+      const scene = Math.floor(t / 3) % 4;
+      g.save(); g.beginPath(); g.rect(X, Y, Wd, Ht); g.clip();   // 그림이 화면 밖으로 나가지 않게
+      if (scene === 0) { R(X, Y, Wd, Ht, '#bfe8ff'); const bx = X + 13, by = Y + 3 + Math.round(Math.sin(t * 3)); R(bx, by + 2, 16, 14, '#fbfaf5'); R(bx - 1, by, 5, 5, '#22202b'); R(bx + 12, by, 5, 5, '#22202b'); R(bx + 2, by + 6, 4, 4, '#22202b'); R(bx + 10, by + 6, 4, 4, '#22202b'); R(bx + 7, by + 11, 2, 2, '#22202b'); R(bx + 1, by + 11, 2, 1, '#f59ab0'); R(bx + 13, by + 11, 2, 1, '#f59ab0'); }
+      if (scene === 1) { R(X, Y, Wd, Ht, '#cfeec0'); for (let k = 0; k < 6; k++) { const xx = X + 3 + k * 7, sway = Math.round(Math.sin(t * 2 + k)); R(xx + sway, Y + 2, 3, Ht - 2, '#4fae5c'); R(xx + sway, Y + 8, 3, 1, '#2f7a3a'); R(xx + sway, Y + 15, 3, 1, '#2f7a3a'); R(xx + 3 + sway, Y + 6 + k % 3, 3, 2, '#7fd37f'); } }
+      if (scene === 2) { R(X, Y, Wd, Ht, '#3d7bd9'); R(X, Y + Ht - 4, Wd, 4, '#e8c46a'); for (const [o, yy, c] of [[0, 6, '#f6c445'], [15, 13, '#ff8a5c']]) { const fx = X + ((t * 12 + o) % (Wd + 8)) - 6; R(fx, Y + yy, 7, 4, c); R(fx - 3, Y + yy + 1, 3, 2, c); R(fx + 5, Y + yy + 1, 1, 1, '#22202b'); } R(X + 30, Y + 4 + Math.round((t * 6) % 12), 2, 2, '#c4e2ff'); }
+      if (scene === 3) { R(X, Y, Wd, Ht, '#2b2838'); for (let k = 0; k < 7; k++) { const on = Math.floor(t * 4 + k) % 3; R(X + 3 + (k * 13) % 38, Y + 3 + (k * 7) % 18, on ? 2 : 1, on ? 2 : 1, ['#f6c445', '#ffffff', '#ff9fb2'][k % 3]); } }
+      if (Math.floor(t * 10) % 7 === 0) { g.fillStyle = 'rgba(255,255,255,.12)'; g.fillRect(X, Y, Wd, Ht); }   // 살짝 반짝임
+      g.restore();
+    }
+    if (p.id === 'f_fridge' && HS.fridge[p.uid]) {
+      // 문 열림: 안쪽 불빛 · 칸 · 음식(사과·우유·주스·당근) + 오른쪽으로 열린 문
+      R(sx + 3, top + 2, 26, 56, '#fff8d6');
+      R(sx + 3, top + 21, 26, 2, '#d9dde3'); R(sx + 3, top + 40, 26, 2, '#d9dde3');
+      R(sx + 6, top + 13, 6, 6, '#e5484d'); R(sx + 8, top + 11, 1, 2, '#5a3a1e'); R(sx + 9, top + 11, 2, 1, '#5cc46a');   // 사과
+      R(sx + 16, top + 8, 7, 11, '#fbfaf5'); R(sx + 16, top + 8, 7, 3, '#62aefc'); R(sx + 16, top + 6, 7, 2, '#62aefc');   // 우유
+      R(sx + 6, top + 29, 5, 11, '#f08a24'); R(sx + 7, top + 27, 3, 2, '#2b2838');   // 주스
+      R(sx + 15, top + 33, 10, 3, '#f08a24'); R(sx + 25, top + 32, 3, 5, '#5cc46a');   // 당근
+      R(sx + 8, top + 47, 16, 9, '#c4e2ff'); R(sx + 9, top + 48, 14, 2, '#e8f4ff');   // 아래 칸(채소칸)
+      R(sx + 31, top, 9, 60, '#2b2838'); R(sx + 32, top + 1, 7, 58, '#eef1f5'); R(sx + 32, top + 21, 7, 1, '#9aa0aa'); R(sx + 35, top + 6, 2, 10, '#9aa0aa'); R(sx + 35, top + 26, 2, 14, '#9aa0aa');   // 열린 문
+      g.fillStyle = 'rgba(255,248,200,.35)'; g.fillRect(sx - 4, top + 58, 44, 6);   // 바닥에 비친 불빛
+    }
+    if (p.id === 'f_lamp' && HS.lamp[p.uid]) {
+      g.fillStyle = 'rgba(255,240,150,.55)';
+      g.beginPath(); g.moveTo(sx + 3, top + 16); g.lineTo(sx + 13, top + 16); g.lineTo(sx + 20, top + 50); g.lineTo(sx - 4, top + 50); g.closePath(); g.fill();   // 빛줄기
+      R(sx + 4, top + 3, 8, 13, '#fff6a8'); R(sx + 5, top + 4, 6, 4, '#ffffff');   // 환한 갓
+    }
+  }
+  // 켜진 스탠드 주변을 따뜻하게 (방 전체를 어둡게 하지 않고 주변만 조금 밝게)
+  function hsDrawLight(g, list) {
+    for (const p of list) {
+      if (p.id !== 'f_lamp' || !HS.lamp[p.uid]) continue;
+      const b = hsFurnBox(p), cx = b.cx, cy = b.top + 12;
+      const gr = g.createRadialGradient(cx, cy, 4, cx, cy, 70);
+      gr.addColorStop(0, 'rgba(255,220,120,.42)'); gr.addColorStop(1, 'rgba(255,220,120,0)');
+      g.save(); g.globalCompositeOperation = 'lighter'; g.fillStyle = gr; g.fillRect(cx - 70, cy - 70, 140, 140); g.restore();
+    }
+  }
+  function hsDrawFx(g) {
+    g.save(); g.textAlign = 'center'; g.font = 'bold 10px sans-serif';
+    for (const f of HS.fx) { const y = f.y - f.t * 14, a = Math.max(0, 1 - f.t / 2.2); g.globalAlpha = a; g.fillStyle = '#2b2838'; g.fillText(f.text, f.x + 1, y + 1); g.fillStyle = f.col; g.fillText(f.text, f.x + Math.sin(f.t * 3) * 3, y); }
+    g.restore();
+  }
+  // 서 있는 판다를 원하는 자리에 (앉은 판다용 — 걷는 판다와 같은 그림·꾸미기)
+  function hsDrawPandaAt(g, x, bottom, face) {
+    const cv = document.createElement('canvas'); cv.width = 16; cv.height = 20; const cg = cv.getContext('2d'); cg.imageSmoothingEnabled = false;
+    drawWear(cg, 0, 4, 1, 1, save.shop.wear, 'back'); cg.drawImage(PANDA.idle, 0, 4); drawWear(cg, 0, 4, 1, 1, save.shop.wear, 'front');
+    g.save(); if (face < 0) { g.translate(x + 32, 0); g.scale(-1, 1); g.drawImage(cv, 0, bottom - 40, 32, 40); } else g.drawImage(cv, x, bottom - 40, 32, 40); g.restore();
+  }
   // ----- 아래쪽 버튼 (상태마다 바뀜) -----
   function hsRender() {
     $('hsCoin').textContent = save.coins;
     const bar = $('hsBar');
     let html = '';
-    if (!HS.decor) html = `<button class="btn" id="hsShopBtn">🛍️ 가구 상점</button><button class="btn primary" id="hsDecorBtn">🪑 꾸미기</button><button class="btn" id="hsInvBtn">📦 내 가구</button>`;
+    // 모드 버튼: 🐼 생활하기 / 🪑 꾸미기 (지금 모드가 눌린 모양)
+    const seg = `<span class="hs-seg" role="group" aria-label="모드"><button class="btn${HS.decor ? '' : ' on'}" id="hsLifeBtn" aria-pressed="${!HS.decor}">🐼 생활하기</button><button class="btn${HS.decor ? ' on' : ''}" id="hsDecorBtn" aria-pressed="${HS.decor}">🪑 꾸미기</button></span>`;
+    if (!HS.decor) html = seg + (HS.act ? `<button class="btn primary" id="hsWake">🙋 일어나기</button>` : '') + `<button class="btn" id="hsShopBtn">🛍️ 가구 상점</button><button class="btn" id="hsInvBtn">📦 내 가구</button>`;
     else if (HS.ghost) html = `<span class="hs-pad"><button class="btn sm" data-mv="-1,0" aria-label="왼쪽">◀</button><button class="btn sm" data-mv="0,-1" aria-label="위">▲</button><button class="btn sm" data-mv="0,1" aria-label="아래">▼</button><button class="btn sm" data-mv="1,0" aria-label="오른쪽">▶</button></span><button class="btn primary" id="hsOk">✔ 배치 확정</button><button class="btn" id="hsCancel">✖ 취소</button>`;
-    else if (HS.sel) html = `<button class="btn primary" id="hsMove">✋ 이동</button><button class="btn" id="hsStore">📦 보관</button><button class="btn" id="hsUnsel">✖ 취소</button>`;
-    else html = `<button class="btn primary" id="hsInvBtn">📦 내 가구 놓기</button><button class="btn" id="hsDecorEnd">✔ 꾸미기 끝</button>`;
+    else if (HS.sel) html = seg + `<button class="btn primary" id="hsMove">✋ 이동</button><button class="btn" id="hsStore">📦 보관</button><button class="btn" id="hsUnsel">✖ 취소</button>`;
+    else html = seg + `<button class="btn primary" id="hsInvBtn">📦 내 가구 놓기</button>`;
     bar.innerHTML = html;
     const on = (id, fn) => { const b = $(id); if (b) b.addEventListener('click', () => { if (mode !== 'house') return; fn(); }); };
     on('hsShopBtn', () => hsOpenSheet('shop'));
     on('hsInvBtn', () => hsOpenSheet('inv'));
-    on('hsDecorBtn', () => { HS.decor = true; HS.sel = null; hsMsg('가구를 눌러 고르거나, 📦 내 가구에서 놓을 가구를 골라요.'); hsRender(); });
-    on('hsDecorEnd', () => { HS.decor = false; HS.sel = null; hsMsg('멋진 집이에요! 🐼'); hsRender(); });
+    on('hsDecorBtn', () => { if (HS.decor) return; hsStopLife(); HS.decor = true; HS.sel = null; hsMsg('가구를 눌러 고르거나, 📦 내 가구에서 놓을 가구를 골라요.'); hsRender(); });
+    on('hsLifeBtn', () => { if (!HS.decor) return; HS.decor = false; HS.sel = null; hsMsg('가구를 톡! 하면 판다가 사용해요 🐼'); hsRender(); });
+    on('hsWake', () => hsWake());
     on('hsMove', hsStartMove);
     on('hsStore', hsStore);
     on('hsUnsel', () => { HS.sel = null; hsMsg(''); hsRender(); });
     on('hsOk', hsConfirm);
     on('hsCancel', hsCancel);
     bar.querySelectorAll('[data-mv]').forEach(b => b.addEventListener('click', () => { const [dx, dy] = b.dataset.mv.split(',').map(Number); hsNudge(dx, dy); }));
-    $('hsHint').hidden = !HS.decor;
-    $('hsHint').textContent = HS.ghost ? (FURN_BY_ID[HS.ghost.id].layer === 'wall' ? '벽의 원하는 곳을 톡! (끌어서 옮겨도 돼요)' : '바닥의 원하는 곳을 톡! (끌어서 옮겨도 돼요)') : HS.sel ? '이 가구를 옮기거나 보관할까요?' : '꾸미기 모드';
+    $('hsHint').hidden = false;
+    $('hsHint').textContent = !HS.decor ? (HS.act ? (HS.act.type === 'sleep' ? '💤 쿨쿨… (🙋 일어나기)' : '☺ 소파에서 쉬는 중 (🙋 일어나기)') : '🐼 생활하기: 가구를 톡!') : HS.ghost ? (FURN_BY_ID[HS.ghost.id].layer === 'wall' ? '벽의 원하는 곳을 톡! (끌어서 옮겨도 돼요)' : '바닥의 원하는 곳을 톡! (끌어서 옮겨도 돼요)') : HS.sel ? '이 가구를 옮기거나 보관할까요?' : '🪑 꾸미기: 가구를 눌러 골라요';
   }
   // ----- 상점·보관함 창 -----
   function hsOpenSheet(kind) {
     if (HS.ghost) return;   // 놓는 중에는 먼저 확정·취소
-    HS.sheet = kind; HS.ask = null; HS.sel = null; HS.sheetMsg = ''; $('hsSheet').hidden = false; hsSheetRender();
+    hsStopLife(); HS.sheet = kind; HS.ask = null; HS.sel = null; HS.sheetMsg = ''; $('hsSheet').hidden = false; hsSheetRender();
   }
   function hsCloseSheet() { HS.sheet = null; HS.ask = null; $('hsSheet').hidden = true; hsRender(); }
   function hsSheetRender() {
@@ -7811,13 +7977,14 @@
   }
   function hsStartMove() {
     const p = save.home.placed.find(x => x.uid === HS.sel); if (!p) return;
+    hsStopLife(p.uid);   // 옮기기 전에 그 가구의 동작(문 열림·켜짐)을 정리
     HS.ghost = { id: p.id, uid: p.uid, gx: p.gx, gy: p.gy }; HS.sel = null;
     hsMsg(`${FURN_BY_ID[p.id].name}: 새 자리를 톡! 하고 ✔ 배치 확정`); hsRender();
   }
   function hsConfirm() {
     const gh = HS.ghost; if (!gh) return;
     if (!homeCanPlace(gh.id, gh.gx, gh.gy, gh.uid)) { SFX.wrong(); hsMsg('여기는 놓을 수 없어요! 초록색이 되는 곳을 골라요.', 'no'); return; }
-    if (gh.uid) { const p = save.home.placed.find(x => x.uid === gh.uid); if (p) { p.gx = gh.gx; p.gy = gh.gy; } }
+    if (gh.uid) { hsStopLife(gh.uid); const p = save.home.placed.find(x => x.uid === gh.uid); if (p) { p.gx = gh.gx; p.gy = gh.gy; } }   // 옮긴 가구의 켜짐·열림은 정리
     else {
       if (homeStored(gh.id) <= 0) { HS.ghost = null; hsRender(); return; }   // 같은 가구 중복 배치 방지
       save.home.placed.push({ uid: save.home.nextUid++, id: gh.id, gx: gh.gx, gy: gh.gy });
@@ -7828,7 +7995,7 @@
   function hsCancel() { HS.ghost = null; HS.drag = null; hsMsg('취소했어요.'); hsRender(); }
   function hsStore() {
     const i = save.home.placed.findIndex(x => x.uid === HS.sel); if (i < 0) return;
-    const p = save.home.placed[i]; save.home.placed.splice(i, 1); writeSave();
+    const p = save.home.placed[i]; hsStopLife(p.uid); save.home.placed.splice(i, 1); writeSave();
     HS.sel = null; SFX.pop(); hsMsg(`${FURN_BY_ID[p.id].name}${pp(FURN_BY_ID[p.id].name, '을/를')} 보관함에 넣었어요. (코인은 그대로예요)`, 'ok'); hsRender();
   }
   function hsNudge(dx, dy) {
@@ -7850,10 +8017,12 @@
     gh.gx = gx; gh.gy = gy;
   }
   // 집에 놓인 가구 중 톡한 곳에 보이는 가구 (앞에 있는 것 먼저)
-  function hsPick(pt) {
+  // pad: 생활하기에서는 작은 가구도 누르기 쉽게 둘레를 조금 넓혀요
+  function hsPick(pt, pad = 0) {
     const hits = save.home.placed.map(p => {
       const f = FURN_BY_ID[p.id], x = p.gx * 16, bottom = (p.gy + f.fd) * 16, top = f.layer === 'floor' ? bottom - f.sh : p.gy * 16;
-      return { p, f, z: f.layer === 'wall' ? 0 : f.layer === 'rug' ? 1 : 2 + bottom / 1000, ok: pt.x >= x && pt.x < x + f.fw * 16 && pt.y >= top && pt.y < bottom };
+      const px = f.fw === 1 ? pad + 4 : pad;
+      return { p, f, z: f.layer === 'wall' ? 0 : f.layer === 'rug' ? 1 : 2 + bottom / 1000, ok: pt.x >= x - px && pt.x < x + f.fw * 16 + px && pt.y >= top - pad && pt.y < bottom + pad };
     }).filter(h => h.ok).sort((a, b) => b.z - a.z);
     return hits[0] ? hits[0].p : null;
   }
@@ -7861,7 +8030,13 @@
     if (mode !== 'house' || HS.sheet) return;
     const pt = hsCell(e);
     if (HS.ghost) { e.preventDefault(); hsMoveGhostTo(pt); HS.drag = { id: e.pointerId }; try { $('hsCanvas').setPointerCapture(e.pointerId); } catch (er) {} return; }
-    if (!HS.decor) return;
+    if (!HS.decor) {   // 🐼 생활하기: 가구를 톡 → 사용
+      e.preventDefault();
+      const p = hsPick(pt, 4);
+      if (p) hsUse(p);
+      else if (HS.act) hsWake();
+      return;
+    }
     const p = hsPick(pt);
     HS.sel = p ? p.uid : null; if (p) SFX.pop();
     hsMsg(p ? `${FURN_BY_ID[p.id].name}${pp(FURN_BY_ID[p.id].name, '을/를')} 골랐어요.` : '');
@@ -7894,7 +8069,7 @@
       if (c === 'Escape') { hsCancel(); return; }
       return;
     }
-    if (c === 'Escape') { if (HS.sel) { HS.sel = null; hsRender(); } else if (HS.decor) { HS.decor = false; hsRender(); } else closeHouse(); }
+    if (c === 'Escape') { if (HS.sel) { HS.sel = null; hsRender(); } else if (HS.decor) { HS.decor = false; hsRender(); } else if (HS.act) hsWake(); else closeHouse(); }
   }
   $('btnHouse').addEventListener('click', openHouse);
   $('hsHome').addEventListener('click', closeHouse);
@@ -8209,7 +8384,7 @@
     $('startScreen').querySelector('.card').focus({ preventScroll: true });
     window.__panda = {
       SHOP_ITEMS, buyItem, equipItem, unequipItem, openWardrobe, closeWardrobe, drawWear, get wd() { return wd; },
-      questInteract, openBasket, BD_NPC, BD_CANDLES, BD_CAKE_X, BD_BOARD_X, BD_DESK_X, BD_TABLE_X, bdValid, dateZh, bdSent, openCake, cakeAdd, cakeDel, cakeDone, closeCake, openCal, calOk, closeCal, openBCard, bcOk, closeBCard, bdPlace, openPick, closePick, pickOk, FAM, famOf, famSent, FM_NPC, GIFT, giftOf, gfSent, GF_NPC, GF_FR, FM_BOARD_X, famFace, giftURL, drawGift, FOOD, foodOf, foodSent, FD_MC, DN_NPC, priceZh, priceSay, drawFood, foodURL, questDone, payOnce, arRoundDone, FURNITURE, buyFurniture, homeCanPlace, homeFreeSpot, openHouse, closeHouse, get HS() { return HS; }, hsConfirm, AR, arcOpen, arPopGo, arHint, arKey, PRICES, FD_GUEST, DN_CU, get arDbg() { return { belt: AR.belt, held: AR.held, tray: AR.tray, want: AR.want, r: AR.r, paused: AR.paused, combo: AR.combo }; }, beltGrab, beltPut, fsPut, fsServe, fsGive1, fmNewTest: () => fmNew(), gfNewTest: () => gfNew(), get qp() { return qp; }, bdNewTest: () => bdNew(), bdBonus: () => bdBonusLater, basketDrop, closeBasket, zhNum, tokVal, testSpawn: (kind, n, set) => { const q = run.q, list = set ? q.m4.items : q.m3.items; spawnItems(list, kind, n, Q_SPOTS[set]); }, testOpenSlab: (rounds) => openSlab({ title: 'test', rounds, start: 0, tag: 'test', key: (i) => 'test' + i, onRound() {}, onAll() {} }), slabTap, slabKey, ruleHints, boxNums, closeTalk, closeSlab, questRecall, NPC_DEF, useSkill, canSkill, BGM, josa, BUILD, forestBuild, basicQuestion, MA, GREET, NW, P, save, quiz, quick, NQ, numQ, numQueue, NUMS, openQuiz, answer, closeQuiz, closeSpeak, selectStage, startPlay, goHome, askHome, resumeFromPause, loadStage, closeHelp, closeIntro, startNewRun, THEMES, SKINS, STAGES,
+      questInteract, openBasket, BD_NPC, BD_CANDLES, BD_CAKE_X, BD_BOARD_X, BD_DESK_X, BD_TABLE_X, bdValid, dateZh, bdSent, openCake, cakeAdd, cakeDel, cakeDone, closeCake, openCal, calOk, closeCal, openBCard, bcOk, closeBCard, bdPlace, openPick, closePick, pickOk, FAM, famOf, famSent, FM_NPC, GIFT, giftOf, gfSent, GF_NPC, GF_FR, FM_BOARD_X, famFace, giftURL, drawGift, FOOD, foodOf, foodSent, FD_MC, DN_NPC, priceZh, priceSay, drawFood, foodURL, questDone, payOnce, arRoundDone, FURNITURE, buyFurniture, homeCanPlace, homeFreeSpot, openHouse, closeHouse, get HS() { return HS; }, hsConfirm, hsUse, hsWake, AR, arcOpen, arPopGo, arHint, arKey, PRICES, FD_GUEST, DN_CU, get arDbg() { return { belt: AR.belt, held: AR.held, tray: AR.tray, want: AR.want, r: AR.r, paused: AR.paused, combo: AR.combo }; }, beltGrab, beltPut, fsPut, fsServe, fsGive1, fmNewTest: () => fmNew(), gfNewTest: () => gfNew(), get qp() { return qp; }, bdNewTest: () => bdNew(), bdBonus: () => bdBonusLater, basketDrop, closeBasket, zhNum, tokVal, testSpawn: (kind, n, set) => { const q = run.q, list = set ? q.m4.items : q.m3.items; spawnItems(list, kind, n, Q_SPOTS[set]); }, testOpenSlab: (rounds) => openSlab({ title: 'test', rounds, start: 0, tag: 'test', key: (i) => 'test' + i, onRound() {}, onAll() {} }), slabTap, slabKey, ruleHints, boxNums, closeTalk, closeSlab, questRecall, NPC_DEF, useSkill, canSkill, BGM, josa, BUILD, forestBuild, basicQuestion, MA, GREET, NW, P, save, quiz, quick, NQ, numQ, numQueue, NUMS, openQuiz, answer, closeQuiz, closeSpeak, selectStage, startPlay, goHome, askHome, resumeFromPause, loadStage, closeHelp, closeIntro, startNewRun, THEMES, SKINS, STAGES,
       get mode() { return mode; }, get monsters() { return monsters; }, get coins() { return coins; }, get gates() { return gates; },
       get run() { return run; }, get cam() { return cam; }, get floats() { return floats; }, get stage() { return STAGE.id; }, get drops() { return drops; }, get selStage() { return selStage; },
     };
