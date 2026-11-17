@@ -736,6 +736,8 @@
   .fs-stall { display: flex; align-items: flex-end; gap: 4px; min-height: 44px; }
   .fs-own { height: clamp(39px, 7vh, 70px); width: calc(clamp(39px, 7vh, 70px) * .76); }
   .fs-put img { width: var(--fd); height: calc(var(--fd) * .83); image-rendering: pixelated; }
+  .dn-slot.wrong { border-color: #c81e3c !important; border-style: dashed !important; }
+  .fs-pieces { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 420px; }
   .fs-booth.half { background: linear-gradient(#f6c445 0 10px, #fffaf0 10px); }
   .fs-put { display: flex; gap: 2px; } .fs-put img { width: calc(var(--fd) * .8) !important; height: calc(var(--fd) * .67) !important; }
   .fs-booth.done { background: linear-gradient(#f6c445 0 10px, #fff3c4 10px); box-shadow: 0 0 14px 2px rgba(255, 220, 120, .9); }
@@ -5163,7 +5165,7 @@
       { icon: '🎪', name: '음식 컨베이어 벨트', goal: '판다 MC가 중국어로 음식을 부탁해요.<br>움직이는 벨트에서 그 음식을 잡아 건네줘요!' },
       { icon: '🏮', name: '음식 부스 분류 대작전', goal: '음식을 잡아서 <b>중국어 간판</b>이 맞는 부스에 넣어요.<br>맞힐 때마다 부스가 완성돼요!' },
       { icon: '💨', name: '우당탕탕 음식 러시!', goal: '벨트가 빨라졌어요! 손님 두 명의 <b>중국어 주문표</b>를 읽고<br>맞는 손님에게 음식을 줘요. (시간 제한은 없어요)' },
-      { icon: '💝', name: '내가 좋아하는 음식!', goal: '판다 MC가 물어봐요: 你喜欢什么？<br>좋아하는 음식을 골라 대답해요. <b>정답은 없어요!</b>' },
+      { icon: '💝', name: '내가 좋아하는 음식!', goal: '판다 MC와 중국어로 대화해요!<br>섞인 카드로 <b>질문</b>(你喜欢什么？)과 <b>대답</b>(我喜欢○○。)을 완성해요. 음식은 마음대로!' },
     ],
     diner: [
       { icon: '🙋', name: '첫 손님 등장!', goal: '손님이 메뉴판을 👆 가리키며 “我要这个。”라고 해요.<br>가리킨 음식의 <b>중국어 이름</b>을 주문서에 골라요!' },
@@ -5473,6 +5475,7 @@
     q.lastWant = want; q.spawn++;
     const look = FD_GUEST[q.gi++ % FD_GUEST.length]; q.cust[k] = { want, look };
     const f = foodOf(want), img = $('fsCi' + k), bub = $('fsCb' + k);
+    img.classList.remove('leave');   // 앞 손님의 퇴장 애니메이션(끝나면 투명하게 남음)을 지워야 새 손님이 보여요
     img.innerHTML = faceImg(look); arBounce(img, 'enter');
     bub.innerHTML = `📝${zhCard(f.h, f.p)}${sayBtn(f.h)}`; bub.hidden = false; bindSoundButtons(bub); wrapPinyin(bub); arBounce(bub, 'pop');
     $('fsPanel').querySelector(`[data-c="${k}"]`).disabled = false;
@@ -5493,24 +5496,66 @@
     arLater(() => fsNewCust(k), 750);
   }
   // ----- 라운드 4: 좋아하는 음식 (자유 선택, 기록하지 않음) → 축제 피날레 -----
+  // 문장 카드 배열 (9차시 전용): 카드를 누르면 빈칸에 차례로, 빈칸을 누르면 빠져요. 제출 전에는 색으로 정답을 알려 주지 않고,
+  // 틀리면 제자리가 아닌 칸만 빨간 점선으로 보여 줘요 (카드를 바꾸면 사라짐)
+  function fsPuzzle(host, words, end, title, onRight, hint) {
+    let pieces; do { pieces = shuffle(words); } while (pieces.length > 1 && pieces.every((w, i) => w.h === words[i].h));   // 처음부터 정답 순서로 나오지 않게
+    const answer = words.map(w => w.h), st = { slots: answer.map(() => -1), bad: [] };
+    const draw = () => {
+      host.innerHTML = `<div class="ar-ttl">🧩 ${title}</div><div class="ar-row"><div class="dn-pz"><div class="dn-slots fs-slots">${st.slots.map((pi, s) => `<button class="dn-slot${pi < 0 ? ' empty' : ''}${st.bad.includes(s) ? ' wrong' : ''}" data-s="${s}" aria-label="${s + 1}번째 칸">${pi < 0 ? '?' : zhCard(pieces[pi].h, pieces[pi].p)}</button>`).join('')}<span class="dn-end">${end}</span></div>
+        <div class="dn-pieces fs-pieces">${pieces.map((pc, k) => `<button class="ar-opt piece" data-key="${k + 1}" data-k="${k}"${st.slots.includes(k) ? ' disabled' : ''}>${zhCard(pc.h, pc.p)}</button>`).join('')}</div></div>
+        <button class="ar-go" id="fsPzGo"${st.slots.includes(-1) ? ' disabled' : ''}>완성! ✔</button></div>`;
+      bindSoundButtons(host); wrapPinyin(host);
+      host.querySelectorAll('.piece').forEach(b => b.addEventListener('click', () => { if (AR.paused) return; const s = st.slots.indexOf(-1); if (s < 0) return; st.slots[s] = +b.dataset.k; st.bad = []; SFX.pop(); draw(); }));
+      host.querySelectorAll('.dn-slot').forEach(b => b.addEventListener('click', () => { if (AR.paused) return; st.slots[+b.dataset.s] = -1; st.bad = []; SFX.pop(); draw(); }));
+      $('fsPzGo').addEventListener('click', () => {
+        if (arBusy() || st.slots.includes(-1)) return; arLockFor(450);
+        const got = st.slots.map(i => pieces[i].h);
+        if (got.join('|') !== answer.join('|')) { st.bad = got.map((h, i) => (h === answer[i] ? -1 : i)).filter(i => i >= 0); draw(); arWrong(`빨간 점선 칸의 순서가 달라요. ${hint}`, host.querySelector('.dn-slots')); return; }
+        onRight();
+      });
+    };
+    draw();
+  }
+  const FS_W = { ni: { h: '你', p: 'nǐ' }, wo: { h: '我', p: 'wǒ' }, xihuan: { h: '喜欢', p: 'xǐhuan' }, shenme: { h: '什么', p: 'shénme' } };
+  // ----- 라운드 4: MC와 대화 — ① 섞인 질문 카드 你喜欢什么？ ② 좋아하는 음식 고르기(자유) ③ 섞인 대답 카드 我喜欢○○。 → 피날레 -----
   function fsR4() {
     beltStop(); $('fsBelt').hidden = true; $('fsLane').hidden = true; AR.want = null;
-    fsBubble(`${zhCard('你喜欢什么？', 'Nǐ xǐhuan shénme?', 'big')}${sayBtn('你喜欢什么？')}<small>너는 무엇을 좋아해?</small>`);
-    arTask('fs4', '좋아하는 음식 말하기 (자유 선택)', '어떤 음식이든 정답', null, true);
+    fsBubble(`<small>앗! 내 질문 카드가 섞였어요 😵 순서대로 놓아 줄래요?</small>`); fsMcReact(false);
+    arTask('fs4-q', '질문 문장 배열: 你喜欢什么？', '你 / 喜欢 / 什么', ['누가(你 너) → 좋아해요(喜欢) → 무엇을(什么) 순서예요.', '你 nǐ + 喜欢 xǐhuan + 什么 shénme → 你喜欢什么？']);
+    arMsg('MC 판다의 질문 카드를 순서대로 눌러요. 잘못 놓은 카드는 빈칸을 누르면 빠져요.');
+    fsPuzzle($('fsPanel'), [FS_W.ni, FS_W.xihuan, FS_W.shenme], '？', 'MC 판다의 질문 만들기', () => {
+      arRight('질문 완성! 你喜欢什么？'); fsMcReact(true);
+      fsBubble(`${zhCard('你喜欢什么？', 'Nǐ xǐhuan shénme?', 'big')}${sayBtn('你喜欢什么？')}<small>너는 무엇을 좋아해?</small>`);
+      arLater(fsR4Pick, 900);
+    }, '‘너는 + 좋아해 + 무엇을’ 순서로 놓아요.');
+  }
+  function fsR4Pick() {
+    arTask('fs4-pick', '좋아하는 음식 고르기 (자유 선택)', '어떤 음식이든 정답', null, true);
     const ids = shuffle(FOOD_IDS);
-    $('fsPanel').innerHTML = `<div class="ar-opts five likes">${ids.map((id, k) => `<button class="ar-opt pic" data-key="${k + 1}" data-v="${id}"><img src="${foodURL(id)}" alt="">${zhCard(foodOf(id).h, foodOf(id).p)}</button>`).join('')}</div><div id="fsSay"></div>`;
+    $('fsPanel').innerHTML = `<div class="ar-ttl">💝 좋아하는 음식을 골라요 (어떤 음식이든 OK!)</div><div class="ar-opts five likes">${ids.map((id, k) => `<button class="ar-opt pic" data-key="${k + 1}" data-v="${id}" aria-pressed="false"><img src="${foodURL(id)}" alt="">${zhCard(foodOf(id).h, foodOf(id).p)}</button>`).join('')}</div><div id="fsSay"></div>`;
     wrapPinyin($('fsPanel'));
     $('fsPanel').querySelectorAll('.ar-opt').forEach(b => b.addEventListener('click', () => fsLike(b.dataset.v)));
-    arMsg('좋아하는 음식을 하나 골라요. 어떤 음식을 골라도 정답이에요!');
+    arMsg('MC 판다가 물어봐요. 좋아하는 음식을 하나 골라요!');
   }
+  // 고른 음식으로 대답 카드가 섞여 나와요 (음식을 바꾸면 카드도 바뀌어요). 고른 음식은 저장·기록하지 않아요
   function fsLike(id) {
     if (arBusy()) return;
-    $('fsPanel').querySelectorAll('.ar-opt').forEach(b => { const on = b.dataset.v === id; b.classList.toggle('sel', on); b.setAttribute('aria-pressed', on); });
-    const s = foodSent(id); SFX.pop();
-    $('fsSay').innerHTML = `<div class="ar-row"><div class="ar-sent">${zhCard(s.h, s.p, 'big')}${sayBtn(s.h)}<small>${s.ko}</small></div><button class="ar-go big" id="fsSaid">🗣 소리 내어<br>말했어요!</button></div>`;
-    bindSoundButtons($('fsSay')); wrapPinyin($('fsSay'));
-    $('fsSaid').addEventListener('click', fsFinale);
-    arMsg('문장을 큰 소리로 말해 보세요! 다른 음식으로 바꿔도 돼요.', 'ok');
+    $('fsPanel').querySelectorAll('.likes .ar-opt').forEach(b => { const on = b.dataset.v === id; b.classList.toggle('sel', on); b.setAttribute('aria-pressed', on); });
+    SFX.pop();
+    if (run.q.task && run.q.task.key === 'fs4-pick') taskEnd();   // 음식을 바꿔도 대답 배열 과제는 하나로 셈 (틀린 기록 유지)
+    const f = foodOf(id);
+    arTask('fs4-a', '대답 문장 배열: 我喜欢○○。', '我 / 喜欢 / 음식', ['나는(我) → 좋아해요(喜欢) → 음식 이름 순서예요.', `我 wǒ + 喜欢 xǐhuan + ${f.h} ${f.p}`]);
+    arMsg('대답 카드가 섞였어요! 순서대로 놓아서 대답해요.');
+    fsPuzzle($('fsSay'), [FS_W.wo, FS_W.xihuan, { h: f.h, p: f.p }], '。', 'MC 판다에게 대답하기', () => {
+      const s = foodSent(id); arRight(`대답 완성! ${s.h}`);
+      $('fsPanel').querySelectorAll('.likes .ar-opt').forEach(b => { b.disabled = true; });
+      fsBubble(`<small>😆 와! ${s.ko.replace('나는 ', '')}</small>`); fsMcReact(true);
+      $('fsSay').innerHTML = `<div class="ar-row"><div class="ar-sent">${zhCard(s.h, s.p, 'big')}${sayBtn(s.h)}<small>${s.ko}</small></div><button class="ar-go big" id="fsSaid">🗣 소리 내어<br>말했어요!</button></div>`;
+      bindSoundButtons($('fsSay')); wrapPinyin($('fsSay'));
+      $('fsSaid').addEventListener('click', fsFinale);
+      arMsg('완성한 대답을 큰 소리로 말해 보세요!', 'ok');
+    }, '‘나는 + 좋아해요 + 음식’ 순서로 놓아요.');
   }
   function fsFinale() {
     if (arBusy()) return; arLockFor(4000);
