@@ -699,6 +699,51 @@
   @keyframes floatUp { 0% { opacity: 0; margin-top: 0; } 15% { opacity: 1; } 100% { opacity: 0; margin-top: -60px; } }
   .ar-conf { position: absolute; top: -12px; width: 9px; height: 13px; animation-name: confFall; animation-timing-function: linear; animation-fill-mode: forwards; }
   @keyframes confFall { 0% { transform: translateY(0) rotate(0); } 100% { transform: translateY(105vh) rotate(540deg); } }
+
+  /* 12차시 졸업식 광장 */
+  #grad { position: fixed; inset: 0; z-index: 19; display: flex; flex-direction: column; background: #2f5d3a; color: var(--ink); user-select: none; -webkit-user-select: none; touch-action: none; overflow: hidden; overscroll-behavior: none; }
+  .gr-stamps { flex: 1; min-width: 0; font-weight: 700; font-size: 15px; white-space: nowrap; overflow: hidden; display: flex; align-items: center; gap: 4px; }
+  .gr-st { display: inline-flex; width: 24px; height: 24px; border-radius: 50%; align-items: center; justify-content: center; background: rgba(255,255,255,.18); font-size: 13px; }
+  .gr-st.on { background: #4fd08c; color: #10331f; }
+  .gr-net { flex: none; border: 2px solid rgba(255,255,255,.55); background: rgba(255,255,255,.16); color: #fff; border-radius: 999px; padding: 6px 10px; font: inherit; font-weight: 700; font-size: 13px; cursor: pointer; white-space: nowrap; }
+  .gr-stagewrap { position: relative; flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; }
+  #grCanvas { width: min(100%, calc((100vh - 56px) * 1.6)); width: min(100%, calc((100dvh - 56px) * 1.6)); aspect-ratio: 480 / 300; image-rendering: pixelated; touch-action: none; display: block; }
+  .gr-hint { position: absolute; top: 6px; left: 50%; transform: translateX(-50%); background: rgba(10,14,30,.66); color: #fff; font-weight: 700; font-size: 14px; padding: 4px 12px; border-radius: 999px; max-width: 92%; text-align: center; pointer-events: none; }
+  .gr-pad { position: absolute; left: 10px; bottom: 10px; display: grid; grid-template: 'a u b' 'l c r' 'x d y'; gap: 4px; }
+  .gr-pad button { width: 54px; height: 54px; border-radius: 14px; border: 3px solid rgba(255,255,255,.7); background: rgba(20,30,50,.45); color: #fff; font-size: 22px; touch-action: none; padding: 0; }
+  .gr-pad button.on { background: rgba(246,196,69,.8); color: var(--ink); }
+  .gr-pad [data-d=up] { grid-area: u; } .gr-pad [data-d=left] { grid-area: l; } .gr-pad [data-d=right] { grid-area: r; } .gr-pad [data-d=down] { grid-area: d; }
+  .gr-actbtn { position: absolute; right: 12px; bottom: 16px; min-width: 96px; min-height: 64px; border-radius: 18px; border: 3px solid var(--ink); background: #f6c445; font: inherit; font-weight: 700; font-size: 16px; box-shadow: 0 4px 0 var(--ink); padding: 4px 10px; touch-action: manipulation; }
+  .gr-actbtn:disabled { opacity: .55; }
+  @media (hover: hover) and (pointer: fine) { .gr-pad { display: none; } }
+  .gr-toast { position: absolute; top: 40px; left: 50%; transform: translateX(-50%); background: #fffaf0; border: 3px solid var(--ink); border-radius: 12px; padding: 6px 12px; font-weight: 700; z-index: 3; }
+  #grTalk, #grLobby, #grPop { position: absolute; inset: 0; z-index: 5; background: rgba(9,17,31,.55); display: flex; align-items: center; justify-content: center; padding: 8px; overflow-y: auto; touch-action: pan-y; }
+  .gr-talkcard { background: #fffaf0; border: 4px solid var(--ink); border-radius: 18px; width: 100%; max-width: 760px; max-height: 100%; overflow-y: auto; padding: 10px 14px; margin: auto; display: flex; flex-direction: column; gap: 8px; }
+  .gr-talkhead { display: flex; align-items: center; gap: 8px; } .gr-talkhead img { width: 40px; height: 40px; image-rendering: pixelated; } .gr-talkhead b { flex: 1; }
+  .gr-x { background: #fff; color: var(--ink); border-color: var(--ink); width: 38px; height: 38px; }
+  .gr-talkbar { display: flex; align-items: center; gap: 8px; } .gr-msg { flex: 1; font-weight: 700; min-height: 1.4em; } .gr-msg.bad { color: #c81e3c; } .gr-msg.hint { color: #1f5fbf; } .gr-msg.info { color: #555; }
+  .gr-head { display: flex; flex-direction: column; gap: 2px; } .gr-step { font-size: 13px; color: #666; font-weight: 700; } .gr-head b { font-size: 17px; }
+  .gr-say { font-size: 18px; font-weight: 700; margin: 4px 0; } .gr-prog, .gr-tip { font-size: 13px; color: #666; margin: 2px 0; } .gr-ok { font-size: 22px; font-weight: 700; color: #1d7a45; margin: 2px 0; } .gr-coin { font-weight: 700; }
+  .gr-match { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; } .gr-match > div { display: flex; flex-direction: column; gap: 6px; }
+  .gr-card { min-height: 52px; border: 3px solid var(--ink); border-radius: 12px; background: #fff; font: inherit; font-weight: 700; font-size: 16px; cursor: pointer; padding: 4px 8px; color: var(--ink); touch-action: manipulation; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+  .gr-card.sel { background: #ffe9a8; box-shadow: 0 0 0 3px #f6c445; } .gr-card.done { background: #c9f2d9; border-color: #3d9a5c; opacity: .75; } .gr-card:disabled:not(.done) { opacity: .35; }
+  .gr-card.tag { font-size: 22px; min-width: 80px; }
+  .gr-opts, .gr-pieces { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; } .gr-opts .gr-card { flex: 1 1 200px; } .gr-opts.pics .gr-card { flex: 0 1 auto; }
+  .gr-slots { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; align-items: center; padding: 6px; border-radius: 12px; background: #f1e3c2; }
+  .gr-slots.lines { flex-direction: column; align-items: stretch; }
+  .gr-slot { min-width: 64px; min-height: 52px; border: 3px dashed #9a7a4a; border-radius: 12px; background: #fff; font: inherit; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; color: var(--ink); }
+  .gr-slot.empty { color: #b59a6a; font-size: 20px; } .gr-slot small { color: #9a7a4a; } .gr-end { font-family: var(--font-han); font-size: 28px; font-weight: 700; }
+  .gr-show, .gr-npcsay, .gr-sent { text-align: center; } .gr-npcsay { background: #e8f3ff; border-radius: 12px; padding: 6px; }
+  .gr-fam { height: 90px; image-rendering: pixelated; } .gr-look { font-size: 13px; color: #555; } .gr-food { height: 64px; image-rendering: pixelated; }
+  .gr-point { display: inline-flex; align-items: center; gap: 4px; font-size: 30px; }
+  .gr-mood { position: relative; display: inline-block; } .gr-mood img { width: 64px; height: 52px; image-rendering: pixelated; } .gr-mood i { position: absolute; right: -10px; top: -6px; font-style: normal; font-size: 20px; }
+  .gr-scene { font-weight: 700; margin-top: 4px; } .big1 { font-size: 24px; }
+  #grRoom { font: inherit; font-size: 26px; font-weight: 700; text-align: center; letter-spacing: .15em; width: min(260px, 90%); padding: 6px; border: 3px solid var(--ink); border-radius: 12px; text-transform: uppercase; }
+  .gr-lobbybtns { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 10px; } .gr-solo { background: #fff; }
+  .gr-lobbymsg { font-weight: 700; color: #a3361b; min-height: 1.2em; }
+  .gr-diploma { border: 6px double #b58a2a; background: #fffbea; border-radius: 10px; padding: 12px; }
+  .gr-dip-top { font-size: 26px; font-weight: 700; letter-spacing: .2em; color: #8a5a10; } .gr-dip-name { font-size: 20px; } .gr-dip-ko { font-weight: 700; } .gr-dip-foot { font-size: 12px; color: #8a6a3a; }
+  #grFx { position: fixed; inset: 0; pointer-events: none; z-index: 30; overflow: hidden; }
   .shake { animation: shake .4s; } @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-7px); } 75% { transform: translateX(7px); } }
   .hop { animation: hop .5s; } @keyframes hop { 0%, 100% { transform: translateY(0); } 40% { transform: translateY(-14px); } }
   .pop { animation: popIn .35s; } @keyframes popIn { 0% { transform: scale(.6); } 70% { transform: scale(1.08); } 100% { transform: scale(1); } }
@@ -970,6 +1015,31 @@
   <div class="ar-bar"><button class="ar-sbtn" id="arHint" hidden>💡 힌트</button><div id="arMsg" role="status" aria-live="polite"></div><button class="ar-sbtn" id="arDrop" hidden>✋ 내려놓기</button></div>
   <div id="arPop" hidden><div class="ar-popcard"><div id="arPopBody"></div><button class="ar-go big" id="arPopGo">시작!</button></div></div>
   <div id="arFx" aria-hidden="true"></div>
+</div>
+
+<!-- 12차시 졸업식 광장 (탑다운 맵 · 함께 접속) -->
+<div id="grad" hidden>
+  <div class="ar-topbar"><button class="ar-ib" id="grHome" aria-label="홈으로">🏠</button><div id="grStamps" class="gr-stamps"></div><button class="gr-net" id="grNet" title="함께 접속 상태 (눌러서 다시 연결)">🐼 혼자 진행</button></div>
+  <div class="gr-stagewrap"><canvas id="grCanvas" width="480" height="300" aria-label="졸업식 광장"></canvas>
+    <div id="grHint" class="gr-hint" role="status"></div>
+    <div id="grPad" class="gr-pad" aria-label="이동 버튼"><button data-d="up" aria-label="위">▲</button><button data-d="left" aria-label="왼쪽">◀</button><button data-d="right" aria-label="오른쪽">▶</button><button data-d="down" aria-label="아래">▼</button></div>
+    <button id="grAct" class="gr-actbtn" disabled>💬 대화</button>
+    <div id="grToast" class="gr-toast" hidden></div>
+  </div>
+  <div id="grTalk" hidden><div class="gr-talkcard">
+    <div class="gr-talkhead"><img id="grTalkFace" alt=""><b id="grTalkName"></b><button class="ar-ib gr-x" id="grTalkX" aria-label="닫기">✕</button></div>
+    <div id="grBody"></div>
+    <div class="gr-talkbar"><button class="ar-sbtn" id="grHintBtn" hidden>💡 힌트</button><div id="grMsg" class="gr-msg" role="status" aria-live="polite"></div><button class="ar-go" id="grGo" hidden>확인</button></div>
+  </div></div>
+  <div id="grLobby" hidden><div class="ar-popcard">
+    <h2>🎓 졸업식 광장에 들어가요</h2>
+    <p>선생님이 알려 준 <b>방 코드</b>를 쓰고 들어가요.<br><small>같은 방 코드 친구들만 서로 보여요 · 닉네임·위치·옷만 보내요</small></p>
+    <input id="grRoom" maxlength="12" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="방 코드">
+    <div class="gr-lobbybtns"><button class="ar-go big" id="grJoin">👥 친구들과 들어가기</button><button class="ar-go gr-solo" id="grSolo">🐼 혼자 졸업식 진행하기</button></div>
+    <p id="grLobbyMsg" class="gr-lobbymsg" role="status" aria-live="polite"></p>
+  </div></div>
+  <div id="grPop" hidden><div class="ar-popcard"><div id="grPopBody"></div><div class="gr-lobbybtns"><button class="ar-go big" id="grStay">🎉 광장에서 친구들과 놀기</button><button class="ar-go gr-solo" id="grRes">결과 보기 ▶</button></div></div></div>
+  <div id="grFx" aria-hidden="true"></div>
 </div>
 
 <!-- 시작 화면: "어느 지역을 탐험할까?" 하나만 -->
@@ -1332,7 +1402,7 @@
 
   // Google Fonts (한자는 필요한 글자만 받아옴)
   (function loadFonts() {
-    const han = '熊猫探险队妈麻马骂你们好老师同学中国汉语拼音文我叫什么名字小明韩人是哪谢再见不客气对起没关系晚安早上。？！“”一二三四五六七八九十生日快乐月号几的○爸哥姐弟妹这喜欢苹果饺子辣烫北京烤鸭火锅珍珠奶茶要多少钱块元个';
+    const han = '熊猫探险队妈麻马骂你们好老师同学中国汉语拼音文我叫什么名字小明韩人是哪谢再见不客气对起没关系晚安早上。？！“”一二三四五六七八九十生日快乐月号几的○爸哥姐弟妹这喜欢苹果饺子辣烫北京烤鸭火锅珍珠奶茶要多少钱块元个久很呢开心累饿困会说毕业典礼吗＿';
     // 병음용: 알파벳·성조 모음·숫자만 받아서 파일이 아주 작음
     const py = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜüĀÁǍÀĒÉĚÈĪÍǏÌŌÓǑÒŪÚǓÙÜ0123456789 .,?!’\'-/()%…:→ˉˊˇˋ';
     for (const href of [
@@ -1432,6 +1502,24 @@
     { id: 'dn_yuan', h: '元', p: 'yuán', t: 2, ko: '위안 (돈의 공식 단위)' },
     { id: 'dn_yige', h: '一个', p: 'yí ge', t: 0, ko: '한 개 (물건 등을 셀 때의 예)', bonus: true },
     { id: 'dn_yige_s', h: '我要一个。', p: 'Wǒ yào yí ge.', t: 0, ko: '하나 주세요.', sent: true, bonus: true },
+  ].map(w => [w.id, w]));
+  // 12차시 졸업식: 1~11차시 복습 문장 + 새 말 会 · 说 · 中文
+  const GRW = Object.fromEntries([
+    { id: 'gr_hjbj', h: '好久不见！', p: 'Hǎo jiǔ bú jiàn!', t: 0, ko: '오랜만이야!', sent: true },
+    { id: 'gr_nhm', h: '你好吗？', p: 'Nǐ hǎo ma?', t: 0, ko: '잘 지내?', sent: true },
+    { id: 'gr_whh', h: '我很好。你呢？', p: 'Wǒ hěn hǎo. Nǐ ne?', t: 0, ko: '나는 잘 지내. 너는?', sent: true },
+    { id: 'gr_zsw', h: '这是我妈妈。', p: 'Zhè shì wǒ māma.', t: 0, ko: '이분은 우리 엄마예요.', sent: true },
+    { id: 'gr_wyzg', h: '我要这个。', p: 'Wǒ yào zhège.', t: 0, ko: '이거 주세요.', sent: true },
+    { id: 'gr_dsq', h: '这个多少钱？', p: 'Zhège duōshao qián?', t: 0, ko: '이거 얼마예요?', sent: true },
+    { id: 'gr_kx', h: '我很开心。', p: 'Wǒ hěn kāixīn.', t: 0, ko: '나는 기뻐.', sent: true },
+    { id: 'gr_lei', h: '我很累。', p: 'Wǒ hěn lèi.', t: 0, ko: '나는 피곤해.', sent: true },
+    { id: 'gr_e', h: '我很饿。', p: 'Wǒ hěn è.', t: 0, ko: '나는 배고파.', sent: true },
+    { id: 'gr_kun', h: '我很困。', p: 'Wǒ hěn kùn.', t: 0, ko: '나는 졸려.', sent: true },
+    { id: 'gr_hui', h: '会', p: 'huì', t: 4, ko: '~할 줄 알다' },
+    { id: 'gr_shuo', h: '说', p: 'shuō', t: 1, ko: '말하다' },
+    { id: 'gr_zw', h: '中文', p: 'Zhōngwén', t: 0, ko: '중국어' },
+    { id: 'gr_whs', h: '我会说中文。', p: 'Wǒ huì shuō Zhōngwén.', t: 0, ko: '나는 중국어를 할 줄 알아요.', sent: true },
+    { id: 'gr_nhs', h: '你会说中文吗？', p: 'Nǐ huì shuō Zhōngwén ma?', t: 0, ko: '너는 중국어를 할 줄 아니?', sent: true },
   ].map(w => [w.id, w]));
   // 6차시 생일파티: 生日快乐！ · 我的生日是○月○号。 · (듣고 알아듣기) 你的生日是几月几号？
   const BDW = Object.fromEntries([
@@ -2613,7 +2701,28 @@
       introRules: [{ h: '十块。', p: 'Shí kuài.', t: 0, ko: '10위안이에요.' }, { h: '二十块。', p: 'Èrshí kuài.', t: 0, ko: '20위안이에요.' }, { h: '三十块。', p: 'Sānshí kuài.', t: 0, ko: '30위안이에요.' }, { h: '五十块。', p: 'Wǔshí kuài.', t: 0, ko: '50위안이에요.' }],
       noteIntro: '식당에서 주문하고 가격을 물어봐요.<br>· <b>我要这个。</b> Wǒ yào zhège. = 이거 주세요. (这个는 손으로 <b>가리키며</b> 말해요)<br>· <b>这个多少钱？</b> Zhège duōshao qián? = 이거 얼마예요?<br>· 대답: 숫자 + 块 → 十块 shí kuài (10위안), 二十块 èrshí kuài (20위안). 元 yuán은 돈의 공식 단위, 块 kuài는 말할 때 많이 써요.<br>· ⭐ 我要一个。 = 하나 주세요. (一个는 물건 등을 셀 때의 예예요)<br>· 게임 속 가격과 매출은 <b>연습용</b>이라 게임 코인과 상관없어요.',
       qgen: () => null, makeQueue: () => [],
+    },    // 12차시: 졸업식 (탑다운 맵 · 함께 접속 · 미션 5개 × 활동 3개). arcade: 'grad'. 식당 가격은 연습용 가상 돈
+    grad: {
+      id: 'grad', status: 'ready', lessonNo: '12차시', label: '11월 19일(목)', dateFull: '2026. 11. 19.(목) — 12차시', title: '판다 탐험대: 졸업식', short: '판다 탐험대 졸업식', topic: '我会说中文！', mapName: '졸업식 광장', isNew: true, theme: 'diner', song: 'garden', icon: '🎓',
+      quest: true, questKit: 'arc', arcade: 'grad', clearTitle: '판다 탐험대 졸업!',
+      ...LAYOUT,
+      monsters: [],
+      gates: layoutGates(['인사 학교', '가족의 집', '판다 식당', '기분 연구소']),
+      missions: [
+        { label: '👋 인사 학교 · 好久不见！', zone: '왼쪽 위', cards: ['gr_hjbj', 'gr_nhm', 'gr_whh'] },
+        { label: '👨‍👩‍👧 가족의 집 · 这是我妈妈。', zone: '오른쪽 위', cards: ['gr_zsw'] },
+        { label: '🍜 판다 식당 · 我要这个。', zone: '왼쪽 아래', cards: ['gr_wyzg', 'gr_dsq'] },
+        { label: '😊 기분 연구소 · 我很开心。', zone: '오른쪽 아래', cards: ['gr_kx', 'gr_lei', 'gr_e', 'gr_kun'] },
+        { label: '🎓 졸업 시험 · 我会说中文。', zone: '광장', cards: ['gr_hui', 'gr_shuo', 'gr_zw', 'gr_whs', 'gr_nhs'] },
+      ],
+      finalText: '졸업식', decorate: decorateDiner,
+      words: GRW, cardOrder: ['gr_hjbj', 'gr_nhm', 'gr_whh', 'gr_zsw', 'gr_wyzg', 'gr_dsq', 'gr_kx', 'gr_lei', 'gr_e', 'gr_kun', 'gr_hui', 'gr_shuo', 'gr_zw', 'gr_whs', 'gr_nhs'], cardName: '졸업 카드', bonusCards: [], bossFinale: 'none',
+      introRulesHead: '🎓 졸업 문장 <small>会 huì = ~할 줄 알다</small>',
+      introRules: [{ h: '我会说中文。', p: 'Wǒ huì shuō Zhōngwén.', t: 0, ko: '나는 중국어를 할 줄 알아요.', sent: true }, { h: '你会说中文吗？', p: 'Nǐ huì shuō Zhōngwén ma?', t: 0, ko: '너는 중국어를 할 줄 아니?', sent: true }],
+      noteIntro: '졸업식 광장에서 친구들과 함께 지금까지 배운 말을 복습해요.<br>· 네 건물(인사 학교 · 가족의 집 · 판다 식당 · 기분 연구소)의 미션을 끝내면 졸업 시험이 열려요.<br>· <b>我会说中文。</b> Wǒ huì shuō Zhōngwén. = 나는 중국어를 할 줄 알아요.<br>· 같은 <b>방 코드</b>를 쓰면 친구 판다들이 보여요. 연결이 안 되면 혼자서도 끝까지 할 수 있어요.<br>· 식당 가격은 <b>연습용</b>이라 게임 코인과 상관없어요.',
+      qgen: () => null, makeQueue: () => [],
     },
+
   };
   // 지역 순서 (시작 화면에 이 순서대로, 준비 안 된 지역은 아예 넣지 않음)
   // 학생 화면에는 status: 'ready'만 보여요. 주소 끝에 #preview(또는 #preview-지역이름)를 붙이면 선생님 미리보기로 전부 보여요
@@ -2628,7 +2737,7 @@
     { id: 'family-cards', href: 'cards.html?deck=family', ico: '👨‍👩‍👧', title: '가족 호칭 카드', topic: '爸爸 · 妈妈 짝 맞추기', stage: 'family', isNew: true },   // stage: 어느 수업 복습인지 (날짜·교시는 그 차시 칸과 같게)
   ];
 
-  const ALL_STAGES = ['bamboo', 'greet', 'name', 'nation', 'number', 'birthday', 'family', 'gift', 'food', 'diner'];
+  const ALL_STAGES = ['bamboo', 'greet', 'name', 'nation', 'number', 'birthday', 'family', 'gift', 'food', 'diner', 'grad'];
   const STAGE_ORDER = ALL_STAGES.filter(id => PREVIEW || STAGES[id].status === 'ready');
   let THEME = THEMES.forest;
   let STAGE = STAGES.bamboo, PLATFORMS = STAGE.platforms, CHECKPOINTS = STAGE.checkpoints, gates = [], run = null;
@@ -3318,6 +3427,7 @@
     if (e.target && e.target.tagName === 'INPUT') return;
     if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Space'].includes(c) || e.key === ' ') e.preventDefault();
     if (mode === 'arcade') { arKey(e); return; }
+    if (mode === 'grad') { grKey(e, true); return; }
     if (mode === 'cut') return;
     if (mode === 'card') { if ((isEnter(c) || c === 'Space') && !e.repeat) closeCardPop(); return; }
     if (mode === 'quiz') {
@@ -3405,7 +3515,7 @@
     $('setMusic').textContent = save.bgmOn !== false ? '🎵 배경음악: 켜짐' : '🎵 배경음악: 꺼짐';
   }
   // 배경음악: 탐험 중에만, 퀴즈·창이 열리면 작게, 중국어 음성이 나올 때는 더 작게, 🔊 끄면 같이 꺼짐
-  const MUSIC_MODES = ['play', 'cut', 'quiz', 'card', 'speak', 'pause', 'lesson', 'help', 'faint', 'talk', 'slab', 'basket', 'cake', 'cal', 'bcard', 'qpick', 'arcade'];
+  const MUSIC_MODES = ['play', 'cut', 'quiz', 'card', 'speak', 'pause', 'lesson', 'help', 'faint', 'talk', 'slab', 'basket', 'cake', 'cal', 'bcard', 'qpick', 'arcade', 'grad'];
   function musicWanted() {
     if (!soundOn || save.bgmOn === false || document.hidden || quick.on || !run || !STAGE || !MUSIC_MODES.includes(mode)) return [null, 1];
     if ((mode === 'lesson' && lessonReturn === 'start') || (mode === 'help' && helpReturn === 'menu')) return [null, 1];
@@ -7363,10 +7473,587 @@
   $('btnSpoke').addEventListener('click', closeSpeak);
   bindSoundButtons($('speak'));
 
+  // ================= 12차시 판다 탐험대: 졸업식 (탑다운 2D · 함께 접속 · 미션 5개 × 활동 3개) =================
+  // 1~11차시와 따로: STAGE.arcade === 'grad'일 때만 쓰여요. 저장은 기존 그대로(코인·경험치·카드·별), 새 저장 칸 없음
+  // 함께 접속: PeerJS 공개 중계 서버(0.peerjs.com)로 같은 방 코드끼리 브라우저를 직접 연결해요 (데이터베이스 없음, 기록은 남지 않음)
+  //   보내는 것: 게임 닉네임 · 위치 · 방향 · 옷장 장착 ID · 도장 수 · 졸업 여부 (학습 기록·개인정보·채팅 없음)
+  //   연결이 안 되면 같은 맵·미션으로 혼자 진행해요
+  const GRWD = 720, GRHT = 480, GVW = 480, GVH = 300;   // 세계 크기 · 화면에 보이는 크기
+  const GR_NPC = [
+    { id: 'grHi', name: '오랜만 친구 판다', x: 118, y: 168, scarf: '#ff6b8b', hat: 'bow', place: '인사 학교' },
+    { id: 'grFam', name: '가족사진 판다', x: 602, y: 168, scarf: '#62aefc', hat: 'cap', place: '가족의 집' },
+    { id: 'grShop', name: '식당 점원 판다', x: 118, y: 448, scarf: '#f6c445', hat: 'chef', place: '판다 식당' },
+    { id: 'grMood', name: '표정 박사 판다', x: 602, y: 448, scarf: '#c084fc', glasses: true, place: '기분 연구소' },
+    { id: 'grTeach', name: '졸업식 선생님 판다', x: 360, y: 352, scarf: '#3d9a5c', hat: 'beret2', place: '졸업 시험' },
+  ];
+  // 부딪히는 곳 (건물·무대)
+  const GR_SOLID = [{ x: 70, y: 70, w: 96, h: 70 }, { x: 554, y: 70, w: 96, h: 70 }, { x: 70, y: 350, w: 96, h: 70 }, { x: 554, y: 350, w: 96, h: 70 }, { x: 290, y: 150, w: 140, h: 44 }];
+  const GR_STAGE_ZONE = { x: 360, y: 222, r: 46 };   // 무대 앞: 5개 미션을 다 하면 여기서 졸업식
+  const GR = { on: false, me: { x: 360, y: 290, d: 1, mv: false, t: 0, tx: null, ty: null, goNpc: -1 }, keys: {}, pad: {}, talk: -1, combo: 0, grad: false, world: null, fx: [], ceremonyShown: false, time: 0 };
+  const grDone = () => run.ms.map(m => m.complete);
+  const grCount = () => run.ms.filter(m => m.complete).length;
+  const grCanTalk = (i) => i < 4 || grCount() >= 4;
+
+  // ----- 세계 그림 (한 번만 그려 두기) -----
+  function grBuildWorld() {
+    const c = document.createElement('canvas'); c.width = GRWD; c.height = GRHT; const g = c.getContext('2d'); g.imageSmoothingEnabled = false;
+    const R = (x, y, w, h, col) => { g.fillStyle = col; g.fillRect(x, y, w, h); };
+    let seed = 7; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+    R(0, 0, GRWD, GRHT, '#93d47c');
+    for (let i = 0; i < 260; i++) R(Math.floor(rnd() * GRWD), Math.floor(rnd() * GRHT), 3, 2, '#7fc46a');
+    // 길: 광장에서 네 건물로
+    g.strokeStyle = '#e8cf9a'; g.lineWidth = 34; g.lineCap = 'round';
+    for (const [x, y] of [[118, 170], [602, 170], [118, 440], [602, 440], [360, 360]]) { g.beginPath(); g.moveTo(360, 240); g.lineTo(x, y); g.stroke(); }
+    // 광장
+    g.fillStyle = '#f1e3c2'; g.beginPath(); g.arc(360, 240, 96, 0, Math.PI * 2); g.fill();
+    g.strokeStyle = '#d9c39a'; g.lineWidth = 3; g.beginPath(); g.arc(360, 240, 96, 0, Math.PI * 2); g.stroke(); g.beginPath(); g.arc(360, 240, 60, 0, Math.PI * 2); g.stroke();
+    // 무대 + 현수막
+    R(290, 150, 140, 44, '#b5541c'); R(290, 150, 140, 6, '#d9822b'); R(296, 194, 128, 6, '#7a3410');
+    R(300, 104, 4, 50, '#7a4a22'); R(416, 104, 4, 50, '#7a4a22'); R(296, 104, 128, 30, '#e5484d'); R(296, 104, 128, 3, '#f6c445'); R(296, 131, 128, 3, '#f6c445');
+    g.fillStyle = '#fff6d6'; g.font = 'bold 15px "Noto Sans SC", sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('毕业典礼 · 졸업식', 360, 119);
+    R(338, 194, 44, 12, '#c81e3c');   // 레드카펫
+    // 건물 4채 (지붕 색이 달라요) + 간판
+    const house = (x, y, roof, wall, label, deco) => {
+      R(x, y + 22, 96, 48, wall); R(x, y + 22, 96, 3, '#ffffff55');
+      g.fillStyle = roof; g.beginPath(); g.moveTo(x - 6, y + 24); g.lineTo(x + 48, y - 6); g.lineTo(x + 102, y + 24); g.closePath(); g.fill();
+      R(x + 38, y + 44, 20, 26, '#7a4a22'); R(x + 54, y + 56, 2, 2, '#f6c445');
+      R(x + 10, y + 34, 18, 14, '#9cd3f0'); R(x + 68, y + 34, 18, 14, '#9cd3f0');
+      R(x + 14, y - 22, 68, 18, '#fffaf0'); g.strokeStyle = '#2b2838'; g.lineWidth = 2; g.strokeRect(x + 14, y - 22, 68, 18);
+      g.fillStyle = '#2b2838'; g.font = 'bold 11px Jua, sans-serif'; g.fillText(label, x + 48, y - 13);
+      if (deco) deco(x, y);
+    };
+    house(70, 70, '#e5484d', '#fde8d7', '인사 학교', (x, y) => { R(x + 44, y - 2, 8, 8, '#f6c445'); });
+    house(554, 70, '#ff8fab', '#fff1d6', '가족의 집', (x, y) => { R(x + 72, y + 6, 8, 14, '#9a6a4a'); });
+    house(70, 350, '#f08a24', '#fff6e0', '판다 식당', (x, y) => { for (let k = 0; k < 6; k++) R(x + k * 16, y + 22, 16, 6, k % 2 ? '#fbfaf5' : '#e5484d'); });
+    house(554, 350, '#3d7bd9', '#eef6ff', '기분 연구소', (x, y) => { R(x + 46, y - 2, 4, 4, '#ffffff'); });
+    // 대나무 · 꽃
+    const bamboo = (x, y, h) => { for (let k = 0; k < h; k += 8) { R(x, y - k - 7, 4, 7, '#4fae5c'); R(x, y - k - 1, 4, 1, '#2f7a3a'); } R(x + 4, y - h + 6, 6, 2, '#5cc46a'); };
+    for (let x = 8; x < GRWD; x += 22) { bamboo(x, 26 + (x % 3) * 4, 30); bamboo(x + 6, GRHT - 2, 22 + (x % 5) * 3); }
+    for (let y = 40; y < GRHT - 20; y += 24) { bamboo(4, y + 20, 20); bamboo(GRWD - 10, y + 20, 22); }
+    const flower = (x, y, c) => { R(x - 2, y, 2, 2, c); R(x + 2, y, 2, 2, c); R(x, y - 2, 2, 2, c); R(x, y + 2, 2, 2, c); R(x, y, 2, 2, '#f6c445'); };
+    for (let i = 0; i < 70; i++) { const x = 30 + rnd() * (GRWD - 60), y = 40 + rnd() * (GRHT - 70); if (Math.hypot(x - 360, y - 240) < 110 || GR_SOLID.some(s => x > s.x - 14 && x < s.x + s.w + 14 && y > s.y - 30 && y < s.y + s.h + 34)) continue; flower(Math.round(x), Math.round(y), ['#ff6b8b', '#ffffff', '#c084fc', '#f6c445'][i % 4]); }
+    GR.world = c;
+  }
+  // ----- 판다 그림 (꾸미기 포함, 졸업 모자) : 캐시 -----
+  const GR_PIC = new Map();
+  function grPandaPic(frame, face, wear, cap) {
+    const key = frame + face + (cap ? 'c' : '') + JSON.stringify(wear || {});
+    if (GR_PIC.has(key)) return GR_PIC.get(key);
+    const spr = PANDA[frame] || PANDA.idle, cv = document.createElement('canvas'); cv.width = 44; cv.height = 28; const cg = cv.getContext('2d'); cg.imageSmoothingEnabled = false;
+    drawWear(cg, 14, 6, 1, face, wear, 'back', frame);
+    if (face < 0) { cg.save(); cg.translate(30, 0); cg.scale(-1, 1); cg.drawImage(spr, 0, 6); cg.restore(); } else cg.drawImage(spr, 14, 6);
+    drawWear(cg, 14, 6, 1, face, wear, 'front', frame, cap ? ['head'] : null);
+    if (cap) { const R = (x, y, w, h, c) => { cg.fillStyle = c; cg.fillRect(14 + x, 6 + y, w, h); }; R(3, -1, 10, 2, '#2b2838'); R(5, 1, 6, 2, '#2b2838'); R(1, -2, 14, 1, '#2b2838'); R(12, -1, 1, 4, '#f6c445'); R(12, 3, 2, 2, '#f6c445'); }   // 졸업 모자
+    if (GR_PIC.size > 200) GR_PIC.clear();
+    GR_PIC.set(key, cv); return cv;
+  }
+  function grDrawPanda(g, x, y, frame, face, wear, cap, name, me) {
+    g.fillStyle = 'rgba(30,40,30,.22)'; g.fillRect(Math.round(x - 11), Math.round(y - 2), 22, 4);
+    g.drawImage(grPandaPic(frame, face, wear, cap), Math.round(x - 16 - 28), Math.round(y - 32 - 12), 88, 56);
+    if (name) {
+      g.font = 'bold 11px Jua, "Gowun Dodum", sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
+      const w = g.measureText(name).width + 10;
+      g.fillStyle = me ? 'rgba(246,196,69,.95)' : 'rgba(29,39,56,.78)'; g.fillRect(Math.round(x - w / 2), Math.round(y - 50), Math.round(w), 14);
+      g.fillStyle = me ? '#2b2838' : '#ffffff'; g.fillText(name, Math.round(x), Math.round(y - 43));
+    }
+  }
+  // ----- 열기 · 닫기 -----
+  function grOpen() {
+    mode = 'grad'; releaseAll(); closeMissionPanel();
+    run.arc = run.arc || { best: 0, act: [0, 0, 0, 0, 0] };
+    if (!GR.world) grBuildWorld();
+    Object.assign(GR, { on: true, keys: {}, pad: {}, talk: -1, fx: [], ceremonyShown: false });
+    GR.grad = !!run.cleared || !!run.arc.grad;
+    if (!run.arc.pos) run.arc.pos = { x: 360, y: 292 };
+    Object.assign(GR.me, { x: run.arc.pos.x, y: run.arc.pos.y, tx: null, ty: null, goNpc: -1 });
+    $('grad').hidden = false; $('grTalk').hidden = true;
+    grStampsUI(); grNetUI();
+    if (GN.status === 'on' || GN.status === 'connecting') $('grLobby').hidden = true;
+    else { $('grLobby').hidden = false; $('grRoom').value = grSavedRoom(); $('grLobbyMsg').textContent = ''; }
+    grHintSet();
+  }
+  function grClose() {
+    if (!GR.on) return;
+    GR.on = false; run.arc && (run.arc.pos = { x: GR.me.x, y: GR.me.y });
+    $('grad').hidden = true; $('grTalk').hidden = true; $('grFx').innerHTML = '';
+    gnLeave();
+  }
+  function grHome() { if (mode !== 'grad') return; grClose(); goHome(); }
+  function grStampsUI() {
+    const d = grDone(), n = grCount();
+    $('grStamps').innerHTML = `🎓 졸업 도장 <b>${n}/5</b> ` + GR_NPC.map((p, i) => `<span class="gr-st${d[i] ? ' on' : ''}" title="${p.place}">${d[i] ? '✔' : i + 1}</span>`).join('');
+  }
+  function grHintSet() {
+    const n = grCount();
+    $('grHint').textContent = GR.grad ? '🎓 졸업 축하해요! 광장에서 친구들을 기다려요' : n >= 5 ? '🎓 졸업 자격 획득! 광장의 졸업식 무대 앞으로 가요 ⬆' : n >= 4 ? '🏫 마지막! 광장 아래 졸업식 선생님에게 가요' : '❗ 표시 판다에게 가서 말을 걸어요 (4곳 → 졸업 시험)';
+  }
+  // ----- 이동 -----
+  function grSolidHit(x, y) {
+    if (x < 14 || x > GRWD - 14 || y < 40 || y > GRHT - 6) return true;
+    return GR_SOLID.some(s => grBoxHit(s, x, y));
+  }
+  const grBoxHit = (s, x, y) => x + 7 > s.x && x - 7 < s.x + s.w && y > s.y && y - 6 < s.y + s.h;
+  function grUpdate(dt) {
+    GR.time += dt;
+    const me = GR.me;
+    let ax = 0, ay = 0;
+    if (GR.talk < 0 && $('grLobby').hidden && $('grPop').hidden) {
+      const k = GR.keys, p = GR.pad;
+      ax = (k.left || p.left ? -1 : 0) + (k.right || p.right ? 1 : 0); ay = (k.up || p.up ? -1 : 0) + (k.down || p.down ? 1 : 0);
+      if (ax || ay) { me.tx = null; me.goNpc = -1; }
+      else if (me.tx != null) { const dx = me.tx - me.x, dy = me.ty - me.y, dist = Math.hypot(dx, dy); if (dist < 4) { me.tx = null; if (me.goNpc >= 0) { const i = me.goNpc; me.goNpc = -1; grTalkOpen(i); } } else { ax = dx / dist; ay = dy / dist; } }
+    }
+    const len = Math.hypot(ax, ay);
+    me.mv = len > 0;
+    if (len) {
+      const sp = 115 * dt / len, nx = me.x + ax * sp, ny = me.y + ay * sp;
+      const ox = me.x, oy = me.y, hx = grSolidHit(nx, me.y);
+      if (!hx) me.x = nx;
+      const hy = grSolidHit(me.x, ny);
+      if (!hy) me.y = ny;
+      // 톡해서 걸어갈 때 건물·무대에 막히면 옆으로 돌아가요
+      if (me.tx != null && (hx || hy)) {
+        const s = GR_SOLID.find(o => hx ? grBoxHit(o, nx, oy) : grBoxHit(o, me.x, ny));
+        if (s && hx) { const sg = oy >= s.y + s.h / 2 ? 1 : -1; if (!grSolidHit(me.x, me.y + sg * sp * len)) me.y += sg * sp * len; }
+        if (s && hy) { const sg = (me.tx >= s.x + s.w / 2) ? 1 : -1; if (!grSolidHit(me.x + sg * sp * len, me.y)) me.x += sg * sp * len; }
+      }
+      if (me.tx != null) { if (Math.hypot(me.x - ox, me.y - oy) < 0.01) { me.stuck = (me.stuck || 0) + dt; if (me.stuck > 1) { me.tx = null; me.goNpc = -1; me.stuck = 0; } } else me.stuck = 0; }
+      if (ax) me.d = ax > 0 ? 1 : -1;
+      me.t += dt;
+    }
+    // 졸업식 무대 앞
+    if (grCount() >= 5 && !GR.ceremonyShown && Math.hypot(me.x - GR_STAGE_ZONE.x, me.y - GR_STAGE_ZONE.y) < GR_STAGE_ZONE.r && GR.talk < 0) grCeremony();
+    // 가까운 판다
+    const near = grNearNpc();
+    const lbl = near >= 0 ? (grCanTalk(near) ? `💬 ${GR_NPC[near].place}` : '🔒 아직이에요') : '💬 대화';
+    if ($('grAct').dataset.t !== lbl) { $('grAct').dataset.t = lbl; $('grAct').textContent = lbl; }
+    $('grAct').disabled = near < 0;
+    for (const o of GN.others.values()) { o.x += (o.tx - o.x) * Math.min(1, dt * 8); o.y += (o.ty - o.y) * Math.min(1, dt * 8); o.t += dt; }
+    GR.fx = GR.fx.filter(f => (f.t += dt) < 2);
+    grDraw();
+  }
+  const grNearNpc = () => { let best = -1, bd = 58; GR_NPC.forEach((n, i) => { const d = Math.hypot(n.x - GR.me.x, n.y - GR.me.y); if (d < bd) { bd = d; best = i; } }); return best; };
+  function grAct() { if (GR.talk >= 0 || !$('grLobby').hidden || !$('grPop').hidden) return; const i = grNearNpc(); if (i >= 0) grTalkOpen(i); }
+  // 화면 톡 → 그 자리로 걸어가요 (판다를 톡하면 걸어가서 말 걸기)
+  function grCanvasTap(e) {
+    if (mode !== 'grad' || GR.talk >= 0 || !$('grLobby').hidden || !$('grPop').hidden) return;
+    e.preventDefault();
+    const c = $('grCanvas'), r = c.getBoundingClientRect(), cam = grCam();
+    const wx = cam.x + (e.clientX - r.left) * GVW / r.width, wy = cam.y + (e.clientY - r.top) * GVH / r.height;
+    const hit = GR_NPC.findIndex(n => Math.abs(wx - n.x) < 22 && wy > n.y - 44 && wy < n.y + 8);
+    if (hit >= 0) { if (Math.hypot(GR_NPC[hit].x - GR.me.x, GR_NPC[hit].y - GR.me.y) < 58) { grTalkOpen(hit); return; } GR.me.tx = GR_NPC[hit].x; GR.me.ty = GR_NPC[hit].y + 22; GR.me.goNpc = hit; return; }
+    GR.me.tx = clamp(wx, 16, GRWD - 16); GR.me.ty = clamp(wy, 44, GRHT - 8); GR.me.goNpc = -1;
+  }
+  const grCam = () => ({ x: clamp(GR.me.x - GVW / 2, 0, GRWD - GVW), y: clamp(GR.me.y - GVH / 2 - 10, 0, GRHT - GVH) });
+  // ----- 그리기 -----
+  function grDraw() {
+    const c = $('grCanvas'), g = c.getContext('2d'); g.imageSmoothingEnabled = false;
+    const cam = grCam(); g.save(); g.translate(-Math.round(cam.x), -Math.round(cam.y));
+    g.drawImage(GR.world, 0, 0);
+    if (grCount() >= 5 && !GR.grad) { g.fillStyle = `rgba(246,196,69,${0.25 + 0.2 * Math.sin(GR.time * 4)})`; g.beginPath(); g.arc(GR_STAGE_ZONE.x, GR_STAGE_ZONE.y, GR_STAGE_ZONE.r, 0, Math.PI * 2); g.fill(); }
+    // 앞뒤 순서: 아래쪽(y가 큰) 것이 앞
+    const items = [];
+    GR_NPC.forEach((n, i) => items.push({ y: n.y, f: () => grDrawNpc(g, n, i) }));
+    for (const o of GN.others.values()) items.push({ y: o.y, f: () => grDrawPanda(g, o.x, o.y, o.mv && Math.floor(o.t * 8) % 2 ? 'walk1' : o.mv ? 'walk2' : 'idle', o.d, o.w, o.g, o.n, false) });
+    const me = GR.me, fr = me.mv ? (Math.floor(me.t * 8) % 2 ? 'walk1' : 'walk2') : 'idle';
+    items.push({ y: me.y, f: () => grDrawPanda(g, me.x, me.y, fr, me.d, save.shop.wear, GR.grad, save.playerName || '나', true) });
+    items.sort((a, b) => a.y - b.y).forEach(it => it.f());
+    if (me.tx != null) { g.strokeStyle = 'rgba(255,255,255,.8)'; g.lineWidth = 2; g.beginPath(); g.arc(me.tx, me.ty, 6, 0, Math.PI * 2); g.stroke(); }
+    g.restore();
+  }
+  function grDrawNpc(g, n, i) {
+    const spr = npcSpr(n), sx = Math.round(n.x - 16), sy = Math.round(n.y - 32);
+    g.fillStyle = 'rgba(30,40,30,.22)'; g.fillRect(sx + 6, n.y - 2, 20, 4);
+    g.drawImage(spr, sx, sy, 32, 32); drawNpcAcc(g, n, sx, sy, 1);
+    const done = run.ms[i].complete, lock = !grCanTalk(i), bob = Math.round(Math.sin(GR.time * 4 + i) * 2);
+    g.font = '16px sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
+    g.fillText(done ? '✅' : lock ? '🔒' : '❗', n.x, sy - 12 + (done ? 0 : bob));
+  }
+  // ================= 미션 · 활동 (학생마다 따로) =================
+  const MOODS = [
+    { id: 'kx', h: '开心', p: 'kāixīn', ko: '기뻐', s: '我很开心。', sp: 'Wǒ hěn kāixīn.', badge: '✨', scene: '생일 선물을 받았어요! 🎁' },
+    { id: 'lei', h: '累', p: 'lèi', ko: '피곤해', s: '我很累。', sp: 'Wǒ hěn lèi.', badge: '💦', scene: '운동장을 열 바퀴나 달렸어요 🏃' },
+    { id: 'e', h: '饿', p: 'è', ko: '배고파', s: '我很饿。', sp: 'Wǒ hěn è.', badge: '🍚', scene: '점심을 못 먹어서 배가 꼬르륵 🍽' },
+    { id: 'kun', h: '困', p: 'kùn', ko: '졸려', s: '我很困。', sp: 'Wǒ hěn kùn.', badge: '💤', scene: '밤 11시, 하품이 계속 나와요 🌙' },
+  ];
+  // 기분 판다 얼굴 (그림만 봐도 구별: 웃는 입 · 처진 눈+땀 · 혀+침 · 감은 눈)
+  const MOOD_URL = {};
+  function moodURL(id) {
+    if (MOOD_URL[id]) return MOOD_URL[id];
+    const c = document.createElement('canvas'); c.width = 16; c.height = 13; const g = c.getContext('2d'); g.imageSmoothingEnabled = false;
+    g.drawImage(id === 'kun' ? PANDA_SLEEP_HEAD : PANDA.idle, 0, 0, 16, 11, 0, 1, 16, 11);
+    const R = (x, y, w, h, col) => { g.fillStyle = col; g.fillRect(x, y, w, h); };
+    if (id === 'kx') { R(6, 9, 4, 1, '#22202b'); R(5, 8, 1, 1, '#22202b'); R(10, 8, 1, 1, '#22202b'); R(7, 10, 2, 1, '#e5484d'); R(2, 8, 2, 1, '#ff8fab'); R(12, 8, 2, 1, '#ff8fab'); }
+    if (id === 'lei') { R(3, 6, 3, 1, '#fbfaf5'); R(10, 6, 3, 1, '#fbfaf5'); R(6, 10, 4, 1, '#22202b'); R(13, 3, 2, 3, '#62aefc'); }
+    if (id === 'e') { R(6, 9, 4, 2, '#22202b'); R(7, 10, 2, 2, '#ff6b8b'); R(10, 11, 1, 2, '#62aefc'); }
+    if (id === 'kun') { R(7, 10, 2, 1, '#22202b'); }
+    return (MOOD_URL[id] = c.toDataURL());
+  }
+  const moodPic = (m) => `<span class="gr-mood"><img src="${moodURL(m.id)}" alt="판다 표정"><i>${m.badge}</i></span>`;
+  const grZh = (h, p, big) => `<span class="ar-zh${big ? ' big' : ''}"><span class="han">${h}</span><span class="py t0">${p}</span></span>`;
+  // 미션별 활동 3개 (모두 다른 조작: 연결 · 배열 · 대화 선택 · 그림 고르기 · 메뉴 · 가격 · 빈칸)
+  const GR_ACT = [
+    [   // 미션 1 인사 학교
+      () => ({ type: 'match', title: '인사말과 뜻을 연결해요', pairs: [[grZh('好久不见！', 'Hǎo jiǔ bú jiàn!'), '오랜만이야!'], [grZh('你好吗？', 'Nǐ hǎo ma?'), '잘 지내?'], [grZh('我很好。', 'Wǒ hěn hǎo.'), '나는 잘 지내.'], [grZh('你呢？', 'Nǐ ne?'), '너는?']], hint: ['你呢？의 呢는 "~는?" 하고 되묻는 말이에요.', '好久 = 오래, 不见 = 못 봤다 → 오랜만이야!'] }),
+      () => ({ type: 'order', title: '오랜만에 만난 두 친구의 대화를 순서대로 놓아요', lines: true, words: [{ h: '好久不见！', p: 'Hǎo jiǔ bú jiàn!' }, { h: '你好吗？', p: 'Nǐ hǎo ma?' }, { h: '我很好。你呢？', p: 'Wǒ hěn hǎo. Nǐ ne?' }], end: '', hint: ['먼저 "오랜만이야!" → 그다음 "잘 지내?" → 마지막에 대답해요.'] }),
+      () => ({ type: 'choice', title: '친구 판다가 물어봐요. 알맞은 대답을 골라요', npcSay: grZh('你好吗？', 'Nǐ hǎo ma?', true), opts: [{ html: grZh('我很好。你呢？', 'Wǒ hěn hǎo. Nǐ ne?'), ok: true }, { html: grZh('我要这个。', 'Wǒ yào zhège.') }, { html: grZh('这个多少钱？', 'Zhège duōshao qián?') }], hint: ['你好吗？ = 잘 지내? → "나는 잘 지내, 너는?"으로 대답해요.'] }),
+    ],
+    [   // 미션 2 가족의 집
+      () => { const ids = shuffle(FAM.map(f => f.id)), t = ids[0], o = shuffle(ids.slice(0, 4)); return { type: 'choice', title: '사진 속 판다는 누구일까요?', show: `<img class="gr-fam" src="${famFace(t)}" alt="판다 가족 사진"><div class="gr-look">${famOf(t).look}</div>`, opts: o.map(id => ({ html: grZh(famOf(id).h, famOf(id).p), ok: id === t })), hint: [`사진 아래 설명을 읽어요.`, `정답은 ${famOf(t).ko}: ${famOf(t).h}`] }; },
+      () => { const ids = shuffle(FAM.map(f => f.id)).slice(0, 4); return { type: 'match', title: '가족 호칭(한자)과 병음을 연결해요', pairs: ids.map(id => [`<span class="han big1">${famOf(id).h}</span>`, `<span class="py t0 big1">${famOf(id).p}</span>`]), hint: ['爸爸 bàba · 妈妈 māma · 哥哥 gēge · 姐姐 jiějie · 弟弟 dìdi · 妹妹 mèimei'] }; },
+      () => { const t = pick(FAM.map(f => f.id)), f = famOf(t); return { type: 'order', title: `사진을 보여 주며 소개해요: "이분은 우리 ${f.ko}예요."`, show: `<img class="gr-fam" src="${famFace(t)}" alt="판다 가족 사진">`, words: [{ h: '这是', p: 'zhè shì' }, { h: '我', p: 'wǒ' }, { h: f.h, p: f.p }], extra: [{ h: '你', p: 'nǐ' }], end: '。', hint: [`这是(이분은) → 我(나의) → ${f.h}(${f.ko}) 순서예요.`] }; },
+    ],
+    [   // 미션 3 판다 식당
+      () => { const t = pick(FOOD_IDS); return { type: 'choice', title: '손님 주문표의 음식을 메뉴에서 골라요', npcSay: `📝 ${grZh(foodOf(t).h, foodOf(t).p, true)}`, opts: shuffle(FOOD_IDS).map(id => ({ html: `<img class="gr-food" src="${foodURL(id)}" alt="음식 그림">`, ok: id === t })), pics: true, hint: [`${foodOf(t).h} = ${foodOf(t).ko}`] }; },
+      () => { const t = pick(FOOD_IDS); return { type: 'order', title: '메뉴의 이 음식을 가리키며 주문해요 👆', show: `<span class="gr-point"><img class="gr-food" src="${foodURL(t)}" alt="음식 그림"><b>👆</b></span>`, words: [{ h: '我', p: 'wǒ' }, { h: '要', p: 'yào' }, { h: '这个', p: 'zhège' }], extra: [{ h: '多少钱', p: 'duōshao qián' }], end: '。', hint: ['我(나) → 要(원해요) → 这个(이것): 이거 주세요.'] }; },
+      () => { const t = pick(FOOD_IDS), n = pick(PRICES); return { type: 'price', title: '가격이 궁금해요! 먼저 가격을 묻는 말을 골라요', show: `<span class="gr-point"><img class="gr-food" src="${foodURL(t)}" alt="음식 그림"><b>👆</b></span>`, n, opts: shuffle([{ html: grZh('这个多少钱？', 'Zhège duōshao qián?'), ok: true }, { html: grZh('我要这个。', 'Wǒ yào zhège.') }, { html: grZh('你好吗？', 'Nǐ hǎo ma?') }]), hint: ['多少钱 = 얼마예요?', `${priceZh(n).h} = ${n}元`] }; },
+    ],
+    [   // 미션 4 기분 연구소
+      () => ({ type: 'match', title: '판다 표정과 기분 단어를 연결해요', pairs: shuffle(MOODS).map(m => [moodPic(m), grZh(m.h, m.p)]), hint: ['开心 기뻐 · 累 피곤해 · 饿 배고파 · 困 졸려', '감은 눈 = 졸려(困), 침 = 배고파(饿)'] }),
+      () => { const m = pick(MOODS); return { type: 'choice', title: '이런 상황이에요. 판다는 뭐라고 말할까요?', show: `${moodPic(m)}<div class="gr-scene">${m.scene}</div>`, opts: shuffle(MOODS).map(x => ({ html: grZh(x.s, x.sp), ok: x.id === m.id })), hint: [`이 판다는 ${m.ko}.`, `정답: ${m.s}`] }; },
+      () => { const m = pick(MOODS); return { type: 'choice', title: '빈칸에 들어갈 말을 골라 문장을 완성해요', show: `${moodPic(m)}<div class="gr-blank">${grZh('我很 ＿。', 'Wǒ hěn ＿.', true)}</div>`, opts: shuffle(MOODS).map(x => ({ html: grZh(x.h, x.p), ok: x.id === m.id })), after: () => grZh(m.s, m.sp, true), hint: [`그림의 판다는 ${m.ko}.`] }; },
+    ],
+    [   // 미션 5 졸업 시험
+      () => ({ type: 'match', title: '새 단어와 뜻을 연결해요', pairs: [[grZh('会', 'huì'), '~할 줄 알다'], [grZh('说', 'shuō'), '말하다'], [grZh('中文', 'Zhōngwén'), '중국어'], [grZh('吗', 'ma'), '~니? (질문)']], hint: ['会 huì = ~할 줄 알다 · 说 shuō = 말하다'] }),
+      () => ({ type: 'order', title: '"나는 중국어를 할 줄 알아요." 문장을 만들어요', words: [{ h: '我', p: 'wǒ' }, { h: '会', p: 'huì' }, { h: '说', p: 'shuō' }, { h: '中文', p: 'Zhōngwén' }], extra: [{ h: '你', p: 'nǐ' }], end: '。', hint: ['我(나) → 会(할 줄 알다) → 说(말하다) → 中文(중국어)'] }),
+      () => ({ type: 'order', title: '선생님께 물어봐요: "너는 중국어를 할 줄 아니?"', words: [{ h: '你', p: 'nǐ' }, { h: '会', p: 'huì' }, { h: '说', p: 'shuō' }, { h: '中文', p: 'Zhōngwén' }, { h: '吗', p: 'ma' }], end: '？', then: { title: '선생님이 되물어요. 알맞게 대답해요!', npcSay: grZh('你会说中文吗？', 'Nǐ huì shuō Zhōngwén ma?', true), opts: [{ html: grZh('我会说中文。', 'Wǒ huì shuō Zhōngwén.'), ok: true }, { html: grZh('我很饿。', 'Wǒ hěn è.') }, { html: grZh('这是我妈妈。', 'Zhè shì wǒ māma.') }] }, hint: ['질문은 끝에 吗를 붙여요: 你 → 会 → 说 → 中文 → 吗', '대답: 我会说中文。'] }),
+    ],
+  ];
+  const GR_MISSION_INTRO = ['好久不见！ 오랜만이야! 우리 인사 연습하자!', '우리 가족사진 볼래? 가족을 소개해 줘!', '어서 오세요! 판다 식당이에요. 주문해 볼까요?', '판다들의 기분을 맞혀 볼래요?', '마지막 졸업 시험이에요! 중국어로 말해 볼까요?'];
+  // ----- 대화창 -----
+  function grTalkOpen(i) {
+    if (GR.talk >= 0) return;
+    const n = GR_NPC[i];
+    if (!grCanTalk(i)) { grToast('🔒 먼저 인사·가족·식당·기분 미션 4개를 끝내고 와요!'); return; }
+    GR.talk = i; GR.keys = {}; GR.pad = {}; GR.me.tx = null;
+    $('grTalk').hidden = false; $('grTalkFace').src = npcFaceURL(n); $('grTalkName').textContent = `${n.name} · ${n.place}`;
+    SFX.meet();
+    if (run.ms[i].complete) { grBody(`<p class="gr-say">고마워! 이 미션은 벌써 끝냈어요 ✅</p>`, '닫기', grTalkClose); return; }
+    grBody(`<p class="gr-say">${GR_MISSION_INTRO[i]}</p><p class="gr-prog">활동 ${run.arc.act[i] + 1} / 3</p>`, '시작! ▶', () => grActStart(i));
+  }
+  function grTalkClose() { $('grTalk').hidden = true; GR.talk = -1; grStampsUI(); grHintSet(); }
+  function grBody(html, goLabel, goFn) {
+    $('grBody').innerHTML = html; grMsg(''); $('grHintBtn').hidden = true;
+    $('grGo').hidden = !goLabel; $('grGo').disabled = false; $('grGo').textContent = goLabel || '';
+    GR.goFn = goFn || null; bindSoundButtons($('grBody')); wrapPinyin($('grBody'));
+  }
+  function grMsg(t, kind = '') { $('grMsg').innerHTML = t; $('grMsg').className = 'gr-msg ' + kind; }
+  function grToast(t) { const el = $('grToast'); el.textContent = t; el.hidden = false; clearTimeout(GR.toastT); GR.toastT = setTimeout(() => { el.hidden = true; }, 2200); }
+  // 활동 하나 시작 (기록: 활동마다 과제 1개 — 처음에 맞히면 '처음 정답', 틀리면 '처음에 틀린 문제'에 남아요)
+  function grActStart(i) {
+    const k = run.arc.act[i], a = GR_ACT[i][k]();
+    GR.cur = { i, k, a, hint: 0 };
+    const plain = (h) => String(h).replace(/<span class="py[^>]*>[^<]*<\/span>/g, '').replace(/<[^>]+>/g, '').trim();
+    const right = a.type === 'order' ? a.words.map(w => w.h).join(' / ') : a.type === 'match' ? a.pairs.map(p => `${plain(p[0]) || '그림'}=${plain(p[1])}`).join(', ') : (plain((a.opts.find(o => o.ok) || {}).html || '') || '그림') + (a.type === 'price' ? ` → ${a.n}元` : '');
+    taskBegin(`gr${i}-${k}`, `${GR_NPC[i].place} ${k + 1}: ${a.title}`, right);
+    GR.miss = false;
+    const head = `<div class="gr-head"><span class="gr-step">${GR_NPC[i].place} · 활동 ${k + 1}/3</span><b>${a.title}</b></div>`;
+    if (a.type === 'match') grMatch(head, a);
+    else if (a.type === 'order') grOrder(head, a, a.then ? () => grThen(head, a.then) : null);
+    else if (a.type === 'choice') grChoice(head, a);
+    else if (a.type === 'price') grChoice(head, a, () => grPriceStep(head, a));
+    $('grHintBtn').hidden = !a.hint;
+  }
+  function grWrong(msg, el) { SFX.wrong(); taskMiss(); GR.miss = true; GR.combo = 0; grMsg(msg, 'bad'); if (el) { el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); } }
+  function grHint() { const c = GR.cur; if (!c || !c.a.hint) return; taskHint(); grMsg('💡 ' + c.a.hint[Math.min(c.hint, c.a.hint.length - 1)], 'hint'); c.hint++; }
+  // 활동 성공 → 다음 활동 · 미션 완료
+  function grActDone(extraHtml) {
+    const c = GR.cur; if (!c) return;
+    taskEnd(); SFX.correct();
+    if (!GR.miss) { GR.combo++; run.arc.best = Math.max(run.arc.best || 0, GR.combo); }
+    run.arc.act[c.i] = c.k + 1; GR.cur = null;
+    if (run.arc.act[c.i] >= 3) { grMissionDone(c.i, extraHtml); return; }
+    grBody(`<p class="gr-ok">정답! 🎉</p>${extraHtml || ''}<p class="gr-prog">활동 ${c.k + 2} / 3 이 기다려요</p>`, '다음 활동 ▶', () => grActStart(c.i));
+  }
+  function grMissionDone(i, extraHtml) {
+    const s = run.ms[i], M = STAGE.missions[i];
+    if (s.complete) return;
+    s.done = s.need; s.complete = true;
+    const ever = save.questEver[STAGE.id] = save.questEver[STAGE.id] || [];
+    const first = !ever.includes(i); if (first) { ever.push(i); addExp(20); }
+    const paid = payOnce('mission' + i, AR_ROUND_COIN);
+    M.cards.forEach(id => { save.cards[id] = true; }); writeSave();
+    report('mission', { mission: `${grCount()}/${run.ms.length}` });   // 미션 칸 = 끝낸 미션 수 / 5 (순서와 상관없이)
+    setTimeout(() => SFX.level(), 200);
+    GR.fx.push({ t: 0 });
+    grStampsUI(); grHintSet(); gnSendSoon();
+    const n = grCount();
+    grBody(`<p class="gr-ok">🎓 졸업 도장 획득! (${n}/5)</p>${extraHtml || ''}${paid ? `<p class="gr-coin">🪙 +${AR_ROUND_COIN}코인${first ? ' · ✨ +20 EXP' : ''}</p>` : ''}<p class="gr-say">${n >= 5 ? '🎓 졸업 자격 획득! 광장의 졸업식 무대 앞으로 가요!' : n >= 4 ? '이제 광장 아래 졸업식 선생님에게 가요!' : '다른 ❗ 판다에게도 가 봐요!'}</p>`, '좋아요!', grTalkClose);
+  }
+  // 연결하기: 왼쪽 → 오른쪽 차례로 톡 (맞은 짝만 묶여요)
+  function grMatch(head, a) {
+    const L = a.pairs.map((p, k) => ({ k, html: p[0] })), Rr = shuffle(a.pairs.map((p, k) => ({ k, html: p[1] })));
+    const left = shuffle(L); let sel = -1; const done = new Set();
+    const draw = () => {
+      grBody(`${head}<div class="gr-match"><div>${left.map(x => `<button class="gr-card${done.has(x.k) ? ' done' : ''}${sel === x.k ? ' sel' : ''}" data-l="${x.k}"${done.has(x.k) ? ' disabled' : ''}>${x.html}</button>`).join('')}</div><div>${Rr.map(x => `<button class="gr-card${done.has(x.k) ? ' done' : ''}" data-r="${x.k}"${done.has(x.k) ? ' disabled' : ''}>${x.html}</button>`).join('')}</div></div><p class="gr-tip">왼쪽을 고르고 → 오른쪽 짝을 톡!</p>`);
+      $('grHintBtn').hidden = !a.hint;
+      $('grBody').querySelectorAll('[data-l]').forEach(b => b.addEventListener('click', () => { sel = +b.dataset.l; SFX.pop(); draw(); }));
+      $('grBody').querySelectorAll('[data-r]').forEach(b => b.addEventListener('click', () => {
+        if (sel < 0) { grMsg('왼쪽 카드를 먼저 골라요!', 'info'); return; }
+        const r = +b.dataset.r;
+        if (r !== sel) { grWrong('짝이 아니에요. 다시 생각해 봐요!', b); sel = -1; setTimeout(draw, 350); return; }
+        done.add(r); sel = -1; SFX.pop();
+        if (done.size >= a.pairs.length) grActDone(); else draw();
+      }));
+    };
+    draw();
+  }
+  // 배열하기: 조각을 누르면 빈칸에 차례로, 빈칸을 누르면 빠져요. 확인을 눌러야 판정
+  function grOrder(head, a, next) {
+    const all = [...a.words, ...(a.extra || [])];
+    let pieces; do { pieces = shuffle(all); } while (pieces.slice(0, a.words.length).every((w, i) => w.h === a.words[i].h) && all.length > 1);
+    const slots = a.words.map(() => -1);
+    const draw = () => {
+      grBody(`${head}${a.show ? `<div class="gr-show">${a.show}</div>` : ''}<div class="gr-slots${a.lines ? ' lines' : ''}">${slots.map((pi, s) => `<button class="gr-slot${pi < 0 ? ' empty' : ''}" data-s="${s}">${a.lines ? `<small>${s + 1}</small>` : ''}${pi < 0 ? '?' : grZh(pieces[pi].h, pieces[pi].p)}</button>`).join('')}${a.end ? `<span class="gr-end">${a.end}</span>` : ''}</div>
+        <div class="gr-pieces">${pieces.map((pc, k) => `<button class="gr-card" data-k="${k}"${slots.includes(k) ? ' disabled' : ''}>${grZh(pc.h, pc.p)}</button>`).join('')}</div>${a.extra ? '<p class="gr-tip">조각 하나는 쓰지 않아요</p>' : ''}`, '확인 ✔', check);
+      $('grGo').disabled = slots.includes(-1); $('grHintBtn').hidden = !a.hint;
+      $('grBody').querySelectorAll('[data-k]').forEach(b => b.addEventListener('click', () => { const s = slots.indexOf(-1); if (s < 0) return; slots[s] = +b.dataset.k; SFX.pop(); draw(); }));
+      $('grBody').querySelectorAll('.gr-slot').forEach(b => b.addEventListener('click', () => { slots[+b.dataset.s] = -1; SFX.pop(); draw(); }));
+    };
+    const check = () => {
+      if (slots.includes(-1)) return;
+      if (slots.map(i => pieces[i].h).join('|') !== a.words.map(w => w.h).join('|')) { grWrong(`순서가 조금 달라요. ${a.hint ? a.hint[0] : ''}`, $('grBody').querySelector('.gr-slots')); return; }
+      const sent = grZh(a.words.map(w => w.h).join('') + (a.end || ''), a.words.map(w => w.p).join(' ').replace(/^./, c => c.toUpperCase()) + (a.end === '？' ? '?' : a.end === '。' ? '.' : ''), true);
+      if (next) { SFX.correct(); next(); return; }
+      grActDone(a.lines ? '' : `<div class="gr-sent">${sent}</div>`);
+    };
+    draw();
+  }
+  // 고르기 (그림·문장·대답): 고른 뒤 확인을 눌러야 판정. 보기 순서는 매번 섞여요
+  function grChoice(head, a, next) {
+    const opts = a.pics ? a.opts : shuffle(a.opts); let sel = -1;
+    const draw = () => {
+      grBody(`${head}${a.npcSay ? `<div class="gr-npcsay">${a.npcSay}</div>` : ''}${a.show ? `<div class="gr-show">${a.show}</div>` : ''}<div class="gr-opts${a.pics ? ' pics' : ''}">${opts.map((o, k) => `<button class="gr-card${sel === k ? ' sel' : ''}" data-o="${k}" aria-pressed="${sel === k}">${o.html}</button>`).join('')}</div>`, '확인 ✔', check);
+      $('grGo').disabled = sel < 0; $('grHintBtn').hidden = !a.hint;
+      $('grBody').querySelectorAll('[data-o]').forEach(b => b.addEventListener('click', () => { sel = +b.dataset.o; SFX.pop(); draw(); }));
+    };
+    const check = () => {
+      if (sel < 0) return;
+      if (!opts[sel].ok) { grWrong('다시 생각해 봐요!', $('grBody').querySelector('.gr-opts')); return; }
+      if (next) { SFX.correct(); next(); return; }
+      grActDone(a.after ? `<div class="gr-sent">${a.after()}</div>` : '');
+    };
+    draw();
+  }
+  // 가격: 묻는 말을 고른 뒤 → 점원의 중국어 대답을 듣고 숫자 가격표 고르기
+  function grPriceStep(head, a) {
+    const s = priceSay(a.n), tags = shuffle(PRICES); let sel = -1;
+    const draw = () => {
+      grBody(`${head}<div class="gr-npcsay"><small>점원 판다:</small> ${grZh(s.h, s.p, true)} ${sayBtnGr(s.h)}</div><p class="gr-tip">점원이 말한 가격표를 골라요 (연습용 가격, 코인과 상관없어요)</p><div class="gr-opts">${tags.map((v, k) => `<button class="gr-card tag${sel === k ? ' sel' : ''}" data-o="${k}">${v}元</button>`).join('')}</div>`, '확인 ✔', () => {
+        if (sel < 0) return;
+        if (tags[sel] !== a.n) { grWrong('块 앞의 숫자를 다시 봐요!', $('grBody').querySelector('.gr-opts')); return; }
+        grActDone(`<div class="gr-sent">${grZh(s.h, s.p, true)} = ${a.n}元</div>`);
+      });
+      $('grGo').disabled = sel < 0;
+      $('grBody').querySelectorAll('[data-o]').forEach(b => b.addEventListener('click', () => { sel = +b.dataset.o; SFX.pop(); draw(); }));
+    };
+    draw();
+  }
+  const sayBtnGr = (h) => `<button class="ar-say" data-say="${h}" aria-label="듣기">🔊</button>`;
+  function grThen(head, t) { grChoice(head, { ...t, after: () => grZh('我会说中文。', 'Wǒ huì shuō Zhōngwén.', true) }); }
+  // ----- 졸업식 (학생마다 따로 시작) -----
+  function grCeremony() {
+    GR.ceremonyShown = true; GR.grad = true; run.arc.grad = true; gnSendSoon();
+    if (!run.cleared) {
+      run.cleared = true; run.end = performance.now(); run.clearN = (run.clearN || 0) + 1;
+      const stars = calcStars(); GR.stars = stars;
+      save.clears[STAGE.id] = Math.max(save.clears[STAGE.id] || 0, stars.n); writeSave();
+      payOnce('clear', AR_CLEAR_BONUS);
+      report('clear', { mission: `${run.ms.length}/${run.ms.length}`, stars: stars.n });
+    }
+    SFX.level(); celebrate('중국어 졸업을 축하합니다!', 3200); grConfetti();
+    const name = save.playerName || '우리';
+    $('grPopBody').innerHTML = `<div class="gr-diploma"><div class="gr-dip-top">🎓 졸 업 장 🎓</div><p class="gr-dip-name"><b>${name.replace(/[<>&"]/g, '')}</b> 판다의<br>중국어 졸업을 축하합니다!</p>${grZh('我会说中文！', 'Wǒ huì shuō Zhōngwén!', true)}<p class="gr-dip-ko">나는 중국어를 할 줄 알아!</p><p class="gr-dip-foot">판다 탐험대 · 2026. 11. 19.</p></div>`;
+    bindSoundButtons($('grPopBody')); wrapPinyin($('grPopBody'));
+    $('grPop').hidden = false;
+  }
+  function grConfetti() {
+    const cols = ['#f6c445', '#ff6f86', '#62aefc', '#4fd08c', '#b38cff', '#fff0a8'];
+    for (let i = 0; i < 80; i++) { const el = document.createElement('i'); el.className = 'ar-conf'; el.style.left = `${Math.random() * 100}%`; el.style.background = pick(cols); el.style.animationDelay = `${Math.random() * 0.8}s`; el.style.animationDuration = `${1.8 + Math.random() * 1.4}s`; $('grFx').appendChild(el); setTimeout(() => el.remove(), 4200); }
+  }
+  function grStay() { $('grPop').hidden = true; grHintSet(); }
+  function grResult() { $('grPop').hidden = true; const stars = GR.stars || calcStars(); grClose(); mode = 'cut'; showClear(stars); }
+
+  // ================= 함께 접속 (PeerJS · 같은 방 코드끼리) =================
+  // 방 코드로 '방장' 아이디를 정해요: 먼저 들어온 브라우저가 방장, 나머지는 방장에게 연결 → 방장이 모두의 위치를 다시 나눠 줘요
+  // 방장이 나가면 남은 사람이 방장 자리를 이어받아요 (자동). 기록은 어디에도 저장되지 않아요
+  const GN = { status: 'off', peer: null, host: false, conn: null, conns: new Map(), room: '', others: new Map(), sendT: 0, lastSent: '', timer: 0, tries: 0, hostId: '', log: [] };
+  const GN_ROOM_KEY = 'panda-grad-room';
+  function grSavedRoom() { try { return localStorage.getItem(GN_ROOM_KEY) || 'PANDA'; } catch (e) { return 'PANDA'; } }
+  const gnClean = (s) => String(s || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 12);
+  function gnLoadLib() {
+    if (window.Peer) return Promise.resolve();
+    return new Promise((res, rej) => { const s = document.createElement('script'); s.src = 'vendor/peerjs-1.5.4.min.js'; s.onload = () => (window.Peer ? res() : rej(new Error('nolib'))); s.onerror = () => rej(new Error('nolib')); document.head.appendChild(s); });
+  }
+  async function gnJoin() {
+    const room = gnClean($('grRoom').value);
+    if (room.length < 2) { $('grLobbyMsg').textContent = '방 코드를 2글자 이상 써 주세요 (영어·숫자)'; return; }
+    try { localStorage.setItem(GN_ROOM_KEY, room); } catch (e) {}
+    GN.room = room; GN.hostId = `pandagrad12-${room.toLowerCase()}`; GN.status = 'connecting'; GN.tries = 0; grNetUI();
+    $('grLobbyMsg').textContent = '연결하는 중이에요… (최대 15초)';
+    $('grJoin').disabled = true;
+    try { await gnLoadLib(); } catch (e) { gnFail('연결 프로그램을 불러오지 못했어요.'); return; }
+    clearTimeout(GN.timer); GN.timer = setTimeout(() => { if (GN.status === 'connecting') gnFail('시간 안에 연결되지 않았어요.'); }, 15000);
+    gnTryHost();
+  }
+  function gnDestroy() { const p = GN.peer; GN.peer = null; GN.conn = null; GN.host = false; for (const c of GN.conns.values()) { try { c.close(); } catch (e) {} } GN.conns.clear(); try { if (p) p.destroy(); } catch (e) {} }   // GN.peer를 먼저 비워야 'disconnected'에서 다시 붙지 않아요
+  const gnLog = (m) => { GN.log.push(`${Math.round(performance.now() / 100) / 10}s ${m}`); if (GN.log.length > 40) GN.log.shift(); };
+  function gnTryHost() {
+    gnDestroy(); gnLog('try host');
+    let p; try { p = new window.Peer(GN.hostId, { debug: 0 }); } catch (e) { gnFail('연결을 시작하지 못했어요.'); return; }
+    GN.peer = p;
+    p.on('open', () => { if (GN.peer !== p) return; GN.host = true; gnOnline(); });
+    p.on('connection', (c) => { if (!GN.host || GN.peer !== p) return; gnHostConn(c); });
+    p.on('error', (err) => {
+      if (GN.peer !== p) return;
+      gnLog('host err ' + (err && err.type));
+      if (err && err.type === 'unavailable-id') { gnJoinClient(); return; }   // 방장이 이미 있어요 → 손님으로
+      gnNetErr(err);
+    });
+    p.on('disconnected', () => { if (GN.peer === p && GN.status === 'on') { try { p.reconnect(); } catch (e) {} } });
+  }
+  function gnJoinClient() {
+    gnDestroy(); gnLog('join client');
+    const p = new window.Peer(undefined, { debug: 0 }); GN.peer = p;
+    p.on('open', () => {
+      if (GN.peer !== p) return;
+      const c = p.connect(GN.hostId, { serialization: 'json', reliable: false }); GN.conn = c;
+      setTimeout(() => { if (GN.conn === c && !c.open) { gnLog('conn timeout'); gnLost(); } }, 6000);   // 방장이 갑자기 꺼진 경우(응답 없음) → 다시 시도
+      c.on('open', () => { if (GN.conn === c) gnOnline(); });
+      c.on('data', (d) => { if (GN.conn === c) gnApply(d); });
+      c.on('close', () => { gnLog('conn close'); if (GN.conn === c) gnLost(); });
+      c.on('error', () => { if (GN.conn === c) gnLost(); });
+    });
+    p.on('error', (err) => { if (GN.peer !== p) return; gnLog('client err ' + (err && err.type)); if (err && err.type === 'peer-unavailable') { gnLost(); return; } gnNetErr(err); });
+  }
+  // 방장: 손님 연결 받기
+  function gnHostConn(c) {
+    if (GN.conns.size >= 30) { try { c.close(); } catch (e) {} return; }
+    GN.conns.set(c.peer, c);
+    c.on('data', (d) => { const o = gnState(d); if (o) gnUpsert(c.peer, o); });
+    c.on('close', () => { GN.conns.delete(c.peer); GN.others.delete(c.peer); grNetUI(); });
+    c.on('error', () => { GN.conns.delete(c.peer); GN.others.delete(c.peer); grNetUI(); });
+  }
+  function gnOnline() {
+    GN.lastRx = performance.now();
+    clearTimeout(GN.timer); GN.status = 'on'; GN.tries = 0; GN.lastSent = '';
+    $('grLobby').hidden = true; $('grJoin').disabled = false; grNetUI(); gnSendSoon();
+  }
+  function gnFail(why) {
+    clearTimeout(GN.timer); clearTimeout(GN.retryT); gnDestroy(); GN.status = 'fail'; GN.others.clear(); grNetUI();
+    $('grJoin').disabled = false;
+    if (GR.on) { $('grLobby').hidden = false; $('grLobbyMsg').innerHTML = `⚠️ ${why}<br>인터넷 상태 때문일 수 있어요. <b>🐼 혼자 졸업식 진행하기</b>를 눌러도 미션과 졸업식을 모두 할 수 있어요!`; }
+  }
+  function gnNetErr(err) {
+    if (GN.status === 'connecting') gnFail('친구들과 연결하지 못했어요.');
+    else gnLost();
+  }
+  // 연결이 끊겼어요 → 잠깐 뒤 다시 (방장 자리를 이어받거나 새 방장에게 연결). 그동안 게임·미션은 계속 돼요
+  function gnLost() {
+    if (GN.status === 'off' || GN.status === 'fail' || GN.status === 'single' || GN.status === 'paused') return;
+    if (GN.status === 'connecting') { clearTimeout(GN.retryT); GN.retryT = setTimeout(() => { if (GN.status === 'connecting' && GR.on) gnTryHost(); }, 400 + Math.random() * 1200); return; }   // 처음 들어갈 때: 15초 안에서 다시 시도
+    GN.status = 'retry'; GN.others.clear(); grNetUI();
+    if (++GN.tries > 12) { gnDestroy(); GN.status = 'fail'; grNetUI(); grToast('친구들과 연결이 끊겼어요. 혼자 계속해요 (🔄로 다시 연결)'); return; }
+    clearTimeout(GN.timer); GN.timer = setTimeout(() => { if (GN.status === 'retry' && GR.on) gnTryHost(); }, 600 + Math.random() * 1800);
+  }
+  function gnLeave() { clearTimeout(GN.timer); clearTimeout(GN.retryT); gnDestroy(); GN.others.clear(); if (GN.status !== 'single') GN.status = 'off'; }
+  function gnSingle() { gnLeave(); GN.status = 'single'; $('grLobby').hidden = true; grNetUI(); }
+  // 받은 상태 검사 (모르는 값은 버려요)
+  function gnState(d) {
+    if (!d || typeof d !== 'object') return null;
+    const n = String(d.n || '').replace(/[<>&"]/g, '').slice(0, 12) || '친구';
+    const x = Number(d.x), y = Number(d.y); if (!isFinite(x) || !isFinite(y)) return null;
+    const w = {}; if (d.w && typeof d.w === 'object') for (const s of Object.keys(WEAR_SLOTS)) { const id = d.w[s]; if (typeof id === 'string' && WEAR_ART[id] && SHOP_BY_ID[id] && SHOP_BY_ID[id].slot === s) w[s] = id; }
+    return { n, x: clamp(x, 0, GRWD), y: clamp(y, 0, GRHT), d: d.d < 0 ? -1 : 1, mv: !!d.m, g: !!d.g, st: clamp(Number(d.s) || 0, 0, 5), w };
+  }
+  function gnUpsert(id, s) {
+    let o = GN.others.get(id);
+    if (!o) { o = { x: s.x, y: s.y, t: 0 }; GN.others.set(id, o); grNetUI(); }
+    Object.assign(o, { tx: s.x, ty: s.y, d: s.d, mv: s.mv, g: s.g, n: s.n, w: s.w, st: s.st, seen: performance.now() });
+  }
+  function gnApply(d) {   // 손님: 방장이 보낸 모두의 상태
+    if (!d || d.t !== 'all' || !Array.isArray(d.p)) return;
+    GN.lastRx = performance.now();
+    const myId = GN.peer && GN.peer.id, seen = new Set();
+    for (const it of d.p.slice(0, 40)) { if (!it || it.id === myId) continue; const s = gnState(it); if (s) { gnUpsert(it.id, s); seen.add(it.id); } }
+    for (const id of [...GN.others.keys()]) if (!seen.has(id)) GN.others.delete(id);
+    grNetUI();
+  }
+  function gnMine() { const m = GR.me; return { n: save.playerName || '판다', x: Math.round(m.x), y: Math.round(m.y), d: m.d, m: m.mv ? 1 : 0, g: GR.grad ? 1 : 0, s: grCount(), w: save.shop.wear }; }
+  function gnSendSoon() { GN.sendT = 0; GN.lastSent = ''; }
+  // 0.25초마다 (바뀌었을 때만, 아니면 1초마다 한 번) 보내요
+  function gnTick(dt) {
+    if (GN.status !== 'on' || !GN.peer) return;
+    GN.sendT -= dt; if (GN.sendT > 0) return;
+    GN.sendT = 0.25;
+    const mine = gnMine(), js = JSON.stringify(mine), now = performance.now();
+    if (GN.host) {
+      for (const [id, o] of GN.others) if (now - (o.seen || 0) > 8000) GN.others.delete(id);
+      const all = [{ id: GN.peer.id, ...mine }, ...[...GN.others].map(([id, o]) => ({ id, n: o.n, x: Math.round(o.tx), y: Math.round(o.ty), d: o.d, m: o.mv ? 1 : 0, g: o.g ? 1 : 0, s: o.st, w: o.w }))];
+      const msg = { t: 'all', p: all };
+      for (const c of GN.conns.values()) { try { if (c.open) c.send(msg); } catch (e) {} }
+    } else if (now - (GN.lastRx || now) > 5000) { gnLog('host silent'); gnLost(); return;   // 방장 신호가 5초 없어요 → 방장이 사라졌어요
+    } else if (GN.conn && GN.conn.open) {
+      if (js === GN.lastSent && now - (GN.lastAt || 0) < 1000) return;
+      try { GN.conn.send(mine); GN.lastSent = js; GN.lastAt = now; } catch (e) {}
+    }
+  }
+  function grNetUI() {
+    const n = GN.others.size + 1;
+    const t = GN.status === 'on' ? `🟢 방 ${GN.room} · 👥 ${n}명` : GN.status === 'connecting' ? '🟡 연결 중…' : GN.status === 'retry' ? '🟡 다시 연결 중… (게임은 계속돼요)' : GN.status === 'fail' ? '🔴 혼자 진행 중 · 🔄' : '🐼 혼자 진행';
+    $('grNet').textContent = t;
+  }
+  function grNetClick() { if (mode !== 'grad') return; if (GN.status === 'fail' || GN.status === 'single' || GN.status === 'off') { $('grLobby').hidden = false; $('grRoom').value = grSavedRoom(); $('grLobbyMsg').textContent = ''; } }
+  function grKey(e, down) {
+    const c = e.code;
+    const dir = { ArrowLeft: 'left', KeyA: 'left', ArrowRight: 'right', KeyD: 'right', ArrowUp: 'up', KeyW: 'up', ArrowDown: 'down', KeyS: 'down' }[c];
+    const typing = e.target && e.target.tagName === 'INPUT';
+    if (dir && !typing) { e.preventDefault(); GR.keys[dir] = down; return; }
+    if (!down || e.repeat) return;
+    if (!$('grPop').hidden) { if (isEnter(c) || c === 'Escape') { e.preventDefault(); grStay(); } return; }
+    if (!$('grLobby').hidden) { if (isEnter(c)) { e.preventDefault(); gnJoin(); } return; }
+    if (GR.talk >= 0) {
+      if (c === 'Escape') { if (GR.cur) { GR.cur = null; } grTalkClose(); return; }
+      if (isEnter(c) && !$('grGo').hidden && !$('grGo').disabled) { e.preventDefault(); $('grGo').click(); return; }
+      const d = /^(Digit|Numpad)([1-9])$/.exec(c);
+      if (d) { const bs = [...$('grBody').querySelectorAll('[data-o],[data-k]:not([disabled])')]; const b = bs[+d[2] - 1]; if (b) b.click(); }
+      return;
+    }
+    if (c === 'KeyE' || isEnter(c) || c === 'Space') { e.preventDefault(); grAct(); return; }
+    if (c === 'Escape') { grHome(); }
+  }
+  $('grHome').addEventListener('click', grHome);
+  $('grAct').addEventListener('click', grAct);
+  $('grGo').addEventListener('click', () => { if (GR.goFn) GR.goFn(); });
+  $('grHintBtn').addEventListener('click', grHint);
+  $('grTalkX').addEventListener('click', () => { GR.cur = null; grTalkClose(); });
+  $('grJoin').addEventListener('click', gnJoin);
+  $('grRoom').addEventListener('keydown', (e) => { if (isEnter(e.code)) { e.preventDefault(); gnJoin(); } });
+  $('grSolo').addEventListener('click', gnSingle);
+  $('grNet').addEventListener('click', grNetClick);
+  $('grStay').addEventListener('click', grStay);
+  $('grRes').addEventListener('click', grResult);
+  $('grCanvas').addEventListener('pointerdown', grCanvasTap);
+  $('grPad').querySelectorAll('[data-d]').forEach(b => {
+    const set = (v) => (e) => { e.preventDefault(); GR.pad[b.dataset.d] = v; b.classList.toggle('on', v); };
+    b.addEventListener('pointerdown', set(true)); b.addEventListener('pointerup', set(false)); b.addEventListener('pointercancel', set(false)); b.addEventListener('pointerleave', set(false));
+  });
+  // 화면이 뒤로 가도(태블릿 화면 전환 등) 위치 나누기는 계속 (타이머는 백그라운드에서도 느리게 돌아요)
+  let gnLastTick = performance.now();
+  // 화면을 내리거나 다른 앱으로 가면 잠깐 방에서 나가고, 돌아오면 다시 들어가요 (방장이 멈춘 채로 남지 않게)
+  document.addEventListener('visibilitychange', () => {
+    if (!GR.on) return;
+    if (document.hidden && ['on', 'retry', 'connecting'].includes(GN.status)) { clearTimeout(GN.timer); clearTimeout(GN.retryT); gnDestroy(); GN.others.clear(); GN.status = 'paused'; gnLog('paused'); }
+    else if (!document.hidden && GN.status === 'paused') { GN.status = 'retry'; GN.tries = 0; grNetUI(); GN.timer = setTimeout(() => { if (GN.status === 'retry' && GR.on) gnTryHost(); }, 200 + Math.random() * 800); }
+  });
+  setInterval(() => { const now = performance.now(), dt = Math.min(1.5, (now - gnLastTick) / 1000); gnLastTick = now; if (GR.on) gnTick(dt); }, 125);
+  window.addEventListener('keyup', (e) => { if (mode === 'grad') grKey(e, false); });
+  window.addEventListener('blur', () => { GR.keys = {}; GR.pad = {}; });
+
   // ================= 시작 · 지역 선택 =================
   function initialStage() {
     const h = (location.hash || '').slice(1).toLowerCase().replace(/^preview-?/, '');
-    const alias = { s1: 'bamboo', lesson1: 'bamboo', '1': 'bamboo', s2: 'greet', lesson2: 'greet', '2': 'greet', s3: 'name', lesson3: 'name', '3': 'name', s4: 'nation', lesson4: 'nation', '4': 'nation', s5: 'number', lesson5: 'number', '5': 'number', num: 'number', numbers: 'number', s6: 'birthday', lesson6: 'birthday', '6': 'birthday', bd: 'birthday', s7: 'family', lesson7: 'family', '7': 'family', s8: 'gift', lesson8: 'gift', '8': 'gift', s9: 'food', lesson9: 'food', '9': 'food', s10: 'diner', lesson10: 'diner', '10': 'diner' };
+    const alias = { s1: 'bamboo', lesson1: 'bamboo', '1': 'bamboo', s2: 'greet', lesson2: 'greet', '2': 'greet', s3: 'name', lesson3: 'name', '3': 'name', s4: 'nation', lesson4: 'nation', '4': 'nation', s5: 'number', lesson5: 'number', '5': 'number', num: 'number', numbers: 'number', s6: 'birthday', lesson6: 'birthday', '6': 'birthday', bd: 'birthday', s7: 'family', lesson7: 'family', '7': 'family', s8: 'gift', lesson8: 'gift', '8': 'gift', s9: 'food', lesson9: 'food', '9': 'food', s10: 'diner', lesson10: 'diner', '10': 'diner', s12: 'grad', lesson12: 'grad', '12': 'grad', graduation: 'grad' };
     const id = alias[h] || h;
     // 준비 중 지역은 학생 주소로 열리지 않아요 → 공개된 첫 지역으로
     return STAGE_ORDER.includes(id) ? id : STAGE_ORDER[0];
@@ -8177,9 +8864,10 @@
     loadStage(selStage, true); startPlay();
   }
   function enterPlay() {
-    if (STAGE.arcade) {   // 9·10차시: 맵 대신 아케이드 화면
+    if (STAGE.arcade) {   // 9·10차시: 맵 대신 아케이드 화면 · 12차시: 졸업식 광장
       run.hello = run.hello || 0;
       if (!run.hello) { run.hello = 1; report('start'); }
+      if (STAGE.arcade === 'grad') { grOpen(); return; }
       arcOpen(); return;
     }
     mode = 'play'; focusStage();
@@ -8296,6 +8984,7 @@
   function goHome() {
     for (const id of ['quiz', 'cardPop', 'speak', 'lesson', 'result', 'help', 'homeAsk', 'intro', 'faint', 'settings', 'confirmReset', 'nameAsk', 'talk', 'basket', 'slab', 'cake', 'cal', 'bcard', 'qpick', 'wardrobe']) $(id).hidden = true;
     if (AR.on || !$('arc').hidden) arClose();
+    if (GR.on || !$('grad').hidden) grClose();
     quick.on = false; quiz.lock = false; releaseAll(); closeMissionPanel();
     try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (e) {}
     clearTimeout(Voice.chk); clearTimeout(toastTimer); $('toast').hidden = true; $('focusHint').hidden = true;
@@ -8450,14 +9139,16 @@
       if (mode === 'play') { update(dt); updateFx(dt); }
       else if (mode === 'cut') updateFx(dt);
       else if (mode === 'arcade') arcUpdate(dt);
+      else if (mode === 'grad') grUpdate(dt);
       const [song, vol] = musicWanted(); BGM.sync(song, vol);
-      if ($('arc').hidden) render();   // 아케이드 화면이 덮고 있을 때는 맵을 그리지 않아요
+      if ($('arc').hidden && $('grad').hidden) render();   // 아케이드 화면이 덮고 있을 때는 맵을 그리지 않아요
       questSyncUI();
       requestAnimationFrame(frame);
     }
     requestAnimationFrame(frame);
     $('startScreen').querySelector('.card').focus({ preventScroll: true });
     window.__panda = {
+      get GR() { return GR; }, get GN() { return GN; }, GR_NPC, GR_ACT, MOODS, grOpen, grClose, grTalkOpen, grActStart, grMissionDone, grCeremony, grCount, gnJoin, gnSingle, gnState, grSolidHit, grStay, grResult,
       SHOP_ITEMS, buyItem, equipItem, unequipItem, openWardrobe, closeWardrobe, drawWear, drawPandaWith, get PET() { return PET; }, get wd() { return wd; },
       questInteract, openBasket, BD_NPC, BD_CANDLES, BD_CAKE_X, BD_BOARD_X, BD_DESK_X, BD_TABLE_X, bdValid, dateZh, bdSent, openCake, cakeAdd, cakeDel, cakeDone, closeCake, openCal, calOk, closeCal, openBCard, bcOk, closeBCard, bdPlace, openPick, closePick, pickOk, FAM, famOf, famSent, FM_NPC, GIFT, giftOf, gfSent, GF_NPC, GF_FR, FM_BOARD_X, famFace, giftURL, drawGift, FOOD, foodOf, foodSent, FD_MC, DN_NPC, priceZh, priceSay, drawFood, foodURL, questDone, payOnce, arRoundDone, FURNITURE, buyFurniture, homeCanPlace, homeFreeSpot, openHouse, closeHouse, get HS() { return HS; }, hsConfirm, hsUse, hsWake, AR, arcOpen, arPopGo, arHint, arKey, PRICES, FD_GUEST, DN_CU, get arDbg() { return { belt: AR.belt, held: AR.held, tray: AR.tray, want: AR.want, r: AR.r, paused: AR.paused, combo: AR.combo }; }, beltGrab, beltPut, fsPut, fsServe, fsGive1, fmNewTest: () => fmNew(), gfNewTest: () => gfNew(), get qp() { return qp; }, bdNewTest: () => bdNew(), bdBonus: () => bdBonusLater, basketDrop, closeBasket, zhNum, tokVal, testSpawn: (kind, n, set) => { const q = run.q, list = set ? q.m4.items : q.m3.items; spawnItems(list, kind, n, Q_SPOTS[set]); }, testOpenSlab: (rounds) => openSlab({ title: 'test', rounds, start: 0, tag: 'test', key: (i) => 'test' + i, onRound() {}, onAll() {} }), slabTap, slabKey, ruleHints, boxNums, closeTalk, closeSlab, questRecall, NPC_DEF, useSkill, canSkill, BGM, josa, BUILD, forestBuild, basicQuestion, MA, GREET, NW, P, save, quiz, quick, NQ, numQ, numQueue, NUMS, openQuiz, answer, closeQuiz, closeSpeak, selectStage, startPlay, goHome, askHome, resumeFromPause, loadStage, closeHelp, closeIntro, startNewRun, THEMES, SKINS, STAGES,
       get mode() { return mode; }, get monsters() { return monsters; }, get coins() { return coins; }, get gates() { return gates; },
