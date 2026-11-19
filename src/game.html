@@ -721,8 +721,11 @@
   .df-help { text-align: center; color: #fff; font-weight: 700; font-size: 16px; min-height: 1.4em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .df-help.good { color: #a8f0c4; } .df-help.bad { color: #ffe08a; } .df-help small { opacity: .85; }
   @media (max-width: 820px), (max-height: 560px) { .df-title { font-size: 16px; } .df-chip { font-size: 13px; padding: 4px 8px; } .df-moodbar { width: 60px; } .df-item { min-height: 60px; font-size: 14px; gap: 4px; } .df-item img { width: 40px; height: 40px; } #dfCanvas { width: min(100%, calc((100dvh - 160px) * 1.852)); } }
   @media (max-width: 640px) { .df-title { display: none; } .df-item span { font-size: 12px; } }
-  #dfPop { position: absolute; inset: 0; z-index: 5; background: rgba(9,17,31,.6); display: flex; align-items: center; justify-content: center; padding: 8px; overflow-y: auto; touch-action: pan-y; }
-  .df-popcard { max-width: 680px; max-height: 100%; overflow-y: auto; }
+  #dfPop { position: absolute; inset: 0; z-index: 5; background: rgba(9,17,31,.22); display: flex; align-items: center; justify-content: center; padding: 8px; overflow-y: auto; touch-action: pan-y; }
+  @media (min-width: 900px) { #dfPop { justify-content: flex-end; padding-right: max(16px, 4vw); } }   /* 왼쪽 마을 문 앞 판다가 보이게 */
+  .df-popcard { max-width: 620px; max-height: 100%; overflow-y: auto; box-shadow: 0 8px 0 rgba(0,0,0,.3), 0 0 0 4px rgba(255,255,255,.5); }
+  .df-popcard .ar-zh .han { font-size: clamp(26px, 4.4vh, 40px); } .df-popcard .ar-zh .py { font-size: clamp(16px, 2.4vh, 21px); } .df-popcard .ar-zh.big .han { font-size: clamp(32px, 5.6vh, 50px); }
+  .df-popcard .df-opt { min-height: 66px; } .df-popcard .df-slot { min-width: 72px; min-height: 66px; }
   .df-popcard h2 { margin: 4px 0; } .df-rhead { font-weight: 700; color: #a3361b; } .df-tip { font-size: 13px; color: #666; }
   .df-legend { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 6px 0; } .df-leg { display: inline-flex; align-items: center; gap: 4px; background: #fff; border: 2px solid #2b2838; border-radius: 10px; padding: 2px 8px 2px 2px; } .df-leg img { width: 36px; height: 36px; image-rendering: pixelated; }
   .df-qhead { font-weight: 700; color: #a3361b; } .df-q { font-size: 17px; font-weight: 700; margin: 6px 0; }
@@ -1065,7 +1068,7 @@
 
 <!-- 11차시 판다 기분 지킴이 디펜스 (3줄 라인 디펜스) -->
 <div id="df" hidden>
-  <div class="ar-topbar df-top"><button class="ar-ib" id="dfHome" aria-label="홈으로">🏠</button><div class="df-title">🛡️ 판다 기분 지킴이 디펜스!</div><div class="df-chip df-round" id="dfRound"></div><div class="df-chip" id="dfCount"></div><div class="df-mood" title="마을 기분 지수"><div class="df-moodbar"><i id="dfMoodBar"></i></div><span id="dfMoodTxt"></span></div><button class="ar-ib" id="dfPause" aria-label="일시정지">⏸</button></div>
+  <div class="ar-topbar df-top"><button class="ar-ib" id="dfHome" aria-label="홈으로">🏠</button><div class="df-title">🛡️ 판다 기분 지킴이!</div><div class="df-chip df-round" id="dfRound"></div><div class="df-chip" id="dfCount"></div><div class="df-mood" title="마을 기분 지수"><div class="df-moodbar"><i id="dfMoodBar"></i></div><span id="dfMoodTxt"></span></div><button class="ar-ib" id="dfPause" aria-label="일시정지">⏸</button></div>
   <div class="df-stage"><canvas id="dfCanvas" width="1200" height="648" aria-label="판다 마을로 오는 세 갈래 길"></canvas><div id="dfPaused" class="df-paused" hidden><div><b>⏸ 잠깐 쉬는 중</b><br><button class="ar-go big" id="dfResume">계속하기 ▶</button></div></div></div>
   <div class="df-bottom"><div id="dfItems" class="df-items"></div><div id="dfHelp" class="df-help" role="status" aria-live="polite"></div></div>
   <div id="dfPop" hidden><div class="ar-popcard df-popcard"><div id="dfPopBody"></div><p id="dfPopMsg" class="df-popmsg" role="status" aria-live="polite"></p><button class="ar-go big" id="dfPopGo">시작!</button></div></div>
@@ -2774,7 +2777,7 @@
       qgen: () => null, makeQueue: () => [],
     },    // 11차시: 판다 기분 지킴이 디펜스 (3줄 라인 디펜스 · 라운드 3개). arcade: 'defense'
     mood: {
-      id: 'mood', status: 'ready', lessonNo: '11차시', label: '11월 19일(목) 1교시', dateFull: '2026. 11. 19.(목) · 1교시 — 11차시', title: '판다 기분 지킴이 디펜스!', short: '판다 기분 지킴이', topic: '好久不见！ · 我很开心。', mapName: '판다 마을', isNew: true, theme: 'diner', song: 'garden', icon: '🛡️',
+      id: 'mood', status: 'ready', lessonNo: '11차시', label: '11월 19일(목) 1교시', dateFull: '2026. 11. 19.(목) · 1교시 — 11차시', title: '판다 기분 지킴이!', short: '판다 기분 지킴이', topic: '好久不见！ · 我很开心。', mapName: '판다 마을', isNew: true, theme: 'diner', song: 'garden', icon: '🛡️',
       quest: true, questKit: 'arc', arcade: 'defense', clearTitle: '판다 기분 지킴이 성공!',
       ...LAYOUT,
       monsters: [],
@@ -8404,10 +8407,11 @@
     { id: 'bed', name: '포근한 침대', mood: 'kun', act: '침대에서 쿨쿨 자요' },
   ];
   const DF_ITEM = Object.fromEntries(DF_ITEMS.map(it => [it.id, it]));
+  // 판다 걷는 속도(칸/초, 화면 가로 400칸): 처음 7.5 · 8.5 · 9.5 → 라운드별 2.2 · 2.5 · 2.8배 = 16.5 · 21.25 · 26.6
   const DF_ROUNDS = [
-    { name: '판다의 기분을 맞혀라!', goal: '판다 머리 위의 <b>중국어 단어</b>를 읽고 알맞은 선물을 보내요.<br>开心 · 累 · 饿 · 困 네 가지를 모두 구별해 봐요!', speed: 7.5, max: 1, extraT: 14 },
-    { name: '문장을 읽고 판다 친구 돕기!', goal: '이번에는 <b>문장</b>으로 말해요. 我很○○。를 읽고 도와줘요.<br>여러 판다가 함께 와요. 누구부터 도울지 골라 봐요!', speed: 8.5, max: 2, extraT: 10 },
-    { name: '오랜만이야! 판다 친구 대작전', goal: '오랜만에 만난 친구들이 인사하며 기분을 말해요.<br>친구를 6번 도우면 <b>특별한 친구</b>가 찾아와요!', speed: 9.5, max: 3, extraT: 9 },
+    { name: '판다의 기분을 맞혀라!', goal: '판다 머리 위의 <b>중국어 단어</b>를 읽고 알맞은 선물을 보내요.<br>开心 · 累 · 饿 · 困 네 가지를 모두 구별해 봐요!', speed: 7.5 * 2.2, max: 1, extraT: 9 },
+    { name: '문장을 읽고 판다 친구 돕기!', goal: '이번에는 <b>문장</b>으로 말해요. 我很○○。를 읽고 도와줘요.<br>여러 판다가 함께 와요. 누구부터 도울지 골라 봐요!', speed: 8.5 * 2.5, max: 2, extraT: 7 },
+    { name: '오랜만이야! 판다 친구 대작전', goal: '오랜만에 만난 친구들이 인사하며 기분을 말해요.<br>친구를 6번 도우면 <b>특별한 친구</b>가 찾아와요!', speed: 9.5 * 2.8, max: 3, extraT: 6 },
   ];
   const DF = { on: false, r: 0, pandas: [], fx: [], sel: null, target: null, queue: [], helped: 0, need: 0, mood: 60, spawnT: 0, extraT: 0, paused: false, phase: 'play', time: 0, nid: 1, streak: 0, lastLane: -1, bubbles: [], world: null };
   // ----- 픽셀 아트: 판다 표정 · 몸 · 선물 -----
@@ -8556,13 +8560,14 @@
   // ----- 라운드 -----
   function dfRoundQueue(r) {
     const four = () => shuffle(DF_MOOD_IDS);
-    if (r === 0) return [...four(), ...four()];              // 네 가지 × 2번 (8마리)
-    if (r === 1) return [...four(), ...four(), ...shuffle(DF_MOOD_IDS).slice(0, 2)];   // 10마리
-    return [...four(), ...shuffle(DF_MOOD_IDS).slice(0, 2)];   // 6마리 → 특별한 친구 → 4마리 더
+    // 판다가 빨라진 만큼 라운드마다 조금 더 많이 와요 (같은 기분이 연달아 많이 나오지 않게 네 가지씩 섞어서)
+    if (r === 0) return [...four(), ...four(), ...shuffle(DF_MOOD_IDS).slice(0, 2)];   // 10마리 (네 가지 모두 2번 이상)
+    if (r === 1) return [...four(), ...four(), ...four()];                              // 12마리
+    return [...four(), ...shuffle(DF_MOOD_IDS).slice(0, 2)];   // 6마리 → 특별한 친구 → 5마리 더
   }
   function dfRoundIntro(r) {
-    DF.r = r; DF.phase = 'intro'; DF.pandas = []; DF.fx = []; DF.target = null; dfSelect(null);
-    DF.queue = dfRoundQueue(r); DF.helped = 0; DF.need = r === 2 ? 10 : DF.queue.length; DF.mood = Math.max(DF.mood, 60); DF.spawnT = 0.6; DF.extraT = DF_ROUNDS[r].extraT; DF.friendDone = false; DF.quizDone = {};
+    DF.r = r; DF.phase = 'intro'; DF.grace = 0; DF.pandas = []; DF.fx = []; DF.target = null; dfSelect(null);
+    DF.queue = dfRoundQueue(r); DF.helped = 0; DF.need = r === 2 ? 11 : DF.queue.length; DF.mood = Math.max(DF.mood, 60); DF.spawnT = 0.6; DF.extraT = DF_ROUNDS[r].extraT; DF.friendDone = false; DF.quizDone = {};
     dfTopUI();
     const R = DF_ROUNDS[r];
     const legend = DF_ITEMS.map(it => `<span class="df-leg"><img src="${dfItemURL(it.id)}" alt=""><b>${it.name}</b></span>`).join('');
@@ -8582,21 +8587,27 @@
   const dfActive = () => DF.pandas.filter(p => p.state === 'walk' || p.state === 'wait').length;
   function dfUpdate(dt) {
     DF.time += dt;
-    if (!DF.paused && DF.phase === 'play') {
+    // 문제 창(quiz)이 열려 있어도 판다는 계속 걸어요. 새 판다만 잠깐 안 나오고, 마을 문 앞에서는 벌점 없이 기다려요
+    const live = DF.phase === 'play' || DF.phase === 'quiz', quiz = DF.phase === 'quiz';
+    if (quiz) DF.grace = 4; else if (DF.grace > 0 && !DF.paused) DF.grace -= dt;   // 문제를 끝낸 뒤 4초 동안도 문 앞 대기선 유지 (바로 감점되지 않게)
+    const hold = quiz || DF.grace > 0;
+    if (!DF.paused && live) {
       const R = DF_ROUNDS[DF.r], act = dfActive();
       // 판다 등장: 도울 판다가 정해진 수보다 적으면 곧 다음 친구 (빨리 도우면 빨리 와요) · 오래 걸리면 한 마리 더
-      if (act < R.max) { DF.spawnT -= dt; if (DF.spawnT <= 0 && dfSpawn()) DF.spawnT = DF.r === 0 ? 0.9 : 1.4; }
-      else DF.spawnT = Math.max(DF.spawnT, 0.9);
-      DF.extraT -= dt; if (DF.extraT <= 0) { DF.extraT = R.extraT; if (act < R.max + 1 && act > 0) dfSpawn(); }
+      if (!quiz) {
+        if (act < R.max) { DF.spawnT -= dt; if (DF.spawnT <= 0 && dfSpawn()) DF.spawnT = DF.r === 0 ? 0.9 : 1.6; }
+        else DF.spawnT = Math.max(DF.spawnT, 1.2);
+        DF.extraT -= dt; if (DF.extraT <= 0) { DF.extraT = R.extraT; if (act < R.max + 1 && act > 0) dfSpawn(); }
+      } else DF.spawnT = Math.max(DF.spawnT, 1.2);
       // 이동 (같은 길에서는 앞 친구 뒤에 멈춰요)
       for (const p of DF.pandas) {
         p.t += dt;
         if (p.state === 'walk' || p.state === 'wait') {
           const ahead = DF.pandas.filter(q => q !== p && q.lane === p.lane && q.x < p.x && (q.state === 'walk' || q.state === 'wait'));
-          const stopX = Math.max(DF_GATE, ...ahead.map(q => q.x + 34));
+          const stopX = Math.max(hold && !p.gated ? DF_GATE + 26 : DF_GATE, ...ahead.map(q => q.x + 34));   // 문제 푸는 동안은 문 앞 대기선에서 멈춰요
           const sp = R.speed * (p.mood === 'lei' && DF.r === 0 ? 0.8 : 1);
           if (p.x > stopX) { p.x = Math.max(stopX, p.x - sp * dt); p.state = 'walk'; }
-          if (p.x <= DF_GATE + 0.01 && !p.gated) { p.gated = true; p.state = 'wait'; DF.mood = Math.max(0, DF.mood - 6); dfTopUI(); p.hint = true; p.fb = dfMeaning(p, 1); p.fbT = 99; SFX.wrong(); }
+          if (!hold && p.x <= DF_GATE + 0.01 && !p.gated) { p.gated = true; p.state = 'wait'; DF.mood = Math.max(0, DF.mood - 6); dfTopUI(); p.hint = true; p.fb = dfMeaning(p, 1); p.fbT = 99; SFX.wrong(); }
           if (p.x <= DF_GATE + 0.01) p.state = 'wait';
         } else if (p.state === 'react') { p.rt += dt; if (p.rt > 1.9) { p.state = 'leave'; p.rt = 0; } }
         else if (p.state === 'leave') { p.rt += dt; p.x -= 46 * dt; if (p.x < 48) p.alpha = Math.max(0, p.alpha - dt * 3); }
@@ -8711,7 +8722,7 @@
     return (DF.friendURL = c.toDataURL());
   }
   function dfFriend() {
-    DF.phase = 'quiz'; DF.target = null; dfSelect(null); DF.queue = shuffle(DF_MOOD_IDS);   // 대화 뒤 친구 4명 더
+    DF.phase = 'quiz'; DF.target = null; dfSelect(null); DF.queue = [...shuffle(DF_MOOD_IDS), pick(DF_MOOD_IDS)];   // 대화 뒤 친구 5명 더
     const face = `<div class="df-friend"><img src="${dfFriendPic()}" alt="특별한 친구 판다"><div class="df-fsay">`;
     // ① 好久不见！ 뜻
     dfChoice({ key: 'df-f1', label: '특별한 친구: 好久不见！의 뜻', right: '오랜만이야!',
@@ -8759,7 +8770,7 @@
       opts: [{ html: dfZh('你', 'nǐ'), id: '你' }, { html: dfZh('好', 'hǎo'), id: '好' }, { html: dfZh('吗', 'ma'), ok: true, id: '吗' }],
       explainBad: (o) => o.id === '你' ? '你(nǐ)는 \'너\'라는 뜻이에요. 문장 끝에 붙은 글자를 봐요.' : '好(hǎo)는 \'좋다\'라는 뜻이에요. 문장 끝에 붙은 글자를 봐요.',
       explainOk: `${dfZh('吗', 'ma', true)}<br>문장 끝에 吗를 붙이면 '~니?' 하고 묻는 말이 돼요.<br>你好 + 吗 → ${dfZh('你好吗？', 'Nǐ hǎo ma?')} 잘 지내?`,
-      next: () => { dfPopClose(); DF.phase = 'play'; dfHelp('특별한 친구와 인사 성공! 남은 친구 4명도 도와줘요 💪', 'good'); } });
+      next: () => { dfPopClose(); DF.phase = 'play'; dfHelp('특별한 친구와 인사 성공! 남은 친구 5명도 도와줘요 💪', 'good'); } });
   }
   // 라운드 끝: 미션 완료 기록 · 코인 · 카드
   const DF_ROUND_COIN = 20, DF_CLEAR_BONUS = 15;
