@@ -977,7 +977,7 @@
   .hs-coin { flex: none; background: #fff3c4; color: var(--ink); border: 3px solid var(--ink); border-radius: 99px; padding: 3px 14px; font-family: var(--font-display); font-size: 20px; }
   .hs-stage { flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; padding: 8px; }
   .hs-frame { position: relative; }
-  #hsCanvas { display: block; width: min(calc(100vw - 16px), calc((100dvh - 200px) * 1.538)); height: auto; aspect-ratio: 320 / 208; image-rendering: pixelated; border: 4px solid var(--ink); border-radius: 12px; background: #fde8d7; touch-action: none; cursor: pointer; }
+  #hsCanvas { display: block; width: min(calc(100vw - 16px), calc((100dvh - 200px) * var(--hsr, 1.538))); height: auto; aspect-ratio: 320 / 208; image-rendering: pixelated; border: 4px solid var(--ink); border-radius: 12px; background: #fde8d7; touch-action: none; cursor: pointer; }
   #hsHint { position: absolute; left: 50%; top: 8px; transform: translateX(-50%); background: rgba(29, 39, 56, .82); color: #fff; border-radius: 99px; padding: 4px 14px; font-size: 15px; font-weight: 700; white-space: nowrap; pointer-events: none; }
   #hsMsg { flex: none; text-align: center; font-size: 17px; font-weight: 700; min-height: 1.4em; padding: 0 10px; color: #24508f; } #hsMsg.ok { color: #1f7a3a; } #hsMsg.no { color: #b5121b; }
   .hs-bar { flex: none; display: flex; gap: 8px; justify-content: center; align-items: center; flex-wrap: wrap; padding: 8px 10px 12px; }
@@ -999,6 +999,7 @@
   .hs-card canvas { width: 96px; height: 72px; image-rendering: pixelated; }
   .hs-card b { font-size: 17px; }
   .hs-card .btn { min-height: 44px; font-size: 17px; padding: 4px 16px; }
+  .hs-tabs { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-bottom: 4px; } .hs-tabs .btn.on { background: #ffd23f; }
   .hs-chip { font-size: 15px; border-radius: 99px; padding: 1px 10px; background: var(--paper-2); } .hs-chip.own { background: #dff5e1; color: #1f7a3a; }
   .hs-note { font-size: 15px; font-weight: 700; color: #1f7a3a; min-height: 44px; display: flex; align-items: center; } .hs-note.no { color: #b5121b; }
   .hs-empty { grid-column: 1 / -1; text-align: center; font-size: 18px; }
@@ -1013,7 +1014,7 @@
   }
   @media (max-height: 470px) {
     .hs-top { padding: 4px 10px; } .hs-home { min-height: 38px; } #hsSheet { top: 48px; }
-    #hsCanvas { width: min(calc(100vw - 16px), calc((100dvh - 150px) * 1.538)); }
+    #hsCanvas { width: min(calc(100vw - 16px), calc((100dvh - 150px) * var(--hsr, 1.538))); }
     .hs-bar { padding: 4px 8px 6px; } .hs-bar .btn { min-height: 44px; font-size: 16px; }
     #hsMsg { font-size: 14px; }
   }
@@ -2314,8 +2315,8 @@
   // 가격 근거: 지역마다 첫 탐험에 받을 수 있는 코인이 1~4차시 93개, 5~8차시 50~65개(모두 합쳐 603개)
   //   → 리본 30(한 지역 절반쯤) … 왕관 200(서너 지역을 모아야 하는 목표). 6개 합계 590 = 지금 1~6차시 최대치(488)보다 많음
   // 슬롯: 기존 4개(머리·얼굴·목·등) + 학생 요청 아이템용 5개(손·발·몸·탈것·친구). 슬롯마다 하나만 장착
-  const WEAR_SLOTS = { head: '머리', face: '얼굴', neck: '목', back: '등', hand: '손', feet: '발', body: '몸', ride: '탈것', pet: '친구' };
-  const WEAR_SLOT_LABEL = { head: '머리 장식', face: '얼굴 장식', neck: '목 장식', back: '등 장식', hand: '손에 들기', feet: '신발', body: '옷', ride: '탈것 (꾸미기용)', pet: '함께하는 친구' };
+  const WEAR_SLOTS = { head: '머리', hair: '머리핀', face: '얼굴', neck: '목', back: '등', hand: '손', feet: '발', body: '몸', ride: '탈것', pet: '친구' };   // hair: 머리핀 칸(2026-11-19) — 모자·왕관·머리띠와 함께 쓸 수 있어요
+  const WEAR_SLOT_LABEL = { head: '머리 장식', hair: '머리핀 (모자와 함께 OK)', face: '얼굴 장식', neck: '목 장식', back: '등 장식', hand: '손에 들기', feet: '신발', body: '옷', ride: '탈것 (꾸미기용)', pet: '함께하는 친구' };
   const SHOP_ITEMS = [
     { id: 'w_ribbon', kind: 'wear', slot: 'head', name: '빨간 리본', price: 30 },
     { id: 'w_glasses', kind: 'wear', slot: 'face', name: '동그란 안경', price: 50 },
@@ -2335,6 +2336,9 @@
     { id: 'w_tiger', kind: 'wear', slot: 'pet', name: '호랑이 친구', price: 150 },
     { id: 'w_bike', kind: 'wear', slot: 'ride', name: '미니 자전거', price: 160 },
     { id: 'w_car', kind: 'wear', slot: 'ride', name: '미니 자동차', price: 220 },
+    // 학생이 직접 그린 디자인 (2026-11-19): 꽃잎 드레스 + 꽃 머리핀 세트
+    { id: 'w_petaldress', kind: 'wear', slot: 'body', name: '꽃잎 드레스', price: 90, set: 'petal' },
+    { id: 'w_flowerpin', kind: 'wear', slot: 'hair', name: '꽃 머리핀', price: 35, set: 'petal' },
   ];
   const SHOP_BY_ID = Object.fromEntries(SHOP_ITEMS.map(it => [it.id, it]));
   // save.shop = { v: 1, owned: [아이템 ID…], wear: { head, face, neck, back } }  (나중에 room: { 자리: 가구 ID } 를 더할 자리)
@@ -2421,8 +2425,27 @@
       for (const x of [-1, 12]) { R(x, 14, 4, 3, WK); R(x + 1, 15, 2, 1, '#9aa0aa'); }                                 // 바퀴
     } },
   });
-  // 그리는 순서: 뒤(친구·자전거·가방) → 판다 → 앞(옷·신발·자동차·목·얼굴·머리·손)
-  const WEAR_ORDER = { back: ['pet', 'ride', 'back'], front: ['body', 'feet', 'ride', 'neck', 'face', 'head', 'hand'] };
+  // ----- 학생 디자인: 꽃잎 드레스 · 꽃 머리핀 (판다 16칸 기준) -----
+  // 드레스: 가슴 물결 프릴(11줄) → 허리 띠와 꽃(12줄) → 1단 치마(13줄) → 더 넓게 퍼지는 2단 치마와 흰 물결 단(14줄)
+  // 머리핀: 학생 그림처럼 오른쪽 귀 아래 머리 위에 다섯 꽃잎 꽃(노란 꽃술) + 작은 잎사귀
+  Object.assign(WEAR_ART, {
+    w_petaldress: { layer: 'front', box: [0, 0, 16, 16], draw(R) {
+      for (let x = 3; x < 13; x++) R(x, 11, 1, 1, x % 2 ? '#ffffff' : '#ffc2d1');                        // 가슴을 감싸는 물결 프릴 (그림의 구불구불한 윗단)
+      R(4, 12, 8, 1, '#ffd6e0'); R(11, 12, 1, 1, '#ff9fb8');                                             // 허리
+      R(3, 13, 10, 1, '#ffe3ea'); for (let x = 3; x < 13; x += 2) R(x, 13, 1, 1, '#fff3f6');             // 1단 치마 (물결 단)
+      R(1, 14, 14, 1, '#ff9fb8'); for (let x = 1; x < 15; x += 2) R(x, 14, 1, 1, '#ffb3c6');             // 2단 치마: 더 넓게 퍼지고 조금 진한 분홍
+      R(2, 13, 1, 1, '#ffb3c6'); R(13, 13, 1, 1, '#ffb3c6');                                              // 치마가 퍼지는 양 끝
+      R(4, 11, 1, 1, '#ffffff'); R(3, 12, 1, 1, '#ffffff'); R(5, 12, 1, 1, '#ffffff'); R(4, 13, 1, 1, '#ffffff'); R(4, 12, 1, 1, '#ffd23f');   // 허리 옆(그림처럼 왼쪽)의 꽃
+    } },
+    w_flowerpin: { layer: 'front', box: [0, -4, 16, 16], draw(R) {
+      R(12, 0, 1, 1, '#ff8fab'); R(11, 1, 1, 1, '#ffb3c6'); R(13, 1, 1, 1, '#ffb3c6'); R(11, 2, 1, 1, '#ff8fab'); R(13, 2, 1, 1, '#ff8fab');   // 둥근 꽃잎 다섯 장 (오른쪽 귀 아래, 흰 얼굴 위에서도 보이게 분홍)
+      R(12, 1, 1, 1, '#ffd23f'); R(12, 2, 1, 1, '#f6a821');                                               // 노란 꽃술
+      R(14, 2, 1, 1, '#5cbf62');                                                                          // 작은 잎사귀
+    } },
+
+  });
+  // 그리는 순서: 뒤(친구·자전거·가방) → 판다 → 앞(옷·신발·자동차·목·얼굴·머리·머리핀·손)
+  const WEAR_ORDER = { back: ['pet', 'ride', 'back'], front: ['body', 'feet', 'ride', 'neck', 'face', 'head', 'hair', 'hand'] };
   // g: 캔버스, (sx, sy): 판다 그림 왼쪽 위, s: 한 칸 크기(게임 화면 2), wear: { head, face, … }, frame: 판다 그림 종류(운동화용), skip: 빼고 그릴 슬롯
   function drawWear(g, sx, sy, s, face, wear, layer, frame = 'idle', skip = null) {
     if (!wear) return;
@@ -9101,7 +9124,7 @@
     $('wardrobe').hidden = true; drawTitlePanda(); showStart();
   }
   // 미리보기 = 지금 장착한 것 + 고른 아이템 (같은 부위는 고른 것으로 바꿔서)
-  function previewWear() { const w = { ...save.shop.wear }; const it = SHOP_BY_ID[wd.pick]; if (it) w[it.slot] = it.id; return w; }
+  function previewWear() { const w = { ...save.shop.wear }; const it = SHOP_BY_ID[wd.pick]; if (it) w[it.slot] = it.id; if (it && it.set && wd.set) for (const x of SHOP_ITEMS) if (x.set === it.set) w[x.slot] = x.id; return w; }   // 세트 미리보기: 같은 세트 아이템을 함께
   function renderWardrobe() {
     $('wdCoin').textContent = save.coins;
     drawPandaWith($('wdPanda'), previewWear());
@@ -9116,7 +9139,7 @@
     }).join('');
     $('wdList').querySelectorAll('.wd-item').forEach(b => {
       const x = SHOP_BY_ID[b.dataset.id]; drawPandaWith(b.querySelector('canvas'), { [x.slot]: x.id });
-      b.addEventListener('click', () => { if (mode !== 'shop') return; wd.pick = x.id; wd.ask = false; $('wdMsg').textContent = ''; SFX.pop(); renderWardrobe(); });
+      b.addEventListener('click', () => { if (mode !== 'shop') return; wd.pick = x.id; wd.ask = false; wd.set = false; $('wdMsg').textContent = ''; SFX.pop(); renderWardrobe(); });
     });
     // 고른 아이템의 버튼: 사기 → (한 번 더 확인) / 코인 부족 / 장착 / 해제
     let act = '';
@@ -9125,11 +9148,13 @@
     else if (save.coins < it.price) act = `<span class="q">🪙 ${it.price}코인 · 코인이 조금 부족해요! (${it.price - save.coins}코인 더 필요)<br>다른 모험을 하면서 코인을 모아 보세요!</span>`;
     else if (!wd.ask) act = `<button class="btn primary" id="wdBuy">🪙 ${it.price}코인으로 사기</button>`;
     else act = `<span class="q">이 아이템을 구매할까요? (🪙 ${save.coins} → ${save.coins - it.price})</span><button class="btn primary" id="wdYes">네, 살래요!</button><button class="btn" id="wdNo">아니요</button>`;
+    if (it && it.set) act += `<button class="btn" id="wdSet">${wd.set ? '↩ 하나만 보기' : '🌸 세트로 입어 보기'}</button>`;   // 꽃잎 드레스 + 꽃 머리핀 함께 미리보기
     $('wdAct').innerHTML = act;
     // [사기]를 두 번 톡톡 눌러도 같은 자리에 뜬 [네, 살래요!]가 바로 눌리지 않게 0.35초 기다려요 (구매는 어차피 한 번만 돼요)
     const on = (id, f) => { const b = $(id); if (b) b.addEventListener('click', () => { if (mode !== 'shop' || (id === 'wdYes' && performance.now() < wd.busy)) return; f(); }); };
     on('wdBuy', () => { wd.ask = true; wd.busy = performance.now() + 350; renderWardrobe(); const y = $('wdYes'); if (y) y.focus({ preventScroll: true }); });
     on('wdNo', () => { wd.ask = false; renderWardrobe(); });
+    on('wdSet', () => { wd.set = !wd.set; SFX.pop(); renderWardrobe(); });
     on('wdYes', () => {
       const r = buyItem(wd.pick); wd.ask = false;
       if (r.ok) { SFX.correct(); wdSay('구매 완료! 이제 장착할 수 있어요.'); }
@@ -9149,7 +9174,9 @@
   //   - owned는 '개수'라서 나중에 같은 가구를 여러 개 살 수 있게 늘리기 쉬워요 (1차는 종류별 1개만)
   //   - placed의 uid로 하나하나 구별해요 (나중에 의자 4개도 가능). 2차 상호작용(눕기·켜기)은 항목에 state를 더하면 돼요
   // 방: 320 × 208 (16px 칸 20 × 13). 벽 0~5줄(벽 장식은 1~4줄), 바닥 6~12줄
-  const HS_W = 320, HS_H = 208, HS_C = 16, HS_COLS = 20, HS_FLOOR = 6, HS_ROWS = 13;
+  // 3차(2026-11-19): 집 확장으로 가로 칸 수가 20 → 24 → 28로 늘어날 수 있어 HS_W·HS_COLS만 바뀌어요 (오른쪽으로만 넓어져서 놓인 가구 좌표는 그대로)
+  let HS_W = 320, HS_COLS = 20;
+  const HS_H = 208, HS_C = 16, HS_FLOOR = 6, HS_ROWS = 13;
   // layer: 'floor' 바닥 가구(서로 겹치지 않음) · 'rug' 러그(가구 아래에 깔 수 있음, 러그끼리는 겹치지 않음) · 'wall' 벽 장식
   // fw·fd = 차지하는 칸(가로·깊이), sw·sh = 그림 크기(px). 가격 근거는 보고서 참고 (문제를 맞혀 한 판에 1~4차시 46·5~10차시 20코인)
   const FURNITURE = [
@@ -9173,13 +9200,57 @@
   const HOME_MAX_EACH = 1;   // 1차: 종류별 1개
   // 벽에서 장식을 걸 수 없는 칸 (창문·문)
   const HS_WINDOW = { gx: 3, gy: 1, w: 4, h: 3 }, HS_DOOR = { gx: 16, gy: 1, w: 3, h: 5 };
-  function HOME_DEFAULT() { return { v: 1, owned: {}, placed: [], nextUid: 1 }; }
+  function HOME_DEFAULT() { return { v: 1, owned: {}, placed: [], nextUid: 1, wall: 'wp_cream', floor: 'fl_wood', decor: [], size: 1 }; }
+  // ----- 3차: 벽지 · 바닥 · 테마 · 집 확장 (save.home.wall · floor · decor[산 벽지·바닥] · size 1~3) -----
+  // 가격 근거: 가구 35~150코인, 9~12차시 한 판 75~90코인 → 벽지·바닥 40~65, 확장 150·250
+  const HOME_WALLS = [
+    { id: 'wp_cream', name: '기본 크림 벽지', price: 0 }, { id: 'wp_sakura', name: '벚꽃 벽지', price: 55 }, { id: 'wp_bamboo', name: '대나무 숲 벽지', price: 55 },
+    { id: 'wp_night', name: '밤하늘 벽지', price: 65 }, { id: 'wp_cloud', name: '구름 벽지', price: 50 }, { id: 'wp_berry', name: '딸기 벽지', price: 60 },
+  ];
+  const HOME_FLOORS = [
+    { id: 'fl_wood', name: '기본 나무 바닥', price: 0 }, { id: 'fl_light', name: '밝은 원목 바닥', price: 40 }, { id: 'fl_pink', name: '분홍 체크 바닥', price: 50 },
+    { id: 'fl_tile', name: '크림 타일 바닥', price: 45 }, { id: 'fl_grass', name: '잔디 느낌 바닥', price: 50 }, { id: 'fl_dark', name: '밤색 고급 원목 바닥', price: 65 },
+  ];
+  const HOME_THEMES = [
+    { id: 'th_sakura', name: '🌸 벚꽃 방', wall: 'wp_sakura', floor: 'fl_pink' }, { id: 'th_bamboo', name: '🎋 대나무 방', wall: 'wp_bamboo', floor: 'fl_light' },
+    { id: 'th_star', name: '🌙 별빛 방', wall: 'wp_night', floor: 'fl_dark' }, { id: 'th_cloud', name: '☁️ 구름 방', wall: 'wp_cloud', floor: 'fl_tile' },
+  ];
+  const HOME_SIZES = [{ lv: 1, name: '기본 방', cols: 20, price: 0 }, { lv: 2, name: '넓은 방', cols: 24, price: 150 }, { lv: 3, name: '큰 방', cols: 28, price: 250 }];
+  const DECO_BY_ID = Object.fromEntries([...HOME_WALLS.map(d => [d.id, { ...d, kind: 'wall' }]), ...HOME_FLOORS.map(d => [d.id, { ...d, kind: 'floor' }])]);
+  const decoOwned = (id) => { const d = DECO_BY_ID[id]; return !!d && (d.price === 0 || save.home.decor.includes(id)); };
+  function hsSetSize(lv) { const z = HOME_SIZES[clamp(lv | 0, 1, 3) - 1]; HS_COLS = z.cols; HS_W = z.cols * HS_C; }
+  // 벽지·바닥 사기: ID만 받고 가격은 목록에서. 코인은 한 번만 줄고, 이미 가진 것은 다시 사지 않아요
+  function buyDeco(id) {
+    const d = Object.prototype.hasOwnProperty.call(DECO_BY_ID, id) ? DECO_BY_ID[id] : null;
+    if (!d || !Number.isInteger(d.price) || d.price <= 0) return { ok: false, why: 'bad' };
+    if (decoOwned(id)) return { ok: false, why: 'owned' };
+    const coins = Math.max(0, Math.floor(Number(save.coins) || 0));
+    if (coins < d.price) return { ok: false, why: 'poor', need: d.price - coins };
+    save.coins = coins - d.price; save.home.decor.push(id); writeSave(); updateHUD();
+    return { ok: true };
+  }
+  // 적용: 가진 것만. 가구 배치(placed)는 건드리지 않아요
+  function applyDeco(id) { const d = DECO_BY_ID[id]; if (!d || !decoOwned(id)) return false; save.home[d.kind] = id; writeSave(); return true; }
+  // 집 확장: 한 단계씩만. 오른쪽으로만 넓어져서 가구는 제자리 그대로
+  function buyHomeSize(lv) {
+    const z = HOME_SIZES[lv - 1];
+    if (!z || lv !== save.home.size + 1) return { ok: false, why: lv <= save.home.size ? 'owned' : 'order' };
+    const coins = Math.max(0, Math.floor(Number(save.coins) || 0));
+    if (coins < z.price) return { ok: false, why: 'poor', need: z.price - coins };
+    save.coins = coins - z.price; save.home.size = lv; hsSetSize(lv); writeSave(); updateHUD();
+    return { ok: true };
+  }
   // 예전 저장에는 home 칸이 없어요 → 빈 집으로 채워요. 이상한 값(모르는 가구·방 밖·사지 않은 가구 배치)은 안전하게 정리
   function migrateHome() {
     const h = (save.home && typeof save.home === 'object' && !Array.isArray(save.home)) ? save.home : HOME_DEFAULT();
     const owned = {};
     if (h.owned && typeof h.owned === 'object' && !Array.isArray(h.owned)) for (const [id, n] of Object.entries(h.owned)) if (FURN_BY_ID[id] && Number.isInteger(n) && n > 0) owned[id] = Math.min(n, 99);
     h.owned = owned;
+    // 3차 칸: 예전 저장에는 없어요 → 기본값으로 채워요 (가구·코인은 그대로). 방 크기를 먼저 정해야 넓은 방의 가구가 지워지지 않아요
+    h.decor = Array.isArray(h.decor) ? [...new Set(h.decor.filter(id => DECO_BY_ID[id] && DECO_BY_ID[id].price > 0))] : [];
+    h.size = Number.isInteger(h.size) && h.size >= 1 && h.size <= 3 ? h.size : 1; hsSetSize(h.size);
+    const okDeco = (id, kind) => DECO_BY_ID[id] && DECO_BY_ID[id].kind === kind && (DECO_BY_ID[id].price === 0 || h.decor.includes(id));
+    h.wall = okDeco(h.wall, 'wall') ? h.wall : 'wp_cream'; h.floor = okDeco(h.floor, 'floor') ? h.floor : 'fl_wood';
     const placed = [], cnt = {};
     let maxUid = 0;
     for (const p of (Array.isArray(h.placed) ? h.placed : [])) {
@@ -9389,7 +9460,7 @@
     if (!houseOpenOk()) { notice('탐험을 하나 끝내면 판다 집이 열려요! 🏠'); return; }
     audio(); mode = 'house';
     Object.assign(HS, { on: true, decor: false, sel: null, ghost: null, sheet: null, ask: null, drag: null }); hsResetLife();   // 들어오면 생활하기 모드, TV·조명은 꺼진 채로
-    $('startScreen').hidden = true; $('house').hidden = false;
+    $('startScreen').hidden = true; $('house').hidden = false; HS.tab = HS.tab || 'furn'; HS.pv = null; hsSetSize(save.home.size); hsApplyCanvas();
     $('hsTitle').textContent = `🏠 ${save.playerName ? save.playerName + '의 ' : ''}판다 집`;
     hsMsg(save.home.placed.length ? '' : '🛍️ 가구 상점에서 가구를 사서 집을 꾸며 보세요!');
     hsRender();
@@ -9418,15 +9489,39 @@
     HS.raf = requestAnimationFrame(hsFrame);
   }
   // ----- 방 그리기 -----
+  // 벽지 무늬 (가구가 잘 보이게 연한 바탕 + 띄엄띄엄 무늬)
+  function hsPaintWall(g, id, W, H) {
+    const R = (x, y, w, h, col) => { g.fillStyle = col; g.fillRect(x, y, w, h); };
+    if (id === 'wp_sakura') { R(0, 0, W, H, '#ffeef3'); for (let y = 6, k = 0; y < H - 10; y += 22, k++) for (let x = (k % 2) * 16 + 6; x < W; x += 32) { R(x - 2, y, 5, 1, '#ffb3c6'); R(x, y - 2, 1, 5, '#ffb3c6'); R(x - 1, y - 1, 3, 3, '#ffc8d6'); R(x, y, 1, 1, '#fff1a8'); R(x + 9, y + 9, 1, 1, '#ffd6e0'); } return; }
+    if (id === 'wp_bamboo') { R(0, 0, W, H, '#eef7e4'); for (let x = 10; x < W; x += 30) { R(x, 0, 3, H, '#cfe8bc'); R(x, 0, 1, H, '#dff0d0'); for (let y = 8 + (x % 3) * 5; y < H; y += 18) { R(x - 1, y, 5, 1, '#b7dca0'); R(x + 3, y - 3, 5, 1, '#c6e5b0'); } } return; }
+    if (id === 'wp_night') { R(0, 0, W, H, '#33407a'); let sd = 5; const rn = () => (sd = (sd * 9301 + 49297) % 233280) / 233280; for (let i = 0; i < W / 9; i++) { const x = Math.floor(rn() * W), y = Math.floor(rn() * (H - 10)); if (i % 4 === 0) { R(x - 1, y, 3, 1, '#fff1a8'); R(x, y - 1, 1, 3, '#fff1a8'); } else R(x, y, 1, 1, i % 2 ? '#c9d3ff' : '#fff6c8'); } R(W - 34, 10, 8, 8, '#fff1a8'); R(W - 31, 9, 7, 8, '#33407a'); return; }
+    if (id === 'wp_cloud') { R(0, 0, W, H, '#cfeafe'); for (let y = 10, k = 0; y < H - 12; y += 26, k++) for (let x = (k % 2) * 30 + 8; x < W; x += 60) { R(x, y + 2, 18, 5, '#ffffff'); R(x + 4, y, 9, 3, '#ffffff'); R(x + 2, y + 6, 14, 1, '#e6f4ff'); } return; }
+    if (id === 'wp_berry') { R(0, 0, W, H, '#fff6f0'); for (let y = 8, k = 0; y < H - 10; y += 24, k++) for (let x = (k % 2) * 14 + 6; x < W; x += 28) { R(x, y + 1, 5, 4, '#ff6b7a'); R(x + 1, y + 5, 3, 1, '#ff6b7a'); R(x + 2, y + 6, 1, 1, '#ff6b7a'); R(x + 1, y + 2, 1, 1, '#ffe08a'); R(x + 3, y + 3, 1, 1, '#ffe08a'); R(x, y, 5, 1, '#5cbf62'); R(x + 2, y - 1, 1, 1, '#4ea85a'); } return; }
+    for (let x = 0; x < W; x += 16) R(x, 0, 16, H, (x / 16) % 2 ? '#fde8d7' : '#fbe0cc');   // 기본 크림 벽지 (1·2차와 같은 줄무늬)
+  }
+  // 바닥 무늬 (가구와 구별되게 단순하게)
+  function hsPaintFloor(g, id, W, y0, y1) {
+    const R = (x, y, w, h, col) => { g.fillStyle = col; g.fillRect(x, y, w, h); };
+    const planks = (a, b, seam) => { for (let y = y0; y < y1; y += 8) { const k = Math.round((y - y0) / 8); R(0, y, W, 8, k % 2 ? a : b); for (let x = (k % 2) * 24; x < W; x += 48) R(x, y, 1, 8, seam); } };
+    if (id === 'fl_light') return planks('#f0d3a2', '#e9c993', '#d4ac72');
+    if (id === 'fl_dark') return planks('#9a6240', '#8c5638', '#6b3f24');
+    if (id === 'fl_pink') { for (let y = y0; y < y1; y += 16) for (let x = 0; x < W; x += 16) R(x, y, 16, 16, ((x + y - y0) / 16) % 2 ? '#ffd6e0' : '#fff0f4'); return; }
+    if (id === 'fl_tile') { R(0, y0, W, y1 - y0, '#f6ecd8'); for (let y = y0; y < y1; y += 16) R(0, y, W, 1, '#e2d3b5'); for (let x = 0; x < W; x += 16) R(x, y0, 1, y1 - y0, '#e2d3b5'); return; }
+    if (id === 'fl_grass') { R(0, y0, W, y1 - y0, '#a8dd8f'); let sd = 9; const rn = () => (sd = (sd * 9301 + 49297) % 233280) / 233280; for (let i = 0; i < W * (y1 - y0) / 60; i++) { const x = Math.floor(rn() * W), y = y0 + Math.floor(rn() * (y1 - y0)); R(x, y, 1, 2, '#86c96f'); } for (let i = 0; i < W / 40; i++) { const x = Math.floor(rn() * W), y = y0 + 4 + Math.floor(rn() * (y1 - y0 - 8)); R(x, y, 2, 2, i % 2 ? '#ffffff' : '#ffd23f'); } return; }
+    planks('#d9a066', '#cf9459', '#b97a3e');   // 기본 나무 바닥 (1·2차와 같은 판자)
+  }
+  // 상점 미리보기 그림: 벽지(위) + 바닥(아래)
+  function decoThumb(c, wall, floor) { const g = c.getContext('2d'); g.imageSmoothingEnabled = false; g.clearRect(0, 0, c.width, c.height); const fy = Math.round(c.height * 0.55); hsPaintWall(g, wall, c.width, fy); g.fillStyle = '#d9a066'; g.fillRect(0, fy - 3, c.width, 3); hsPaintFloor(g, floor, c.width, fy, c.height); }
+  // 캔버스 크기를 방 크기에 맞춰요 (넓은 방이면 가로가 길어져요)
+  function hsApplyCanvas() { const c = $('hsCanvas'); if (c.width !== HS_W) c.width = HS_W; c.style.setProperty('--hsr', (HS_W / HS_H).toFixed(4)); c.style.aspectRatio = `${HS_W} / ${HS_H}`; }
   function hsDraw() {
     const c = $('hsCanvas'), g = c.getContext('2d'); g.imageSmoothingEnabled = false;
     const R = (x, y, w, h, col) => { g.fillStyle = col; g.fillRect(x, y, w, h); };
     const fy = HS_FLOOR * HS_C;
-    // 벽 (파스텔 줄무늬) + 걸레받이
-    for (let x = 0; x < HS_W; x += 16) R(x, 0, 16, fy, (x / 16) % 2 ? '#fde8d7' : '#fbe0cc');
+    // 벽지 + 걸레받이 · 바닥 (3차: 고른 벽지·바닥으로. 미리보기 중이면 그것으로)
+    hsPaintWall(g, (HS.pv && HS.pv.wall) || save.home.wall, HS_W, fy);
     R(0, fy - 6, HS_W, 6, '#d9a066'); R(0, fy - 6, HS_W, 1, '#f2c48d');
-    // 바닥 (나무 판자)
-    for (let y = fy; y < HS_H; y += 8) { R(0, y, HS_W, 8, (y / 8) % 2 ? '#d9a066' : '#cf9459'); for (let x = ((y / 8) % 2) * 24; x < HS_W; x += 48) R(x, y, 1, 8, '#b97a3e'); }
+    hsPaintFloor(g, (HS.pv && HS.pv.floor) || save.home.floor, HS_W, fy, HS_H);
     // 창문 (하늘·구름) · 문
     const w = HS_WINDOW; R(w.gx * 16 - 2, w.gy * 16 - 2, w.w * 16 + 4, w.h * 16 + 4, '#7a4a22');
     R(w.gx * 16, w.gy * 16, w.w * 16, w.h * 16, '#9cd3f0'); R(w.gx * 16 + 6, w.gy * 16 + 10, 14, 5, '#ffffff'); R(w.gx * 16 + 34, w.gy * 16 + 24, 18, 5, '#ffffff');
@@ -9645,7 +9740,7 @@
     let html = '';
     // 모드 버튼: 🐼 생활하기 / 🪑 꾸미기 (지금 모드가 눌린 모양)
     const seg = `<span class="hs-seg" role="group" aria-label="모드"><button class="btn${HS.decor ? '' : ' on'}" id="hsLifeBtn" aria-pressed="${!HS.decor}">🐼 생활하기</button><button class="btn${HS.decor ? ' on' : ''}" id="hsDecorBtn" aria-pressed="${HS.decor}">🪑 꾸미기</button></span>`;
-    if (!HS.decor) html = seg + (HS.act ? `<button class="btn primary" id="hsWake">🙋 일어나기</button>` : '') + `<button class="btn" id="hsShopBtn">🛍️ 가구 상점</button><button class="btn" id="hsInvBtn">📦 내 가구</button>`;
+    if (!HS.decor) html = seg + (HS.act ? `<button class="btn primary" id="hsWake">🙋 일어나기</button>` : '') + `<button class="btn" id="hsShopBtn">🛍️ 인테리어 상점</button><button class="btn" id="hsInvBtn">📦 내 가구</button>`;
     else if (HS.ghost) html = `<span class="hs-pad"><button class="btn sm" data-mv="-1,0" aria-label="왼쪽">◀</button><button class="btn sm" data-mv="0,-1" aria-label="위">▲</button><button class="btn sm" data-mv="0,1" aria-label="아래">▼</button><button class="btn sm" data-mv="1,0" aria-label="오른쪽">▶</button></span><button class="btn primary" id="hsOk">✔ 배치 확정</button><button class="btn" id="hsCancel">✖ 취소</button>`;
     else if (HS.sel) html = seg + `<button class="btn primary" id="hsMove">✋ 이동</button><button class="btn" id="hsStore">📦 보관</button><button class="btn" id="hsUnsel">✖ 취소</button>`;
     else html = seg + `<button class="btn primary" id="hsInvBtn">📦 내 가구 놓기</button>`;
@@ -9674,15 +9769,18 @@
   function hsSheetRender() {
     $('hsCoin').textContent = save.coins;
     const shop = HS.sheet === 'shop';
-    $('hsSheetTitle').textContent = shop ? '🛍️ 가구 상점' : '📦 내 가구 보관함';
+    $('hsSheetTitle').textContent = shop ? '🛍️ 인테리어 상점' : '📦 내 가구 보관함';
     let list = '';
-    if (shop) {
+    const tabs = shop ? `<div class="hs-tabs">${[['furn', '🪑 가구'], ['wall', '🎨 벽지'], ['floor', '🪵 바닥'], ['theme', '✨ 테마'], ['size', '🏠 집 확장']].map(([k, t]) => `<button class="btn sm${HS.tab === k ? ' on' : ''}" data-tab="${k}" aria-pressed="${HS.tab === k}">${t}</button>`).join('')}</div>` : '';
+    if (shop && HS.tab !== 'furn') list = tabs + hsDecoCards();
+    else if (shop) {
       list = FURNITURE.map(f => {
         const own = homeOwned(f.id) >= HOME_MAX_EACH, poor = save.coins < f.price;
         const chip = own ? '<span class="hs-chip own">보유 중</span>' : `<span class="hs-chip">🪙 ${f.price}</span>`;
         const btn = own ? '<span class="hs-note">✔ 보유 중</span>' : poor ? `<span class="hs-note no">코인이 부족해요!</span>` : `<button class="btn primary sm hs-buy" data-id="${f.id}">구매</button>`;
         return `<div class="hs-card${own ? ' own' : ''}"><canvas width="96" height="72" data-id="${f.id}"></canvas><b>${f.name}</b>${chip}${btn}</div>`;
       }).join('');
+      list = tabs + list;
     } else {
       const ids = FURNITURE.filter(f => homeOwned(f.id) > 0);
       list = ids.length ? ids.map(f => {
@@ -9692,18 +9790,87 @@
     }
     $('hsList').innerHTML = list;
     $('hsList').querySelectorAll('canvas[data-id]').forEach(c => furnThumb(c, c.dataset.id));
-    // 구매 확인
-    const f = HS.ask && FURN_BY_ID[HS.ask];
-    $('hsAsk').hidden = !f;
-    if (f) $('hsAskText').textContent = `'${f.name}'${pp(f.name, '을/를')} ${f.price}코인에 구매할까요? (🪙 ${save.coins} → ${save.coins - f.price})`;
+    $('hsList').querySelectorAll('canvas[data-wall]').forEach(c => decoThumb(c, c.dataset.wall, c.dataset.floor));
+    $('hsList').querySelectorAll('canvas[data-size]').forEach(c => hsSizeThumb(c, +c.dataset.size));
+    $('hsList').querySelectorAll('[data-tab]').forEach(b => b.addEventListener('click', () => { if (mode !== 'house') return; HS.tab = b.dataset.tab; HS.ask = null; HS.sheetMsg = ''; SFX.pop(); hsSheetRender(); }));
+    $('hsList').querySelectorAll('[data-apply]').forEach(b => b.addEventListener('click', () => { if (mode !== 'house') return; hsApplyChoice(b.dataset.apply); }));
+    $('hsList').querySelectorAll('[data-dbuy]').forEach(b => b.addEventListener('click', () => { if (mode !== 'house' || HS.ask) return; HS.ask = b.dataset.dbuy; HS.busy = performance.now() + 350; hsSheetRender(); }));
+    // 구매 확인 (가구 · 벽지 · 바닥 · 테마의 부족한 것 · 집 확장)
+    const q = HS.ask && hsAskInfo(HS.ask);
+    $('hsAsk').hidden = !q;
+    if (q) $('hsAskText').textContent = `'${q.name}'${pp(q.name, '을/를')} ${q.price}코인에 구매할까요? (🪙 ${save.coins} → ${save.coins - q.price})`;
     $('hsList').querySelectorAll('.hs-buy').forEach(b => b.addEventListener('click', () => { if (mode !== 'house' || HS.ask) return; HS.ask = b.dataset.id; HS.busy = performance.now() + 350; hsSheetRender(); }));
     $('hsList').querySelectorAll('.hs-place').forEach(b => b.addEventListener('click', () => { if (mode !== 'house') return; hsStartPlace(b.dataset.id); }));
     $('hsSheetMsg').textContent = HS.sheetMsg || ''; $('hsSheetMsg').className = HS.sheetMsgNo ? 'no' : '';
   }
   function hsSheetSay(t, no) { HS.sheetMsg = t; HS.sheetMsgNo = !!no; }
+  // ----- 3차 상점 카드: 벽지 · 바닥 · 테마 · 집 확장 -----
+  function hsDecoCards() {
+    const H = save.home, coins = save.coins;
+    const card = (pic, name, chip, btn, on) => `<div class="hs-card${on ? ' own' : ''}">${pic}<b>${name}</b>${chip}${btn}</div>`;
+    const buyBtn = (key, price) => coins < price ? '<span class="hs-note no">코인이 부족해요!</span>' : `<button class="btn primary sm" data-dbuy="${key}">구매</button>`;
+    if (HS.tab === 'wall' || HS.tab === 'floor') {
+      const kind = HS.tab, list = kind === 'wall' ? HOME_WALLS : HOME_FLOORS;
+      return list.map(d => {
+        const on = H[kind] === d.id, own = decoOwned(d.id);
+        const pic = `<canvas width="96" height="72" data-wall="${kind === 'wall' ? d.id : H.wall}" data-floor="${kind === 'floor' ? d.id : H.floor}"></canvas>`;
+        const chip = on ? '<span class="hs-chip own">✔ 적용 중</span>' : own ? `<span class="hs-chip own">${d.price ? '보유 중' : '기본 · 무료'}</span>` : `<span class="hs-chip">🪙 ${d.price}</span>`;
+        const btn = on ? '<span class="hs-note">우리 집에 적용됨</span>' : own ? `<button class="btn primary sm" data-apply="${d.id}">적용</button>` : buyBtn(d.id, d.price);
+        return card(pic, d.name, chip, btn, on);
+      }).join('');
+    }
+    if (HS.tab === 'theme') {
+      return HOME_THEMES.map(t => {
+        const need = [t.wall, t.floor].filter(id => !decoOwned(id)), cost = need.reduce((a, id) => a + DECO_BY_ID[id].price, 0);
+        const on = H.wall === t.wall && H.floor === t.floor;
+        const parts = [t.wall, t.floor].map(id => `${decoOwned(id) ? '✔' : '🪙' + DECO_BY_ID[id].price} ${DECO_BY_ID[id].name}`).join('<br>');
+        const chip = `<span class="hs-chip${need.length ? '' : ' own'}" style="font-size:12px;line-height:1.3">${parts}</span>`;
+        const btn = on ? '<span class="hs-note">✔ 적용 중</span>' : !need.length ? `<button class="btn primary sm" data-apply="${t.id}">테마 적용 (무료)</button>` : buyBtn(t.id, cost).replace('>구매<', `>없는 것만 사기 🪙${cost}<`);
+        return card(`<canvas width="96" height="72" data-wall="${t.wall}" data-floor="${t.floor}"></canvas>`, t.name, chip, btn, on);
+      }).join('') + '<p class="hs-empty" style="grid-column:1/-1">테마는 벽지와 바닥만 바꿔요. 놓아 둔 가구는 그대로예요. 이미 가진 벽지·바닥은 다시 사지 않아요.</p>';
+    }
+    return HOME_SIZES.map(z => {
+      const own = H.size >= z.lv, next = z.lv === H.size + 1;
+      const chip = own ? `<span class="hs-chip own">${H.size === z.lv ? '✔ 지금 우리 집' : '완료'}</span>` : `<span class="hs-chip">🪙 ${z.price}</span>`;
+      const btn = own ? `<span class="hs-note">가로 ${z.cols}칸</span>` : next ? buyBtn('size' + z.lv, z.price) : '<span class="hs-note no">앞 단계를 먼저!</span>';
+      return card(`<canvas width="96" height="72" data-size="${z.lv}"></canvas>`, `${z.lv}단계 · ${z.name}`, chip, btn, H.size === z.lv);
+    }).join('') + '<p class="hs-empty" style="grid-column:1/-1">집을 넓히면 오른쪽으로 바닥이 늘어나요. 놓아 둔 가구는 그 자리 그대로예요.</p>';
+  }
+  function hsSizeThumb(c, lv) {
+    const g = c.getContext('2d'); g.imageSmoothingEnabled = false; g.clearRect(0, 0, 96, 72);
+    const cols = HOME_SIZES[lv - 1].cols, w = Math.round(cols * 3), x0 = Math.round((96 - w) / 2);
+    hsPaintWall(g, save.home.wall, 96, 40); g.clearRect(0, 0, 96, 40);
+    g.save(); g.beginPath(); g.rect(x0, 14, w, 44); g.clip(); hsPaintWall(g, save.home.wall, 96, 38); hsPaintFloor(g, save.home.floor, 96, 38, 58); g.restore();
+    g.strokeStyle = '#2b2838'; g.lineWidth = 2; g.strokeRect(x0, 14, w, 44); g.fillStyle = '#2b2838'; g.font = 'bold 11px sans-serif'; g.textAlign = 'center'; g.fillText(`${cols}칸`, 48, 69);
+  }
+  function hsAskInfo(key) {
+    if (FURN_BY_ID[key]) return FURN_BY_ID[key];
+    if (DECO_BY_ID[key]) return DECO_BY_ID[key];
+    const th = HOME_THEMES.find(t => t.id === key);
+    if (th) { const need = [th.wall, th.floor].filter(id => !decoOwned(id)); return { name: `${th.name}에 없는 ${need.map(id => DECO_BY_ID[id].name).join('·')}`, price: need.reduce((a, id) => a + DECO_BY_ID[id].price, 0) }; }
+    const m = /^size([23])$/.exec(key); if (m) { const z = HOME_SIZES[+m[1] - 1]; return { name: `집 확장 ${z.lv}단계(${z.name})`, price: z.price }; }
+    return null;
+  }
+  function hsBuyDecoYes(key) {
+    let ok = false, poor = false;
+    if (DECO_BY_ID[key]) { const r = buyDeco(key); ok = r.ok; poor = r.why === 'poor'; if (ok) { applyDeco(key); hsSheetSay(`구매 완료! ${DECO_BY_ID[key].name}을(를) 우리 집에 적용했어요.`); } }
+    else if (HOME_THEMES.some(t => t.id === key)) {
+      const th = HOME_THEMES.find(t => t.id === key), need = [th.wall, th.floor].filter(id => !decoOwned(id)), cost = need.reduce((a, id) => a + DECO_BY_ID[id].price, 0);
+      if (save.coins < cost) poor = true; else { for (const id of need) buyDeco(id); ok = need.every(decoOwned); if (ok) { applyDeco(th.wall); applyDeco(th.floor); hsSheetSay(`${th.name} 완성! 가구는 그대로예요.`); } }
+    } else { const m = /^size([23])$/.exec(key); if (m) { const r = buyHomeSize(+m[1]); ok = r.ok; poor = r.why === 'poor'; if (ok) { hsApplyCanvas(); hsSheetSay(`집이 넓어졌어요! 이제 가로 ${HS_COLS}칸이에요. 가구는 그대로예요.`); } } }
+    if (ok) SFX.correct(); else if (poor) { SFX.wrong(); hsSheetSay('코인이 부족해요!', true); }
+    hsSheetRender();
+  }
+  function hsApplyChoice(key) {
+    const th = HOME_THEMES.find(t => t.id === key);
+    if (th) { if (applyDeco(th.wall) && applyDeco(th.floor)) { SFX.pop(); hsSheetSay(`${th.name}으로 바꿨어요! 가구는 그대로예요.`); } }
+    else if (applyDeco(key)) { SFX.pop(); hsSheetSay(`${DECO_BY_ID[key].name}을(를) 적용했어요.`); }
+    hsSheetRender();
+  }
   function hsBuyYes() {
     if (mode !== 'house' || !HS.ask || performance.now() < HS.busy) return;
     const id = HS.ask; HS.ask = null;
+    if (!FURN_BY_ID[id]) { hsBuyDecoYes(id); return; }
     const r = buyFurniture(id);   // 성공이 확정된 뒤에만 완료 메시지
     if (r.ok) { SFX.correct(); hsSheetSay('구매 완료! 내 가구 보관함에 추가되었어요.'); }
     else if (r.why === 'poor') { SFX.wrong(); hsSheetSay('코인이 부족해요!', true); }
@@ -10133,7 +10300,7 @@
     $('startScreen').querySelector('.card').focus({ preventScroll: true });
     window.__panda = {
       get DF() { return DF; }, DF_MOODS, DF_ITEMS, DF_LANES, dfOpen, dfGive, dfPickItem, dfSpawn, dfRoundDone, dfPause, dfItemPic, dfSpr, get runNow() { return run; },
-      get GR() { return GR; }, get GN() { return GN; }, GR_VIEW: { w: GVW, h: GVH }, GR_SOLID, grGoTo, grRoute, GR_STAGE_ZONE, grNextTarget, GR_NPC, GR_ACT, MOODS, grOpen, grClose, grTalkOpen, grActStart, grMissionDone, grCeremony, grCount, gnJoin, gnSingle, gnState, grSolidHit, grStay, grResult,
+      get GR() { return GR; }, HOME_WALLS, HOME_FLOORS, HOME_THEMES, HOME_SIZES, buyDeco, applyDeco, buyHomeSize, get HS_COLS() { return HS_COLS; }, grPandaPicTest: (fr, face, w) => grPandaPic(fr, face, w, false), buyItem, equipItem, SHOP_ITEMS, WEAR_SLOTS, get GN() { return GN; }, GR_VIEW: { w: GVW, h: GVH }, GR_SOLID, grGoTo, grRoute, GR_STAGE_ZONE, grNextTarget, GR_NPC, GR_ACT, MOODS, grOpen, grClose, grTalkOpen, grActStart, grMissionDone, grCeremony, grCount, gnJoin, gnSingle, gnState, grSolidHit, grStay, grResult,
       SHOP_ITEMS, buyItem, equipItem, unequipItem, openWardrobe, closeWardrobe, drawWear, drawPandaWith, get PET() { return PET; }, get wd() { return wd; },
       questInteract, openBasket, BD_NPC, BD_CANDLES, BD_CAKE_X, BD_BOARD_X, BD_DESK_X, BD_TABLE_X, bdValid, dateZh, bdSent, openCake, cakeAdd, cakeDel, cakeDone, closeCake, openCal, calOk, closeCal, openBCard, bcOk, closeBCard, bdPlace, openPick, closePick, pickOk, FAM, famOf, famSent, FM_NPC, GIFT, giftOf, gfSent, GF_NPC, GF_FR, FM_BOARD_X, famFace, giftURL, drawGift, FOOD, foodOf, foodSent, FD_MC, DN_NPC, priceZh, priceSay, drawFood, foodURL, questDone, payOnce, arRoundDone, FURNITURE, buyFurniture, homeCanPlace, homeFreeSpot, openHouse, closeHouse, get HS() { return HS; }, hsConfirm, hsUse, hsWake, AR, arcOpen, arPopGo, arHint, arKey, PRICES, FD_GUEST, DN_CU, get arDbg() { return { belt: AR.belt, held: AR.held, tray: AR.tray, want: AR.want, r: AR.r, paused: AR.paused, combo: AR.combo }; }, beltGrab, beltPut, fsPut, fsServe, fsGive1, fmNewTest: () => fmNew(), gfNewTest: () => gfNew(), get qp() { return qp; }, bdNewTest: () => bdNew(), bdBonus: () => bdBonusLater, basketDrop, closeBasket, zhNum, tokVal, testSpawn: (kind, n, set) => { const q = run.q, list = set ? q.m4.items : q.m3.items; spawnItems(list, kind, n, Q_SPOTS[set]); }, testOpenSlab: (rounds) => openSlab({ title: 'test', rounds, start: 0, tag: 'test', key: (i) => 'test' + i, onRound() {}, onAll() {} }), slabTap, slabKey, ruleHints, boxNums, closeTalk, closeSlab, questRecall, NPC_DEF, useSkill, canSkill, BGM, josa, BUILD, forestBuild, basicQuestion, MA, GREET, NW, P, save, quiz, quick, NQ, numQ, numQueue, NUMS, openQuiz, answer, closeQuiz, closeSpeak, selectStage, startPlay, goHome, askHome, resumeFromPause, loadStage, closeHelp, closeIntro, startNewRun, THEMES, SKINS, STAGES,
       get mode() { return mode; }, get monsters() { return monsters; }, get coins() { return coins; }, get gates() { return gates; },
