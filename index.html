@@ -737,7 +737,11 @@
   .df-popcard h2 { margin: 4px 0; } .df-rhead { font-weight: 700; color: #a3361b; } .df-tip { font-size: 13px; color: #666; }
   .df-legend { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 6px 0; } .df-leg { display: inline-flex; align-items: center; gap: 4px; background: #fff; border: 2px solid #2b2838; border-radius: 10px; padding: 2px 8px 2px 2px; } .df-leg img { width: 36px; height: 36px; image-rendering: pixelated; }
   .df-qhead { font-weight: 700; color: #a3361b; } .df-q { font-size: 17px; font-weight: 700; margin: 6px 0; }
-  .df-opts, .df-pieces { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 6px 0; }
+  .df-pieces { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 6px 0; }
+  .df-opts, .gr-opts:not(.pics) { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 6px 0; }   /* 4지선다 2×2 · 2지선다 2칸 */
+  .df-opts.n3, .gr-opts.n3:not(.pics) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .df-opts .han, .gr-opts .han, .df-opt .han { white-space: nowrap; }
+  @media (max-width: 560px) { .df-opts, .gr-opts:not(.pics), .df-opts.n3, .gr-opts.n3:not(.pics) { grid-template-columns: 1fr; } }
   .df-opt { flex: 1 1 140px; min-height: 58px; border: 3px solid var(--ink); border-radius: 12px; background: #fff; font: inherit; font-weight: 700; font-size: 18px; cursor: pointer; color: var(--ink); padding: 4px 8px; touch-action: manipulation; } .df-opt.sel { background: #ffe9a8; box-shadow: 0 0 0 3px #f6c445; } .df-opt.piece { flex: 0 1 90px; } .df-opt:disabled { opacity: .3; }
   .df-slots { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; align-items: center; padding: 8px; border-radius: 12px; background: #f1e3c2; }
   .df-slot { min-width: 66px; min-height: 58px; border: 3px dashed #9a7a4a; border-radius: 12px; background: #fff; font: inherit; font-weight: 700; cursor: pointer; color: var(--ink); } .df-slot.empty { color: #b59a6a; font-size: 22px; }
@@ -785,7 +789,7 @@
   .gr-card { min-height: 52px; border: 3px solid var(--ink); border-radius: 12px; background: #fff; font: inherit; font-weight: 700; font-size: 16px; cursor: pointer; padding: 4px 8px; color: var(--ink); touch-action: manipulation; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
   .gr-card.sel { background: #ffe9a8; box-shadow: 0 0 0 3px #f6c445; } .gr-card.done { background: #c9f2d9; border-color: #3d9a5c; opacity: .75; } .gr-card:disabled:not(.done) { opacity: .35; }
   .gr-card.tag { font-size: 22px; min-width: 80px; }
-  .gr-opts, .gr-pieces { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; } .gr-opts .gr-card { flex: 1 1 200px; } .gr-opts.pics .gr-card { flex: 0 1 auto; }
+  .gr-opts.pics, .gr-pieces { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; } .gr-opts.pics .gr-card { flex: 0 1 auto; } .gr-opts:not(.pics) .gr-card { min-height: 64px; flex-direction: column; }
   .gr-slots { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; align-items: center; padding: 6px; border-radius: 12px; background: #f1e3c2; }
   .gr-slots.lines { flex-direction: column; align-items: stretch; }
   .gr-slot { min-width: 64px; min-height: 52px; border: 3px dashed #9a7a4a; border-radius: 12px; background: #fff; font: inherit; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; color: var(--ink); }
@@ -795,6 +799,10 @@
   .gr-point { display: inline-flex; align-items: center; gap: 4px; font-size: 30px; }
   .gr-mood { position: relative; display: inline-block; } .gr-mood img { width: 64px; height: 52px; image-rendering: pixelated; } .gr-mood i { position: absolute; right: -10px; top: -6px; font-style: normal; font-size: 20px; }
   .gr-scene { font-weight: 700; margin-top: 4px; } .big1 { font-size: 24px; }
+  .gr-famtag { display: inline-flex; align-items: center; gap: 10px; } .gr-famtag b { font-size: 24px; background: #fff3c4; border: 3px solid #2b2838; border-radius: 12px; padding: 4px 12px; }
+  .gr-bignum { font: 900 54px/1 "Noto Sans", Arial, sans-serif; color: #2b2838; } .gr-num { font: 800 22px "Noto Sans", Jua, sans-serif; } .gr-food.big { height: 96px; }
+  .gr-st.sm { width: 28px; height: 28px; } .gr-st.sm i { font-size: 13px; font-weight: 800; } .gr-st.sm em { width: 14px; height: 14px; font-size: 9px; right: -4px; bottom: -4px; }
+  @media (max-width: 760px), (max-height: 520px) { .gr-st.sm { width: 22px; height: 22px; } .gr-st.sm i { font-size: 11px; } }
   #grRoom { font: inherit; font-size: 26px; font-weight: 700; text-align: center; letter-spacing: .15em; width: min(260px, 90%); padding: 6px; border: 3px solid var(--ink); border-radius: 12px; text-transform: uppercase; }
   .gr-lobbybtns { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 10px; } .gr-solo { background: #fff; }
   .gr-lobbymsg { font-weight: 700; color: #a3361b; min-height: 1.2em; }
@@ -1572,9 +1580,9 @@
   // 11차시 판다 기분 지킴이 디펜스: 기분 표현 开心·累·饿·困 + 我很○○。 + 안부 인사 + 吗
   const MDW = Object.fromEntries([
     { id: 'mw_kx', h: '开心', p: 'kāixīn', t: 0, ko: '기쁘다, 즐겁다' },
-    { id: 'mw_lei', h: '累', p: 'lèi', t: 4, ko: '피곤하다' },
-    { id: 'mw_e', h: '饿', p: 'è', t: 4, ko: '배고프다' },
-    { id: 'mw_kun', h: '困', p: 'kùn', t: 4, ko: '졸리다' },
+    { id: 'mw_lei', h: '累', p: 'lèi', t: 0, ko: '피곤하다' },
+    { id: 'mw_e', h: '饿', p: 'è', t: 0, ko: '배고프다' },
+    { id: 'mw_kun', h: '困', p: 'kùn', t: 0, ko: '졸리다' },
     { id: 'mw_skx', h: '我很开心。', p: 'Wǒ hěn kāixīn.', t: 0, ko: '나는 기뻐.', sent: true },
     { id: 'mw_slei', h: '我很累。', p: 'Wǒ hěn lèi.', t: 0, ko: '나는 피곤해.', sent: true },
     { id: 'mw_se', h: '我很饿。', p: 'Wǒ hěn è.', t: 0, ko: '나는 배고파.', sent: true },
@@ -1583,7 +1591,6 @@
     { id: 'mw_nhm', h: '你好吗？', p: 'Nǐ hǎo ma?', t: 0, ko: '잘 지내?', sent: true },
     { id: 'mw_whh', h: '我很好。你呢？', p: 'Wǒ hěn hǎo. Nǐ ne?', t: 0, ko: '나는 잘 지내. 너는?', sent: true },
     { id: 'mw_ma', h: '吗', p: 'ma', t: 0, ko: '~니? (문장 끝에 붙여 묻는 말)' },
-    { id: 'mw_ye', h: '我也很好！', p: 'Wǒ yě hěn hǎo!', t: 0, ko: '나도 잘 지내!', sent: true, bonus: true },
   ].map(w => [w.id, w]));
   // 12차시 졸업식: 1~11차시 복습 문장 + 새 말 会 · 说 · 中文
   const GRW = Object.fromEntries([
@@ -2796,31 +2803,24 @@
         { label: '👋 라운드 3 · 好久不见！ 친구 대작전', zone: '라운드 3', cards: ['mw_hjbj', 'mw_nhm', 'mw_whh', 'mw_ma'] },
       ],
       finalText: '판다 마을', decorate: decorateDiner,
-      words: MDW, cardOrder: ['mw_kx', 'mw_lei', 'mw_e', 'mw_kun', 'mw_skx', 'mw_slei', 'mw_se', 'mw_skun', 'mw_hjbj', 'mw_nhm', 'mw_whh', 'mw_ma', 'mw_ye'], cardName: '기분 카드', bonusCards: ['mw_ye'], bossFinale: 'none',
-      introRulesHead: '💬 오랜만에 만난 친구와 <small>안부 묻고 대답하기</small>',
-      introRules: [{ h: '好久不见！', p: 'Hǎo jiǔ bú jiàn!', t: 0, ko: '오랜만이야!', sent: true }, { h: '你好吗？', p: 'Nǐ hǎo ma?', t: 0, ko: '잘 지내?', sent: true }, { h: '我很好。你呢？', p: 'Wǒ hěn hǎo. Nǐ ne?', t: 0, ko: '나는 잘 지내. 너는?', sent: true }],
+      words: MDW, cardOrder: ['mw_kx', 'mw_lei', 'mw_e', 'mw_kun', 'mw_skx', 'mw_slei', 'mw_se', 'mw_skun', 'mw_hjbj', 'mw_nhm', 'mw_whh', 'mw_ma'], cardName: '기분 카드', bonusCards: [], bossFinale: 'none',
       noteIntro: '오랜만에 만난 친구와 안부를 묻고 기분을 말해요.<br>· 开心 kāixīn 기쁘다 · 累 lèi 피곤하다 · 饿 è 배고프다 · 困 kùn 졸리다<br>· <b>我很○○。</b> Wǒ hěn ○○. = 나는 ○○해. (很은 기분이나 상태를 말할 때 자연스럽게 붙여요)<br>· 吗 ma: 문장 끝에 붙이면 \'~니?\' 하고 묻는 말이 돼요. → 你好吗？ 잘 지내?<br>· 好久不见의 不는 뒤의 4성 见 때문에 bú로 읽어요.',
       qgen: () => null, makeQueue: () => [],
     },
     // 12차시: 졸업식 (탑다운 맵 · 함께 접속 · 미션 5개 × 활동 3개). arcade: 'grad'. 식당 가격은 연습용 가상 돈
     grad: {
-      id: 'grad', status: 'ready', lessonNo: '12차시', label: '11월 19일(목)', dateFull: '2026. 11. 19.(목) — 12차시', title: '판다 탐험대: 졸업식', short: '판다 탐험대 졸업식', topic: '我会说中文！', mapName: '졸업식 광장', isNew: true, theme: 'diner', song: 'garden', icon: '🎓',
+      id: 'grad', status: 'ready', lessonNo: '12차시', label: '11월 19일(목) 2교시', reportLabel: '11월 19일(목)', dateFull: '2026. 11. 19.(목) · 2교시 — 12차시', title: '판다 탐험대: 졸업식', short: '판다 탐험대 졸업식', topic: '我会说中文！', mapName: '졸업식 광장', isNew: true, theme: 'diner', song: 'garden', icon: '🎓',
       quest: true, questKit: 'arc', arcade: 'grad', clearTitle: '판다 탐험대 졸업!',
       ...LAYOUT,
       monsters: [],
       gates: layoutGates(['인사 학교', '가족의 집', '판다 식당', '기분 연구소']),
       missions: [
-        { label: '👋 인사 학교 · 好久不见！', zone: '왼쪽 위', cards: ['gr_hjbj', 'gr_nhm', 'gr_whh'] },
-        { label: '👨‍👩‍👧 가족의 집 · 这是我妈妈。', zone: '오른쪽 위', cards: ['gr_zsw'] },
-        { label: '🍜 판다 식당 · 我要这个。', zone: '왼쪽 아래', cards: ['gr_wyzg', 'gr_dsq'] },
-        { label: '😊 기분 연구소 · 我很开心。', zone: '오른쪽 아래', cards: ['gr_kx', 'gr_lei', 'gr_e', 'gr_kun'] },
-        { label: '🎓 졸업 시험 · 我会说中文。', zone: '광장', cards: ['gr_hui', 'gr_shuo', 'gr_zw', 'gr_whs', 'gr_nhs'] },
+        ...['1차시 첫 인사', '2차시 인사말', '3차시 이름', '4차시 나라', '5차시 숫자', '6차시 생일', '7차시 가족', '8차시 좋아하는 것', '9차시 중국 음식', '10차시 주문', '11차시 안부·기분'].map(t => ({ label: `📚 ${t} 복습`, zone: '복습 판다', cards: [] })),
+        { label: '🎓 졸업 시험 · 我会说中文。', zone: '광장 아래', cards: ['gr_hui', 'gr_shuo', 'gr_zw', 'gr_whs', 'gr_nhs'] },
       ],
       finalText: '졸업식', decorate: decorateDiner,
-      words: GRW, cardOrder: ['gr_hjbj', 'gr_nhm', 'gr_whh', 'gr_zsw', 'gr_wyzg', 'gr_dsq', 'gr_kx', 'gr_lei', 'gr_e', 'gr_kun', 'gr_hui', 'gr_shuo', 'gr_zw', 'gr_whs', 'gr_nhs'], cardName: '졸업 카드', bonusCards: [], bossFinale: 'none',
-      introRulesHead: '🎓 졸업 문장 <small>会 huì = ~할 줄 알다</small>',
-      introRules: [{ h: '我会说中文。', p: 'Wǒ huì shuō Zhōngwén.', t: 0, ko: '나는 중국어를 할 줄 알아요.', sent: true }, { h: '你会说中文吗？', p: 'Nǐ huì shuō Zhōngwén ma?', t: 0, ko: '너는 중국어를 할 줄 아니?', sent: true }],
-      noteIntro: '졸업식 광장에서 친구들과 함께 지금까지 배운 말을 복습해요.<br>· 네 건물(인사 학교 · 가족의 집 · 판다 식당 · 기분 연구소)의 미션을 끝내면 졸업 시험이 열려요.<br>· <b>我会说中文。</b> Wǒ huì shuō Zhōngwén. = 나는 중국어를 할 줄 알아요.<br>· 같은 <b>방 코드</b>를 쓰면 친구 판다들이 보여요. 연결이 안 되면 혼자서도 끝까지 할 수 있어요.<br>· 식당 가격은 <b>연습용</b>이라 게임 코인과 상관없어요.',
+      words: GRW, cardOrder: ['gr_hui', 'gr_shuo', 'gr_zw', 'gr_whs', 'gr_nhs'], cardName: '졸업 카드', bonusCards: [], bossFinale: 'none',
+      noteIntro: '오늘 배울 말: 会 huì(~할 줄 알다) · 说 shuō(말하다) · 中文 Zhōngwén(중국어).<br>· <b>我会说中文。</b> Wǒ huì shuō Zhōngwén. = 나는 중국어를 할 줄 알아요.<br>· <b>你会说中文吗？</b> = 너는 중국어를 할 줄 아니? (吗는 11차시 복습)<br>· 졸업식 광장에서 1~11차시 복습 판다 11명을 만나고, 마지막 졸업 시험을 봐요. 같은 방 코드(기본: 판다)를 쓰면 친구들이 보여요.',
       qgen: () => null, makeQueue: () => [],
     },
 
@@ -7202,7 +7202,7 @@
   function report(event, extra = {}) {
     if (!RESULT_URL || !run || PREVIEW) return;
     const body = {
-      time: new Date().toISOString(), name: save.playerName || '(닉네임 없음)', lesson: STAGE.label ? `${STAGE.lessonNo} (${STAGE.label})` : STAGE.lessonNo, stage: STAGE.id, event,
+      time: new Date().toISOString(), name: save.playerName || '(닉네임 없음)', lesson: STAGE.label ? `${STAGE.lessonNo} (${STAGE.reportLabel || STAGE.label})` : STAGE.lessonNo, stage: STAGE.id, event,
       firstTry: run.firstTry, asked: run.asked, wrong: (run.wrongs || []).join(' | '), secs: Math.round((performance.now() - run.start) / 1000),
       level: save.level, device: isTouch() ? '모바일' : 'PC', ...extra,
       // 5차시(미션형)만: 힌트를 쓴 과제 수 · 안내 문제 수 · 기록 방식 2판 (firstTry/asked는 '혼자 힌트 없이 처음에 해결 / 혼자 푼 과제')
@@ -7582,13 +7582,23 @@
   //   연결이 안 되면 같은 맵·미션으로 혼자 진행해요
   // 화면: 세계 400×250칸을 캔버스 1200×750에 3배로 그려요 (픽셀은 또렷하게, 글씨는 캔버스 해상도로 따로 선명하게)
   const GRWD = 640, GRHT = 480, GVW = 400, GVH = 250, GR_Z = 3;
+  // 1~11차시 복습 판다 11명 + 졸업 시험 선생님 (구역별: 왼쪽 위 1~3 · 왼쪽 가운데 4 · 왼쪽 아래 9·10 · 오른쪽 5~8 · 오른쪽 아래 11 · 광장 아래 졸업 시험)
   const GR_NPC = [
-    { id: 'grHi', name: '오랜만 친구 판다', x: 100, y: 148, scarf: '#ff6b8b', hat: 'bow', place: '인사 학교', icon: '👋', dir: '↖' },
-    { id: 'grFam', name: '가족사진 판다', x: 540, y: 148, scarf: '#62aefc', hat: 'cap', place: '가족의 집', icon: '🏠', dir: '↗' },
-    { id: 'grShop', name: '식당 점원 판다', x: 100, y: 422, scarf: '#f6c445', hat: 'chef', place: '판다 식당', icon: '🥟', dir: '↙' },
-    { id: 'grMood', name: '표정 박사 판다', x: 540, y: 422, scarf: '#c084fc', glasses: true, place: '기분 연구소', icon: '😊', dir: '↘' },
-    { id: 'grTeach', name: '졸업식 선생님 판다', x: 320, y: 402, scarf: '#3d9a5c', hat: 'beret2', place: '졸업 시험', icon: '🎓', dir: '⬇' },
+    { id: 'grL1', name: '첫 만남 판다', lesson: '1차시', x: 100, y: 148, scarf: '#ff6b8b', hat: 'bow', place: '1차시 첫 인사', icon: '👋', dir: '↖' },
+    { id: 'grL2', name: '인사 친구 판다', lesson: '2차시', x: 190, y: 150, scarf: '#4fd08c', place: '2차시 인사말', icon: '🙏', dir: '↖' },
+    { id: 'grL3', name: '자기소개 판다', lesson: '3차시', x: 60, y: 268, scarf: '#62aefc', hat: 'cap', place: '3차시 이름', icon: '📛', dir: '←' },
+    { id: 'grL4', name: '세계 여행 판다', lesson: '4차시', x: 150, y: 244, scarf: '#f08a24', glasses: true, place: '4차시 나라', icon: '🌏', dir: '←' },
+    { id: 'grL5', name: '숫자 마법사 판다', lesson: '5차시', x: 490, y: 244, scarf: '#c084fc', hat: 'beret', place: '5차시 숫자', icon: '🔢', dir: '→' },
+    { id: 'grL6', name: '생일 축하 판다', lesson: '6차시', x: 580, y: 268, scarf: '#ff8fab', hat: 'bow', place: '6차시 생일', icon: '🎂', dir: '→' },
+    { id: 'grL7', name: '가족사진 판다', lesson: '7차시', x: 540, y: 148, scarf: '#62aefc', hat: 'cap', place: '7차시 가족', icon: '👨‍👩‍👧', dir: '↗' },
+    { id: 'grL8', name: '선물 가게 판다', lesson: '8차시', x: 450, y: 150, scarf: '#e5484d', place: '8차시 좋아하는 것', icon: '🎁', dir: '↗' },
+    { id: 'grL9', name: '음식 축제 판다', lesson: '9차시', x: 166, y: 396, scarf: '#ffd23f', glasses: true, place: '9차시 중국 음식', icon: '🥟', dir: '↙' },
+    { id: 'grL10', name: '식당 점원 판다', lesson: '10차시', x: 100, y: 422, scarf: '#f6c445', hat: 'chef', place: '10차시 주문', icon: '🍜', dir: '↙' },
+    { id: 'grL11', name: '기분 지킴이 판다', lesson: '11차시', x: 540, y: 422, scarf: '#c084fc', glasses: true, place: '11차시 안부·기분', icon: '😊', dir: '↘' },
+    { id: 'grTeach', name: '졸업식 선생님 판다', lesson: '졸업 시험', x: 320, y: 402, scarf: '#3d9a5c', hat: 'beret2', place: '12차시 졸업 시험', icon: '🎓', dir: '⬇' },
   ];
+  const GR_N = GR_NPC.length, GR_FIN = GR_N - 1;   // 미션 12개 · 마지막(11번)이 졸업 시험
+  const GR_REVIEW_COIN = 6, GR_FINAL_COIN = 9;     // 복습 6 × 11 + 졸업 시험 9 + 완료 보너스 15 = 90 (이전 5×15+15 = 90과 같게)
   // 건물 4채 (왼쪽 위 기준, 112×76) · 졸업 시험 정자
   const GR_BLD = [{ x: 44, y: 46 }, { x: 484, y: 46 }, { x: 44, y: 320 }, { x: 484, y: 320 }];
   // 부딪히는 곳: 건물 · 무대 · 정자 · 연못 · 나무 밑동만 (꽃·깃발·가로등·벤치는 지나갈 수 있어요)
@@ -7604,7 +7614,8 @@
   const GR = { on: false, me: { x: GR_START.x, y: GR_START.y, d: 1, mv: false, t: 0, tx: null, ty: null, goNpc: -1 }, keys: {}, pad: {}, talk: -1, combo: 0, grad: false, world: null, fx: [], ceremonyShown: false, time: 0, cam: { x: 0, y: 0 }, petals: [] };
   const grDone = () => run.ms.map(m => m.complete);
   const grCount = () => run.ms.filter(m => m.complete).length;
-  const grCanTalk = (i) => i < 4 || grCount() >= 4;
+  const grReviewDone = () => run.ms.slice(0, GR_FIN).filter(m => m.complete).length;
+  const grCanTalk = (i) => i < GR_FIN || grReviewDone() >= GR_FIN;
 
   // ----- 세계 그림 (한 번만 그려 두기 · 1칸 = 1픽셀) -----
   function grBuildWorld() {
@@ -7782,7 +7793,8 @@
   // ----- 열기 · 닫기 -----
   function grOpen() {
     mode = 'grad'; releaseAll(); closeMissionPanel();
-    run.arc = run.arc || { best: 0, act: [0, 0, 0, 0, 0] };
+    run.arc = run.arc || { best: 0 };
+    if (!run.arc.act || run.arc.act.length !== GR_N) run.arc.act = Array(GR_N).fill(0);
     if (!GR.world) grBuildWorld();
     Object.assign(GR, { on: true, keys: {}, pad: {}, talk: -1, fx: [], ceremonyShown: false });
     GR.grad = !!run.cleared || !!run.arc.grad;
@@ -7805,13 +7817,14 @@
   // 위쪽: 큰 진행도 n/5 + 미션 5칸 (끝낸 곳 ✔ · 잠긴 곳 🔒)
   function grStampsUI() {
     const d = grDone(), n = grCount();
-    $('grStamps').innerHTML = `<span class="gr-big" aria-label="졸업 도장 ${n}개 중 5개">🎓 <b>${n}</b><small>/5</small></span>` + GR_NPC.map((p, i) => `<span class="gr-st${d[i] ? ' on' : ''}${!d[i] && !grCanTalk(i) ? ' lock' : ''}" title="${p.place}"><i>${p.icon}</i>${d[i] ? '<em>✔</em>' : !grCanTalk(i) ? '<em>🔒</em>' : ''}</span>`).join('');
+    $('grStamps').innerHTML = `<span class="gr-big" aria-label="졸업 도장 ${n}개 중 ${GR_N}개">🎓 <b>${n}</b><small>/${GR_N}</small></span>` + GR_NPC.map((p, i) => `<span class="gr-st sm${d[i] ? ' on' : ''}${!d[i] && !grCanTalk(i) ? ' lock' : ''}" title="${p.place}"><i>${i === GR_FIN ? '🎓' : i + 1}</i>${d[i] ? '<em>✔</em>' : ''}</span>`).join('');
   }
   // 한 줄 안내 (짧게)
   function grHintSet() {
     const n = grCount(), d = grDone();
-    const left = GR_NPC.slice(0, 4).filter((p, i) => !d[i]).map(p => `${p.icon}${p.dir}`).join(' ');
-    $('grHint').textContent = GR.grad ? '🎓 졸업 축하해요! 무대 앞에서 친구들과 놀아요' : n >= 5 ? '🎓 무대 앞 레드카펫으로! ⬆' : n >= 4 ? '🎓 마지막! 광장 아래 졸업 시험 ⬇' : `❗ 판다에게 말 걸기 · 남은 곳 ${left}`;
+    const rv = grReviewDone();
+    $('grHint').textContent = GR.grad ? '🎓 졸업 축하해요! 무대 앞에서 친구들과 놀아요' : n >= GR_N ? '🎓 무대 앞 레드카펫으로! ⬆' : rv >= GR_FIN ? '🎓 마지막! 광장 아래 졸업 시험 ⬇' : `❗ 복습 판다 ${GR_FIN - rv}명 남았어요 · 노란 화살표를 따라가요`;
+    void d;
   }
   // ----- 이동 -----
   function grSolidHit(x, y) {
@@ -7853,7 +7866,7 @@
       me.t += dt;
     }
     // 졸업식 무대 앞
-    if (grCount() >= 5 && !GR.ceremonyShown && Math.hypot(me.x - GR_STAGE_ZONE.x, me.y - GR_STAGE_ZONE.y) < GR_STAGE_ZONE.r && GR.talk < 0) grCeremony();
+    if (grCount() >= GR_N && !GR.ceremonyShown && Math.hypot(me.x - GR_STAGE_ZONE.x, me.y - GR_STAGE_ZONE.y) < GR_STAGE_ZONE.r && GR.talk < 0) grCeremony();
     // 가까운 판다
     const near = grNearNpc();
     const lbl = near >= 0 ? (grCanTalk(near) ? `💬 ${GR_NPC[near].place}` : '🔒 아직이에요') : '💬 대화';
@@ -7896,7 +7909,7 @@
   // 카메라: 판다를 화면 아래쪽 60% 높이에 두어 앞(위쪽)이 잘 보이게. 광장 안에서는 무대가 잘리지 않게 위를 고정
   function grCamTarget() {
     const m = GR.me; let y = m.y - 150;
-    if (Math.abs(m.x - 320) < 160 && m.y < 336) y = Math.min(y, 92);
+    if (Math.abs(m.x - 320) < 160 && m.y < 296) y = Math.min(y, 92);   // 광장 위쪽에서만 무대 고정 (아래로 가면 졸업 시험 선생님이 보이게)
     return { x: clamp(m.x - GVW / 2, 0, GRWD - GVW), y: clamp(y, 0, GRHT - GVH) };
   }
   function grCamStep(dt, snap) {
@@ -7908,7 +7921,7 @@
   function grNextTarget() {
     if (GR.grad) return null;
     const n = grCount();
-    if (n >= 5) return { x: GR_STAGE_ZONE.x, y: GR_STAGE_ZONE.y, i: -1 };
+    if (n >= GR_N) return { x: GR_STAGE_ZONE.x, y: GR_STAGE_ZONE.y, i: -1 };
     let best = null, bd = 1e9;
     GR_NPC.forEach((p, i) => { if (run.ms[i].complete || !grCanTalk(i)) return; const d = Math.hypot(p.x - GR.me.x, p.y - GR.me.y); if (d < bd) { bd = d; best = { x: p.x, y: p.y - 16, i }; } });
     return best;
@@ -7923,7 +7936,7 @@
     g.drawImage(GR.world, 0, 0);
     const R = (x, y, w, h, col) => { g.fillStyle = col; g.fillRect(Math.round(x), Math.round(y), w, h); };
     // 바닥 효과: 졸업식 자리 빛 · NPC 발밑 동그라미
-    if (grCount() >= 5 && !GR.grad) { g.fillStyle = `rgba(255,220,90,${0.3 + 0.2 * Math.sin(T * 4)})`; g.beginPath(); g.ellipse(GR_STAGE_ZONE.x, GR_STAGE_ZONE.y, GR_STAGE_ZONE.r, GR_STAGE_ZONE.r * 0.55, 0, 0, Math.PI * 2); g.fill(); }
+    if (grCount() >= GR_N && !GR.grad) { g.fillStyle = `rgba(255,220,90,${0.3 + 0.2 * Math.sin(T * 4)})`; g.beginPath(); g.ellipse(GR_STAGE_ZONE.x, GR_STAGE_ZONE.y, GR_STAGE_ZONE.r, GR_STAGE_ZONE.r * 0.55, 0, 0, Math.PI * 2); g.fill(); }
     GR_NPC.forEach((n, i) => { const on = !run.ms[i].complete && grCanTalk(i); g.fillStyle = on ? `rgba(255,214,70,${0.35 + 0.15 * Math.sin(T * 3 + i)})` : 'rgba(255,255,255,.28)'; g.beginPath(); g.ellipse(n.x, n.y - 1, 15, 6, 0, 0, Math.PI * 2); g.fill(); });
     // 분수 물줄기 · 찜기 김 · 등롱 빛
     for (let k = 0; k < 6; k++) { const p = (T * 1.6 + k / 6) % 1, h = Math.sin(p * Math.PI) * 9; R(212 + (k % 2 ? 1 : -1) * p * 5, 428 - h, 1, 2, '#e2f6ff'); }
@@ -7982,6 +7995,7 @@
       g.beginPath(); g.moveTo(sx - r * 0.35, sy + r * 0.85); g.lineTo(sx, sy + r * 1.45); g.lineTo(sx + r * 0.35, sy + r * 0.85); g.closePath(); g.fill();
       if (lock) { g.font = `${Math.round(r * 1.05)}px sans-serif`; g.fillText('🔒', sx, sy + 1); }
       else { g.fillStyle = done ? '#ffffff' : '#2b2838'; g.font = `900 ${Math.round(r * 1.45)}px "Noto Sans", Arial, sans-serif`; g.fillText(done ? '✔' : '!', sx, sy + 1); }
+      { const [lx, ly] = S(n.x, n.y + 6); g.font = `700 ${Math.round(4.4 * Z)}px Jua, "Gowun Dodum", sans-serif`; const lw = g.measureText(n.lesson).width + 3 * Z; g.fillStyle = done ? 'rgba(61,154,92,.92)' : 'rgba(255,250,240,.95)'; g.strokeStyle = '#2b2838'; g.lineWidth = 2; g.fillRect(lx - lw / 2, ly - 3 * Z, lw, 6 * Z); g.strokeRect(lx - lw / 2, ly - 3 * Z, lw, 6 * Z); g.fillStyle = done ? '#ffffff' : '#2b2838'; g.fillText(n.lesson, lx, ly + 1); g.font = `900 ${Math.round(r * 1.45)}px "Noto Sans", Arial, sans-serif`; }   // 차시 이름표
       if (!done && !lock) for (let k = 0; k < 3; k++) { const a = T * 1.5 + k * 2.1, [px, py] = S(n.x + Math.cos(a) * 15, n.y - 18 + Math.sin(a) * 12); const tw = 0.5 + 0.5 * Math.sin(T * 5 + k); g.fillStyle = `rgba(255,236,120,${tw})`; g.fillRect(px - 1, py - Z * 1.2, 2, Z * 2.4); g.fillRect(px - Z * 1.2, py - 1, Z * 2.4, 2); }
     });
     // 이름표 (겹치면 위로 비켜요)
@@ -8038,45 +8052,84 @@
   }
   const moodPic = (m) => `<span class="gr-mood"><img src="${moodURL(m.id)}" alt="판다 표정"><i>${m.badge}</i></span>`;
   const grZh = (h, p, big) => `<span class="ar-zh${big ? ' big' : ''}"><span class="han">${h}</span><span class="py t0">${p}</span></span>`;
-  // 미션별 활동 3개 (모두 다른 조작: 연결 · 배열 · 대화 선택 · 그림 고르기 · 메뉴 · 가격 · 빈칸)
+  // 1~11차시 복습 판다 11명 + 졸업 시험 1명 (보기는 매번 섞여요 · 한국어가 문제면 보기는 중국어+병음만)
+  const grN = (n) => { const z = zhNum(n); return grZh(z.h, z.p.replace(/ /g, '')); };
+  const grFamPic = (id) => `<span class="gr-famtag"><img class="gr-fam" src="${famFace(id)}" alt="판다 가족"><b>${famOf(id).ko.replace(', ', '/')}</b></span>`;
   const GR_ACT = [
-    [   // 미션 1 인사 학교
-      () => ({ type: 'match', title: '인사말과 뜻을 연결해요', pairs: [[grZh('好久不见！', 'Hǎo jiǔ bú jiàn!'), '오랜만이야!'], [grZh('你好吗？', 'Nǐ hǎo ma?'), '잘 지내?'], [grZh('我很好。', 'Wǒ hěn hǎo.'), '나는 잘 지내.'], [grZh('你呢？', 'Nǐ ne?'), '너는?']], hint: ['你呢？의 呢는 "~는?" 하고 되묻는 말이에요.', '好久 = 오래, 不见 = 못 봤다 → 오랜만이야!'] }),
-      () => ({ type: 'order', title: '오랜만에 만난 두 친구의 대화를 순서대로 놓아요', lines: true, words: [{ h: '好久不见！', p: 'Hǎo jiǔ bú jiàn!' }, { h: '你好吗？', p: 'Nǐ hǎo ma?' }, { h: '我很好。你呢？', p: 'Wǒ hěn hǎo. Nǐ ne?' }], end: '', hint: ['먼저 "오랜만이야!" → 그다음 "잘 지내?" → 마지막에 대답해요.'] }),
-      () => ({ type: 'choice', title: '친구 판다가 물어봐요. 알맞은 대답을 골라요', npcSay: grZh('你好吗？', 'Nǐ hǎo ma?', true), opts: [{ html: grZh('我很好。你呢？', 'Wǒ hěn hǎo. Nǐ ne?'), ok: true }, { html: grZh('我要这个。', 'Wǒ yào zhège.') }, { html: grZh('这个多少钱？', 'Zhège duōshao qián?') }], hint: ['你好吗？ = 잘 지내? → "나는 잘 지내, 너는?"으로 대답해요.'] }),
+    [   // 1차시 첫 만남: 기본 인사
+      () => ({ type: 'choice', title: "친구를 만났어요. '안녕!'은 중국어로?", opts: [{ html: grZh('你好！', 'Nǐ hǎo!'), ok: true }, { html: grZh('谢谢！', 'Xièxie!') }, { html: grZh('再见！', 'Zàijiàn!') }, { html: grZh('对不起！', 'Duìbuqǐ!') }], hint: ['你好 = 안녕(하세요)'] }),
+      () => ({ type: 'choice', title: "선생님께 인사해요: '선생님, 안녕하세요!'", opts: [{ html: grZh('老师好！', 'Lǎoshī hǎo!'), ok: true }, { html: grZh('你们好！', 'Nǐmen hǎo!') }, { html: grZh('再见！', 'Zàijiàn!') }, { html: grZh('谢谢！', 'Xièxie!') }], hint: ['老师 lǎoshī = 선생님 · 你们好 = 여러분, 안녕하세요'] }),
     ],
-    [   // 미션 2 가족의 집
-      () => { const ids = shuffle(FAM.map(f => f.id)), t = ids[0], o = shuffle(ids.slice(0, 4)); return { type: 'choice', title: '사진 속 판다는 누구일까요?', show: `<img class="gr-fam" src="${famFace(t)}" alt="판다 가족 사진"><div class="gr-look">${famOf(t).look}</div>`, opts: o.map(id => ({ html: grZh(famOf(id).h, famOf(id).p), ok: id === t })), hint: [`사진 아래 설명을 읽어요.`, `정답은 ${famOf(t).ko}: ${famOf(t).h}`] }; },
-      () => { const ids = shuffle(FAM.map(f => f.id)).slice(0, 4); return { type: 'match', title: '가족 호칭(한자)과 병음을 연결해요', pairs: ids.map(id => [`<span class="han big1">${famOf(id).h}</span>`, `<span class="py t0 big1">${famOf(id).p}</span>`]), hint: ['爸爸 bàba · 妈妈 māma · 哥哥 gēge · 姐姐 jiějie · 弟弟 dìdi · 妹妹 mèimei'] }; },
-      () => { const t = pick(FAM.map(f => f.id)), f = famOf(t); return { type: 'order', title: `사진을 보여 주며 소개해요: "이분은 우리 ${f.ko}예요."`, show: `<img class="gr-fam" src="${famFace(t)}" alt="판다 가족 사진">`, words: [{ h: '这是', p: 'zhè shì' }, { h: '我', p: 'wǒ' }, { h: f.h, p: f.p }], extra: [{ h: '你', p: 'nǐ' }], end: '。', hint: [`这是(이분은) → 我(나의) → ${f.h}(${f.ko}) 순서예요.`] }; },
+    [   // 2차시 여러 가지 인사말
+      () => ({ type: 'choice', title: "선물을 받았어요. '고마워!'는 중국어로?", opts: [{ html: grZh('谢谢！', 'Xièxie!'), ok: true }, { html: grZh('对不起！', 'Duìbuqǐ!') }, { html: grZh('再见！', 'Zàijiàn!') }, { html: grZh('没关系！', 'Méi guānxi!') }], hint: ['谢谢 = 고마워'] }),
+      () => ({ type: 'choice', title: '친구가 이렇게 말해요. 자연스러운 대답은?', npcSay: grZh('谢谢！', 'Xièxie!', true), opts: [{ html: grZh('不客气！', 'Bú kèqi!'), ok: true }, { html: grZh('没关系！', 'Méi guānxi!') }, { html: grZh('你好！', 'Nǐ hǎo!') }], hint: ['谢谢(고마워)에는 不客气(천만에)로 대답해요. 没关系는 对不起(미안해)에 하는 대답이에요.'] }),
+      () => ({ type: 'match', title: '인사말과 뜻을 연결해요', pairs: [[grZh('对不起', 'duìbuqǐ'), '미안해'], [grZh('没关系', 'méi guānxi'), '괜찮아'], [grZh('再见', 'zàijiàn'), '잘 가'], [grZh('谢谢', 'xièxie'), '고마워']], hint: ['对不起 미안해 ↔ 没关系 괜찮아'] }),
     ],
-    [   // 미션 3 판다 식당
-      () => { const t = pick(FOOD_IDS); return { type: 'choice', title: '손님 주문표의 음식을 메뉴에서 골라요', npcSay: `📝 ${grZh(foodOf(t).h, foodOf(t).p, true)}`, opts: shuffle(FOOD_IDS).map(id => ({ html: `<img class="gr-food" src="${foodURL(id)}" alt="음식 그림">`, ok: id === t })), pics: true, hint: [`${foodOf(t).h} = ${foodOf(t).ko}`] }; },
-      () => { const t = pick(FOOD_IDS); return { type: 'order', title: '메뉴의 이 음식을 가리키며 주문해요 👆', show: `<span class="gr-point"><img class="gr-food" src="${foodURL(t)}" alt="음식 그림"><b>👆</b></span>`, words: [{ h: '我', p: 'wǒ' }, { h: '要', p: 'yào' }, { h: '这个', p: 'zhège' }], extra: [{ h: '多少钱', p: 'duōshao qián' }], end: '。', hint: ['我(나) → 要(원해요) → 这个(이것): 이거 주세요.'] }; },
-      () => { const t = pick(FOOD_IDS), n = pick(PRICES); return { type: 'price', title: '가격이 궁금해요! 먼저 가격을 묻는 말을 골라요', show: `<span class="gr-point"><img class="gr-food" src="${foodURL(t)}" alt="음식 그림"><b>👆</b></span>`, n, opts: shuffle([{ html: grZh('这个多少钱？', 'Zhège duōshao qián?'), ok: true }, { html: grZh('我要这个。', 'Wǒ yào zhège.') }, { html: grZh('你好吗？', 'Nǐ hǎo ma?') }]), hint: ['多少钱 = 얼마예요?', `${priceZh(n).h} = ${n}元`] }; },
+    [   // 3차시 이름 묻고 답하기
+      () => ({ type: 'choice', title: "'이름이 뭐예요?'를 중국어로?", opts: [{ html: grZh('你叫什么名字？', 'Nǐ jiào shénme míngzi?'), ok: true }, { html: grZh('你是哪国人？', 'Nǐ shì nǎ guó rén?') }, { html: grZh('你喜欢什么？', 'Nǐ xǐhuan shénme?') }, { html: grZh('你好吗？', 'Nǐ hǎo ma?') }], hint: ['叫 jiào = 이름이 ~이다 · 名字 míngzi = 이름'] }),
+      () => ({ type: 'order', title: "'내 이름은 샤오밍이야.' 문장을 만들어요", words: [{ h: '我', p: 'wǒ' }, { h: '叫', p: 'jiào' }, { h: '小明', p: 'Xiǎomíng' }], extra: [{ h: '你', p: 'nǐ' }], end: '。', hint: ['我(나) → 叫(이름이 ~이다) → 小明(샤오밍)'] }),
     ],
-    [   // 미션 4 기분 연구소
-      () => ({ type: 'match', title: '판다 표정과 기분 단어를 연결해요', pairs: shuffle(MOODS).map(m => [moodPic(m), grZh(m.h, m.p)]), hint: ['开心 기뻐 · 累 피곤해 · 饿 배고파 · 困 졸려', '감은 눈 = 졸려(困), 침 = 배고파(饿)'] }),
-      () => { const m = pick(MOODS); return { type: 'choice', title: '이런 상황이에요. 판다는 뭐라고 말할까요?', show: `${moodPic(m)}<div class="gr-scene">${m.scene}</div>`, opts: shuffle(MOODS).map(x => ({ html: grZh(x.s, x.sp), ok: x.id === m.id })), hint: [`이 판다는 ${m.ko}.`, `정답: ${m.s}`] }; },
-      () => { const m = pick(MOODS); return { type: 'choice', title: '빈칸에 들어갈 말을 골라 문장을 완성해요', show: `${moodPic(m)}<div class="gr-blank">${grZh('我很 ＿。', 'Wǒ hěn ＿.', true)}</div>`, opts: shuffle(MOODS).map(x => ({ html: grZh(x.h, x.p), ok: x.id === m.id })), after: () => grZh(m.s, m.sp, true), hint: [`그림의 판다는 ${m.ko}.`] }; },
+    [   // 4차시 나라와 국적
+      () => ({ type: 'choice', title: "'나는 한국 사람이에요.'를 중국어로?", opts: [{ html: grZh('我是韩国人。', 'Wǒ shì Hánguórén.'), ok: true }, { html: grZh('我是中国人。', 'Wǒ shì Zhōngguórén.') }, { html: grZh('你是哪国人？', 'Nǐ shì nǎ guó rén?') }], hint: ['韩国 Hánguó = 한국 · 人 rén = 사람'] }),
+      () => ({ type: 'choice', title: '이 말의 뜻은?', npcSay: grZh('中国人', 'Zhōngguórén', true), opts: [{ html: '중국 사람', ok: true }, { html: '한국 사람' }, { html: '중국' }], hint: ['中国 = 중국, 人 = 사람'] }),
+      () => ({ type: 'choice', title: "'중국'은 중국어로?", opts: [{ html: grZh('中国', 'Zhōngguó'), ok: true }, { html: grZh('韩国', 'Hánguó') }, { html: grZh('中文', 'Zhōngwén') }, { html: grZh('人', 'rén') }], hint: ['中文은 중국어(언어)예요.'] }),
     ],
-    [   // 미션 5 졸업 시험
-      () => ({ type: 'match', title: '새 단어와 뜻을 연결해요', pairs: [[grZh('会', 'huì'), '~할 줄 알다'], [grZh('说', 'shuō'), '말하다'], [grZh('中文', 'Zhōngwén'), '중국어'], [grZh('吗', 'ma'), '~니? (질문)']], hint: ['会 huì = ~할 줄 알다 · 说 shuō = 말하다'] }),
-      () => ({ type: 'order', title: '"나는 중국어를 할 줄 알아요." 문장을 만들어요', words: [{ h: '我', p: 'wǒ' }, { h: '会', p: 'huì' }, { h: '说', p: 'shuō' }, { h: '中文', p: 'Zhōngwén' }], extra: [{ h: '你', p: 'nǐ' }], end: '。', hint: ['我(나) → 会(할 줄 알다) → 说(말하다) → 中文(중국어)'] }),
-      () => ({ type: 'order', title: '선생님께 물어봐요: "너는 중국어를 할 줄 아니?"', words: [{ h: '你', p: 'nǐ' }, { h: '会', p: 'huì' }, { h: '说', p: 'shuō' }, { h: '中文', p: 'Zhōngwén' }, { h: '吗', p: 'ma' }], end: '？', then: { title: '선생님이 되물어요. 알맞게 대답해요!', npcSay: grZh('你会说中文吗？', 'Nǐ huì shuō Zhōngwén ma?', true), opts: [{ html: grZh('我会说中文。', 'Wǒ huì shuō Zhōngwén.'), ok: true }, { html: grZh('我很饿。', 'Wǒ hěn è.') }, { html: grZh('这是我妈妈。', 'Zhè shì wǒ māma.') }] }, hint: ['질문은 끝에 吗를 붙여요: 你 → 会 → 说 → 中文 → 吗', '대답: 我会说中文。'] }),
+    [   // 5차시 숫자
+      () => ({ type: 'choice', title: '숫자 8을 중국어로?', show: '<div class="gr-bignum">8</div>', opts: [8, 6, 4, 9].map(n => ({ html: grN(n), ok: n === 8 })), hint: ['八 bā = 8 · 六 liù = 6'] }),
+      () => ({ type: 'choice', title: '숫자 36을 중국어로?', show: '<div class="gr-bignum">36</div>', opts: [36, 63, 30, 16].map(n => ({ html: grN(n), ok: n === 36 })), hint: ['36 = 三(3) + 十(10) + 六(6)'] }),
+      () => ({ type: 'choice', title: '이 숫자는 얼마일까요?', npcSay: grZh('二十五', 'èrshíwǔ', true), opts: [25, 52, 20, 15].map(n => ({ html: `<span class="gr-num">${n}</span>`, ok: n === 25 })), hint: ['二十 = 20, 五 = 5'] }),
+    ],
+    [   // 6차시 생일 축하와 날짜
+      () => ({ type: 'choice', title: "친구 생일이에요! '생일 축하해!'는?", opts: [{ html: grZh('生日快乐！', 'Shēngrì kuàilè!'), ok: true }, { html: grZh('好久不见！', 'Hǎo jiǔ bú jiàn!') }, { html: grZh('谢谢！', 'Xièxie!') }, { html: grZh('再见！', 'Zàijiàn!') }], hint: ['生日 = 생일 · 快乐 = 즐겁다'] }),
+      () => ({ type: 'choice', title: "'네 생일은 몇 월 며칠이야?'를 중국어로?", opts: [{ html: grZh('你的生日是几月几号？', 'Nǐ de shēngrì shì jǐ yuè jǐ hào?'), ok: true }, { html: grZh('我的生日是五月十号。', 'Wǒ de shēngrì shì wǔ yuè shí hào.') }, { html: grZh('你叫什么名字？', 'Nǐ jiào shénme míngzi?') }], hint: ['几 jǐ = 몇 · 묻는 말은 끝이 ？예요.'] }),
+      () => ({ type: 'choice', title: '몇 월 며칠일까요?', npcSay: grZh('三月五号', 'sān yuè wǔ hào', true), opts: ['3월 5일', '5월 3일', '3월 15일', '4월 5일'].map((t, k) => ({ html: `<span class="gr-num">${t}</span>`, ok: k === 0 })), hint: ['숫자 + 月 = ○월 · 숫자 + 号 = ○일'] }),
+    ],
+    [   // 7차시 가족 호칭 (판다 옆에 한국어 관계를 써 줘요 · 생김새로 맞히지 않아요)
+      () => { const ids = shuffle(FAM.map(f => f.id)).slice(0, 4), t = ids[0]; return { type: 'choice', title: `'${famOf(t).ko.replace(', ', '/')}'는 중국어로 무엇일까요?`, show: grFamPic(t), opts: ids.map(id => ({ html: grZh(famOf(id).h, famOf(id).p), ok: id === t })), hint: ['爸爸 아빠 · 妈妈 엄마 · 哥哥 형/오빠 · 姐姐 누나/언니 · 弟弟 남동생 · 妹妹 여동생'] }; },
+      () => { const o = ['mama', ...shuffle(['baba', 'jiejie', 'meimei', 'gege', 'didi']).slice(0, 3)]; return { type: 'choice', title: "'엄마'는 중국어로?", show: grFamPic('mama'), opts: o.map(id => ({ html: grZh(famOf(id).h, famOf(id).p), ok: id === 'mama' })), hint: ['妈妈 māma = 엄마'] }; },
+      () => ({ type: 'order', title: "엄마 사진을 보여 주며: '이분은 우리 엄마예요.'", show: grFamPic('mama'), words: [{ h: '这', p: 'zhè' }, { h: '是', p: 'shì' }, { h: '我', p: 'wǒ' }, { h: '妈妈', p: 'māma' }], extra: [{ h: '你', p: 'nǐ' }], end: '。', hint: ['这(이분) → 是(~이다) → 我(나의) → 妈妈(엄마)'] }),
+    ],
+    [   // 8차시 좋아하는 것
+      () => ({ type: 'choice', title: "'나는 사과를 좋아해.'를 중국어로?", opts: [{ html: grZh('我喜欢苹果。', 'Wǒ xǐhuan píngguǒ.'), ok: true }, { html: grZh('我喜欢熊猫。', 'Wǒ xǐhuan xióngmāo.') }, { html: grZh('我喜欢饺子。', 'Wǒ xǐhuan jiǎozi.') }, { html: grZh('你喜欢什么？', 'Nǐ xǐhuan shénme?') }], hint: ['苹果 píngguǒ = 사과'] }),
+      () => ({ type: 'choice', title: "'너는 무엇을 좋아하니?'를 중국어로?", opts: [{ html: grZh('你喜欢什么？', 'Nǐ xǐhuan shénme?'), ok: true }, { html: grZh('你叫什么名字？', 'Nǐ jiào shénme míngzi?') }, { html: grZh('你是哪国人？', 'Nǐ shì nǎ guó rén?') }], hint: ['喜欢 xǐhuan = 좋아하다 · 什么 shénme = 무엇'] }),
+      () => { const t = pick(['xiongmao', 'pingguo']); return { type: 'choice', title: '그림에 알맞은 중국어를 골라요', show: `<img class="gr-food" src="${giftURL(t)}" alt="선물 그림">`, opts: ['xiongmao', 'pingguo', 'jiaozi', 'malatang'].map(id => ({ html: grZh(giftOf(id).h, giftOf(id).p), ok: id === t })), hint: ['熊猫 xióngmāo = 판다 · 苹果 píngguǒ = 사과'] }; },
+    ],
+    [   // 9차시 중국 음식 (다섯 음식이 번갈아 나와요)
+      () => { const t = pick(FOOD_IDS), o = [t, ...shuffle(FOOD_IDS.filter(x => x !== t)).slice(0, 3)]; return { type: 'choice', title: '이 음식 이름의 뜻은?', npcSay: grZh(foodOf(t).h, foodOf(t).p, true), opts: o.map(id => ({ html: foodOf(id).ko, ok: id === t })), hint: ['饺子 만두 · 麻辣烫 마라탕 · 北京烤鸭 북경오리 · 火锅 훠궈 · 珍珠奶茶 버블티'] }; },
+      () => { const t = pick(FOOD_IDS); return { type: 'choice', title: '손님이 이 음식을 주문했어요. 메뉴에서 골라요', npcSay: `📝 ${grZh(foodOf(t).h, foodOf(t).p, true)}`, opts: shuffle(FOOD_IDS).map(id => ({ html: `<img class="gr-food" src="${foodURL(id)}" alt="음식 그림">`, ok: id === t })), pics: true, hint: [`${foodOf(t).h} = ${foodOf(t).ko}`] }; },
+      () => { const t = pick(FOOD_IDS); return { type: 'choice', title: '이 음식의 중국어 이름은?', show: `<img class="gr-food big" src="${foodURL(t)}" alt="음식 그림">`, opts: shuffle(FOOD_IDS).slice(0, 5).filter(id => id !== t).slice(0, 3).concat([t]).map(id => ({ html: grZh(foodOf(id).h, foodOf(id).p), ok: id === t })), hint: [`그림 속 음식은 ${foodOf(t).ko}예요.`] }; },
+    ],
+    [   // 10차시 음식 주문 (가격은 연습용)
+      () => ({ type: 'choice', title: "메뉴를 가리키며 '이거 주세요.'", show: `<span class="gr-point"><img class="gr-food" src="${foodURL('jiaozi')}" alt="음식 그림"><b>👆</b></span>`, opts: [{ html: grZh('我要这个。', 'Wǒ yào zhège.'), ok: true }, { html: grZh('这个多少钱？', 'Zhège duōshao qián?') }, { html: grZh('你好吗？', 'Nǐ hǎo ma?') }, { html: grZh('谢谢！', 'Xièxie!') }], hint: ['要 yào = 원하다 · 这个 zhège = 이것'] }),
+      () => ({ type: 'choice', title: "'이거 얼마예요?'를 중국어로?", opts: [{ html: grZh('这个多少钱？', 'Zhège duōshao qián?'), ok: true }, { html: grZh('我要这个。', 'Wǒ yào zhège.') }, { html: grZh('你叫什么名字？', 'Nǐ jiào shénme míngzi?') }], hint: ['多少钱 duōshao qián = 얼마예요?'] }),
+      () => ({ type: 'choice', title: "점원이 말해요: '20위안이에요.' (연습용 가격)", opts: [20, 10, 30, 50].map(n => ({ html: grZh(priceZh(n).h + '。', priceZh(n).p.replace(/^./, c => c.toUpperCase()) + '.'), ok: n === 20 })), hint: ['二十 èrshí = 20 · 块 kuài = 위안'] }),
+    ],
+    [   // 11차시 안부와 기분
+      () => ({ type: 'choice', title: "오랜만에 친구를 만났어요. '오랜만이야!'는?", opts: [{ html: grZh('好久不见！', 'Hǎo jiǔ bú jiàn!'), ok: true }, { html: grZh('你好吗？', 'Nǐ hǎo ma?') }, { html: grZh('再见！', 'Zàijiàn!') }, { html: grZh('谢谢！', 'Xièxie!') }], hint: ['好久 = 오래 · 不见 = 못 봤다'] }),
+      () => { const m = pick(MOODS); return { type: 'choice', title: '이 판다가 할 말로 알맞은 문장은?', show: `${moodPic(m)}<div class="gr-scene">${m.scene}</div>`, opts: shuffle(MOODS).map(x => ({ html: grZh(x.s, x.sp), ok: x.id === m.id })), hint: [`이 판다는 ${m.ko}.`] }; },
+      () => ({ type: 'choice', title: "'나는 잘 지내. 너는?'을 중국어로?", npcSay: grZh('你好吗？', 'Nǐ hǎo ma?', true), opts: [{ html: grZh('我很好。你呢？', 'Wǒ hěn hǎo. Nǐ ne?'), ok: true }, { html: grZh('我很开心。', 'Wǒ hěn kāixīn.') }, { html: grZh('你好吗？', 'Nǐ hǎo ma?') }], hint: ['呢 ne = "너는?" 하고 되물을 때'] }),
+    ],
+    [   // 12차시 졸업 시험: 会 · 说 · 中文 (+ 11차시 복습 吗)
+      () => ({ type: 'match', title: '새 단어와 뜻을 연결해요', pairs: [[grZh('会', 'huì'), '~할 줄 알다'], [grZh('说', 'shuō'), '말하다'], [grZh('中文', 'Zhōngwén'), '중국어']], hint: ['会 huì = ~할 줄 알다 · 说 shuō = 말하다'] }),
+      () => ({ type: 'order', title: "'나는 중국어를 할 줄 알아요.' 문장을 만들어요", words: [{ h: '我', p: 'wǒ' }, { h: '会', p: 'huì' }, { h: '说', p: 'shuō' }, { h: '中文', p: 'Zhōngwén' }], extra: [{ h: '你', p: 'nǐ' }], end: '。', hint: ['我(나) → 会(할 줄 알다) → 说(말하다) → 中文(중국어)'] }),
+      () => ({ type: 'choice', title: "질문을 완성해요: '너는 중국어를 할 줄 아니?'", show: `<div class="gr-blank">${grZh('你会说中文（　）？', 'Nǐ huì shuō Zhōngwén (　)?', true)}</div>`, opts: [{ html: grZh('吗', 'ma'), ok: true }, { html: grZh('呢', 'ne') }, { html: grZh('很', 'hěn') }], after: () => `${grZh('你会说中文吗？', 'Nǐ huì shuō Zhōngwén ma?', true)}<br>너는 중국어를 할 줄 아니?`, hint: ['문장 끝에 吗를 붙이면 예/아니요로 묻는 말이 돼요.'] }),
     ],
   ];
-  const GR_MISSION_INTRO = ['好久不见！ 오랜만이야! 우리 인사 연습하자!', '우리 가족사진 볼래? 가족을 소개해 줘!', '어서 오세요! 판다 식당이에요. 주문해 볼까요?', '판다들의 기분을 맞혀 볼래요?', '마지막 졸업 시험이에요! 중국어로 말해 볼까요?'];
+  const GR_MISSION_INTRO = [
+    '你好！ 우리 처음 만났을 때 배운 인사, 기억나?', '谢谢！ 여러 가지 인사말을 다시 해 볼까?', '나는 자기소개 판다! 이름을 묻고 말해 봐요.', '세계 여행 판다예요. 어느 나라 사람인지 말해 봐요!',
+    '숫자 마법사 판다! 중국어 숫자를 읽어 볼까?', '生日快乐！ 생일과 날짜를 복습해요.', '우리 가족사진이에요. 가족을 중국어로 불러 줘요!', '선물 가게예요. 무엇을 좋아하는지 말해 봐요!',
+    '중국 음식 축제에 온 걸 환영해요!', '어서 오세요! 판다 식당이에요. 주문해 볼까요?', '好久不见！ 기분 지킴이 판다예요.', '마지막 졸업 시험이에요! 중국어로 말해 볼까요?',
+  ];
   // ----- 대화창 -----
   function grTalkOpen(i) {
     if (GR.talk >= 0) return;
     const n = GR_NPC[i];
-    if (!grCanTalk(i)) { grToast('🔒 먼저 인사·가족·식당·기분 미션 4개를 끝내고 와요!'); return; }
+    if (!grCanTalk(i)) { grToast(`🔒 1~11차시 복습 판다를 모두 만나고 와요! (${grReviewDone()}/${GR_FIN})`); return; }
     GR.talk = i; GR.keys = {}; GR.pad = {}; GR.me.tx = null;
     $('grTalk').hidden = false; $('grTalkFace').src = npcFaceURL(n); $('grTalkName').textContent = `${n.name} · ${n.place}`;
     SFX.meet();
     if (run.ms[i].complete) { grBody(`<p class="gr-say">고마워! 이 미션은 벌써 끝냈어요 ✅</p>`, '닫기', grTalkClose); return; }
-    grBody(`<p class="gr-say">${GR_MISSION_INTRO[i]}</p><p class="gr-prog">활동 ${run.arc.act[i] + 1} / 3</p>`, '시작! ▶', () => grActStart(i));
+    grBody(`<p class="gr-say">${GR_MISSION_INTRO[i]}</p><p class="gr-prog">활동 ${run.arc.act[i] + 1} / ${GR_ACT[i].length}</p>`, '시작! ▶', () => grActStart(i));
   }
   function grTalkClose() { $('grTalk').hidden = true; GR.talk = -1; grStampsUI(); grHintSet(); }
   function grBody(html, goLabel, goFn) {
@@ -8094,7 +8147,7 @@
     const right = a.type === 'order' ? a.words.map(w => w.h).join(' / ') : a.type === 'match' ? a.pairs.map(p => `${plain(p[0]) || '그림'}=${plain(p[1])}`).join(', ') : (plain((a.opts.find(o => o.ok) || {}).html || '') || '그림') + (a.type === 'price' ? ` → ${a.n}元` : '');
     taskBegin(`gr${i}-${k}`, `${GR_NPC[i].place} ${k + 1}: ${a.title}`, right);
     GR.miss = false;
-    const head = `<div class="gr-head"><span class="gr-step">${GR_NPC[i].place} · 활동 ${k + 1}/3</span><b>${a.title}</b></div>`;
+    const head = `<div class="gr-head"><span class="gr-step">${GR_NPC[i].place} · 활동 ${k + 1}/${GR_ACT[i].length}</span><b>${a.title}</b></div>`;
     if (a.type === 'match') grMatch(head, a);
     else if (a.type === 'order') grOrder(head, a, a.then ? () => grThen(head, a.then) : null);
     else if (a.type === 'choice') grChoice(head, a);
@@ -8109,8 +8162,8 @@
     taskEnd(); SFX.correct();
     if (!GR.miss) { GR.combo++; run.arc.best = Math.max(run.arc.best || 0, GR.combo); }
     run.arc.act[c.i] = c.k + 1; GR.cur = null;
-    if (run.arc.act[c.i] >= 3) { grMissionDone(c.i, extraHtml); return; }
-    grBody(`<p class="gr-ok">정답! 🎉</p>${extraHtml || ''}<p class="gr-prog">활동 ${c.k + 2} / 3 이 기다려요</p>`, '다음 활동 ▶', () => grActStart(c.i));
+    if (run.arc.act[c.i] >= GR_ACT[c.i].length) { grMissionDone(c.i, extraHtml); return; }
+    grBody(`<p class="gr-ok">정답! 🎉</p>${extraHtml || ''}<p class="gr-prog">활동 ${c.k + 2} / ${GR_ACT[c.i].length} 이 기다려요</p>`, '다음 활동 ▶', () => grActStart(c.i));
   }
   function grMissionDone(i, extraHtml) {
     const s = run.ms[i], M = STAGE.missions[i];
@@ -8118,14 +8171,14 @@
     s.done = s.need; s.complete = true;
     const ever = save.questEver[STAGE.id] = save.questEver[STAGE.id] || [];
     const first = !ever.includes(i); if (first) { ever.push(i); addExp(20); }
-    const paid = payOnce('mission' + i, AR_ROUND_COIN);
+    const coin = i === GR_FIN ? GR_FINAL_COIN : GR_REVIEW_COIN, paid = payOnce('mission' + i, coin);
     M.cards.forEach(id => { save.cards[id] = true; }); writeSave();
     report('mission', { mission: `${grCount()}/${run.ms.length}` });   // 미션 칸 = 끝낸 미션 수 / 5 (순서와 상관없이)
     setTimeout(() => SFX.level(), 200);
     GR.fx.push({ t: 0 });
     grStampsUI(); grHintSet(); gnSendSoon();
     const n = grCount();
-    grBody(`<p class="gr-ok">🎓 졸업 도장 획득! (${n}/5)</p>${extraHtml || ''}${paid ? `<p class="gr-coin">🪙 +${AR_ROUND_COIN}코인${first ? ' · ✨ +20 EXP' : ''}</p>` : ''}<p class="gr-say">${n >= 5 ? '🎓 졸업 자격 획득! 광장의 졸업식 무대 앞으로 가요!' : n >= 4 ? '이제 광장 아래 졸업식 선생님에게 가요!' : '다른 ❗ 판다에게도 가 봐요!'}</p>`, '좋아요!', grTalkClose);
+    grBody(`<p class="gr-ok">🎓 졸업 도장 획득! (${n}/${GR_N})</p>${extraHtml || ''}${paid ? `<p class="gr-coin">🪙 +${coin}코인${first ? ' · ✨ +20 EXP' : ''}</p>` : ''}<p class="gr-say">${n >= GR_N ? '🎓 졸업 자격 획득! 광장의 졸업식 무대 앞으로 가요!' : grReviewDone() >= GR_FIN ? '이제 광장 아래 졸업식 선생님에게 가요!' : `다른 ❗ 판다에게도 가 봐요! (복습 ${grReviewDone()}/${GR_FIN})`}</p>`, '좋아요!', grTalkClose);
   }
   // 연결하기: 왼쪽 → 오른쪽 차례로 톡 (맞은 짝만 묶여요)
   function grMatch(head, a) {
@@ -8170,7 +8223,7 @@
   function grChoice(head, a, next) {
     const opts = a.pics ? a.opts : shuffle(a.opts); let sel = -1;
     const draw = () => {
-      grBody(`${head}${a.npcSay ? `<div class="gr-npcsay">${a.npcSay}</div>` : ''}${a.show ? `<div class="gr-show">${a.show}</div>` : ''}<div class="gr-opts${a.pics ? ' pics' : ''}">${opts.map((o, k) => `<button class="gr-card${sel === k ? ' sel' : ''}" data-o="${k}" aria-pressed="${sel === k}">${o.html}</button>`).join('')}</div>`, '확인 ✔', check);
+      grBody(`${head}${a.npcSay ? `<div class="gr-npcsay">${a.npcSay}</div>` : ''}${a.show ? `<div class="gr-show">${a.show}</div>` : ''}<div class="gr-opts n${opts.length}${a.pics ? ' pics' : ''}">${opts.map((o, k) => `<button class="gr-card${sel === k ? ' sel' : ''}" data-o="${k}" aria-pressed="${sel === k}">${o.html}</button>`).join('')}</div>`, '확인 ✔', check);
       $('grGo').disabled = sel < 0; $('grHintBtn').hidden = !a.hint;
       $('grBody').querySelectorAll('[data-o]').forEach(b => b.addEventListener('click', () => { sel = +b.dataset.o; SFX.pop(); draw(); }));
     };
@@ -8186,7 +8239,7 @@
   function grPriceStep(head, a) {
     const s = priceSay(a.n), tags = shuffle(PRICES); let sel = -1;
     const draw = () => {
-      grBody(`${head}<div class="gr-npcsay"><small>점원 판다:</small> ${grZh(s.h, s.p, true)} ${sayBtnGr(s.h)}</div><p class="gr-tip">점원이 말한 가격표를 골라요 (연습용 가격, 코인과 상관없어요)</p><div class="gr-opts">${tags.map((v, k) => `<button class="gr-card tag${sel === k ? ' sel' : ''}" data-o="${k}">${v}元</button>`).join('')}</div>`, '확인 ✔', () => {
+      grBody(`${head}<div class="gr-npcsay"><small>점원 판다:</small> ${grZh(s.h, s.p, true)} ${sayBtnGr(s.h)}</div><p class="gr-tip">점원이 말한 가격표를 골라요 (연습용 가격, 코인과 상관없어요)</p><div class="gr-opts n${tags.length}">${tags.map((v, k) => `<button class="gr-card tag${sel === k ? ' sel' : ''}" data-o="${k}">${v}元</button>`).join('')}</div>`, '확인 ✔', () => {
         if (sel < 0) return;
         if (tags[sel] !== a.n) { grWrong('块 앞의 숫자를 다시 봐요!', $('grBody').querySelector('.gr-opts')); return; }
         grActDone(`<div class="gr-sent">${grZh(s.h, s.p, true)} = ${a.n}元</div>`);
@@ -8226,17 +8279,19 @@
   // 방장이 나가면 남은 사람이 방장 자리를 이어받아요 (자동). 기록은 어디에도 저장되지 않아요
   const GN = { status: 'off', peer: null, host: false, conn: null, conns: new Map(), room: '', others: new Map(), sendT: 0, lastSent: '', timer: 0, tries: 0, hostId: '', log: [] };
   const GN_ROOM_KEY = 'panda-grad-room';
-  function grSavedRoom() { try { return localStorage.getItem(GN_ROOM_KEY) || 'PANDA'; } catch (e) { return 'PANDA'; } }
-  const gnClean = (s) => String(s || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 12);
+  function grSavedRoom() { let r = ''; try { r = localStorage.getItem(GN_ROOM_KEY) || ''; } catch (e) {} return !r || r === 'PANDA' ? '판다' : r; }   // 예전 기본값 PANDA → 판다
+  // 방 코드: 화면에는 한글·영어·숫자 그대로(예: 판다), 연결 아이디에는 UTF-8 바이트를 16진수로 바꾼 안전한 영문만 써요
+  const gnClean = (s) => String(s || '').normalize('NFC').replace(/\s+/g, '').replace(/[^0-9A-Za-z가-힣]/g, '').toUpperCase().slice(0, 12);
+  const gnRoomKey = (room) => Array.from(new TextEncoder().encode(room), b => b.toString(16).padStart(2, '0')).join('');
   function gnLoadLib() {
     if (window.Peer) return Promise.resolve();
     return new Promise((res, rej) => { const s = document.createElement('script'); s.src = 'vendor/peerjs-1.5.4.min.js'; s.onload = () => (window.Peer ? res() : rej(new Error('nolib'))); s.onerror = () => rej(new Error('nolib')); document.head.appendChild(s); });
   }
   async function gnJoin() {
     const room = gnClean($('grRoom').value);
-    if (room.length < 2) { $('grLobbyMsg').textContent = '방 코드를 2글자 이상 써 주세요 (영어·숫자)'; return; }
+    if (room.length < 2) { $('grLobbyMsg').textContent = '방 코드를 2글자 이상 써 주세요 (한글·영어·숫자)'; return; }
     try { localStorage.setItem(GN_ROOM_KEY, room); } catch (e) {}
-    GN.room = room; GN.hostId = `pandagrad12-${room.toLowerCase()}`; GN.status = 'connecting'; GN.tries = 0; grNetUI();
+    $('grRoom').value = room; GN.room = room; GN.hostId = `pandagrad12-r${gnRoomKey(room)}`; GN.status = 'connecting'; GN.tries = 0; grNetUI();
     $('grLobbyMsg').textContent = '연결하는 중이에요… (최대 15초)';
     $('grJoin').disabled = true;
     try { await gnLoadLib(); } catch (e) { gnFail('연결 프로그램을 불러오지 못했어요.'); return; }
@@ -8311,7 +8366,7 @@
     const n = String(d.n || '').replace(/[<>&"]/g, '').slice(0, 12) || '친구';
     const x = Number(d.x), y = Number(d.y); if (!isFinite(x) || !isFinite(y)) return null;
     const w = {}; if (d.w && typeof d.w === 'object') for (const s of Object.keys(WEAR_SLOTS)) { const id = d.w[s]; if (typeof id === 'string' && WEAR_ART[id] && SHOP_BY_ID[id] && SHOP_BY_ID[id].slot === s) w[s] = id; }
-    return { n, x: clamp(x, 0, GRWD), y: clamp(y, 0, GRHT), d: d.d < 0 ? -1 : 1, mv: !!d.m, g: !!d.g, st: clamp(Number(d.s) || 0, 0, 5), w };
+    return { n, x: clamp(x, 0, GRWD), y: clamp(y, 0, GRHT), d: d.d < 0 ? -1 : 1, mv: !!d.m, g: !!d.g, st: clamp(Number(d.s) || 0, 0, 12), w };
   }
   function gnUpsert(id, s) {
     let o = GN.others.get(id);
@@ -8375,7 +8430,7 @@
   $('grHintBtn').addEventListener('click', grHint);
   $('grTalkX').addEventListener('click', () => { GR.cur = null; grTalkClose(); });
   $('grJoin').addEventListener('click', gnJoin);
-  $('grRoom').addEventListener('keydown', (e) => { if (isEnter(e.code)) { e.preventDefault(); gnJoin(); } });
+  $('grRoom').addEventListener('keydown', (e) => { if (e.isComposing || e.keyCode === 229) return; if (isEnter(e.code)) { e.preventDefault(); gnJoin(); } });
   $('grSolo').addEventListener('click', gnSingle);
   $('grNet').addEventListener('click', grNetClick);
   $('grStay').addEventListener('click', grStay);
@@ -8685,7 +8740,7 @@
     DF.phase = 'quiz'; taskBegin(key, label, right); DF.ans = right;   // DF.ans: 자동 테스트용
     const list = shuffle(opts); let sel = -1;
     const draw = () => {
-      $('dfPopBody').innerHTML = `${head}<div class="df-opts">${list.map((o, k) => `<button class="df-opt${sel === k ? ' sel' : ''}" data-o="${k}" aria-pressed="${sel === k}">${o.html}</button>`).join('')}</div>`;
+      $('dfPopBody').innerHTML = `${head}<div class="df-opts n${list.length}">${list.map((o, k) => `<button class="df-opt${sel === k ? ' sel' : ''}" data-o="${k}" aria-pressed="${sel === k}">${o.html}</button>`).join('')}</div>`;
       $('dfPopBody').querySelectorAll('[data-o]').forEach(b => b.addEventListener('click', () => { sel = +b.dataset.o; SFX.pop(); draw(); }));
       $('dfPopGo').disabled = sel < 0; bindSoundButtons($('dfPopBody')); wrapPinyin($('dfPopBody'));
     };
@@ -8766,7 +8821,7 @@
         $('dfPopMsg').className = 'df-popmsg bad'; return;
       }
       taskEnd(); SFX.correct();
-      $('dfPopBody').innerHTML = `<div class="df-qhead">💬 대답 완성!</div>${face}${dfZh('我也很好！', 'Wǒ yě hěn hǎo!', true)} ${dfSay('我也很好！')}<small class="df-ko">나도 잘 지내!</small></div></div><div class="df-okbox">⭕ ${dfZh('我很好。你呢？', 'Wǒ hěn hǎo. Nǐ ne?', true)} ${dfSay('我很好。你呢？')}<br>나는 잘 지내. 너는?<br><small>呢(ne)는 '너는?' 하고 되물을 때 써요.</small></div>`;
+      $('dfPopBody').innerHTML = `<div class="df-qhead">💬 대답 완성!</div>${face}<span class="df-ko">😊 친구가 활짝 웃어요!</span></div></div><div class="df-okbox">⭕ ${dfZh('我很好。你呢？', 'Wǒ hěn hǎo. Nǐ ne?', true)} ${dfSay('我很好。你呢？')}<br>나는 잘 지내. 너는?<br><small>呢(ne)는 '너는?' 하고 되물을 때 써요.</small></div>`;
       bindSoundButtons($('dfPopBody')); wrapPinyin($('dfPopBody')); $('dfPopMsg').textContent = '';
       $('dfPopGo').textContent = '다음 ▶'; DF.popFn = () => dfFriendMa(face);
     };
@@ -8947,7 +9002,7 @@
       const M = DF_MOODS[p.mood], two = p.r === 2;
       const zh = p.r === 0 ? M.h : M.s, py = p.r === 0 ? M.p : M.sp;
       const [cx, by] = S(p.x, p.y - 45);
-      const zf = Math.round((p.r === 0 ? 10.5 : 8.4) * Z), pf = Math.round(4.6 * Z), gf = Math.round(5 * Z);
+      const zf = Math.round((p.r === 0 ? 10.5 : 8.4) * Z), pf = Math.round(4.6 * Z), gf = Math.round(6.6 * Z);
       g.font = `700 ${zf}px "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif`; const zw = g.measureText(zh).width;
       g.font = `600 ${pf}px "Noto Sans", Arial, sans-serif`; const pw = g.measureText(py).width;
       const w = Math.max(zw, pw, two ? 34 * Z : 0) + 7 * Z, h = zf + pf + (two ? gf + 2 * Z : 0) + 4 * Z;
@@ -8956,7 +9011,7 @@
       g.fillStyle = p.gated ? '#fff3c4' : '#ffffff'; g.strokeStyle = p === DF.target ? '#f0a800' : '#2b2838'; g.lineWidth = p === DF.target ? 4 : 2.5;
       const rr = 3 * Z; g.beginPath(); g.moveTo(x0 + rr, y0); g.arcTo(x0 + w, y0, x0 + w, y0 + h, rr); g.arcTo(x0 + w, y0 + h, x0, y0 + h, rr); g.lineTo(cx + 3 * Z, y0 + h); g.lineTo(cx, y0 + h + 3 * Z); g.lineTo(cx - 3 * Z, y0 + h); g.arcTo(x0, y0 + h, x0, y0, rr); g.arcTo(x0, y0, x0 + w, y0, rr); g.closePath(); g.fill(); g.stroke();
       let ty = y0 + 2 * Z;
-      if (two) { g.fillStyle = '#7a6a8a'; g.font = `700 ${gf}px "Noto Sans SC", sans-serif`; g.fillText('好久不见！', x0 + w / 2, ty + gf / 2); ty += gf + 2 * Z; }
+      if (two) { g.fillStyle = '#3b2a6b'; g.font = `700 ${gf}px "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif`; g.fillText('好久不见！', Math.round(x0 + w / 2), Math.round(ty + gf / 2)); ty += gf + 2 * Z; }
       g.fillStyle = '#2b2838'; g.font = `700 ${zf}px "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif`; g.fillText(zh, x0 + w / 2, ty + zf / 2 + 1); ty += zf;
       g.fillStyle = '#1d7a6a'; g.font = `600 ${pf}px "Noto Sans", Arial, sans-serif`; g.fillText(py, x0 + w / 2, ty + pf / 2 + 1);
       g.globalAlpha = 1;
