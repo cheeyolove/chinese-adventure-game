@@ -702,19 +702,28 @@
 
   /* 12차시 졸업식 광장 */
   #grad { position: fixed; inset: 0; z-index: 19; display: flex; flex-direction: column; background: #2f5d3a; color: var(--ink); user-select: none; -webkit-user-select: none; touch-action: none; overflow: hidden; overscroll-behavior: none; }
-  .gr-stamps { flex: 1; min-width: 0; font-weight: 700; font-size: 15px; white-space: nowrap; overflow: hidden; display: flex; align-items: center; gap: 4px; }
-  .gr-st { display: inline-flex; width: 24px; height: 24px; border-radius: 50%; align-items: center; justify-content: center; background: rgba(255,255,255,.18); font-size: 13px; }
-  .gr-st.on { background: #4fd08c; color: #10331f; }
+  .gr-stamps { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; display: flex; align-items: center; gap: 6px; }
+  .gr-big { flex: none; font-weight: 700; font-size: 26px; line-height: 1; background: #ffd23f; color: #2b2838; border: 3px solid #2b2838; border-radius: 14px; padding: 3px 10px 4px; margin-right: 4px; }
+  .gr-big small { font-size: 17px; }
+  .gr-st { position: relative; flex: none; display: inline-flex; width: 38px; height: 38px; border-radius: 50%; align-items: center; justify-content: center; background: rgba(255,255,255,.22); border: 2px solid rgba(255,255,255,.5); }
+  .gr-st i { font-style: normal; font-size: 20px; line-height: 1; }
+  .gr-st em { position: absolute; right: -5px; bottom: -5px; font-style: normal; font-size: 12px; font-weight: 900; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #fff; color: #1d7a45; border: 2px solid #1d7a45; }
+  .gr-st.on { background: #4fd08c; border-color: #fff; }
+  .gr-st.lock { opacity: .55; } .gr-st.lock em { color: #555; border-color: #888; font-size: 9px; }
+  @media (max-width: 760px), (max-height: 520px) { .gr-big { font-size: 20px; padding: 2px 8px; } .gr-big small { font-size: 14px; } .gr-st { width: 30px; height: 30px; } .gr-st i { font-size: 16px; } }
   .gr-net { flex: none; border: 2px solid rgba(255,255,255,.55); background: rgba(255,255,255,.16); color: #fff; border-radius: 999px; padding: 6px 10px; font: inherit; font-weight: 700; font-size: 13px; cursor: pointer; white-space: nowrap; }
   .gr-stagewrap { position: relative; flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; }
   #grCanvas { width: min(100%, calc((100vh - 56px) * 1.6)); width: min(100%, calc((100dvh - 56px) * 1.6)); aspect-ratio: 480 / 300; image-rendering: pixelated; touch-action: none; display: block; }
-  .gr-hint { position: absolute; top: 6px; left: 50%; transform: translateX(-50%); background: rgba(10,14,30,.66); color: #fff; font-weight: 700; font-size: 14px; padding: 4px 12px; border-radius: 999px; max-width: 92%; text-align: center; pointer-events: none; }
+  .gr-hint { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); max-width: calc(100% - 330px) !important; background: rgba(255,250,240,.94); color: #2b2838; border: 2px solid #2b2838; font-weight: 700; font-size: 16px; padding: 4px 14px; border-radius: 999px; max-width: 92%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: center; pointer-events: none; box-shadow: 0 3px 0 rgba(0,0,0,.25); }
   .gr-pad { position: absolute; left: 10px; bottom: 10px; display: grid; grid-template: 'a u b' 'l c r' 'x d y'; gap: 4px; }
-  .gr-pad button { width: 54px; height: 54px; border-radius: 14px; border: 3px solid rgba(255,255,255,.7); background: rgba(20,30,50,.45); color: #fff; font-size: 22px; touch-action: none; padding: 0; }
+  .gr-pad button { width: 60px; height: 60px; border-radius: 14px; border: 3px solid rgba(255,255,255,.7); background: rgba(20,30,50,.45); color: #fff; font-size: 22px; touch-action: none; padding: 0; }
   .gr-pad button.on { background: rgba(246,196,69,.8); color: var(--ink); }
   .gr-pad [data-d=up] { grid-area: u; } .gr-pad [data-d=left] { grid-area: l; } .gr-pad [data-d=right] { grid-area: r; } .gr-pad [data-d=down] { grid-area: d; }
-  .gr-actbtn { position: absolute; right: 12px; bottom: 16px; min-width: 96px; min-height: 64px; border-radius: 18px; border: 3px solid var(--ink); background: #f6c445; font: inherit; font-weight: 700; font-size: 16px; box-shadow: 0 4px 0 var(--ink); padding: 4px 10px; touch-action: manipulation; }
-  .gr-actbtn:disabled { opacity: .55; }
+  .gr-actbtn { position: absolute; right: 14px; bottom: 16px; min-width: 128px; min-height: 76px; border-radius: 20px; border: 4px solid var(--ink); background: #f6c445; font: inherit; font-weight: 700; font-size: 19px; box-shadow: 0 5px 0 var(--ink); padding: 4px 12px; touch-action: manipulation; color: var(--ink); }
+  .gr-actbtn:disabled { opacity: .5; background: #e8e2d2; }
+  .gr-actbtn.ready { animation: grPulse 1s ease-in-out infinite; background: #ffd23f; }
+  @keyframes grPulse { 0%, 100% { transform: scale(1); box-shadow: 0 5px 0 var(--ink), 0 0 0 0 rgba(255,210,63,.7); } 50% { transform: scale(1.07); box-shadow: 0 5px 0 var(--ink), 0 0 0 10px rgba(255,210,63,0); } }
+  @media (prefers-reduced-motion: reduce) { .gr-actbtn.ready { animation: none; } }
   @media (hover: hover) and (pointer: fine) { .gr-pad { display: none; } }
   .gr-toast { position: absolute; top: 40px; left: 50%; transform: translateX(-50%); background: #fffaf0; border: 3px solid var(--ink); border-radius: 12px; padding: 6px 12px; font-weight: 700; z-index: 3; }
   #grTalk, #grLobby, #grPop { position: absolute; inset: 0; z-index: 5; background: rgba(9,17,31,.55); display: flex; align-items: center; justify-content: center; padding: 8px; overflow-y: auto; touch-action: pan-y; }
@@ -1020,7 +1029,7 @@
 <!-- 12차시 졸업식 광장 (탑다운 맵 · 함께 접속) -->
 <div id="grad" hidden>
   <div class="ar-topbar"><button class="ar-ib" id="grHome" aria-label="홈으로">🏠</button><div id="grStamps" class="gr-stamps"></div><button class="gr-net" id="grNet" title="함께 접속 상태 (눌러서 다시 연결)">🐼 혼자 진행</button></div>
-  <div class="gr-stagewrap"><canvas id="grCanvas" width="480" height="300" aria-label="졸업식 광장"></canvas>
+  <div class="gr-stagewrap"><canvas id="grCanvas" width="1200" height="750" aria-label="졸업식 광장"></canvas>
     <div id="grHint" class="gr-hint" role="status"></div>
     <div id="grPad" class="gr-pad" aria-label="이동 버튼"><button data-d="up" aria-label="위">▲</button><button data-d="left" aria-label="왼쪽">◀</button><button data-d="right" aria-label="오른쪽">▶</button><button data-d="down" aria-label="아래">▼</button></div>
     <button id="grAct" class="gr-actbtn" disabled>💬 대화</button>
@@ -7478,60 +7487,185 @@
   // 함께 접속: PeerJS 공개 중계 서버(0.peerjs.com)로 같은 방 코드끼리 브라우저를 직접 연결해요 (데이터베이스 없음, 기록은 남지 않음)
   //   보내는 것: 게임 닉네임 · 위치 · 방향 · 옷장 장착 ID · 도장 수 · 졸업 여부 (학습 기록·개인정보·채팅 없음)
   //   연결이 안 되면 같은 맵·미션으로 혼자 진행해요
-  const GRWD = 720, GRHT = 480, GVW = 480, GVH = 300;   // 세계 크기 · 화면에 보이는 크기
+  // 화면: 세계 400×250칸을 캔버스 1200×750에 3배로 그려요 (픽셀은 또렷하게, 글씨는 캔버스 해상도로 따로 선명하게)
+  const GRWD = 640, GRHT = 480, GVW = 400, GVH = 250, GR_Z = 3;
   const GR_NPC = [
-    { id: 'grHi', name: '오랜만 친구 판다', x: 118, y: 168, scarf: '#ff6b8b', hat: 'bow', place: '인사 학교' },
-    { id: 'grFam', name: '가족사진 판다', x: 602, y: 168, scarf: '#62aefc', hat: 'cap', place: '가족의 집' },
-    { id: 'grShop', name: '식당 점원 판다', x: 118, y: 448, scarf: '#f6c445', hat: 'chef', place: '판다 식당' },
-    { id: 'grMood', name: '표정 박사 판다', x: 602, y: 448, scarf: '#c084fc', glasses: true, place: '기분 연구소' },
-    { id: 'grTeach', name: '졸업식 선생님 판다', x: 360, y: 352, scarf: '#3d9a5c', hat: 'beret2', place: '졸업 시험' },
+    { id: 'grHi', name: '오랜만 친구 판다', x: 100, y: 148, scarf: '#ff6b8b', hat: 'bow', place: '인사 학교', icon: '👋', dir: '↖' },
+    { id: 'grFam', name: '가족사진 판다', x: 540, y: 148, scarf: '#62aefc', hat: 'cap', place: '가족의 집', icon: '🏠', dir: '↗' },
+    { id: 'grShop', name: '식당 점원 판다', x: 100, y: 422, scarf: '#f6c445', hat: 'chef', place: '판다 식당', icon: '🥟', dir: '↙' },
+    { id: 'grMood', name: '표정 박사 판다', x: 540, y: 422, scarf: '#c084fc', glasses: true, place: '기분 연구소', icon: '😊', dir: '↘' },
+    { id: 'grTeach', name: '졸업식 선생님 판다', x: 320, y: 402, scarf: '#3d9a5c', hat: 'beret2', place: '졸업 시험', icon: '🎓', dir: '⬇' },
   ];
-  // 부딪히는 곳 (건물·무대)
-  const GR_SOLID = [{ x: 70, y: 70, w: 96, h: 70 }, { x: 554, y: 70, w: 96, h: 70 }, { x: 70, y: 350, w: 96, h: 70 }, { x: 554, y: 350, w: 96, h: 70 }, { x: 290, y: 150, w: 140, h: 44 }];
-  const GR_STAGE_ZONE = { x: 360, y: 222, r: 46 };   // 무대 앞: 5개 미션을 다 하면 여기서 졸업식
-  const GR = { on: false, me: { x: 360, y: 290, d: 1, mv: false, t: 0, tx: null, ty: null, goNpc: -1 }, keys: {}, pad: {}, talk: -1, combo: 0, grad: false, world: null, fx: [], ceremonyShown: false, time: 0 };
+  // 건물 4채 (왼쪽 위 기준, 112×76) · 졸업 시험 정자
+  const GR_BLD = [{ x: 44, y: 46 }, { x: 484, y: 46 }, { x: 44, y: 320 }, { x: 484, y: 320 }];
+  // 부딪히는 곳: 건물 · 무대 · 정자 · 연못 · 나무 밑동만 (꽃·깃발·가로등·벤치는 지나갈 수 있어요)
+  const GR_SOLID = [
+    ...GR_BLD.map(b => ({ x: b.x + 2, y: b.y, w: 108, h: 74 })),
+    { x: 244, y: 146, w: 152, h: 46 },    // 무대
+    { x: 284, y: 340, w: 72, h: 30 },     // 졸업 시험 정자
+    { x: 184, y: 418, w: 56, h: 22 },     // 연못
+    ...[[184, 104], [456, 104], [176, 356], [464, 356]].map(([x, y]) => ({ x: x - 4, y: y - 4, w: 8, h: 4 })),   // 나무 밑동
+  ];
+  const GR_STAGE_ZONE = { x: 320, y: 218, r: 32 };   // 무대 앞 레드카펫: 5개 미션을 다 하면 여기서 졸업식
+  const GR_START = { x: 320, y: 268 };
+  const GR = { on: false, me: { x: GR_START.x, y: GR_START.y, d: 1, mv: false, t: 0, tx: null, ty: null, goNpc: -1 }, keys: {}, pad: {}, talk: -1, combo: 0, grad: false, world: null, fx: [], ceremonyShown: false, time: 0, cam: { x: 0, y: 0 }, petals: [] };
   const grDone = () => run.ms.map(m => m.complete);
   const grCount = () => run.ms.filter(m => m.complete).length;
   const grCanTalk = (i) => i < 4 || grCount() >= 4;
 
-  // ----- 세계 그림 (한 번만 그려 두기) -----
+  // ----- 세계 그림 (한 번만 그려 두기 · 1칸 = 1픽셀) -----
   function grBuildWorld() {
     const c = document.createElement('canvas'); c.width = GRWD; c.height = GRHT; const g = c.getContext('2d'); g.imageSmoothingEnabled = false;
-    const R = (x, y, w, h, col) => { g.fillStyle = col; g.fillRect(x, y, w, h); };
-    let seed = 7; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
-    R(0, 0, GRWD, GRHT, '#93d47c');
-    for (let i = 0; i < 260; i++) R(Math.floor(rnd() * GRWD), Math.floor(rnd() * GRHT), 3, 2, '#7fc46a');
-    // 길: 광장에서 네 건물로
-    g.strokeStyle = '#e8cf9a'; g.lineWidth = 34; g.lineCap = 'round';
-    for (const [x, y] of [[118, 170], [602, 170], [118, 440], [602, 440], [360, 360]]) { g.beginPath(); g.moveTo(360, 240); g.lineTo(x, y); g.stroke(); }
-    // 광장
-    g.fillStyle = '#f1e3c2'; g.beginPath(); g.arc(360, 240, 96, 0, Math.PI * 2); g.fill();
-    g.strokeStyle = '#d9c39a'; g.lineWidth = 3; g.beginPath(); g.arc(360, 240, 96, 0, Math.PI * 2); g.stroke(); g.beginPath(); g.arc(360, 240, 60, 0, Math.PI * 2); g.stroke();
-    // 무대 + 현수막
-    R(290, 150, 140, 44, '#b5541c'); R(290, 150, 140, 6, '#d9822b'); R(296, 194, 128, 6, '#7a3410');
-    R(300, 104, 4, 50, '#7a4a22'); R(416, 104, 4, 50, '#7a4a22'); R(296, 104, 128, 30, '#e5484d'); R(296, 104, 128, 3, '#f6c445'); R(296, 131, 128, 3, '#f6c445');
-    g.fillStyle = '#fff6d6'; g.font = 'bold 15px "Noto Sans SC", sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('毕业典礼 · 졸업식', 360, 119);
-    R(338, 194, 44, 12, '#c81e3c');   // 레드카펫
-    // 건물 4채 (지붕 색이 달라요) + 간판
-    const house = (x, y, roof, wall, label, deco) => {
-      R(x, y + 22, 96, 48, wall); R(x, y + 22, 96, 3, '#ffffff55');
-      g.fillStyle = roof; g.beginPath(); g.moveTo(x - 6, y + 24); g.lineTo(x + 48, y - 6); g.lineTo(x + 102, y + 24); g.closePath(); g.fill();
-      R(x + 38, y + 44, 20, 26, '#7a4a22'); R(x + 54, y + 56, 2, 2, '#f6c445');
-      R(x + 10, y + 34, 18, 14, '#9cd3f0'); R(x + 68, y + 34, 18, 14, '#9cd3f0');
-      R(x + 14, y - 22, 68, 18, '#fffaf0'); g.strokeStyle = '#2b2838'; g.lineWidth = 2; g.strokeRect(x + 14, y - 22, 68, 18);
-      g.fillStyle = '#2b2838'; g.font = 'bold 11px Jua, sans-serif'; g.fillText(label, x + 48, y - 13);
-      if (deco) deco(x, y);
+    const R = (x, y, w, h, col) => { g.fillStyle = col; g.fillRect(Math.round(x), Math.round(y), Math.round(w), Math.round(h)); };
+    let seed = 11; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+    const ell = (cx, cy, rx, ry, col) => { for (let dy = -ry; dy <= ry; dy++) { const w = Math.round(rx * Math.sqrt(Math.max(0, 1 - (dy * dy) / (ry * ry)))); R(cx - w, cy + dy, w * 2 + 1, 1, col); } };
+    const inRect = (x, y, r, pad = 0) => x > r.x - pad && x < r.x + r.w + pad && y > r.y - pad && y < r.y + r.h + pad;
+    // 잔디: 밝은 파스텔 + 부드러운 얼룩 + 풀잎
+    R(0, 0, GRWD, GRHT, '#a8dd8f');
+    for (let i = 0; i < 46; i++) { const x = rnd() * GRWD, y = rnd() * GRHT, col = i % 2 ? '#b4e39c' : '#9dd685'; ell(x, y, 10 + rnd() * 18, 5 + rnd() * 8, col); }
+    for (let i = 0; i < 1100; i++) { const x = rnd() * GRWD, y = rnd() * GRHT, k = rnd(); if (k < 0.55) { R(x, y, 1, 2, '#86c96f'); R(x + 2, y + 1, 1, 2, '#86c96f'); } else if (k < 0.8) R(x, y, 1, 1, '#c8edb2'); else R(x, y, 2, 1, '#93d17c'); }
+    // 흙길 (광장 → 네 건물 · 졸업 시험 정자)
+    const PATHS = [[90, 122, 20, 304], [530, 122, 20, 304], [110, 254, 90, 20], [440, 254, 90, 20], [310, 330, 20, 74]];
+    for (const [x, y, w, h] of PATHS) R(x - 1, y - 1, w + 2, h + 2, '#d6bc85');
+    for (const [x, y, w, h] of PATHS) { R(x, y, w, h, '#eedcab'); for (let i = 0; i < w * h / 40; i++) R(x + 1 + rnd() * (w - 3), y + 1 + rnd() * (h - 3), 2, 1, rnd() < 0.5 ? '#dcc490' : '#f6e8c4'); }
+    // 졸업식 광장: 돌바닥 + 가운데 꽃 무늬
+    const PX = 196, PY = 196, PW = 248, PH = 134;
+    R(PX + 5, PY - 1, PW - 10, PH + 2, '#c8b083'); R(PX - 1, PY + 5, PW + 2, PH - 10, '#c8b083'); R(PX + 1, PY + 1, PW - 2, PH - 2, '#c8b083');
+    R(PX + 6, PY, PW - 12, PH, '#f4e8cf'); R(PX, PY + 6, PW, PH - 12, '#f4e8cf'); R(PX + 2, PY + 2, PW - 4, PH - 4, '#f4e8cf');
+    for (let y = PY + 8; y < PY + PH - 2; y += 10) { R(PX + 3, y, PW - 6, 1, '#e6d5b2'); for (let x = PX + 4 + ((y / 10) % 2) * 8; x < PX + PW - 4; x += 16) R(x, y - 9, 1, 9, '#e6d5b2'); }
+    for (let i = 0; i < 60; i++) R(PX + 4 + rnd() * (PW - 8), PY + 4 + rnd() * (PH - 8), 2, 1, '#ece0c4');
+    const mosaic = (cx, cy) => { ell(cx, cy, 30, 20, '#e2c690'); ell(cx, cy, 27, 18, '#f7ecd6'); for (let k = 0; k < 8; k++) { const a = k * Math.PI / 4; ell(cx + Math.cos(a) * 14, cy + Math.sin(a) * 9, 4, 3, k % 2 ? '#ffb3c6' : '#ffe08a'); } ell(cx, cy, 6, 4, '#f6c445'); ell(cx, cy, 3, 2, '#ff8fab'); };
+    mosaic(320, 284);
+    // 대나무 숲 (가장자리 띠)
+    const bamboo = (x, y, h, light) => { const st = light ? '#7ccf7a' : '#5fb867', nd = '#3f8f4a'; for (let k = 0; k < h; k += 7) { R(x, y - k - 6, 3, 6, st); R(x, y - k - 1, 3, 1, nd); R(x + 1, y - k - 5, 1, 3, '#a6e39a'); } const ly = y - h; R(x - 4, ly + 2, 4, 2, '#4ea85a'); R(x + 3, ly, 5, 2, '#86d47a'); R(x + 3, ly + 8, 4, 2, '#5cbf62'); R(x - 3, ly + 10, 3, 2, '#86d47a'); };
+    R(0, 0, GRWD, 30, '#6fbf6a'); R(0, GRHT - 10, GRWD, 10, '#6fbf6a'); R(0, 0, 18, GRHT, '#6fbf6a'); R(GRWD - 18, 0, 18, GRHT, '#6fbf6a');
+    for (let x = 2; x < GRWD; x += 6) { bamboo(x, 34 + Math.round(rnd() * 6), 26 + Math.round(rnd() * 12), x % 12 === 2); }
+    for (let y = 40; y < GRHT; y += 9) { bamboo(4 + Math.round(rnd() * 6), y, 18 + Math.round(rnd() * 8), y % 18 === 4); bamboo(GRWD - 10 - Math.round(rnd() * 6), y, 18 + Math.round(rnd() * 8), y % 18 === 4); }
+    for (let x = 2; x < GRWD; x += 7) bamboo(x, GRHT + 2, 10 + Math.round(rnd() * 6), x % 14 === 2);
+    // ----- 소품 -----
+    const tree = (x, y) => { ell(x, y, 11, 3, '#8cc777'); R(x - 2, y - 9, 4, 9, '#8a5a3a'); R(x - 2, y - 9, 1, 9, '#a8744c'); ell(x, y - 18, 13, 10, '#3f9a52'); ell(x - 1, y - 20, 11, 8, '#56b562'); ell(x - 4, y - 23, 6, 4, '#7ccf7a'); R(x - 6, y - 25, 2, 1, '#b4ecaa'); for (let k = 0; k < 4; k++) R(x - 8 + k * 5, y - 18 + (k % 2) * 4, 2, 2, '#ff8fab'); };
+    const bed = (x, y, w, h) => { R(x - 1, y - 1, w + 2, h + 2, '#a8703f'); R(x, y, w, h, '#8a5a3a'); const pal = [['#ff6b8b', '#ff9fb4'], ['#ffd23f', '#fff1a8'], ['#ffffff', '#ffe8f0'], ['#c084fc', '#e2c4ff'], ['#ff9f43', '#ffc98a']], main = pal[Math.floor(rnd() * 5)], sub = pal[Math.floor(rnd() * 5)];
+      for (let k = 0; k < w * h / 9; k++) { const xx = x + 2 + rnd() * (w - 4), yy = y + 2 + rnd() * (h - 4); R(xx, yy, 2, 2, rnd() < 0.5 ? '#5cbf62' : '#4ea85a'); }
+      for (let k = 0; k < w * h / 16; k++) { const xx = x + 3 + rnd() * (w - 6), yy = y + 3 + rnd() * (h - 6), cl = rnd() < 0.62 ? main : sub; R(xx - 1, yy, 3, 1, cl[0]); R(xx, yy - 1, 1, 3, cl[0]); R(xx, yy, 1, 1, rnd() < 0.5 ? '#fff6c0' : cl[1]); } };
+    const bench = (x, y) => { R(x, y + 6, 2, 4, '#6b4426'); R(x + 18, y + 6, 2, 4, '#6b4426'); R(x, y, 20, 3, '#c98a4b'); R(x, y + 4, 20, 3, '#b5793f'); R(x, y, 20, 1, '#e0a868'); ell(x + 10, y + 11, 10, 1, '#8cc777'); };
+    const lamp = (x, y) => { ell(x, y, 4, 1, '#8cc777'); R(x - 1, y - 22, 2, 22, '#4a4f63'); R(x - 2, y - 2, 4, 2, '#4a4f63'); R(x - 4, y - 28, 8, 2, '#4a4f63'); R(x - 3, y - 26, 6, 5, '#fff1a8'); R(x - 3, y - 21, 6, 1, '#4a4f63'); R(x - 1, y - 30, 2, 2, '#4a4f63'); };
+    const bush = (x, y) => { ell(x, y, 8, 5, '#4ea85a'); ell(x - 1, y - 1, 6, 4, '#62bd68'); R(x - 3, y - 3, 2, 1, '#9be08f'); };
+    // 무대 옆 꽃밭 · 광장 둘레 꽃밭 · 나무 · 덤불
+    bed(198, 160, 38, 28); bed(404, 160, 38, 28);
+    bed(130, 200, 52, 20); bed(458, 200, 52, 20); bed(130, 290, 52, 20); bed(458, 290, 52, 20);
+    bed(30, 196, 50, 26); bed(560, 196, 50, 26); bed(30, 288, 50, 26); bed(560, 288, 50, 26);
+    for (const [x, y] of [[184, 104], [456, 104], [176, 356], [464, 356]]) tree(x, y);
+    for (const [x, y] of [[214, 78], [426, 78], [244, 86], [396, 86], [26, 140], [614, 140], [26, 380], [614, 380], [168, 452], [472, 452], [370, 458], [270, 458]]) bush(x, y);
+    // 연못 + 작은 분수 받침 · 수련잎
+    ell(212, 430, 33, 17, '#b9b4a8'); ell(212, 430, 31, 15, '#8fcdf0'); ell(212, 431, 27, 12, '#6fbde8'); R(194, 424, 10, 1, '#d6f1ff'); R(222, 438, 8, 1, '#d6f1ff');
+    for (let k = 0; k < 14; k++) { const a = k / 14 * Math.PI * 2; R(212 + Math.cos(a) * 32 - 2, 430 + Math.sin(a) * 16 - 1, 4, 3, k % 2 ? '#a8a296' : '#cfc9bc'); }
+    ell(198, 436, 4, 2, '#5cbf62'); R(197, 436, 2, 1, '#6fbde8'); ell(228, 426, 4, 2, '#5cbf62'); R(229, 425, 1, 1, '#ff8fab');
+    ell(212, 430, 6, 3, '#d8d3c6'); ell(212, 429, 4, 2, '#9fdcf8');
+    bench(380, 420); bench(408, 444); bench(150, 160); bench(470, 160);
+    for (const [x, y] of [[186, 250], [454, 250], [272, 346], [368, 346], [86, 290], [554, 290]]) lamp(x, y);
+    // 깃대 (무대 양쪽 축하 깃발 줄을 거는 기둥)
+    for (const x of [206, 434]) { R(x - 1, 112, 2, 42, '#e7e2d6'); R(x, 112, 1, 42, '#b9b4a8'); R(x - 2, 110, 4, 3, '#f6c445'); ell(x, 154, 4, 1, '#8cc777'); }
+    // ----- 졸업식 무대 -----
+    // 뒤쪽 현수막 기둥 + 꼭대기 졸업 모자 장식
+    for (const x of [252, 386]) { R(x - 2, 104, 4, 46, '#8a5a3a'); R(x - 2, 104, 1, 46, '#a8744c'); R(x - 6, 100, 12, 3, '#2b2838'); R(x - 3, 103, 6, 2, '#2b2838'); R(x + 4, 101, 1, 4, '#f6c445'); R(x + 3, 105, 3, 2, '#f6c445'); }
+    // 현수막 (글씨는 따로 선명하게)
+    R(255, 107, 130, 30, '#b8323a'); R(256, 108, 128, 28, '#e5484d'); R(256, 108, 128, 2, '#f6c445'); R(256, 134, 128, 2, '#f6c445'); R(256, 110, 128, 1, '#ff7a7f');
+    for (let x = 256; x < 384; x += 8) { R(x, 136, 8, 2, '#e5484d'); R(x + 2, 138, 4, 1, '#e5484d'); R(x + 3, 139, 2, 1, '#f6c445'); }
+    for (const x of [262, 378]) { R(x - 2, 112, 4, 4, '#f6c445'); R(x - 1, 116, 2, 14, '#f6c445'); }
+    // 무대 바닥 (나무 판자) + 앞면 + 계단
+    R(242, 146, 156, 40, '#a8683a'); R(244, 146, 152, 36, '#dca46a');
+    for (let y = 150; y < 182; y += 5) R(244, y, 152, 1, '#c88d55');
+    for (let y = 146, k = 0; y < 182; y += 5, k++) for (let x = 250 + (k % 2) * 14; x < 396; x += 28) R(x, y, 1, 5, '#c88d55');
+    R(244, 146, 152, 2, '#f0c08a');
+    R(242, 182, 156, 10, '#8a5230'); R(242, 182, 156, 2, '#6b3d22');
+    for (let x = 244, k = 0; x < 396; x += 8, k++) { const col = ['#ff6b8b', '#ffd23f', '#62aefc', '#4fd08c', '#c084fc'][k % 5]; R(x, 184, 8, 2, col); R(x + 1, 186, 6, 2, col); R(x + 3, 188, 2, 1, col); }
+    R(304, 190, 32, 4, '#c88d55'); R(300, 194, 40, 4, '#b5793f'); R(304, 190, 32, 1, '#e0a868'); R(300, 194, 40, 1, '#d29a5e');
+    // 단상 (연설대)
+    R(312, 152, 16, 20, '#7a4a28'); R(310, 150, 20, 4, '#a8703f'); R(310, 150, 20, 1, '#d29a5e'); R(316, 158, 8, 6, '#f6c445'); R(318, 160, 4, 2, '#fff1a8');
+    ell(320, 172, 9, 2, '#b98552');
+    // 무대 앞 꽃다발 (양쪽)
+    const bouquet = (x, y) => { R(x - 1, y, 3, 7, '#4ea85a'); R(x - 4, y + 4, 9, 4, '#fbfaf5'); R(x - 3, y + 5, 7, 1, '#ff8fab'); for (const [dx, dy, c] of [[-4, -3, '#ff6b8b'], [0, -5, '#ffd23f'], [4, -3, '#ff6b8b'], [-2, -1, '#ffffff'], [2, -1, '#c084fc'], [0, -2, '#ff9f43']]) { R(x + dx - 1, y + dy - 1, 3, 3, c); R(x + dx, y + dy, 1, 1, '#fff6c0'); } };
+    bouquet(256, 158); bouquet(384, 158); bouquet(276, 172); bouquet(364, 172);
+    // 레드카펫 (졸업식 자리)
+    R(306, 198, 28, 34, '#c2283f'); R(308, 198, 24, 34, '#e0425a'); R(308, 198, 1, 34, '#f6c445'); R(331, 198, 1, 34, '#f6c445'); R(308, 230, 24, 2, '#f6c445');
+    // ----- 건물 -----
+    const roof = (x, y, w, h, base, dark, light, ridge) => {
+      for (let r = 0; r < h; r++) {
+        const inset = Math.round((h - r) * 0.55), rx = x + inset, rw = w - inset * 2, band = Math.floor(r / 4);
+        R(rx, y + r, rw, 1, r % 4 === 3 ? dark : r < 2 ? light : base);
+        if (r % 4 !== 3 && r >= 2) for (let xx = rx + 2 + (band % 2) * 3; xx < rx + rw - 1; xx += 6) R(xx, y + r, 1, 1, dark);
+      }
+      R(x + Math.round(h * 0.55) - 1, y, w - Math.round(h * 0.55) * 2 + 2, 2, ridge || light);
+      R(x - 1, y + h, w + 2, 2, dark); R(x, y + h + 2, w, 1, 'rgba(0,0,0,.18)');
     };
-    house(70, 70, '#e5484d', '#fde8d7', '인사 학교', (x, y) => { R(x + 44, y - 2, 8, 8, '#f6c445'); });
-    house(554, 70, '#ff8fab', '#fff1d6', '가족의 집', (x, y) => { R(x + 72, y + 6, 8, 14, '#9a6a4a'); });
-    house(70, 350, '#f08a24', '#fff6e0', '판다 식당', (x, y) => { for (let k = 0; k < 6; k++) R(x + k * 16, y + 22, 16, 6, k % 2 ? '#fbfaf5' : '#e5484d'); });
-    house(554, 350, '#3d7bd9', '#eef6ff', '기분 연구소', (x, y) => { R(x + 46, y - 2, 4, 4, '#ffffff'); });
-    // 대나무 · 꽃
-    const bamboo = (x, y, h) => { for (let k = 0; k < h; k += 8) { R(x, y - k - 7, 4, 7, '#4fae5c'); R(x, y - k - 1, 4, 1, '#2f7a3a'); } R(x + 4, y - h + 6, 6, 2, '#5cc46a'); };
-    for (let x = 8; x < GRWD; x += 22) { bamboo(x, 26 + (x % 3) * 4, 30); bamboo(x + 6, GRHT - 2, 22 + (x % 5) * 3); }
-    for (let y = 40; y < GRHT - 20; y += 24) { bamboo(4, y + 20, 20); bamboo(GRWD - 10, y + 20, 22); }
-    const flower = (x, y, c) => { R(x - 2, y, 2, 2, c); R(x + 2, y, 2, 2, c); R(x, y - 2, 2, 2, c); R(x, y + 2, 2, 2, c); R(x, y, 2, 2, '#f6c445'); };
-    for (let i = 0; i < 70; i++) { const x = 30 + rnd() * (GRWD - 60), y = 40 + rnd() * (GRHT - 70); if (Math.hypot(x - 360, y - 240) < 110 || GR_SOLID.some(s => x > s.x - 14 && x < s.x + s.w + 14 && y > s.y - 30 && y < s.y + s.h + 34)) continue; flower(Math.round(x), Math.round(y), ['#ff6b8b', '#ffffff', '#c084fc', '#f6c445'][i % 4]); }
+    const wall = (x, y, w, h, base, line, vertical) => { R(x, y, w, h, base); if (vertical) for (let xx = x + 4; xx < x + w; xx += 6) R(xx, y, 1, h, line); else for (let yy = y + 5; yy < y + h; yy += 5) { R(x, yy, w, 1, line); for (let xx = x + ((yy / 5) % 2) * 5 + 3; xx < x + w; xx += 10) R(xx, yy - 4, 1, 4, line); } R(x, y, w, 3, 'rgba(0,0,0,.12)'); R(x, y + h - 2, w, 2, 'rgba(0,0,0,.1)'); };
+    const win = (x, y, w, h, frame = '#7a5233') => { R(x - 1, y - 1, w + 2, h + 2, frame); R(x, y, w, h, '#a4dcf4'); R(x + 1, y + 1, 2, h - 2, '#e2f6ff'); R(x + Math.floor(w / 2), y, 1, h, frame); R(x, y + Math.floor(h / 2), w, 1, frame); R(x - 2, y + h + 1, w + 4, 2, frame); };
+    const door = (x, y, w, h, col, dark) => { R(x - 1, y - 1, w + 2, h + 1, '#5a3a22'); R(x, y, w, h, col); R(x + 1, y + 1, w - 2, 1, 'rgba(255,255,255,.35)'); R(x + Math.floor(w / 2), y, 1, h, dark); R(x + w - 4, y + Math.floor(h / 2), 2, 2, '#f6c445'); R(x - 3, y + h, w + 6, 2, '#cfc9bc'); R(x - 3, y + h + 2, w + 6, 1, '#a8a296'); };
+    const sign = (x, y, w, h) => { R(x - 1, y - 1, w + 2, h + 2, '#5a3a22'); R(x, y, w, h, '#fff4d6'); R(x, y + h - 1, w, 1, '#ecd9a8'); R(x + 2, y - 3, 1, 2, '#5a3a22'); R(x + w - 3, y - 3, 1, 2, '#5a3a22'); };
+    const pot = (x, y, col = '#ff6b8b') => { R(x - 3, y - 4, 6, 4, '#c96a3a'); R(x - 3, y - 4, 6, 1, '#e08a5a'); ell(x, y - 7, 4, 3, '#4ea85a'); R(x - 2, y - 9, 2, 2, col); R(x + 1, y - 8, 2, 2, col); };
+    // 1) 인사 학교: 따뜻한 주황 지붕 · 종탑과 종 · 깃대
+    { const { x, y } = GR_BLD[0];
+      R(x + 48, y - 4, 16, 22, '#fff3e0'); R(x + 48, y - 4, 16, 2, '#f0dcc0'); R(x + 51, y + 1, 10, 10, '#6b3d22'); R(x + 53, y + 3, 6, 5, '#f6c445'); R(x + 52, y + 7, 8, 2, '#f6c445'); R(x + 55, y + 9, 2, 2, '#d49a1f'); R(x + 54, y + 3, 1, 3, '#fff1a8');
+      roof(x + 44, y - 12, 24, 9, '#e8704e', '#b84a30', '#ff9d7a');
+      R(x + 70, y - 16, 1, 34, '#8a8f9e');
+      roof(x, y + 14, 112, 20, '#ec7a52', '#b84a30', '#ffa47f', '#ffc49a');
+      wall(x + 6, y + 34, 100, 40, '#fff3e0', '#f1dcc0');
+      sign(x + 28, y + 37, 56, 11);
+      win(x + 12, y + 50, 14, 11); win(x + 86, y + 50, 14, 11);
+      door(x + 46, y + 52, 20, 22, '#d9822b', '#a8591a');
+      R(x + 30, y + 54, 10, 8, '#ffffff'); R(x + 31, y + 55, 8, 6, '#3d9a5c'); R(x + 32, y + 56, 3, 1, '#ffffff'); R(x + 32, y + 58, 5, 1, '#ffffff');   // 칠판
+      R(x + 72, y + 54, 8, 8, '#fff1a8'); R(x + 73, y + 55, 6, 6, '#ffffff'); R(x + 75, y + 56, 2, 3, '#2b2838'); R(x + 76, y + 58, 2, 1, '#2b2838');   // 시계
+      pot(x + 8, y + 76, '#ffd23f'); pot(x + 104, y + 76, '#ff6b8b'); }
+    // 2) 가족의 집: 분홍 지붕 · 굴뚝 · 화분 창 · 우편함 · 가족사진 액자 · 하트
+    { const { x, y } = GR_BLD[1];
+      R(x + 80, y + 2, 10, 16, '#c9705a'); R(x + 79, y + 1, 12, 3, '#a85a46'); R(x + 81, y + 5, 2, 10, '#e08a72');
+      roof(x, y + 12, 112, 22, '#f7a1b8', '#d4728d', '#ffc8d6', '#ffe0e8');
+      wall(x + 6, y + 34, 100, 40, '#fff1d6', '#efdcb6', true);
+      sign(x + 28, y + 37, 56, 11);
+      win(x + 12, y + 51, 14, 10, '#8a5a3a'); win(x + 86, y + 51, 14, 10, '#8a5a3a');
+      for (const wx of [x + 10, x + 84]) { R(wx, y + 63, 18, 3, '#a0682f'); for (let k = 0; k < 4; k++) R(wx + 2 + k * 4, y + 61, 2, 2, ['#ff6b8b', '#ffd23f', '#c084fc', '#ffffff'][k]); }
+      R(x + 48, y + 52, 16, 22, '#5a3a22'); R(x + 49, y + 53, 14, 21, '#5aa469'); R(x + 50, y + 52, 12, 1, '#5aa469'); R(x + 51, y + 51, 10, 1, '#5aa469'); R(x + 56, y + 53, 1, 21, '#3f8a52'); R(x + 59, y + 63, 2, 2, '#f6c445'); R(x + 45, y + 74, 22, 2, '#cfc9bc');
+      R(x + 53, y + 48, 2, 2, '#ff6b8b'); R(x + 57, y + 48, 2, 2, '#ff6b8b'); R(x + 54, y + 49, 4, 2, '#ff6b8b'); R(x + 55, y + 51, 2, 1, '#ff6b8b');   // 하트
+      R(x + 30, y + 52, 14, 11, '#b5793f'); R(x + 31, y + 53, 12, 9, '#fff8e6');   // 가족사진 액자
+      for (const [fx, fy, s] of [[32, 56, 4], [37, 55, 4], [40, 58, 3]]) { R(x + fx, y + fy, s, s, '#ffffff'); R(x + fx, y + fy, 1, 1, '#2b2838'); R(x + fx + s - 1, y + fy, 1, 1, '#2b2838'); R(x + fx + 1, y + fy + 1, 1, 1, '#2b2838'); R(x + fx + s - 2, y + fy + 1, 1, 1, '#2b2838'); }
+      R(x + 114, y + 60, 2, 16, '#6b4426'); R(x + 110, y + 54, 10, 7, '#3d7bd9'); R(x + 110, y + 54, 10, 2, '#62aefc'); R(x + 119, y + 51, 1, 5, '#e5484d'); R(x + 120, y + 51, 3, 2, '#e5484d');   // 우편함
+      pot(x + 8, y + 76, '#ff8fab'); pot(x + 72, y + 76, '#ffd23f'); }
+    // 3) 판다 식당: 빨간 중국식 지붕(끝이 들린 처마) · 등롱 · 메뉴판 · 찜기
+    { const { x, y } = GR_BLD[2];
+      roof(x, y + 10, 112, 22, '#dd4a43', '#a82d2b', '#ff7a6e', '#f6c445');
+      R(x - 4, y + 28, 6, 2, '#a82d2b'); R(x - 6, y + 25, 3, 3, '#f6c445'); R(x + 110, y + 28, 6, 2, '#a82d2b'); R(x + 115, y + 25, 3, 3, '#f6c445');
+      wall(x + 6, y + 34, 100, 40, '#fff6e0', '#f2e2c0');
+      R(x + 6, y + 34, 5, 40, '#c0392b'); R(x + 101, y + 34, 5, 40, '#c0392b'); R(x + 7, y + 34, 1, 40, '#e05a4c'); R(x + 102, y + 34, 1, 40, '#e05a4c');
+      sign(x + 28, y + 37, 56, 11);
+      ell(x + 22, y + 58, 8, 8, '#8a5230'); ell(x + 22, y + 58, 7, 7, '#a4dcf4'); R(x + 15, y + 58, 15, 1, '#8a5230'); R(x + 22, y + 51, 1, 15, '#8a5230'); R(x + 18, y + 54, 1, 9, '#8a5230'); R(x + 26, y + 54, 1, 9, '#8a5230');   // 둥근 창
+      R(x + 46, y + 52, 20, 22, '#5a3a22'); R(x + 47, y + 53, 18, 21, '#7a4a28'); R(x + 47, y + 53, 18, 9, '#2b6cb0'); for (let k = 0; k < 3; k++) R(x + 50 + k * 6, y + 53, 1, 9, '#ffffff'); R(x + 43, y + 74, 26, 2, '#cfc9bc');   // 노렌(천 가림막)
+      R(x + 76, y + 50, 22, 14, '#3b2a20'); R(x + 77, y + 51, 20, 12, '#4a3628'); R(x + 76, y + 50, 22, 1, '#6b4a34'); R(x + 79, y + 64, 2, 8, '#3b2a20'); R(x + 93, y + 64, 2, 8, '#3b2a20');   // 메뉴판 (饺子 글씨는 따로)
+      for (const lx of [x + 4, x + 108]) { R(lx, y + 32, 1, 5, '#5a3a22'); R(lx - 3, y + 37, 7, 1, '#f6c445'); ell(lx, y + 42, 4, 4, '#e5484d'); R(lx - 1, y + 39, 1, 7, '#ff7a6e'); R(lx - 3, y + 46, 7, 1, '#f6c445'); R(lx, y + 47, 1, 3, '#f6c445'); }
+      // 찜기(만두) 장식
+      R(x + 18, y + 78, 18, 6, '#c98a4b'); R(x + 18, y + 78, 18, 1, '#e0a868'); R(x + 18, y + 81, 18, 1, '#a8703f');
+      for (const dx of [21, 26, 31]) { ell(x + dx, y + 76, 2, 2, '#fbfaf5'); R(x + dx - 1, y + 75, 1, 1, '#e8e2d2'); } }
+    // 4) 기분 연구소: 밝은 파란 지붕 · 흰 돔과 안테나 · 표정 포스터 (그림은 따로)
+    { const { x, y } = GR_BLD[3];
+      ell(x + 56, y + 10, 14, 10, '#eef4ff'); ell(x + 52, y + 7, 6, 4, '#ffffff'); R(x + 42, y + 10, 28, 6, '#eef4ff'); R(x + 55, y - 6, 2, 8, '#8a8f9e'); R(x + 53, y - 9, 6, 4, '#f6c445'); R(x + 55, y - 10, 2, 1, '#fff1a8');
+      roof(x, y + 14, 112, 20, '#4aa3f0', '#2f7fcf', '#8ccaff', '#c4e4ff');
+      wall(x + 6, y + 34, 100, 40, '#f1f5ff', '#dfe7f7', true);
+      sign(x + 28, y + 37, 56, 11);
+      for (const px of [x + 10, x + 26, x + 74, x + 90]) { R(px - 1, y + 51, 14, 14, '#7c8bb0'); R(px, y + 52, 12, 12, '#ffffff'); }
+      R(x + 46, y + 52, 20, 22, '#5a3a22'); R(x + 47, y + 53, 18, 21, '#bde3ff'); R(x + 48, y + 54, 3, 18, '#e8f6ff'); R(x + 56, y + 53, 1, 21, '#7c8bb0'); R(x + 43, y + 74, 26, 2, '#cfc9bc');
+      R(x + 102, y + 66, 6, 8, '#9fd8a8'); R(x + 103, y + 62, 4, 4, '#ffffff'); R(x + 104, y + 63, 2, 2, '#4fd08c');   // 실험 병
+      pot(x + 8, y + 76, '#62aefc'); pot(x + 104, y + 78, '#c084fc'); }
+    // 5) 졸업 시험 정자: 금빛 지붕 · 빨간 기둥 · 큰 졸업 모자 · 책 더미 · 별
+    { const x = 280, y = 330;
+      R(x + 4, y + 22, 72, 20, '#f4e3c2'); R(x + 4, y + 40, 72, 3, '#c8b083');
+      for (const cx of [x + 8, x + 70]) { R(cx, y + 18, 4, 24, '#c0392b'); R(cx, y + 18, 1, 24, '#e05a4c'); }
+      roof(x - 2, y, 84, 20, '#f6c445', '#c98f12', '#ffe58a', '#fff1a8');
+      R(x + 33, y - 9, 14, 3, '#2b2838'); R(x + 36, y - 6, 8, 3, '#2b2838'); R(x + 31, y - 10, 18, 1, '#3a3648'); R(x + 46, y - 8, 1, 6, '#f6c445'); R(x + 45, y - 2, 3, 3, '#f6c445');   // 졸업 모자
+      R(x + 18, y + 26, 44, 10, '#a8703f'); R(x + 18, y + 26, 44, 2, '#d29a5e');   // 책상
+      R(x + 22, y + 22, 12, 2, '#3d7bd9'); R(x + 23, y + 20, 10, 2, '#e5484d'); R(x + 22, y + 18, 12, 2, '#4fd08c');   // 책 더미
+      R(x + 50, y + 21, 8, 5, '#fbfaf5'); R(x + 54, y + 21, 1, 5, '#cfc9bc'); R(x + 51, y + 22, 2, 1, '#9a9aa8');   // 펼친 책
+      R(x + 38, y + 22, 4, 4, '#fff8e6'); R(x + 39, y + 23, 2, 2, '#e5484d');   // 졸업장 두루마리
+      for (const [sx, sy] of [[x - 4, y + 6], [x + 82, y + 6], [x + 14, y - 4], [x + 66, y - 4]]) { R(sx, sy - 2, 1, 5, '#ffd23f'); R(sx - 2, sy, 5, 1, '#ffd23f'); R(sx, sy, 1, 1, '#ffffff'); }
+      sign(x + 16, y + 9, 48, 10); }
     GR.world = c;
   }
   // ----- 판다 그림 (꾸미기 포함, 졸업 모자) : 캐시 -----
@@ -7547,15 +7681,10 @@
     if (GR_PIC.size > 200) GR_PIC.clear();
     GR_PIC.set(key, cv); return cv;
   }
-  function grDrawPanda(g, x, y, frame, face, wear, cap, name, me) {
-    g.fillStyle = 'rgba(30,40,30,.22)'; g.fillRect(Math.round(x - 11), Math.round(y - 2), 22, 4);
+  // 판다 몸 (세계 좌표 · 3배 화면에서 또렷하게). 이름표는 grDraw의 글씨 단계에서 따로
+  function grDrawPanda(g, x, y, frame, face, wear, cap) {
+    g.fillStyle = 'rgba(40,70,40,.25)'; g.fillRect(Math.round(x - 10), Math.round(y - 2), 20, 3); g.fillRect(Math.round(x - 8), Math.round(y - 3), 16, 5);
     g.drawImage(grPandaPic(frame, face, wear, cap), Math.round(x - 16 - 28), Math.round(y - 32 - 12), 88, 56);
-    if (name) {
-      g.font = 'bold 11px Jua, "Gowun Dodum", sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
-      const w = g.measureText(name).width + 10;
-      g.fillStyle = me ? 'rgba(246,196,69,.95)' : 'rgba(29,39,56,.78)'; g.fillRect(Math.round(x - w / 2), Math.round(y - 50), Math.round(w), 14);
-      g.fillStyle = me ? '#2b2838' : '#ffffff'; g.fillText(name, Math.round(x), Math.round(y - 43));
-    }
   }
   // ----- 열기 · 닫기 -----
   function grOpen() {
@@ -7564,8 +7693,9 @@
     if (!GR.world) grBuildWorld();
     Object.assign(GR, { on: true, keys: {}, pad: {}, talk: -1, fx: [], ceremonyShown: false });
     GR.grad = !!run.cleared || !!run.arc.grad;
-    if (!run.arc.pos) run.arc.pos = { x: 360, y: 292 };
+    if (!run.arc.pos || grSolidHit(run.arc.pos.x, run.arc.pos.y)) run.arc.pos = { ...GR_START };
     Object.assign(GR.me, { x: run.arc.pos.x, y: run.arc.pos.y, tx: null, ty: null, goNpc: -1 });
+    grCamStep(0, true);
     $('grad').hidden = false; $('grTalk').hidden = true;
     grStampsUI(); grNetUI();
     if (GN.status === 'on' || GN.status === 'connecting') $('grLobby').hidden = true;
@@ -7579,17 +7709,20 @@
     gnLeave();
   }
   function grHome() { if (mode !== 'grad') return; grClose(); goHome(); }
+  // 위쪽: 큰 진행도 n/5 + 미션 5칸 (끝낸 곳 ✔ · 잠긴 곳 🔒)
   function grStampsUI() {
     const d = grDone(), n = grCount();
-    $('grStamps').innerHTML = `🎓 졸업 도장 <b>${n}/5</b> ` + GR_NPC.map((p, i) => `<span class="gr-st${d[i] ? ' on' : ''}" title="${p.place}">${d[i] ? '✔' : i + 1}</span>`).join('');
+    $('grStamps').innerHTML = `<span class="gr-big" aria-label="졸업 도장 ${n}개 중 5개">🎓 <b>${n}</b><small>/5</small></span>` + GR_NPC.map((p, i) => `<span class="gr-st${d[i] ? ' on' : ''}${!d[i] && !grCanTalk(i) ? ' lock' : ''}" title="${p.place}"><i>${p.icon}</i>${d[i] ? '<em>✔</em>' : !grCanTalk(i) ? '<em>🔒</em>' : ''}</span>`).join('');
   }
+  // 한 줄 안내 (짧게)
   function grHintSet() {
-    const n = grCount();
-    $('grHint').textContent = GR.grad ? '🎓 졸업 축하해요! 광장에서 친구들을 기다려요' : n >= 5 ? '🎓 졸업 자격 획득! 광장의 졸업식 무대 앞으로 가요 ⬆' : n >= 4 ? '🏫 마지막! 광장 아래 졸업식 선생님에게 가요' : '❗ 표시 판다에게 가서 말을 걸어요 (4곳 → 졸업 시험)';
+    const n = grCount(), d = grDone();
+    const left = GR_NPC.slice(0, 4).filter((p, i) => !d[i]).map(p => `${p.icon}${p.dir}`).join(' ');
+    $('grHint').textContent = GR.grad ? '🎓 졸업 축하해요! 무대 앞에서 친구들과 놀아요' : n >= 5 ? '🎓 무대 앞 레드카펫으로! ⬆' : n >= 4 ? '🎓 마지막! 광장 아래 졸업 시험 ⬇' : `❗ 판다에게 말 걸기 · 남은 곳 ${left}`;
   }
   // ----- 이동 -----
   function grSolidHit(x, y) {
-    if (x < 14 || x > GRWD - 14 || y < 40 || y > GRHT - 6) return true;
+    if (x < 24 || x > GRWD - 24 || y < 50 || y > GRHT - 10) return true;
     return GR_SOLID.some(s => grBoxHit(s, x, y));
   }
   const grBoxHit = (s, x, y) => x + 7 > s.x && x - 7 < s.x + s.w && y > s.y && y - 6 < s.y + s.h;
@@ -7600,8 +7733,13 @@
     if (GR.talk < 0 && $('grLobby').hidden && $('grPop').hidden) {
       const k = GR.keys, p = GR.pad;
       ax = (k.left || p.left ? -1 : 0) + (k.right || p.right ? 1 : 0); ay = (k.up || p.up ? -1 : 0) + (k.down || p.down ? 1 : 0);
-      if (ax || ay) { me.tx = null; me.goNpc = -1; }
-      else if (me.tx != null) { const dx = me.tx - me.x, dy = me.ty - me.y, dist = Math.hypot(dx, dy); if (dist < 4) { me.tx = null; if (me.goNpc >= 0) { const i = me.goNpc; me.goNpc = -1; grTalkOpen(i); } } else { ax = dx / dist; ay = dy / dist; } }
+      if (ax || ay) { me.tx = null; me.path = null; me.goNpc = -1; }
+      else if (me.tx != null) {
+        if (me.path && me.path.length > 1 && Math.hypot(me.path[0].x - me.x, me.path[0].y - me.y) < 4) me.path.shift();
+        const wp = me.path && me.path.length ? me.path[0] : { x: me.tx, y: me.ty }, dx = wp.x - me.x, dy = wp.y - me.y, dist = Math.hypot(dx, dy);
+        if ((dist < 4 && (!me.path || me.path.length <= 1)) || (me.goNpc >= 0 && Math.hypot(GR_NPC[me.goNpc].x - me.x, GR_NPC[me.goNpc].y - me.y) < 40)) { me.tx = null; me.path = null; if (me.goNpc >= 0) { const i = me.goNpc; me.goNpc = -1; grTalkOpen(i); } } else if (dist >= 1) { ax = dx / dist; ay = dy / dist; }
+      }
+      if (ax || ay) { if (me.tx != null && (k.left || p.left || k.right || p.right || k.up || p.up || k.down || p.down)) { me.tx = null; me.path = null; me.goNpc = -1; } }
     }
     const len = Math.hypot(ax, ay);
     me.mv = len > 0;
@@ -7627,9 +7765,10 @@
     const near = grNearNpc();
     const lbl = near >= 0 ? (grCanTalk(near) ? `💬 ${GR_NPC[near].place}` : '🔒 아직이에요') : '💬 대화';
     if ($('grAct').dataset.t !== lbl) { $('grAct').dataset.t = lbl; $('grAct').textContent = lbl; }
-    $('grAct').disabled = near < 0;
+    $('grAct').disabled = near < 0; $('grAct').classList.toggle('ready', near >= 0 && grCanTalk(near) && !run.ms[near].complete);
     for (const o of GN.others.values()) { o.x += (o.tx - o.x) * Math.min(1, dt * 8); o.y += (o.ty - o.y) * Math.min(1, dt * 8); o.t += dt; }
     GR.fx = GR.fx.filter(f => (f.t += dt) < 2);
+    grCamStep(dt);
     grDraw();
   }
   const grNearNpc = () => { let best = -1, bd = 58; GR_NPC.forEach((n, i) => { const d = Math.hypot(n.x - GR.me.x, n.y - GR.me.y); if (d < bd) { bd = d; best = i; } }); return best; };
@@ -7638,36 +7777,151 @@
   function grCanvasTap(e) {
     if (mode !== 'grad' || GR.talk >= 0 || !$('grLobby').hidden || !$('grPop').hidden) return;
     e.preventDefault();
-    const c = $('grCanvas'), r = c.getBoundingClientRect(), cam = grCam();
+    const c = $('grCanvas'), r = c.getBoundingClientRect(), cam = GR.cam;
     const wx = cam.x + (e.clientX - r.left) * GVW / r.width, wy = cam.y + (e.clientY - r.top) * GVH / r.height;
-    const hit = GR_NPC.findIndex(n => Math.abs(wx - n.x) < 22 && wy > n.y - 44 && wy < n.y + 8);
-    if (hit >= 0) { if (Math.hypot(GR_NPC[hit].x - GR.me.x, GR_NPC[hit].y - GR.me.y) < 58) { grTalkOpen(hit); return; } GR.me.tx = GR_NPC[hit].x; GR.me.ty = GR_NPC[hit].y + 22; GR.me.goNpc = hit; return; }
-    GR.me.tx = clamp(wx, 16, GRWD - 16); GR.me.ty = clamp(wy, 44, GRHT - 8); GR.me.goNpc = -1;
+    const hit = GR_NPC.findIndex(n => Math.abs(wx - n.x) < 22 && wy > n.y - 54 && wy < n.y + 8);
+    if (hit >= 0) { if (Math.hypot(GR_NPC[hit].x - GR.me.x, GR_NPC[hit].y - GR.me.y) < 58) { grTalkOpen(hit); return; } grGoTo(GR_NPC[hit].x, GR_NPC[hit].y + 22, hit); return; }
+    grGoTo(clamp(wx, 26, GRWD - 26), clamp(wy, 50, GRHT - 12), -1);
   }
-  const grCam = () => ({ x: clamp(GR.me.x - GVW / 2, 0, GRWD - GVW), y: clamp(GR.me.y - GVH / 2 - 10, 0, GRHT - GVH) });
+  // 톡한 곳까지 건물·무대를 돌아가는 길 찾기 (8칸 격자 · 너비 우선 탐색 → 곧게 갈 수 있는 점은 건너뛰기)
+  function grLineClear(ax, ay, bx, by) { const n = Math.ceil(Math.hypot(bx - ax, by - ay) / 3); for (let k = 1; k <= n; k++) if (grSolidHit(ax + (bx - ax) * k / n, ay + (by - ay) * k / n)) return false; return true; }
+  function grRoute(sx, sy, tx, ty) {
+    if (grLineClear(sx, sy, tx, ty)) return [{ x: tx, y: ty }];
+    const C = 8, W = Math.ceil(GRWD / C), H = Math.ceil(GRHT / C), ok = (cx, cy) => cx >= 0 && cy >= 0 && cx < W && cy < H && !grSolidHit(cx * C + 4, cy * C + 4);
+    let gx = Math.floor(tx / C), gy = Math.floor(ty / C);
+    if (!ok(gx, gy)) { let bd = 1e9, b = null; for (let dy = -6; dy <= 6; dy++) for (let dx = -6; dx <= 6; dx++) if (ok(gx + dx, gy + dy) && dx * dx + dy * dy < bd) { bd = dx * dx + dy * dy; b = [gx + dx, gy + dy]; } if (!b) return [{ x: tx, y: ty }]; [gx, gy] = b; tx = gx * C + 4; ty = gy * C + 4; }
+    const prev = new Int32Array(W * H).fill(-2), s = Math.floor(sy / C) * W + Math.floor(sx / C), goal = gy * W + gx, q = [s]; prev[s] = -1;
+    for (let h = 0; h < q.length && prev[goal] === -2; h++) { const c = q[h], cx = c % W, cy = (c - cx) / W; for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) { const nx = cx + dx, ny = cy + dy, ni = ny * W + nx; if (ok(nx, ny) && prev[ni] === -2) { prev[ni] = c; q.push(ni); } } }
+    if (prev[goal] === -2) return [{ x: tx, y: ty }];
+    const pts = []; for (let c = goal; c !== -1 && c !== s; c = prev[c]) pts.unshift({ x: (c % W) * C + 4, y: Math.floor(c / W) * C + 4 });
+    pts[pts.length - 1] = { x: tx, y: ty };
+    const out = []; let cx = sx, cy = sy, i = 0;
+    while (i < pts.length) { let j = pts.length - 1; while (j > i && !grLineClear(cx, cy, pts[j].x, pts[j].y)) j--; out.push(pts[j]); cx = pts[j].x; cy = pts[j].y; i = j + 1; }
+    return out;
+  }
+  function grGoTo(x, y, npc) { const m = GR.me; m.path = grRoute(m.x, m.y, x, y); const last = m.path[m.path.length - 1]; m.tx = last.x; m.ty = last.y; m.goNpc = npc; m.stuck = 0; }
+  // 카메라: 판다를 화면 아래쪽 60% 높이에 두어 앞(위쪽)이 잘 보이게. 광장 안에서는 무대가 잘리지 않게 위를 고정
+  function grCamTarget() {
+    const m = GR.me; let y = m.y - 150;
+    if (Math.abs(m.x - 320) < 160 && m.y < 336) y = Math.min(y, 92);
+    return { x: clamp(m.x - GVW / 2, 0, GRWD - GVW), y: clamp(y, 0, GRHT - GVH) };
+  }
+  function grCamStep(dt, snap) {
+    const t = grCamTarget(), k = snap ? 1 : Math.min(1, dt * 7);
+    GR.cam.x += (t.x - GR.cam.x) * k; GR.cam.y += (t.y - GR.cam.y) * k;
+    if (Math.abs(t.x - GR.cam.x) < 0.2) GR.cam.x = t.x; if (Math.abs(t.y - GR.cam.y) < 0.2) GR.cam.y = t.y;
+  }
+  // 지금 가면 좋은 곳 (가장 가까운, 아직 안 끝낸 미션 · 다 끝냈으면 무대)
+  function grNextTarget() {
+    if (GR.grad) return null;
+    const n = grCount();
+    if (n >= 5) return { x: GR_STAGE_ZONE.x, y: GR_STAGE_ZONE.y, i: -1 };
+    let best = null, bd = 1e9;
+    GR_NPC.forEach((p, i) => { if (run.ms[i].complete || !grCanTalk(i)) return; const d = Math.hypot(p.x - GR.me.x, p.y - GR.me.y); if (d < bd) { bd = d; best = { x: p.x, y: p.y - 16, i }; } });
+    return best;
+  }
   // ----- 그리기 -----
+  const GR_FLAGC = ['#ff6b8b', '#ffd23f', '#62aefc', '#4fd08c', '#c084fc', '#ff9f43'];
   function grDraw() {
-    const c = $('grCanvas'), g = c.getContext('2d'); g.imageSmoothingEnabled = false;
-    const cam = grCam(); g.save(); g.translate(-Math.round(cam.x), -Math.round(cam.y));
+    const c = $('grCanvas'), g = c.getContext('2d'), Z = c.width / GVW, T = GR.time;
+    g.imageSmoothingEnabled = false;
+    const cam = { x: Math.round(GR.cam.x * Z) / Z, y: Math.round(GR.cam.y * Z) / Z };
+    g.setTransform(Z, 0, 0, Z, -cam.x * Z, -cam.y * Z);
     g.drawImage(GR.world, 0, 0);
-    if (grCount() >= 5 && !GR.grad) { g.fillStyle = `rgba(246,196,69,${0.25 + 0.2 * Math.sin(GR.time * 4)})`; g.beginPath(); g.arc(GR_STAGE_ZONE.x, GR_STAGE_ZONE.y, GR_STAGE_ZONE.r, 0, Math.PI * 2); g.fill(); }
+    const R = (x, y, w, h, col) => { g.fillStyle = col; g.fillRect(Math.round(x), Math.round(y), w, h); };
+    // 바닥 효과: 졸업식 자리 빛 · NPC 발밑 동그라미
+    if (grCount() >= 5 && !GR.grad) { g.fillStyle = `rgba(255,220,90,${0.3 + 0.2 * Math.sin(T * 4)})`; g.beginPath(); g.ellipse(GR_STAGE_ZONE.x, GR_STAGE_ZONE.y, GR_STAGE_ZONE.r, GR_STAGE_ZONE.r * 0.55, 0, 0, Math.PI * 2); g.fill(); }
+    GR_NPC.forEach((n, i) => { const on = !run.ms[i].complete && grCanTalk(i); g.fillStyle = on ? `rgba(255,214,70,${0.35 + 0.15 * Math.sin(T * 3 + i)})` : 'rgba(255,255,255,.28)'; g.beginPath(); g.ellipse(n.x, n.y - 1, 15, 6, 0, 0, Math.PI * 2); g.fill(); });
+    // 분수 물줄기 · 찜기 김 · 등롱 빛
+    for (let k = 0; k < 6; k++) { const p = (T * 1.6 + k / 6) % 1, h = Math.sin(p * Math.PI) * 9; R(212 + (k % 2 ? 1 : -1) * p * 5, 428 - h, 1, 2, '#e2f6ff'); }
+    R(211, 419, 2, 9, 'rgba(226,246,255,.8)');
+    for (let k = 0; k < 3; k++) { const p = (T * 0.7 + k / 3) % 1; g.fillStyle = `rgba(255,255,255,${0.6 * (1 - p)})`; g.fillRect(Math.round(66 + k * 5 + Math.sin(T * 3 + k) * 1.5), Math.round(392 - p * 12), 2, 2); }
     // 앞뒤 순서: 아래쪽(y가 큰) 것이 앞
     const items = [];
     GR_NPC.forEach((n, i) => items.push({ y: n.y, f: () => grDrawNpc(g, n, i) }));
-    for (const o of GN.others.values()) items.push({ y: o.y, f: () => grDrawPanda(g, o.x, o.y, o.mv && Math.floor(o.t * 8) % 2 ? 'walk1' : o.mv ? 'walk2' : 'idle', o.d, o.w, o.g, o.n, false) });
+    for (const o of GN.others.values()) items.push({ y: o.y, f: () => grDrawPanda(g, o.x, o.y, o.mv ? (Math.floor(o.t * 8) % 2 ? 'walk1' : 'walk2') : 'idle', o.d, o.w, o.g) });
     const me = GR.me, fr = me.mv ? (Math.floor(me.t * 8) % 2 ? 'walk1' : 'walk2') : 'idle';
-    items.push({ y: me.y, f: () => grDrawPanda(g, me.x, me.y, fr, me.d, save.shop.wear, GR.grad, save.playerName || '나', true) });
+    items.push({ y: me.y, f: () => grDrawPanda(g, me.x, me.y, fr, me.d, save.shop.wear, GR.grad) });
     items.sort((a, b) => a.y - b.y).forEach(it => it.f());
-    if (me.tx != null) { g.strokeStyle = 'rgba(255,255,255,.8)'; g.lineWidth = 2; g.beginPath(); g.arc(me.tx, me.ty, 6, 0, Math.PI * 2); g.stroke(); }
-    g.restore();
+    if (me.tx != null) { g.strokeStyle = 'rgba(255,255,255,.9)'; g.lineWidth = 1; g.beginPath(); g.ellipse(me.tx, me.ty, 6, 3, 0, 0, Math.PI * 2); g.stroke(); }
+    // 위쪽 장식: 축하 깃발 줄 · 풍선 · 학교 깃발 · 반짝임 · 꽃잎
+    const bunting = (x1, y1, x2, y2, sag, n) => {
+      g.strokeStyle = '#7a5a3a'; g.lineWidth = 0.6; g.beginPath(); g.moveTo(x1, y1); g.quadraticCurveTo((x1 + x2) / 2, (y1 + y2) / 2 + sag * 2, x2, y2); g.stroke();
+      for (let k = 1; k < n; k++) { const t = k / n, x = x1 + (x2 - x1) * t, y = y1 + (y2 - y1) * t + sag * 4 * t * (1 - t), sw = Math.round(Math.sin(T * 2.4 + k * 0.9) * 1); g.fillStyle = GR_FLAGC[k % 6]; g.beginPath(); g.moveTo(x - 2.5, y); g.lineTo(x + 2.5, y); g.lineTo(x + sw, y + 5); g.closePath(); g.fill(); }
+    };
+    bunting(206, 112, 252, 104, 6, 7); bunting(388, 104, 434, 112, 6, 7); bunting(186, 224, 206, 114, 2, 7); bunting(434, 114, 454, 224, 2, 7);
+    bunting(272, 318, 368, 318, 6, 12);
+    const balloon = (x, y, col, ph) => { const by = y + Math.sin(T * 1.8 + ph) * 1.5; g.strokeStyle = 'rgba(90,70,60,.7)'; g.lineWidth = 0.5; g.beginPath(); g.moveTo(x, by + 5); g.lineTo(x + (x < 320 ? 6 : -6), y + 34); g.stroke(); g.fillStyle = col; g.beginPath(); g.ellipse(x, by, 4, 5, 0, 0, Math.PI * 2); g.fill(); R(x - 2, by - 3, 1, 2, 'rgba(255,255,255,.75)'); R(x - 0.5, by + 5, 1, 1, col); };
+    balloon(228, 140, '#ff6b8b', 0); balloon(236, 134, '#ffd23f', 1); balloon(222, 132, '#62aefc', 2);
+    balloon(412, 140, '#4fd08c', 0.5); balloon(404, 134, '#c084fc', 1.5); balloon(418, 132, '#ff9f43', 2.5);
+    { const x = 115, y = 30, w = Math.sin(T * 5); g.fillStyle = '#e5484d'; g.beginPath(); g.moveTo(x, y); g.lineTo(x + 12, y + 2 + w); g.lineTo(x, y + 7); g.closePath(); g.fill(); R(x + 2, y + 2, 3, 3, '#ffffff'); }
+    for (const [x, y, ph] of [[208, 166, 0], [232, 180, 1.3], [414, 168, 0.7], [436, 182, 2], [140, 206, 2.4], [500, 208, 0.4], [44, 300, 1.8], [590, 300, 2.9], [276, 326, 0.9], [366, 326, 2.2], [320, 322, 1.6]]) { const a = Math.sin(T * 3 + ph * 2.1); if (a > 0.55) { g.fillStyle = `rgba(255,255,230,${(a - 0.55) * 2})`; g.fillRect(x, y - 1, 1, 3); g.fillRect(x - 1, y, 3, 1); } }
+    // 꽃잎 (화면 안에서만 · 14개)
+    if (GR.petals.length < 14) for (let k = GR.petals.length; k < 14; k++) GR.petals.push({ x: Math.random() * GVW, y: Math.random() * GVH, v: 6 + Math.random() * 6, ph: Math.random() * 6, c: k % 3 ? '#ffc2d4' : '#ffffff' });
+    for (const p of GR.petals) { const px = cam.x + ((p.x + T * p.v * 0.7 + Math.sin(T + p.ph) * 4) % GVW + GVW) % GVW, py = cam.y + ((p.y + T * p.v) % GVH + GVH) % GVH; g.fillStyle = p.c; g.fillRect(Math.round(px), Math.round(py), 2, 1); }
+    // ----- 글씨 · 표시 (캔버스 해상도로 선명하게) -----
+    g.setTransform(1, 0, 0, 1, 0, 0);
+    const S = (wx, wy) => [Math.round((wx - cam.x) * Z), Math.round((wy - cam.y) * Z)];
+    const vis = (wx, wy, m = 40) => wx > cam.x - m && wx < cam.x + GVW + m && wy > cam.y - m && wy < cam.y + GVH + m;
+    g.textAlign = 'center'; g.textBaseline = 'middle';
+    const KF = (px) => `${Math.round(px)}px Jua, "Gowun Dodum", "Noto Sans KR", sans-serif`;
+    // 건물 간판 (세계 그림의 흰 간판 위에 진한 글씨)
+    const signs = [[GR_BLD[0].x + 56, GR_BLD[0].y + 42.5, '인사 학교'], [GR_BLD[1].x + 56, GR_BLD[1].y + 42.5, '가족의 집'], [GR_BLD[2].x + 56, GR_BLD[2].y + 42.5, '판다 식당'], [GR_BLD[3].x + 56, GR_BLD[3].y + 42.5, '기분 연구소'], [320, 344, '졸업 시험']];
+    g.fillStyle = '#3b2a20';
+    for (const [x, y, t] of signs) { if (!vis(x, y)) continue; const [sx, sy] = S(x, y); g.font = KF(7.4 * Z); g.fillText(t, sx, sy + 1); }
+    // 현수막 毕业快乐！
+    if (vis(320, 120)) {
+      const [sx, sy] = S(320, 118);
+      g.font = `700 ${Math.round(13 * Z)}px "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif`; g.lineWidth = Math.max(2, Z); g.strokeStyle = '#9b1f2a'; g.strokeText('毕业快乐！', sx, sy); g.fillStyle = '#fff6d6'; g.fillText('毕业快乐！', sx, sy);
+      const [px, py] = S(320, 130.5); g.font = `700 ${Math.round(5.6 * Z)}px "Noto Sans", Arial, sans-serif`; g.fillStyle = '#ffe58a'; g.fillText('Bìyè kuàilè!', px, py);
+    }
+    // 식당 메뉴판 饺子 · 기분 연구소 표정 포스터
+    { const b = GR_BLD[2]; if (vis(b.x + 87, b.y + 57)) { const [sx, sy] = S(b.x + 87, b.y + 57); g.fillStyle = '#fff6d6'; g.font = `700 ${Math.round(6.4 * Z)}px "Noto Sans SC", sans-serif`; g.fillText('饺子', sx, sy); } }
+    { const b = GR_BLD[3]; g.font = `${Math.round(8.6 * Z)}px "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif`; [['😊', 10], ['😫', 26], ['😋', 74], ['😴', 90]].forEach(([e, dx], k) => { const x = b.x + dx + 6, y = b.y + 58 + (k % 2 ? Math.sin(T * 2 + k) * 0.6 : 0); if (vis(x, y)) { const [sx, sy] = S(x, y); g.fillText(e, sx, sy + 1); } }); }
+    // NPC 머리 위 표시: ❗ 할 수 있어요 · ✔ 끝 · 🔒 아직
+    GR_NPC.forEach((n, i) => {
+      if (!vis(n.x, n.y)) return;
+      const done = run.ms[i].complete, lock = !grCanTalk(i), bob = done ? 0 : Math.sin(T * 4 + i) * 1.6;
+      const [sx, sy] = S(n.x, n.y - 46 + bob), r = Math.round(6.4 * Z);
+      g.fillStyle = 'rgba(0,0,0,.25)'; g.beginPath(); g.arc(sx, sy + 3, r, 0, Math.PI * 2); g.fill();
+      g.fillStyle = done ? '#4fd08c' : lock ? '#d7dbe3' : '#ffd23f'; g.strokeStyle = '#2b2838'; g.lineWidth = Math.max(2, Z * 0.9);
+      g.beginPath(); g.arc(sx, sy, r, 0, Math.PI * 2); g.fill(); g.stroke();
+      g.beginPath(); g.moveTo(sx - r * 0.35, sy + r * 0.85); g.lineTo(sx, sy + r * 1.45); g.lineTo(sx + r * 0.35, sy + r * 0.85); g.closePath(); g.fill();
+      if (lock) { g.font = `${Math.round(r * 1.05)}px sans-serif`; g.fillText('🔒', sx, sy + 1); }
+      else { g.fillStyle = done ? '#ffffff' : '#2b2838'; g.font = `900 ${Math.round(r * 1.45)}px "Noto Sans", Arial, sans-serif`; g.fillText(done ? '✔' : '!', sx, sy + 1); }
+      if (!done && !lock) for (let k = 0; k < 3; k++) { const a = T * 1.5 + k * 2.1, [px, py] = S(n.x + Math.cos(a) * 15, n.y - 18 + Math.sin(a) * 12); const tw = 0.5 + 0.5 * Math.sin(T * 5 + k); g.fillStyle = `rgba(255,236,120,${tw})`; g.fillRect(px - 1, py - Z * 1.2, 2, Z * 2.4); g.fillRect(px - Z * 1.2, py - 1, Z * 2.4, 2); }
+    });
+    // 이름표 (겹치면 위로 비켜요)
+    const tags = [{ x: me.x, y: me.y, n: save.playerName || '나', me: true }];
+    [...GN.others.values()].sort((p, q) => q.y - p.y).forEach(o => tags.push({ x: o.x, y: o.y, n: o.n || '친구', g: o.g }));   // 앞줄(아래쪽) 판다 이름표가 제자리, 뒷줄이 위로 비켜요
+    g.font = `700 ${Math.round(5.4 * Z)}px Jua, "Gowun Dodum", sans-serif`;
+    const th = Math.round(7.2 * Z), placed = [];
+    for (const t of tags) {
+      if (!vis(t.x, t.y)) continue;
+      let [sx, sy] = S(t.x, t.y - 50); const w = Math.round(g.measureText(t.n).width + 4 * Z);
+      for (let k = 0; k < 4 && placed.some(p => Math.abs(p.x - sx) < (p.w + w) / 2 + 2 && Math.abs(p.y - sy) < th + 2); k++) sy -= th + 2;
+      placed.push({ x: sx, y: sy, w });
+      g.fillStyle = t.me ? 'rgba(255,214,70,.97)' : 'rgba(29,39,56,.82)'; g.strokeStyle = t.me ? '#7a5a10' : 'rgba(255,255,255,.7)'; g.lineWidth = 2;
+      const x0 = sx - w / 2, y0 = sy - th / 2, rr = th / 2;
+      g.beginPath(); g.moveTo(x0 + rr, y0); g.arcTo(x0 + w, y0, x0 + w, y0 + th, rr); g.arcTo(x0 + w, y0 + th, x0, y0 + th, rr); g.arcTo(x0, y0 + th, x0, y0, rr); g.arcTo(x0, y0, x0 + w, y0, rr); g.closePath(); g.fill(); g.stroke();
+      g.fillStyle = t.me ? '#2b2838' : '#ffffff'; g.fillText((t.g ? '🎓' : '') + t.n, sx, sy + 1);
+    }
+    // 다음 갈 곳이 화면 밖이면 가장자리에 화살표
+    const tg = grNextTarget();
+    if (tg && GR.talk < 0 && !vis(tg.x, tg.y, -10)) {
+      const [tx, ty] = S(tg.x, tg.y), cx = c.width / 2, cy = c.height / 2, a = Math.atan2(ty - cy, tx - cx), m = 40;
+      const ex = clamp(cx + Math.cos(a) * 2000, m, c.width - m), ey = clamp(cy + Math.sin(a) * 2000, m + 30, c.height - m), pul = 1 + Math.sin(T * 6) * 0.08;
+      g.save(); g.translate(ex, ey); g.scale(pul, pul);
+      g.fillStyle = 'rgba(255,214,70,.95)'; g.strokeStyle = '#2b2838'; g.lineWidth = 3; g.beginPath(); g.arc(0, 0, 26, 0, Math.PI * 2); g.fill(); g.stroke();
+      g.rotate(a); g.fillStyle = '#2b2838'; g.beginPath(); g.moveTo(38, 0); g.lineTo(26, -9); g.lineTo(26, 9); g.closePath(); g.fill(); g.rotate(-a);
+      g.font = '24px "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif'; g.fillText(tg.i >= 0 ? GR_NPC[tg.i].icon : '🎓', 0, 2);
+      g.restore();
+    }
   }
   function grDrawNpc(g, n, i) {
     const spr = npcSpr(n), sx = Math.round(n.x - 16), sy = Math.round(n.y - 32);
-    g.fillStyle = 'rgba(30,40,30,.22)'; g.fillRect(sx + 6, n.y - 2, 20, 4);
+    g.fillStyle = 'rgba(40,70,40,.25)'; g.fillRect(sx + 6, n.y - 2, 20, 3); g.fillRect(sx + 8, n.y - 3, 16, 5);
     g.drawImage(spr, sx, sy, 32, 32); drawNpcAcc(g, n, sx, sy, 1);
-    const done = run.ms[i].complete, lock = !grCanTalk(i), bob = Math.round(Math.sin(GR.time * 4 + i) * 2);
-    g.font = '16px sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
-    g.fillText(done ? '✅' : lock ? '🔒' : '❗', n.x, sy - 12 + (done ? 0 : bob));
   }
   // ================= 미션 · 활동 (학생마다 따로) =================
   const MOODS = [
@@ -9148,7 +9402,7 @@
     requestAnimationFrame(frame);
     $('startScreen').querySelector('.card').focus({ preventScroll: true });
     window.__panda = {
-      get GR() { return GR; }, get GN() { return GN; }, GR_NPC, GR_ACT, MOODS, grOpen, grClose, grTalkOpen, grActStart, grMissionDone, grCeremony, grCount, gnJoin, gnSingle, gnState, grSolidHit, grStay, grResult,
+      get GR() { return GR; }, get GN() { return GN; }, GR_VIEW: { w: GVW, h: GVH }, GR_SOLID, grGoTo, grRoute, GR_STAGE_ZONE, grNextTarget, GR_NPC, GR_ACT, MOODS, grOpen, grClose, grTalkOpen, grActStart, grMissionDone, grCeremony, grCount, gnJoin, gnSingle, gnState, grSolidHit, grStay, grResult,
       SHOP_ITEMS, buyItem, equipItem, unequipItem, openWardrobe, closeWardrobe, drawWear, drawPandaWith, get PET() { return PET; }, get wd() { return wd; },
       questInteract, openBasket, BD_NPC, BD_CANDLES, BD_CAKE_X, BD_BOARD_X, BD_DESK_X, BD_TABLE_X, bdValid, dateZh, bdSent, openCake, cakeAdd, cakeDel, cakeDone, closeCake, openCal, calOk, closeCal, openBCard, bcOk, closeBCard, bdPlace, openPick, closePick, pickOk, FAM, famOf, famSent, FM_NPC, GIFT, giftOf, gfSent, GF_NPC, GF_FR, FM_BOARD_X, famFace, giftURL, drawGift, FOOD, foodOf, foodSent, FD_MC, DN_NPC, priceZh, priceSay, drawFood, foodURL, questDone, payOnce, arRoundDone, FURNITURE, buyFurniture, homeCanPlace, homeFreeSpot, openHouse, closeHouse, get HS() { return HS; }, hsConfirm, hsUse, hsWake, AR, arcOpen, arPopGo, arHint, arKey, PRICES, FD_GUEST, DN_CU, get arDbg() { return { belt: AR.belt, held: AR.held, tray: AR.tray, want: AR.want, r: AR.r, paused: AR.paused, combo: AR.combo }; }, beltGrab, beltPut, fsPut, fsServe, fsGive1, fmNewTest: () => fmNew(), gfNewTest: () => gfNew(), get qp() { return qp; }, bdNewTest: () => bdNew(), bdBonus: () => bdBonusLater, basketDrop, closeBasket, zhNum, tokVal, testSpawn: (kind, n, set) => { const q = run.q, list = set ? q.m4.items : q.m3.items; spawnItems(list, kind, n, Q_SPOTS[set]); }, testOpenSlab: (rounds) => openSlab({ title: 'test', rounds, start: 0, tag: 'test', key: (i) => 'test' + i, onRound() {}, onAll() {} }), slabTap, slabKey, ruleHints, boxNums, closeTalk, closeSlab, questRecall, NPC_DEF, useSkill, canSkill, BGM, josa, BUILD, forestBuild, basicQuestion, MA, GREET, NW, P, save, quiz, quick, NQ, numQ, numQueue, NUMS, openQuiz, answer, closeQuiz, closeSpeak, selectStage, startPlay, goHome, askHome, resumeFromPause, loadStage, closeHelp, closeIntro, startNewRun, THEMES, SKINS, STAGES,
       get mode() { return mode; }, get monsters() { return monsters; }, get coins() { return coins; }, get gates() { return gates; },
