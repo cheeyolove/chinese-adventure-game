@@ -700,6 +700,43 @@
   .ar-conf { position: absolute; top: -12px; width: 9px; height: 13px; animation-name: confFall; animation-timing-function: linear; animation-fill-mode: forwards; }
   @keyframes confFall { 0% { transform: translateY(0) rotate(0); } 100% { transform: translateY(105vh) rotate(540deg); } }
 
+
+  /* 11차시 판다 기분 지킴이 디펜스 */
+  #df { position: fixed; inset: 0; z-index: 19; display: flex; flex-direction: column; background: #2f5d3a; color: var(--ink); user-select: none; -webkit-user-select: none; touch-action: none; overflow: hidden; overscroll-behavior: none; }
+  .df-top { gap: 8px; }
+  .df-title { flex: 1; min-width: 0; font-family: Jua, "Gowun Dodum", sans-serif; font-size: 20px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .df-chip { flex: none; font-weight: 700; font-size: 15px; white-space: nowrap; background: rgba(255,255,255,.18); color: #fff; border-radius: 999px; padding: 5px 11px; }
+  .df-round { background: #ffd23f; color: #2b2838; border: 2px solid #2b2838; font-size: 17px; }
+  .df-mood { flex: none; display: flex; align-items: center; gap: 6px; color: #fff; font-weight: 700; font-size: 14px; white-space: nowrap; }
+  .df-moodbar { width: 90px; height: 14px; border-radius: 999px; background: rgba(255,255,255,.25); border: 2px solid #fff; overflow: hidden; } .df-moodbar i { display: block; height: 100%; background: linear-gradient(90deg, #ff8fab, #ffd23f); transition: width .3s; }
+  .df-stage { position: relative; flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; }
+  #dfCanvas { width: min(100%, calc((100vh - 190px) * 1.852)); width: min(100%, calc((100dvh - 190px) * 1.852)); aspect-ratio: 1200 / 648; image-rendering: pixelated; touch-action: none; display: block; }
+  .df-paused { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(9,17,31,.55); color: #fff; font-size: 24px; text-align: center; z-index: 3; }
+  .df-bottom { flex: none; display: flex; flex-direction: column; gap: 4px; padding: 6px 8px 8px; background: rgba(10,14,30,.55); }
+  .df-items { display: flex; gap: 8px; justify-content: center; }
+  .df-item { position: relative; flex: 1 1 0; max-width: 220px; min-height: 72px; display: flex; align-items: center; justify-content: center; gap: 8px; border-radius: 16px; border: 3px solid #2b2838; background: #fffaf0; font: inherit; font-weight: 700; font-size: 17px; color: var(--ink); cursor: pointer; padding: 4px 8px; box-shadow: 0 4px 0 #2b2838; touch-action: manipulation; }
+  .df-item img { width: 52px; height: 52px; image-rendering: pixelated; flex: none; }
+  .df-item kbd { position: absolute; top: 3px; right: 6px; font: 700 11px sans-serif; color: #8a7a6a; }
+  .df-item.sel { background: #ffd23f; transform: translateY(-3px); box-shadow: 0 7px 0 #2b2838, 0 0 0 4px #fff3; }
+  .df-help { text-align: center; color: #fff; font-weight: 700; font-size: 16px; min-height: 1.4em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .df-help.good { color: #a8f0c4; } .df-help.bad { color: #ffe08a; } .df-help small { opacity: .85; }
+  @media (max-width: 820px), (max-height: 560px) { .df-title { font-size: 16px; } .df-chip { font-size: 13px; padding: 4px 8px; } .df-moodbar { width: 60px; } .df-item { min-height: 60px; font-size: 14px; gap: 4px; } .df-item img { width: 40px; height: 40px; } #dfCanvas { width: min(100%, calc((100dvh - 160px) * 1.852)); } }
+  @media (max-width: 640px) { .df-title { display: none; } .df-item span { font-size: 12px; } }
+  #dfPop { position: absolute; inset: 0; z-index: 5; background: rgba(9,17,31,.6); display: flex; align-items: center; justify-content: center; padding: 8px; overflow-y: auto; touch-action: pan-y; }
+  .df-popcard { max-width: 680px; max-height: 100%; overflow-y: auto; }
+  .df-popcard h2 { margin: 4px 0; } .df-rhead { font-weight: 700; color: #a3361b; } .df-tip { font-size: 13px; color: #666; }
+  .df-legend { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 6px 0; } .df-leg { display: inline-flex; align-items: center; gap: 4px; background: #fff; border: 2px solid #2b2838; border-radius: 10px; padding: 2px 8px 2px 2px; } .df-leg img { width: 36px; height: 36px; image-rendering: pixelated; }
+  .df-qhead { font-weight: 700; color: #a3361b; } .df-q { font-size: 17px; font-weight: 700; margin: 6px 0; }
+  .df-opts, .df-pieces { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 6px 0; }
+  .df-opt { flex: 1 1 140px; min-height: 58px; border: 3px solid var(--ink); border-radius: 12px; background: #fff; font: inherit; font-weight: 700; font-size: 18px; cursor: pointer; color: var(--ink); padding: 4px 8px; touch-action: manipulation; } .df-opt.sel { background: #ffe9a8; box-shadow: 0 0 0 3px #f6c445; } .df-opt.piece { flex: 0 1 90px; } .df-opt:disabled { opacity: .3; }
+  .df-slots { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; align-items: center; padding: 8px; border-radius: 12px; background: #f1e3c2; }
+  .df-slot { min-width: 66px; min-height: 58px; border: 3px dashed #9a7a4a; border-radius: 12px; background: #fff; font: inherit; font-weight: 700; cursor: pointer; color: var(--ink); } .df-slot.empty { color: #b59a6a; font-size: 22px; }
+  .df-punct { font-family: var(--font-han); font-size: 30px; font-weight: 700; }
+  .df-friend { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 6px 0; } .df-friend img { width: 72px; height: 72px; image-rendering: pixelated; } .df-fsay { background: #e8f3ff; border-radius: 14px; padding: 6px 12px; } .df-ko { display: block; font-weight: 700; }
+  .df-okbox { background: #dff7e8; border: 3px solid #3d9a5c; border-radius: 14px; padding: 8px; font-weight: 700; margin: 6px 0; }
+  .df-popmsg { font-weight: 700; min-height: 1.2em; } .df-popmsg.bad { color: #c81e3c; }
+  .df-blank { margin: 6px 0; } .df-picq { position: relative; display: inline-block; } .df-picq img { width: 96px; height: 96px; image-rendering: pixelated; } .df-picq i { position: absolute; right: -14px; top: 0; font-style: normal; font-size: 26px; }
+  .df-reward { font-weight: 700; font-size: 17px; } .df-final { display: flex; align-items: center; justify-content: center; gap: 12px; } .df-final img { width: 96px; height: 96px; image-rendering: pixelated; }
+  #dfFx { position: fixed; inset: 0; pointer-events: none; z-index: 30; overflow: hidden; }
   /* 12차시 졸업식 광장 */
   #grad { position: fixed; inset: 0; z-index: 19; display: flex; flex-direction: column; background: #2f5d3a; color: var(--ink); user-select: none; -webkit-user-select: none; touch-action: none; overflow: hidden; overscroll-behavior: none; }
   .gr-stamps { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; display: flex; align-items: center; gap: 6px; }
@@ -1024,6 +1061,15 @@
   <div class="ar-bar"><button class="ar-sbtn" id="arHint" hidden>💡 힌트</button><div id="arMsg" role="status" aria-live="polite"></div><button class="ar-sbtn" id="arDrop" hidden>✋ 내려놓기</button></div>
   <div id="arPop" hidden><div class="ar-popcard"><div id="arPopBody"></div><button class="ar-go big" id="arPopGo">시작!</button></div></div>
   <div id="arFx" aria-hidden="true"></div>
+</div>
+
+<!-- 11차시 판다 기분 지킴이 디펜스 (3줄 라인 디펜스) -->
+<div id="df" hidden>
+  <div class="ar-topbar df-top"><button class="ar-ib" id="dfHome" aria-label="홈으로">🏠</button><div class="df-title">🛡️ 판다 기분 지킴이 디펜스!</div><div class="df-chip df-round" id="dfRound"></div><div class="df-chip" id="dfCount"></div><div class="df-mood" title="마을 기분 지수"><div class="df-moodbar"><i id="dfMoodBar"></i></div><span id="dfMoodTxt"></span></div><button class="ar-ib" id="dfPause" aria-label="일시정지">⏸</button></div>
+  <div class="df-stage"><canvas id="dfCanvas" width="1200" height="648" aria-label="판다 마을로 오는 세 갈래 길"></canvas><div id="dfPaused" class="df-paused" hidden><div><b>⏸ 잠깐 쉬는 중</b><br><button class="ar-go big" id="dfResume">계속하기 ▶</button></div></div></div>
+  <div class="df-bottom"><div id="dfItems" class="df-items"></div><div id="dfHelp" class="df-help" role="status" aria-live="polite"></div></div>
+  <div id="dfPop" hidden><div class="ar-popcard df-popcard"><div id="dfPopBody"></div><p id="dfPopMsg" class="df-popmsg" role="status" aria-live="polite"></p><button class="ar-go big" id="dfPopGo">시작!</button></div></div>
+  <div id="dfFx" aria-hidden="true"></div>
 </div>
 
 <!-- 12차시 졸업식 광장 (탑다운 맵 · 함께 접속) -->
@@ -1411,7 +1457,7 @@
 
   // Google Fonts (한자는 필요한 글자만 받아옴)
   (function loadFonts() {
-    const han = '熊猫探险队妈麻马骂你们好老师同学中国汉语拼音文我叫什么名字小明韩人是哪谢再见不客气对起没关系晚安早上。？！“”一二三四五六七八九十生日快乐月号几的○爸哥姐弟妹这喜欢苹果饺子辣烫北京烤鸭火锅珍珠奶茶要多少钱块元个久很呢开心累饿困会说毕业典礼吗＿';
+    const han = '熊猫探险队妈麻马骂你们好老师同学中国汉语拼音文我叫什么名字小明韩人是哪谢再见不客气对起没关系晚安早上。？！“”一二三四五六七八九十生日快乐月号几的○爸哥姐弟妹这喜欢苹果饺子辣烫北京烤鸭火锅珍珠奶茶要多少钱块元个久很呢开心累饿困会说毕业典礼吗＿也';
     // 병음용: 알파벳·성조 모음·숫자만 받아서 파일이 아주 작음
     const py = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZāáǎàēéěèīíǐìōóǒòūúǔùǖǘǚǜüĀÁǍÀĒÉĚÈĪÍǏÌŌÓǑÒŪÚǓÙÜ0123456789 .,?!’\'-/()%…:→ˉˊˇˋ';
     for (const href of [
@@ -1511,6 +1557,22 @@
     { id: 'dn_yuan', h: '元', p: 'yuán', t: 2, ko: '위안 (돈의 공식 단위)' },
     { id: 'dn_yige', h: '一个', p: 'yí ge', t: 0, ko: '한 개 (물건 등을 셀 때의 예)', bonus: true },
     { id: 'dn_yige_s', h: '我要一个。', p: 'Wǒ yào yí ge.', t: 0, ko: '하나 주세요.', sent: true, bonus: true },
+  ].map(w => [w.id, w]));
+  // 11차시 판다 기분 지킴이 디펜스: 기분 표현 开心·累·饿·困 + 我很○○。 + 안부 인사 + 吗
+  const MDW = Object.fromEntries([
+    { id: 'mw_kx', h: '开心', p: 'kāixīn', t: 0, ko: '기쁘다, 즐겁다' },
+    { id: 'mw_lei', h: '累', p: 'lèi', t: 4, ko: '피곤하다' },
+    { id: 'mw_e', h: '饿', p: 'è', t: 4, ko: '배고프다' },
+    { id: 'mw_kun', h: '困', p: 'kùn', t: 4, ko: '졸리다' },
+    { id: 'mw_skx', h: '我很开心。', p: 'Wǒ hěn kāixīn.', t: 0, ko: '나는 기뻐.', sent: true },
+    { id: 'mw_slei', h: '我很累。', p: 'Wǒ hěn lèi.', t: 0, ko: '나는 피곤해.', sent: true },
+    { id: 'mw_se', h: '我很饿。', p: 'Wǒ hěn è.', t: 0, ko: '나는 배고파.', sent: true },
+    { id: 'mw_skun', h: '我很困。', p: 'Wǒ hěn kùn.', t: 0, ko: '나는 졸려.', sent: true },
+    { id: 'mw_hjbj', h: '好久不见！', p: 'Hǎo jiǔ bú jiàn!', t: 0, ko: '오랜만이야!', sent: true },
+    { id: 'mw_nhm', h: '你好吗？', p: 'Nǐ hǎo ma?', t: 0, ko: '잘 지내?', sent: true },
+    { id: 'mw_whh', h: '我很好。你呢？', p: 'Wǒ hěn hǎo. Nǐ ne?', t: 0, ko: '나는 잘 지내. 너는?', sent: true },
+    { id: 'mw_ma', h: '吗', p: 'ma', t: 0, ko: '~니? (문장 끝에 붙여 묻는 말)' },
+    { id: 'mw_ye', h: '我也很好！', p: 'Wǒ yě hěn hǎo!', t: 0, ko: '나도 잘 지내!', sent: true, bonus: true },
   ].map(w => [w.id, w]));
   // 12차시 졸업식: 1~11차시 복습 문장 + 새 말 会 · 说 · 中文
   const GRW = Object.fromEntries([
@@ -2710,7 +2772,26 @@
       introRules: [{ h: '十块。', p: 'Shí kuài.', t: 0, ko: '10위안이에요.' }, { h: '二十块。', p: 'Èrshí kuài.', t: 0, ko: '20위안이에요.' }, { h: '三十块。', p: 'Sānshí kuài.', t: 0, ko: '30위안이에요.' }, { h: '五十块。', p: 'Wǔshí kuài.', t: 0, ko: '50위안이에요.' }],
       noteIntro: '식당에서 주문하고 가격을 물어봐요.<br>· <b>我要这个。</b> Wǒ yào zhège. = 이거 주세요. (这个는 손으로 <b>가리키며</b> 말해요)<br>· <b>这个多少钱？</b> Zhège duōshao qián? = 이거 얼마예요?<br>· 대답: 숫자 + 块 → 十块 shí kuài (10위안), 二十块 èrshí kuài (20위안). 元 yuán은 돈의 공식 단위, 块 kuài는 말할 때 많이 써요.<br>· ⭐ 我要一个。 = 하나 주세요. (一个는 물건 등을 셀 때의 예예요)<br>· 게임 속 가격과 매출은 <b>연습용</b>이라 게임 코인과 상관없어요.',
       qgen: () => null, makeQueue: () => [],
-    },    // 12차시: 졸업식 (탑다운 맵 · 함께 접속 · 미션 5개 × 활동 3개). arcade: 'grad'. 식당 가격은 연습용 가상 돈
+    },    // 11차시: 판다 기분 지킴이 디펜스 (3줄 라인 디펜스 · 라운드 3개). arcade: 'defense'
+    mood: {
+      id: 'mood', status: 'ready', lessonNo: '11차시', label: '11월 19일(목) 1교시', dateFull: '2026. 11. 19.(목) · 1교시 — 11차시', title: '판다 기분 지킴이 디펜스!', short: '판다 기분 지킴이', topic: '好久不见！ · 我很开心。', mapName: '판다 마을', isNew: true, theme: 'diner', song: 'garden', icon: '🛡️',
+      quest: true, questKit: 'arc', arcade: 'defense', clearTitle: '판다 기분 지킴이 성공!',
+      ...LAYOUT,
+      monsters: [],
+      gates: layoutGates(['꽃길 문', '쉼터 문', '간식 문', '마을 문']),
+      missions: [
+        { label: '😊 라운드 1 · 판다의 기분을 맞혀라!', zone: '라운드 1', cards: ['mw_kx', 'mw_lei', 'mw_e', 'mw_kun'] },
+        { label: '💬 라운드 2 · 我很○○。 문장 읽기', zone: '라운드 2', cards: ['mw_skx', 'mw_slei', 'mw_se', 'mw_skun'] },
+        { label: '👋 라운드 3 · 好久不见！ 친구 대작전', zone: '라운드 3', cards: ['mw_hjbj', 'mw_nhm', 'mw_whh', 'mw_ma'] },
+      ],
+      finalText: '판다 마을', decorate: decorateDiner,
+      words: MDW, cardOrder: ['mw_kx', 'mw_lei', 'mw_e', 'mw_kun', 'mw_skx', 'mw_slei', 'mw_se', 'mw_skun', 'mw_hjbj', 'mw_nhm', 'mw_whh', 'mw_ma', 'mw_ye'], cardName: '기분 카드', bonusCards: ['mw_ye'], bossFinale: 'none',
+      introRulesHead: '💬 오랜만에 만난 친구와 <small>안부 묻고 대답하기</small>',
+      introRules: [{ h: '好久不见！', p: 'Hǎo jiǔ bú jiàn!', t: 0, ko: '오랜만이야!', sent: true }, { h: '你好吗？', p: 'Nǐ hǎo ma?', t: 0, ko: '잘 지내?', sent: true }, { h: '我很好。你呢？', p: 'Wǒ hěn hǎo. Nǐ ne?', t: 0, ko: '나는 잘 지내. 너는?', sent: true }],
+      noteIntro: '오랜만에 만난 친구와 안부를 묻고 기분을 말해요.<br>· 开心 kāixīn 기쁘다 · 累 lèi 피곤하다 · 饿 è 배고프다 · 困 kùn 졸리다<br>· <b>我很○○。</b> Wǒ hěn ○○. = 나는 ○○해. (很은 기분이나 상태를 말할 때 자연스럽게 붙여요)<br>· 吗 ma: 문장 끝에 붙이면 \'~니?\' 하고 묻는 말이 돼요. → 你好吗？ 잘 지내?<br>· 好久不见의 不는 뒤의 4성 见 때문에 bú로 읽어요.',
+      qgen: () => null, makeQueue: () => [],
+    },
+    // 12차시: 졸업식 (탑다운 맵 · 함께 접속 · 미션 5개 × 활동 3개). arcade: 'grad'. 식당 가격은 연습용 가상 돈
     grad: {
       id: 'grad', status: 'ready', lessonNo: '12차시', label: '11월 19일(목)', dateFull: '2026. 11. 19.(목) — 12차시', title: '판다 탐험대: 졸업식', short: '판다 탐험대 졸업식', topic: '我会说中文！', mapName: '졸업식 광장', isNew: true, theme: 'diner', song: 'garden', icon: '🎓',
       quest: true, questKit: 'arc', arcade: 'grad', clearTitle: '판다 탐험대 졸업!',
@@ -2746,7 +2827,7 @@
     { id: 'family-cards', href: 'cards.html?deck=family', ico: '👨‍👩‍👧', title: '가족 호칭 카드', topic: '爸爸 · 妈妈 짝 맞추기', stage: 'family', isNew: true },   // stage: 어느 수업 복습인지 (날짜·교시는 그 차시 칸과 같게)
   ];
 
-  const ALL_STAGES = ['bamboo', 'greet', 'name', 'nation', 'number', 'birthday', 'family', 'gift', 'food', 'diner', 'grad'];
+  const ALL_STAGES = ['bamboo', 'greet', 'name', 'nation', 'number', 'birthday', 'family', 'gift', 'food', 'diner', 'mood', 'grad'];
   const STAGE_ORDER = ALL_STAGES.filter(id => PREVIEW || STAGES[id].status === 'ready');
   let THEME = THEMES.forest;
   let STAGE = STAGES.bamboo, PLATFORMS = STAGE.platforms, CHECKPOINTS = STAGE.checkpoints, gates = [], run = null;
@@ -3437,6 +3518,7 @@
     if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Space'].includes(c) || e.key === ' ') e.preventDefault();
     if (mode === 'arcade') { arKey(e); return; }
     if (mode === 'grad') { grKey(e, true); return; }
+    if (mode === 'defense') { dfKey(e); return; }
     if (mode === 'cut') return;
     if (mode === 'card') { if ((isEnter(c) || c === 'Space') && !e.repeat) closeCardPop(); return; }
     if (mode === 'quiz') {
@@ -3524,7 +3606,7 @@
     $('setMusic').textContent = save.bgmOn !== false ? '🎵 배경음악: 켜짐' : '🎵 배경음악: 꺼짐';
   }
   // 배경음악: 탐험 중에만, 퀴즈·창이 열리면 작게, 중국어 음성이 나올 때는 더 작게, 🔊 끄면 같이 꺼짐
-  const MUSIC_MODES = ['play', 'cut', 'quiz', 'card', 'speak', 'pause', 'lesson', 'help', 'faint', 'talk', 'slab', 'basket', 'cake', 'cal', 'bcard', 'qpick', 'arcade', 'grad'];
+  const MUSIC_MODES = ['play', 'cut', 'quiz', 'card', 'speak', 'pause', 'lesson', 'help', 'faint', 'talk', 'slab', 'basket', 'cake', 'cal', 'bcard', 'qpick', 'arcade', 'grad', 'defense'];
   function musicWanted() {
     if (!soundOn || save.bgmOn === false || document.hidden || quick.on || !run || !STAGE || !MUSIC_MODES.includes(mode)) return [null, 1];
     if ((mode === 'lesson' && lessonReturn === 'start') || (mode === 'help' && helpReturn === 'menu')) return [null, 1];
@@ -8304,10 +8386,589 @@
   window.addEventListener('keyup', (e) => { if (mode === 'grad') grKey(e, false); });
   window.addEventListener('blur', () => { GR.keys = {}; GR.pad = {}; });
 
+  // ================= 11차시 판다 기분 지킴이 디펜스! (3줄 라인 디펜스 · 기분 표현 + 안부 인사) =================
+  // 1~10·12차시와 따로: STAGE.arcade === 'defense'일 때만 쓰여요. 저장은 기존 그대로(코인·경험치·카드·별), 새 저장 칸 없음
+  // 판다 친구가 오른쪽에서 왼쪽 판다 마을로 걸어와요 → 아래 선물 4개 중 하나를 고르고 → 판다를 톡하면 선물 배달 (공격 없음)
+  const DFW = 400, DFH = 216, DF_LANES = [78, 138, 198], DF_GATE = 66, DF_SPAWN_X = 404;
+  const DF_MOODS = {
+    kx: { h: '开心', p: 'kāixīn', ko: '기쁘다', s: '我很开心。', sp: 'Wǒ hěn kāixīn.', sko: '나는 기뻐.', item: 'flower' },
+    lei: { h: '累', p: 'lèi', ko: '피곤하다', s: '我很累。', sp: 'Wǒ hěn lèi.', sko: '나는 피곤해.', item: 'chair' },
+    e: { h: '饿', p: 'è', ko: '배고프다', s: '我很饿。', sp: 'Wǒ hěn è.', sko: '나는 배고파.', item: 'snack' },
+    kun: { h: '困', p: 'kùn', ko: '졸리다', s: '我很困。', sp: 'Wǒ hěn kùn.', sko: '나는 졸려.', item: 'bed' },
+  };
+  const DF_MOOD_IDS = ['kx', 'lei', 'e', 'kun'];
+  const DF_ITEMS = [
+    { id: 'flower', name: '축하 꽃', mood: 'kx', act: '꽃을 받고 활짝 웃어요' },
+    { id: 'chair', name: '편안한 의자', mood: 'lei', act: '의자에 앉아 쉬어요' },
+    { id: 'snack', name: '맛있는 간식', mood: 'e', act: '사과를 냠냠 먹어요' },
+    { id: 'bed', name: '포근한 침대', mood: 'kun', act: '침대에서 쿨쿨 자요' },
+  ];
+  const DF_ITEM = Object.fromEntries(DF_ITEMS.map(it => [it.id, it]));
+  const DF_ROUNDS = [
+    { name: '판다의 기분을 맞혀라!', goal: '판다 머리 위의 <b>중국어 단어</b>를 읽고 알맞은 선물을 보내요.<br>开心 · 累 · 饿 · 困 네 가지를 모두 구별해 봐요!', speed: 7.5, max: 1, extraT: 14 },
+    { name: '문장을 읽고 판다 친구 돕기!', goal: '이번에는 <b>문장</b>으로 말해요. 我很○○。를 읽고 도와줘요.<br>여러 판다가 함께 와요. 누구부터 도울지 골라 봐요!', speed: 8.5, max: 2, extraT: 10 },
+    { name: '오랜만이야! 판다 친구 대작전', goal: '오랜만에 만난 친구들이 인사하며 기분을 말해요.<br>친구를 6번 도우면 <b>특별한 친구</b>가 찾아와요!', speed: 9.5, max: 3, extraT: 9 },
+  ];
+  const DF = { on: false, r: 0, pandas: [], fx: [], sel: null, target: null, queue: [], helped: 0, need: 0, mood: 60, spawnT: 0, extraT: 0, paused: false, phase: 'play', time: 0, nid: 1, streak: 0, lastLane: -1, bubbles: [], world: null };
+  // ----- 픽셀 아트: 판다 표정 · 몸 · 선물 -----
+  const DF_HEADS = {
+    n: PANDA_HEAD,
+    kx: [...PANDA_HEAD.slice(0, 5), '.kwwkwwwwwwkwwk.', '.kwkwkwwwwkwkwk.', '.kpwwwwwwwwwwpk.', '.kpwwkwwwwkwwpk.', '..kwwwkkkkwwwk..', '...kkkkkkkkkk...'],
+    lei: [...PANDA_HEAD.slice(0, 5), '.kwwwwwwwwwwwwk.', '.kwkkkwwwwkkkwk.', '.kwwkkwwwwkkwwk.', '.kwwwwkkkkwwwwk.', '..kwwwwwwwwwwk..', '...kkkkkkkkkk...'],
+    e: [...PANDA_HEAD.slice(0, 5), '.kwkkkwwwwkkkwk.', '.kwkekwwwwkekwk.', '.kwkkwwwwwwkkwk.', '.kpwwwkkkkwwwpk.', '..kwwwkrrkwwwk..', '...kkkkkkkkkk...'],
+    kun: [...PANDA_HEAD.slice(0, 5), '.kwwwwwwwwwwwwk.', '.kwkkkwwwwkkkwk.', '.kwwkwwwwwwkwwk.', '.kpwwwwkkwwwwpk.', '..kwwwwwwwwwwk..', '...kkkkkkkkkk...'],
+    yawn: [...PANDA_HEAD.slice(0, 5), '.kwwwwwwwwwwwwk.', '.kwkkkwwwwkkkwk.', '.kwwkwwwwwwkwwk.', '.kpwwwkkkkwwwpk.', '..kwwwkrrkwwwk..', '...kkkkkkkkkk...'],
+    joy: [...PANDA_HEAD.slice(0, 5), '.kwwkwwwwwwkwwk.', '.kwkwkwwwwkwkwk.', '.kpwwwwwwwwwwpk.', '.kpwwkkkkkkwwpk.', '..kwwwkrrkwwwk..', '...kkkkkkkkkk...'],
+  };
+  const DF_BODIES = {
+    idle: PANDA_BODY.idle, walk1: PANDA_BODY.walk1, walk2: PANDA_BODY.walk2,
+    droop1: ['..kkrrrrrrrrkk..', '...kwwwrrwwwk...', '..kkwwwwwwwwkk..', '.kk.kwwwwwwk.kk.', '..kkk.....kkk...'],
+    droop2: ['..kkrrrrrrrrkk..', '...kwwwrrwwwk...', '..kkwwwwwwwwkk..', '.kk.kwwwwwwk.kk.', '....kkk..kkk....'],
+    rub1: ['..kkrrrrrrrrkk..', '.kkkwwwrrwwwkkk.', '..kkwkkkwwwwkk..', '..kkwwkkwwwwkk..', '..kkk.....kkk...'],
+    rub2: ['..kkrrrrrrrrkk..', '.kkkwwwrrwwwkkk.', '..kkwwwwkkkwkk..', '..kkwwwwkkwwkk..', '....kkk..kkk....'],
+    sit: ['..kkrrrrrrrrkk..', '.kkkwwwrrwwwkkk.', '.kkkwwwwwwwwkkk.', '.kkkkwwwwwwkkkk.', '................'],
+  };
+  const DF_SCARF = ['#e5484d', '#62aefc', '#f6c445', '#c084fc', '#4fd08c', '#ff8fab', '#f08a24'];
+  const DF_SPR = new Map();
+  function dfSpr(head, body, scarf) {
+    const k = head + body + scarf; if (DF_SPR.has(k)) return DF_SPR.get(k);
+    const c = makeSprite([...DF_HEADS[head], ...DF_BODIES[body]], { ...PANDA_PAL, r: scarf }); DF_SPR.set(k, c); return c;
+  }
+  const DF_ITEM_PIC = {};
+  function dfItemPic(id) {
+    if (DF_ITEM_PIC[id]) return DF_ITEM_PIC[id];
+    const c = document.createElement('canvas'); c.width = 16; c.height = 16; const g = c.getContext('2d');
+    const R = (x, y, w, h, col) => { g.fillStyle = col; g.fillRect(x, y, w, h); };
+    const flw = (x, y, a, b) => { R(x - 1, y, 3, 1, a); R(x, y - 1, 1, 3, a); R(x - 1, y - 1, 1, 1, b); R(x + 1, y + 1, 1, 1, b); R(x, y, 1, 1, '#fff1a8'); };
+    if (id === 'flower') {   // 꽃다발: 분홍 포장지 · 빨간 리본 · 여러 색 꽃
+      R(6, 6, 1, 5, '#3f8f4a'); R(8, 5, 1, 6, '#3f8f4a'); R(10, 6, 1, 5, '#3f8f4a'); R(4, 6, 2, 1, '#5cbf62'); R(11, 5, 2, 1, '#5cbf62');
+      R(4, 9, 9, 1, '#e8689a'); R(5, 10, 7, 1, '#ffc8d6'); R(5, 11, 7, 1, '#ffd9e3'); R(6, 12, 5, 1, '#ffc8d6'); R(6, 13, 5, 1, '#ffd9e3'); R(7, 14, 3, 1, '#e8689a'); R(4, 10, 1, 1, '#e8689a'); R(12, 10, 1, 1, '#e8689a');
+      R(7, 11, 3, 2, '#e5484d'); R(6, 12, 1, 2, '#e5484d'); R(10, 12, 1, 2, '#e5484d');
+      flw(5, 4, '#ff6b8b', '#d94a6e'); flw(8, 2, '#ffd23f', '#e0a800'); flw(11, 4, '#c084fc', '#9a5ae0'); flw(7, 6, '#ffffff', '#d8d3e8'); flw(10, 7, '#ff9f43', '#e07a1a'); flw(4, 7, '#62aefc', '#3d7bd9');
+    } else if (id === 'chair') {   // 쿠션 안락의자
+      R(3, 2, 10, 1, '#7a4a28'); R(2, 3, 12, 6, '#7a4a28'); R(3, 3, 10, 5, '#62aefc'); R(4, 3, 8, 1, '#9fd0ff'); R(5, 5, 1, 1, '#3d7bd9'); R(10, 5, 1, 1, '#3d7bd9'); R(8, 4, 1, 1, '#3d7bd9');
+      R(1, 7, 3, 5, '#7a4a28'); R(12, 7, 3, 5, '#7a4a28'); R(2, 7, 1, 4, '#a8703f'); R(13, 7, 1, 4, '#a8703f');
+      R(3, 8, 10, 3, '#4a90e0'); R(4, 8, 8, 1, '#9fd0ff'); R(2, 11, 12, 2, '#7a4a28'); R(3, 11, 10, 1, '#a8703f');
+      R(2, 13, 2, 2, '#5a3a22'); R(12, 13, 2, 2, '#5a3a22');
+    } else if (id === 'snack') {   // 빨간 사과
+      R(8, 1, 1, 3, '#6b4426'); R(9, 1, 3, 2, '#5cbf62'); R(10, 1, 2, 1, '#86d47a');
+      R(5, 4, 3, 1, '#c81e3c'); R(9, 4, 3, 1, '#c81e3c'); R(4, 5, 9, 1, '#e5484d'); R(3, 6, 11, 6, '#e5484d'); R(4, 12, 9, 1, '#e5484d'); R(5, 13, 3, 1, '#c81e3c'); R(9, 13, 3, 1, '#c81e3c');
+      R(3, 6, 1, 6, '#c81e3c'); R(13, 6, 1, 6, '#c81e3c'); R(5, 6, 2, 3, '#ff8a8a'); R(5, 6, 1, 1, '#ffffff'); R(11, 10, 1, 2, '#c81e3c');
+    } else if (id === 'bed') {   // 베개 · 이불이 있는 침대
+      R(1, 3, 3, 11, '#8a5a3a'); R(2, 3, 1, 10, '#a8744c'); R(1, 2, 3, 1, '#a8744c'); R(13, 7, 2, 7, '#8a5a3a');
+      R(4, 9, 10, 3, '#fbfaf5'); R(4, 12, 10, 1, '#d8d3c6'); R(4, 7, 4, 3, '#ffffff'); R(4, 7, 4, 1, '#e8e2f2'); R(4, 9, 4, 1, '#d8d3e8');
+      R(7, 8, 7, 4, '#9a7ae0'); R(7, 8, 7, 1, '#c4a8ff'); R(9, 9, 1, 1, '#ffd23f'); R(12, 10, 1, 1, '#ffd23f'); R(8, 11, 6, 1, '#7a5ac0');
+      R(2, 13, 2, 2, '#5a3a22'); R(13, 13, 2, 2, '#5a3a22'); R(4, 13, 9, 1, '#6b4426');
+    }
+    return (DF_ITEM_PIC[id] = c);
+  }
+  const DF_ITEM_URL = {};
+  const dfItemURL = (id) => DF_ITEM_URL[id] || (DF_ITEM_URL[id] = (() => { const c = document.createElement('canvas'); c.width = 48; c.height = 48; const g = c.getContext('2d'); g.imageSmoothingEnabled = false; g.drawImage(dfItemPic(id), 0, 0, 48, 48); return c.toDataURL(); })());
+  // ----- 배경: 판다 마을 입구 · 세 갈래 흙길 · 대나무 숲 (한 번만 그려요) -----
+  function dfBuildWorld() {
+    const c = document.createElement('canvas'); c.width = DFW; c.height = DFH; const g = c.getContext('2d');
+    const R = (x, y, w, h, col) => { g.fillStyle = col; g.fillRect(Math.round(x), Math.round(y), Math.round(w), Math.round(h)); };
+    let seed = 23; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+    const ell = (cx, cy, rx, ry, col) => { for (let dy = -ry; dy <= ry; dy++) { const w = Math.round(rx * Math.sqrt(Math.max(0, 1 - (dy * dy) / (ry * ry)))); R(cx - w, cy + dy, w * 2 + 1, 1, col); } };
+    R(0, 0, DFW, DFH, '#a8dd8f');
+    for (let i = 0; i < 30; i++) ell(rnd() * DFW, rnd() * DFH, 8 + rnd() * 14, 3 + rnd() * 5, i % 2 ? '#b4e39c' : '#9dd685');
+    for (let i = 0; i < 700; i++) { const x = rnd() * DFW, y = rnd() * DFH, k = rnd(); if (k < 0.6) { R(x, y, 1, 2, '#86c96f'); R(x + 2, y + 1, 1, 2, '#86c96f'); } else R(x, y, 1, 1, '#c8edb2'); }
+    // 위쪽 대나무 숲 띠
+    const bamboo = (x, y, h, light) => { const st = light ? '#7ccf7a' : '#5fb867'; for (let k = 0; k < h; k += 6) { R(x, y - k - 5, 2, 5, st); R(x, y - k - 1, 2, 1, '#3f8f4a'); } R(x - 3, y - h + 2, 3, 1, '#4ea85a'); R(x + 2, y - h, 4, 1, '#86d47a'); };
+    R(0, 0, DFW, 10, '#6fbf6a'); for (let x = 1; x < DFW; x += 4) bamboo(x, 14 + Math.round(rnd() * 4), 14 + Math.round(rnd() * 6), x % 8 === 1);
+    // 세 갈래 흙길 + 가장자리 돌 + 자갈
+    DF_LANES.forEach((fy, li) => {
+      const y0 = fy - 15, h = 22;
+      R(50, y0 - 1, DFW - 50, h + 2, '#d6bc85'); R(50, y0, DFW - 50, h, '#eedcab'); R(50, y0, DFW - 50, 2, '#f6e8c4');
+      for (let x = 52; x < DFW; x += 7) { R(x, y0 - 2, 4, 2, rnd() < 0.5 ? '#cfc9bc' : '#b9b4a8'); R(x + 3, y0 + h, 4, 2, rnd() < 0.5 ? '#cfc9bc' : '#b9b4a8'); }
+      for (let i = 0; i < 70; i++) R(52 + rnd() * (DFW - 54), y0 + 3 + rnd() * (h - 5), 2, 1, rnd() < 0.5 ? '#dcc490' : '#f6e8c4');
+      for (let x = 90 + li * 20; x < DFW - 20; x += 64) { ell(x, fy - 4, 4, 2, '#e2cd98'); }   // 발자국 모양 돌판
+    });
+    // 길 사이: 나무 울타리 · 꽃 · 덤불 · 버섯
+    const fence = (x, y, w) => { for (let xx = x; xx < x + w; xx += 6) { R(xx, y - 6, 2, 8, '#a8703f'); R(xx, y - 6, 2, 1, '#d29a5e'); } R(x, y - 4, w, 1, '#c98a4b'); R(x, y - 1, w, 1, '#c98a4b'); };
+    const flower = (x, y, col) => { R(x - 1, y, 3, 1, col); R(x, y - 1, 1, 3, col); R(x, y, 1, 1, '#fff1a8'); R(x, y + 2, 1, 2, '#4ea85a'); };
+    const bush = (x, y) => { ell(x, y, 7, 4, '#4ea85a'); ell(x - 1, y - 1, 5, 3, '#62bd68'); R(x - 3, y - 3, 2, 1, '#9be08f'); R(x + 2, y - 1, 1, 1, '#ff6b8b'); };
+    const mush = (x, y) => { R(x - 1, y - 2, 2, 3, '#fbfaf5'); R(x - 3, y - 4, 6, 2, '#e5484d'); R(x - 2, y - 5, 4, 1, '#e5484d'); R(x - 2, y - 4, 1, 1, '#ffffff'); R(x + 1, y - 3, 1, 1, '#ffffff'); };
+    for (const yy of [DF_LANES[0] + 22, DF_LANES[1] + 22]) {
+      for (let x = 70; x < DFW - 10; x += 74) fence(x, yy + 6, 26);
+      for (let i = 0; i < 26; i++) flower(60 + rnd() * (DFW - 70), yy + 2 + rnd() * 26, ['#ff6b8b', '#ffd23f', '#ffffff', '#c084fc', '#ff9f43'][i % 5]);
+      for (let x = 110; x < DFW; x += 90) bush(x + rnd() * 20, yy + 18);
+      mush(150 + rnd() * 200, yy + 30);
+    }
+    for (let i = 0; i < 20; i++) flower(60 + rnd() * (DFW - 70), DFH - 6 + rnd() * 4, ['#ff6b8b', '#ffd23f', '#ffffff', '#c084fc'][i % 4]);
+    for (let i = 0; i < 16; i++) flower(60 + rnd() * (DFW - 70), 26 + rnd() * 18, ['#ff6b8b', '#ffd23f', '#ffffff', '#c084fc'][i % 4]);
+    // 판다 마을 (왼쪽): 집 세 채 · 울타리 · 길마다 문
+    R(0, 10, 50, DFH - 10, '#b9e3a0');
+    const house = (x, y, roof, dark, wall) => {
+      R(x, y + 8, 30, 18, wall); R(x, y + 8, 30, 2, 'rgba(0,0,0,.1)');
+      for (let r = 0; r < 10; r++) { const ins = Math.round((10 - r) * 0.8); R(x - 3 + ins, y - 2 + r, 36 - ins * 2, 1, r % 3 === 2 ? dark : roof); }
+      R(x - 3, y + 8, 36, 1, dark); R(x + 11, y + 15, 8, 11, '#8a5a3a'); R(x + 17, y + 20, 1, 1, '#f6c445');
+      R(x + 3, y + 13, 6, 5, '#a4dcf4'); R(x + 21, y + 13, 6, 5, '#a4dcf4'); R(x + 6, y + 13, 1, 5, '#7a5233'); R(x + 24, y + 13, 1, 5, '#7a5233');
+      R(x + 22, y - 4, 4, 6, '#c9705a');
+    };
+    house(8, 34, '#f7a1b8', '#d4728d', '#fff1d6'); house(8, 96, '#ec7a52', '#b84a30', '#fff3e0'); house(8, 158, '#4aa3f0', '#2f7fcf', '#f1f5ff');
+    for (let y = 14; y < DFH; y += 5) { if (DF_LANES.some(fy => y > fy - 18 && y < fy + 8)) continue; R(46, y, 4, 4, '#a8703f'); R(46, y, 4, 1, '#d29a5e'); }
+    DF_LANES.forEach((fy) => {   // 문: 기둥 두 개 + 지붕 + 등롱
+      const top = fy - 34; R(44, top, 3, 40, '#c0392b'); R(56, top, 3, 40, '#c0392b'); R(44, top, 1, 40, '#e05a4c'); R(56, top, 1, 40, '#e05a4c');
+      R(41, top - 4, 21, 3, '#dd4a43'); R(40, top - 5, 23, 1, '#f6c445'); R(40, top - 1, 23, 1, '#a82d2b');
+      ell(51, top + 4, 2, 3, '#e5484d'); R(50, top + 1, 3, 1, '#f6c445'); R(50, top + 8, 3, 1, '#f6c445');
+    });
+    // 오른쪽 숲 입구 (판다 친구들이 나오는 곳)
+    R(386, 10, 14, DFH - 10, '#6fbf6a');
+    DF.world = c;
+  }
+  // ----- 화면 열기 · 닫기 -----
+  function dfOpen() {
+    mode = 'defense'; releaseAll(); closeMissionPanel();
+    run.arc = run.arc || { best: 0 };
+    if (!DF.world) dfBuildWorld();
+    DF.on = true; $('df').hidden = false; $('dfPop').hidden = true;
+    dfItemsUI(); dfSelect(null);
+    const r = run.ms.findIndex(m => !m.complete);
+    if (r < 0) { dfFinale(true); return; }
+    dfRoundIntro(r);
+  }
+  function dfClose() { if (!DF.on) return; DF.on = false; DF.pandas = []; DF.fx = []; $('df').hidden = true; $('dfPop').hidden = true; $('dfFx').innerHTML = ''; }
+  function dfHome() { if (mode !== 'defense') return; dfClose(); goHome(); }
+  function dfItemsUI() {
+    $('dfItems').innerHTML = DF_ITEMS.map((it, k) => `<button class="df-item" data-it="${it.id}" aria-pressed="false"><img src="${dfItemURL(it.id)}" alt=""><span>${it.name}</span><kbd>${k + 1}</kbd></button>`).join('');
+    $('dfItems').querySelectorAll('[data-it]').forEach(b => b.addEventListener('click', () => dfPickItem(b.dataset.it)));
+  }
+  function dfSelect(id) {
+    DF.sel = id;
+    $('dfItems').querySelectorAll('[data-it]').forEach(b => { const on = b.dataset.it === id; b.classList.toggle('sel', on); b.setAttribute('aria-pressed', on); });
+    dfHelp(id ? `${DF_ITEM[id].name} 선택! 👉 선물할 판다를 톡 하세요` : '① 아래에서 선물을 고르고 ② 판다를 톡! (판다를 먼저 톡해도 돼요)');
+  }
+  function dfHelp(t, kind = '') { const el = $('dfHelp'); el.innerHTML = t; el.className = 'df-help ' + kind; }
+  function dfPickItem(id) {
+    if (mode !== 'defense' || DF.paused || DF.phase !== 'play') return;
+    SFX.pop();
+    if (DF.target && DF.pandas.includes(DF.target) && DF.target.state !== 'react' && DF.target.state !== 'leave') { const p = DF.target; DF.target = null; dfSelect(null); dfGive(p, id); return; }
+    dfSelect(DF.sel === id ? null : id);
+  }
+  function dfTopUI() {
+    const R = DF_ROUNDS[DF.r];
+    $('dfRound').textContent = `라운드 ${DF.r + 1}/3`;
+    $('dfCount').textContent = `🐼 도와준 친구 ${DF.helped}/${DF.need}`;
+    $('dfMoodBar').style.width = `${DF.mood}%`; $('dfMoodTxt').textContent = `${DF.mood >= 80 ? '😄' : DF.mood >= 50 ? '🙂' : '😐'} 마을 기분 ${DF.mood}`;
+    void R;
+  }
+  // ----- 라운드 -----
+  function dfRoundQueue(r) {
+    const four = () => shuffle(DF_MOOD_IDS);
+    if (r === 0) return [...four(), ...four()];              // 네 가지 × 2번 (8마리)
+    if (r === 1) return [...four(), ...four(), ...shuffle(DF_MOOD_IDS).slice(0, 2)];   // 10마리
+    return [...four(), ...shuffle(DF_MOOD_IDS).slice(0, 2)];   // 6마리 → 특별한 친구 → 4마리 더
+  }
+  function dfRoundIntro(r) {
+    DF.r = r; DF.phase = 'intro'; DF.pandas = []; DF.fx = []; DF.target = null; dfSelect(null);
+    DF.queue = dfRoundQueue(r); DF.helped = 0; DF.need = r === 2 ? 10 : DF.queue.length; DF.mood = Math.max(DF.mood, 60); DF.spawnT = 0.6; DF.extraT = DF_ROUNDS[r].extraT; DF.friendDone = false; DF.quizDone = {};
+    dfTopUI();
+    const R = DF_ROUNDS[r];
+    const legend = DF_ITEMS.map(it => `<span class="df-leg"><img src="${dfItemURL(it.id)}" alt=""><b>${it.name}</b></span>`).join('');
+    dfPop(`<div class="df-rhead">라운드 ${r + 1} / 3</div><h2>${R.name}</h2><p>${R.goal}</p><div class="df-legend">${legend}</div><p class="df-tip">PC: 선물 클릭 → 판다 클릭 (숫자 키 1~4로 선물 고르기) · 태블릿: 선물 톡 → 판다 톡</p>`, '시작! ▶', () => { dfPopClose(); DF.phase = 'play'; });
+  }
+  function dfSpawn() {
+    if (!DF.queue.length) return false;
+    const lanes = [0, 1, 2].filter(l => !DF.pandas.some(p => p.lane === l && p.x > DF_SPAWN_X - 80 && p.state !== 'leave'));
+    if (!lanes.length) return false;
+    let lane = pick(lanes); if (lanes.length > 1 && lane === DF.lastLane) lane = pick(lanes.filter(l => l !== DF.lastLane));
+    DF.lastLane = lane;
+    const mood = DF.queue.shift(), M = DF_MOODS[mood];
+    DF.pandas.push({ id: DF.nid++, lane, x: DF_SPAWN_X, y: DF_LANES[lane], mood, state: 'walk', t: Math.random() * 3, rt: 0, miss: 0, hint: false, gated: false, scarf: pick(DF_SCARF), r: DF.r, item: null, fb: null, fbT: 0, alpha: 1,
+      label: `${DF.r + 1}라운드 판다: ${DF.r === 0 ? M.h : M.s}`, right: `${DF_ITEM[M.item].name} (${M.sko})` });
+    return true;
+  }
+  const dfActive = () => DF.pandas.filter(p => p.state === 'walk' || p.state === 'wait').length;
+  function dfUpdate(dt) {
+    DF.time += dt;
+    if (!DF.paused && DF.phase === 'play') {
+      const R = DF_ROUNDS[DF.r], act = dfActive();
+      // 판다 등장: 도울 판다가 정해진 수보다 적으면 곧 다음 친구 (빨리 도우면 빨리 와요) · 오래 걸리면 한 마리 더
+      if (act < R.max) { DF.spawnT -= dt; if (DF.spawnT <= 0 && dfSpawn()) DF.spawnT = DF.r === 0 ? 0.9 : 1.4; }
+      else DF.spawnT = Math.max(DF.spawnT, 0.9);
+      DF.extraT -= dt; if (DF.extraT <= 0) { DF.extraT = R.extraT; if (act < R.max + 1 && act > 0) dfSpawn(); }
+      // 이동 (같은 길에서는 앞 친구 뒤에 멈춰요)
+      for (const p of DF.pandas) {
+        p.t += dt;
+        if (p.state === 'walk' || p.state === 'wait') {
+          const ahead = DF.pandas.filter(q => q !== p && q.lane === p.lane && q.x < p.x && (q.state === 'walk' || q.state === 'wait'));
+          const stopX = Math.max(DF_GATE, ...ahead.map(q => q.x + 34));
+          const sp = R.speed * (p.mood === 'lei' && DF.r === 0 ? 0.8 : 1);
+          if (p.x > stopX) { p.x = Math.max(stopX, p.x - sp * dt); p.state = 'walk'; }
+          if (p.x <= DF_GATE + 0.01 && !p.gated) { p.gated = true; p.state = 'wait'; DF.mood = Math.max(0, DF.mood - 6); dfTopUI(); p.hint = true; p.fb = dfMeaning(p, 1); p.fbT = 99; SFX.wrong(); }
+          if (p.x <= DF_GATE + 0.01) p.state = 'wait';
+        } else if (p.state === 'react') { p.rt += dt; if (p.rt > 1.9) { p.state = 'leave'; p.rt = 0; } }
+        else if (p.state === 'leave') { p.rt += dt; p.x -= 46 * dt; if (p.x < 48) p.alpha = Math.max(0, p.alpha - dt * 3); }
+        if (p.fbT > 0 && p.fbT < 90) p.fbT -= dt;
+      }
+      DF.pandas = DF.pandas.filter(p => !(p.state === 'leave' && p.alpha <= 0));
+      if (DF.target && !DF.pandas.includes(DF.target)) DF.target = null;
+    }
+    DF.fx = DF.fx.filter(f => (f.t += dt) < f.life);
+    for (const f of DF.fx) if (f.kind === 'fly' && !f.done && f.t >= f.life - 0.001) f.done = true;
+    dfDraw();
+  }
+  // 오답 · 도착 안내: 1단계 = 한국어 뜻, 2단계 = 선물 이름까지
+  function dfMeaning(p, lvl) {
+    const M = DF_MOODS[p.mood], it = DF_ITEM[M.item];
+    const zh = p.r === 0 ? `${M.h}(${M.p})는 '${M.ko}'라는 뜻이야.` : `${M.s}는 '${M.sko.replace(/\.$/, '')}'라는 뜻이야.`;
+    return lvl >= 2 ? `${zh} ${it.name}을 보내 보자!` : `${zh} 어떤 선물이 좋을까?`;
+  }
+  // 선물 배달
+  function dfGive(p, itemId) {
+    if (!p || p.state === 'react' || p.state === 'leave') return;
+    const M = DF_MOODS[p.mood];
+    const c = $('dfCanvas'), r = c.getBoundingClientRect(), b = $('dfItems').querySelector(`[data-it="${itemId}"]`), br = b ? b.getBoundingClientRect() : null;
+    const sx = br ? (br.left + br.width / 2 - r.left) * DFW / r.width : DFW / 2, sy = br ? Math.min(DFH + 20, (br.top - r.top) * DFH / r.height) : DFH + 10;
+    if (M.item === itemId) {
+      p.state = 'react'; p.rt = -0.45; p.item = itemId; p.fb = null; p.fbT = 0;
+      DF.fx.push({ kind: 'fly', item: itemId, x0: sx, y0: sy, x1: p.x, y1: p.y - 14, t: 0, life: 0.45 });
+      // 기록: 판다마다 과제 하나 (처음에 맞히면 '처음 정답', 틀리거나 마을 문에 도착해 힌트를 보면 따로 표시)
+      run.asked++; if (!p.miss && !p.hint) run.firstTry++;
+      if (p.hint) { run.hints = (run.hints || 0) + 1; if (!p.miss) logWrong(`💡힌트 사용: ${p.label}`, p.right); }
+      if (!p.miss && !p.hint) { DF.streak++; run.arc.best = Math.max(run.arc.best || 0, DF.streak); } else DF.streak = 0;
+      DF.helped++; DF.mood = Math.min(100, DF.mood + 5); dfTopUI();
+      setTimeout(() => SFX.correct(), 380);
+      DF.fx.push({ kind: 'txt', x: p.x, y: p.y - 40, t: -0.45, life: 2.2, text: p.r === 0 ? `${M.h} ${M.p} = ${M.ko}` : `${M.s} = ${M.sko}`, good: true });
+      dfSelect(null); dfHelp(`정답! 🎉 ${p.r === 0 ? `${M.h} <small>${M.p}</small> = ${M.ko}` : `${M.s} <small>${M.sp}</small> = ${M.sko}`}`, 'good');
+      setTimeout(dfCheckProgress, 900);
+    } else {
+      SFX.wrong(); p.miss++; DF.streak = 0;
+      if (p.miss === 1) logWrong(p.label, p.right);
+      p.fb = dfMeaning(p, p.miss >= 2 || p.gated ? 2 : 1); p.fbT = p.gated ? 99 : 4; p.shake = 0.4;
+      dfHelp(`🤔 ${p.fb}`, 'bad');
+    }
+  }
+  // 라운드 중간 문제 · 특별한 친구 · 라운드 끝
+  function dfCheckProgress() {
+    if (DF.phase !== 'play') return;
+    if (DF.r === 1 && DF.helped >= 5 && !DF.quizDone.b1) { DF.quizDone.b1 = true; dfQuizBlank('lei', () => { DF.phase = 'play'; }); return; }
+    if (DF.r === 2 && DF.helped >= 6 && !DF.friendDone) { DF.friendDone = true; dfFriend(); return; }
+    if (DF.helped >= DF.need && !DF.queue.length && !dfActive()) {
+      if (DF.r === 1 && !DF.quizDone.b2) { DF.quizDone.b2 = true; dfQuizBlank('e', () => dfQuizPicture(() => dfRoundDone(1))); return; }
+      if (DF.r === 2) { dfFinale(false); return; }
+      dfRoundDone(DF.r);
+    }
+  }
+  // ----- 팝업 공통 -----
+  function dfPop(html, go, fn) {
+    DF.phase = DF.phase === 'play' ? 'pop' : DF.phase;
+    $('dfPopBody').innerHTML = html; $('dfPopMsg').textContent = ''; $('dfPopMsg').className = 'df-popmsg';
+    $('dfPopGo').hidden = !go; $('dfPopGo').textContent = go || ''; $('dfPopGo').disabled = false; DF.popFn = fn || null;
+    $('dfPop').hidden = false; bindSoundButtons($('dfPopBody')); wrapPinyin($('dfPopBody'));
+  }
+  function dfPopClose() { $('dfPop').hidden = true; }
+  const dfZh = (h, p, big) => `<span class="ar-zh${big ? ' big' : ''}"><span class="han">${h}</span><span class="py t0">${p}</span></span>`;
+  const dfSay = (h) => `<button class="ar-say" data-say="${h}" aria-label="듣기">🔊</button>`;
+  // 고르기 문제 (보기는 매번 섞이고, 고른 뒤 확인). onOk(html) 뒤 next
+  function dfChoice({ key, label, right, head, opts, explainBad, explainOk, next }) {
+    DF.phase = 'quiz'; taskBegin(key, label, right); DF.ans = right;   // DF.ans: 자동 테스트용
+    const list = shuffle(opts); let sel = -1;
+    const draw = () => {
+      $('dfPopBody').innerHTML = `${head}<div class="df-opts">${list.map((o, k) => `<button class="df-opt${sel === k ? ' sel' : ''}" data-o="${k}" aria-pressed="${sel === k}">${o.html}</button>`).join('')}</div>`;
+      $('dfPopBody').querySelectorAll('[data-o]').forEach(b => b.addEventListener('click', () => { sel = +b.dataset.o; SFX.pop(); draw(); }));
+      $('dfPopGo').disabled = sel < 0; bindSoundButtons($('dfPopBody')); wrapPinyin($('dfPopBody'));
+    };
+    $('dfPop').hidden = false; $('dfPopGo').hidden = false; $('dfPopGo').textContent = '확인 ✔'; $('dfPopMsg').textContent = ''; $('dfPopMsg').className = 'df-popmsg';
+    DF.popFn = () => {
+      if (sel < 0) return;
+      const o = list[sel];
+      if (!o.ok) { SFX.wrong(); taskMiss(); $('dfPopMsg').innerHTML = '🤔 ' + explainBad(o); $('dfPopMsg').className = 'df-popmsg bad'; const el = $('dfPopBody').querySelector('.df-opts'); el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); return; }
+      taskEnd(); SFX.correct();
+      $('dfPopBody').innerHTML = `${head}<div class="df-okbox">⭕ 정답!<br>${explainOk}</div>`; bindSoundButtons($('dfPopBody')); wrapPinyin($('dfPopBody'));
+      $('dfPopMsg').textContent = ''; $('dfPopGo').textContent = '다음 ▶'; DF.popFn = () => { dfPopClose(); next(); };
+    };
+    draw();
+  }
+  // 2라운드: 我很（ ）。 빈칸 채우기
+  function dfQuizBlank(mood, next) {
+    const M = DF_MOODS[mood];
+    dfChoice({ key: 'df-blank-' + mood, label: `빈칸: 我很（ ）。 = ${M.sko}`, right: M.h,
+      head: `<div class="df-qhead">✏️ 문장 완성</div><p class="df-q">'<b>${M.sko}</b>'가 되도록 빈칸에 알맞은 말을 골라요.</p><div class="df-blank">${dfZh('我很（　　）。', 'Wǒ hěn (　　).', true)}</div>`,
+      opts: DF_MOOD_IDS.map(id => ({ html: dfZh(DF_MOODS[id].h, DF_MOODS[id].p), ok: id === mood, id })),
+      explainBad: (o) => `${DF_MOODS[o.id].h}(${DF_MOODS[o.id].p})는 '${DF_MOODS[o.id].ko}'예요. '${M.sko}'에 맞는 말을 찾아봐요.`,
+      explainOk: `${dfZh(M.s, M.sp, true)} ${dfSay(M.s)}<br>${M.sko} — ${M.h}(${M.p}) = ${M.ko}`, next });
+  }
+  // 2라운드 끝: 그림(표정)을 보고 판다가 할 말 고르기
+  function dfQuizPicture(next) {
+    const mood = pick(DF_MOOD_IDS), M = DF_MOODS[mood];
+    const pic = (() => { const c = document.createElement('canvas'); c.width = 64; c.height = 64; const g = c.getContext('2d'); g.imageSmoothingEnabled = false; g.drawImage(dfSpr(mood === 'kx' ? 'kx' : mood, mood === 'lei' ? 'droop1' : mood === 'e' ? 'rub1' : 'idle', '#ff8fab'), 0, 0, 64, 64); return c.toDataURL(); })();
+    const cue = { kx: '✨', lei: '💦', e: '🍽️', kun: '💤' }[mood];
+    dfChoice({ key: 'df-pic', label: `그림 보고 문장 고르기: ${M.sko}`, right: M.s,
+      head: `<div class="df-qhead">🖼️ 그림 보고 고르기</div><p class="df-q">이 판다가 할 말로 알맞은 문장은?</p><div class="df-picq"><img src="${pic}" alt="판다"><i>${cue}</i></div>`,
+      opts: DF_MOOD_IDS.map(id => ({ html: dfZh(DF_MOODS[id].s, DF_MOODS[id].sp), ok: id === mood, id })),
+      explainBad: (o) => `${DF_MOODS[o.id].s}는 '${DF_MOODS[o.id].sko}'라는 뜻이에요. 판다 얼굴을 다시 봐요.`,
+      explainOk: `${dfZh(M.s, M.sp, true)} ${dfSay(M.s)}<br>${M.sko}`, next });
+  }
+  // 3라운드: 특별한 친구와 안부 대화 (뜻 고르기 → 대답 배열 → 吗 찾기)
+  function dfFriendPic() {
+    if (DF.friendURL) return DF.friendURL;
+    const c = document.createElement('canvas'); c.width = 72; c.height = 72; const g = c.getContext('2d'); g.imageSmoothingEnabled = false;
+    g.drawImage(dfSpr('joy', 'idle', '#c084fc'), 4, 8, 64, 64);
+    const R = (x, y, w, h, col) => { g.fillStyle = col; g.fillRect(4 + x * 4, 8 + y * 4, w * 4, h * 4); };
+    for (const [x, col] of [[2, '#ff6b8b'], [5, '#ffd23f'], [9, '#ff6b8b'], [12, '#ffffff']]) { R(x, -1, 2, 2, col); R(x, 0, 1, 1, '#fff1a8'); }   // 꽃 화관
+    return (DF.friendURL = c.toDataURL());
+  }
+  function dfFriend() {
+    DF.phase = 'quiz'; DF.target = null; dfSelect(null); DF.queue = shuffle(DF_MOOD_IDS);   // 대화 뒤 친구 4명 더
+    const face = `<div class="df-friend"><img src="${dfFriendPic()}" alt="특별한 친구 판다"><div class="df-fsay">`;
+    // ① 好久不见！ 뜻
+    dfChoice({ key: 'df-f1', label: '특별한 친구: 好久不见！의 뜻', right: '오랜만이야!',
+      head: `<div class="df-qhead">💌 특별한 친구가 찾아왔어요!</div>${face}${dfZh('好久不见！', 'Hǎo jiǔ bú jiàn!', true)} ${dfSay('好久不见！')}</div></div><p class="df-q">친구가 한 말의 뜻은?</p>`,
+      opts: [{ html: '오랜만이야!', ok: true }, { html: '잘 지내?' }, { html: '나는 기뻐.' }],
+      explainBad: (o) => `'${o.html}'가 아니에요. 好久 = 오래, 不见 = 못 봤다 → 오랫동안 못 봤다는 인사예요.`,
+      explainOk: `${dfZh('好久不见！', 'Hǎo jiǔ bú jiàn!', true)}<br>오랜만이야! <small>(不는 뒤의 4성 见 때문에 bú로 읽어요)</small>`,
+      next: () => dfFriendOrder(face) });
+  }
+  function dfFriendOrder(face) {
+    DF.phase = 'quiz';
+    const cards = [{ h: '我', p: 'wǒ' }, { h: '很', p: 'hěn' }, { h: '好', p: 'hǎo' }, { h: '你', p: 'nǐ' }, { h: '呢', p: 'ne' }];
+    const ans = ['我', '很', '好', '你', '呢'];
+    let pieces; do { pieces = shuffle(cards); } while (pieces.every((c, i) => c.h === ans[i]));
+    const slots = [-1, -1, -1, -1, -1];
+    taskBegin('df-f2', '특별한 친구: 你好吗？에 대답 배열', '我很好。你呢？');
+    const draw = () => {
+      const S = (k) => `<button class="df-slot${slots[k] < 0 ? ' empty' : ''}" data-s="${k}">${slots[k] < 0 ? '?' : dfZh(pieces[slots[k]].h, pieces[slots[k]].p)}</button>`;
+      $('dfPopBody').innerHTML = `<div class="df-qhead">💬 대답하기</div>${face}${dfZh('你好吗？', 'Nǐ hǎo ma?', true)} ${dfSay('你好吗？')}</div></div><p class="df-q">'나는 잘 지내. 너는?' 이라고 대답해요. 카드를 순서대로 톡!</p>
+        <div class="df-slots">${S(0)}${S(1)}${S(2)}<span class="df-punct">。</span>${S(3)}${S(4)}<span class="df-punct">？</span></div>
+        <div class="df-pieces">${pieces.map((c, k) => `<button class="df-opt piece" data-k="${k}"${slots.includes(k) ? ' disabled' : ''}>${dfZh(c.h, c.p)}</button>`).join('')}</div>`;
+      $('dfPopBody').querySelectorAll('[data-k]').forEach(b => b.addEventListener('click', () => { const s = slots.indexOf(-1); if (s < 0) return; slots[s] = +b.dataset.k; SFX.pop(); draw(); }));
+      $('dfPopBody').querySelectorAll('[data-s]').forEach(b => b.addEventListener('click', () => { slots[+b.dataset.s] = -1; SFX.pop(); draw(); }));
+      $('dfPopGo').disabled = slots.includes(-1); bindSoundButtons($('dfPopBody')); wrapPinyin($('dfPopBody'));
+    };
+    $('dfPop').hidden = false; $('dfPopGo').hidden = false; $('dfPopGo').textContent = '확인 ✔'; $('dfPopMsg').textContent = ''; $('dfPopMsg').className = 'df-popmsg';
+    DF.popFn = () => {
+      if (slots.includes(-1)) return;
+      const got = slots.map(i => pieces[i].h);
+      if (got.join('') !== ans.join('')) {
+        SFX.wrong(); taskMiss();
+        $('dfPopMsg').innerHTML = got[0] === '你' ? '🤔 내 대답은 我(나)로 시작해요: 我很好。(나는 잘 지내.) 그다음 你呢？(너는?)' : '🤔 我很好。(나는 잘 지내.) + 你呢？(너는?) 순서로 놓아 봐요.';
+        $('dfPopMsg').className = 'df-popmsg bad'; return;
+      }
+      taskEnd(); SFX.correct();
+      $('dfPopBody').innerHTML = `<div class="df-qhead">💬 대답 완성!</div>${face}${dfZh('我也很好！', 'Wǒ yě hěn hǎo!', true)} ${dfSay('我也很好！')}<small class="df-ko">나도 잘 지내!</small></div></div><div class="df-okbox">⭕ ${dfZh('我很好。你呢？', 'Wǒ hěn hǎo. Nǐ ne?', true)} ${dfSay('我很好。你呢？')}<br>나는 잘 지내. 너는?<br><small>呢(ne)는 '너는?' 하고 되물을 때 써요.</small></div>`;
+      bindSoundButtons($('dfPopBody')); wrapPinyin($('dfPopBody')); $('dfPopMsg').textContent = '';
+      $('dfPopGo').textContent = '다음 ▶'; DF.popFn = () => dfFriendMa(face);
+    };
+    draw();
+  }
+  function dfFriendMa(face) {
+    dfChoice({ key: 'df-f3', label: '你好吗？에서 질문을 만드는 글자', right: '吗 ma',
+      head: `<div class="df-qhead">🔍 질문 글자 찾기</div>${face}${dfZh('你好吗？', 'Nǐ hǎo ma?', true)}</div></div><p class="df-q">'你好吗？(잘 지내?)'에서 <b>질문을 만드는 글자</b>는?</p>`,
+      opts: [{ html: dfZh('你', 'nǐ'), id: '你' }, { html: dfZh('好', 'hǎo'), id: '好' }, { html: dfZh('吗', 'ma'), ok: true, id: '吗' }],
+      explainBad: (o) => o.id === '你' ? '你(nǐ)는 \'너\'라는 뜻이에요. 문장 끝에 붙은 글자를 봐요.' : '好(hǎo)는 \'좋다\'라는 뜻이에요. 문장 끝에 붙은 글자를 봐요.',
+      explainOk: `${dfZh('吗', 'ma', true)}<br>문장 끝에 吗를 붙이면 '~니?' 하고 묻는 말이 돼요.<br>你好 + 吗 → ${dfZh('你好吗？', 'Nǐ hǎo ma?')} 잘 지내?`,
+      next: () => { dfPopClose(); DF.phase = 'play'; dfHelp('특별한 친구와 인사 성공! 남은 친구 4명도 도와줘요 💪', 'good'); } });
+  }
+  // 라운드 끝: 미션 완료 기록 · 코인 · 카드
+  const DF_ROUND_COIN = 20, DF_CLEAR_BONUS = 15;
+  function dfRoundDone(i) {
+    DF.phase = 'done';
+    const s = run.ms[i], M = STAGE.missions[i];
+    let paid = false, first = false;
+    if (!s.complete) {
+      s.done = s.need; s.complete = true;
+      const ever = save.questEver[STAGE.id] = save.questEver[STAGE.id] || [];
+      first = !ever.includes(i); if (first) { ever.push(i); addExp(20); }
+      paid = payOnce('mission' + i, DF_ROUND_COIN); if (paid) SFX.coin();
+      M.cards.forEach(id => { save.cards[id] = true; }); writeSave();
+      report('mission', { mission: `${i + 1}/${run.ms.length}` });
+    }
+    setTimeout(() => SFX.level(), 200); dfConfetti(40);
+    const cards = M.cards.map(id => { const w = STAGE.words[id]; return `<div class="ar-card">${dfZh(w.h, w.p)}<small>${w.ko}</small>${dfSay(w.h)}</div>`; }).join('');
+    dfPop(`<h2>🎉 라운드 ${i + 1} 성공!</h2><p class="df-reward">🐼 친구 ${DF.helped}명을 도왔어요!${paid ? ` 🪙 +${DF_ROUND_COIN}코인${first ? ' · ✨ +20 EXP' : ''}` : ''}</p>${cards ? `<div class="ar-cardsHead">오늘의 말 · 따라 말해 봐요</div><div class="ar-cards">${cards}</div>` : ''}`, i < 2 ? '다음 라운드 ▶' : '계속 ▶', () => { dfPopClose(); dfRoundIntro(i + 1); });
+  }
+  // 마지막: 특별한 친구의 인사 + 차시 완료
+  function dfFinale(already) {
+    DF.phase = 'done';
+    let bonus = false;
+    if (!already) {
+      const i = 2, s = run.ms[i];
+      if (!s.complete) {
+        s.done = s.need; s.complete = true;
+        const ever = save.questEver[STAGE.id] = save.questEver[STAGE.id] || []; if (!ever.includes(i)) { ever.push(i); addExp(20); }
+        if (payOnce('mission' + i, DF_ROUND_COIN)) SFX.coin();
+        STAGE.missions[i].cards.forEach(id => { save.cards[id] = true; }); writeSave();
+        report('mission', { mission: `${i + 1}/${run.ms.length}` });
+      }
+    }
+    if (!run.cleared) {
+      bonus = payOnce('clear', DF_CLEAR_BONUS);
+      run.cleared = true; run.end = performance.now(); run.clearN = (run.clearN || 0) + 1;
+      const stars = calcStars(); DF.stars = stars;
+      save.clears[STAGE.id] = Math.max(save.clears[STAGE.id] || 0, stars.n); writeSave();
+      report('clear', { mission: `${run.ms.length}/${run.ms.length}`, stars: stars.n });
+    }
+    SFX.level(); dfConfetti(80);
+    dfPop(`<div class="df-final"><img src="${dfFriendPic()}" alt="특별한 친구 판다"><div>${dfZh('好久不见！我很开心！', 'Hǎo jiǔ bú jiàn! Wǒ hěn kāixīn!', true)} ${dfSay('好久不见！我很开心！')}<p class="df-ko">오랜만이야! 정말 기뻐!</p></div></div><h2>🛡️ 판다 기분 지킴이 성공!</h2><p class="df-reward">마을 기분 ${DF.mood} · 오랜만에 만난 친구들이 모두 행복해졌어요!${bonus ? `<br>🏆 차시 완료 보너스 🪙 +${DF_CLEAR_BONUS}코인` : ''}</p>`, '결과 보기 ▶', () => { const st = DF.stars || calcStars(); dfClose(); mode = 'cut'; showClear(st); });
+  }
+  function dfConfetti(n) {
+    if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const cols = ['#f6c445', '#ff6f86', '#62aefc', '#4fd08c', '#b38cff', '#fff0a8'];
+    for (let i = 0; i < n; i++) { const el = document.createElement('i'); el.className = 'ar-conf'; el.style.left = `${Math.random() * 100}%`; el.style.background = pick(cols); el.style.animationDelay = `${Math.random() * 0.6}s`; el.style.animationDuration = `${1.6 + Math.random() * 1.2}s`; $('dfFx').appendChild(el); setTimeout(() => el.remove(), 3600); }
+  }
+  // ----- 입력 -----
+  function dfCanvasTap(e) {
+    if (mode !== 'defense' || DF.paused || DF.phase !== 'play') return;
+    e.preventDefault();
+    const c = $('dfCanvas'), r = c.getBoundingClientRect(), wx = (e.clientX - r.left) * DFW / r.width, wy = (e.clientY - r.top) * DFH / r.height;
+    const sx = (e.clientX - r.left) * c.width / r.width, sy = (e.clientY - r.top) * c.height / r.height;
+    let best = null, bd = 1e9;
+    for (const p of DF.pandas) {
+      if (p.state !== 'walk' && p.state !== 'wait') continue;
+      const inBody = wx > p.x - 20 && wx < p.x + 20 && wy > p.y - 44 && wy < p.y + 4;
+      const bb = DF.bubbles.find(b => b.id === p.id), inBub = bb && sx > bb.x0 && sx < bb.x1 && sy > bb.y0 && sy < bb.y1;
+      if (inBody || inBub) { const d = Math.abs(wx - p.x) + Math.abs(wy - (p.y - 16)); if (d < bd) { bd = d; best = p; } }
+    }
+    if (!best) return;
+    if (DF.sel) { dfGive(best, DF.sel); return; }
+    DF.target = best; SFX.pop(); dfHelp('이 친구에게 줄 선물을 아래에서 골라요 👇', '');
+  }
+  function dfPause(on) {
+    if (mode !== 'defense') return;
+    DF.paused = on; $('dfPause').textContent = on ? '▶' : '⏸'; $('dfPaused').hidden = !on;
+  }
+  function dfKey(e) {
+    const c = e.code;
+    if (e.repeat) return;
+    if (!$('dfPop').hidden) {
+      if (isEnter(c) && !$('dfPopGo').hidden && !$('dfPopGo').disabled) { e.preventDefault(); $('dfPopGo').click(); return; }
+      const d = /^(Digit|Numpad)([1-9])$/.exec(c); if (d) { const bs = [...$('dfPopBody').querySelectorAll('[data-o],[data-k]:not([disabled])')]; const b = bs[+d[2] - 1]; if (b) b.click(); }
+      return;
+    }
+    if (c === 'Escape' || c === 'KeyP') { dfPause(!DF.paused); return; }
+    const d = /^(Digit|Numpad)([1-4])$/.exec(c); if (d) dfPickItem(DF_ITEMS[+d[2] - 1].id);
+  }
+  // ----- 그리기 -----
+  function dfDraw() {
+    const c = $('dfCanvas'), g = c.getContext('2d'), Z = c.width / DFW, T = DF.time;
+    g.imageSmoothingEnabled = false; g.setTransform(Z, 0, 0, Z, 0, 0);
+    g.drawImage(DF.world, 0, 0);
+    const R = (x, y, w, h, col) => { g.fillStyle = col; g.fillRect(Math.round(x), Math.round(y), w, h); };
+    // 등롱 빛 · 풀숲 흔들림
+    DF_LANES.forEach((fy, i) => { g.fillStyle = `rgba(255,200,90,${0.18 + 0.08 * Math.sin(T * 2 + i)})`; g.beginPath(); g.arc(51, fy - 30, 6, 0, Math.PI * 2); g.fill(); });
+    const strong = DF.r === 0;   // 1라운드만 표정·효과를 크게 (2·3라운드는 중국어를 읽어야 알 수 있게)
+    const list = [...DF.pandas].sort((a, b) => a.y - b.y || b.x - a.x);
+    const over = [];
+    for (const p of list) {
+      g.globalAlpha = p.alpha;
+      const sh = p.shake > 0 ? Math.sin(T * 60) * 1.5 : 0; if (p.shake > 0) p.shake -= 1 / 60;
+      let x = p.x + sh, y = p.y, head = 'n', body = 'idle', bob = 0, face = -1;
+      const walking = p.state === 'walk', fr = Math.floor(p.t * (p.mood === 'lei' && strong ? 4 : 6)) % 2;
+      if (p.state === 'walk' || p.state === 'wait') {
+        if (strong) {
+          head = p.mood === 'kun' ? (Math.floor(p.t / 2.2) % 3 === 2 ? 'yawn' : 'kun') : p.mood;
+          if (p.mood === 'kx') { body = walking ? (fr ? 'walk1' : 'walk2') : 'idle'; bob = walking ? -Math.abs(Math.sin(p.t * 7)) * 3 : 0; }
+          else if (p.mood === 'lei') { body = walking ? (fr ? 'droop1' : 'droop2') : 'droop1'; bob = fr; }
+          else if (p.mood === 'e') { body = Math.floor(p.t * 3) % 2 ? 'rub1' : 'rub2'; }
+          else body = walking ? (fr ? 'walk1' : 'walk2') : 'idle';
+        } else { body = walking ? (fr ? 'walk1' : 'walk2') : 'idle'; bob = walking ? -Math.abs(Math.sin(p.t * 6)) : 0; }
+        if (p.gated) head = p.mood === 'kun' ? 'kun' : p.mood === 'kx' ? 'n' : p.mood;
+      } else if (p.state === 'react') {
+        head = p.rt < 0 ? 'n' : p.item === 'bed' ? 'kun' : 'joy';
+        if (p.item === 'chair' && p.rt >= 0) body = 'sit';
+      } else if (p.state === 'leave') { head = 'joy'; body = fr ? 'walk1' : 'walk2'; bob = -Math.abs(Math.sin(p.t * 9)) * 2; }
+      g.save(); g.translate(x, y); g.scale(1.25, 1.25); g.translate(-x, -y);   // 판다를 1.25배로 (또렷하게 크게)
+      // 그림자
+      g.fillStyle = 'rgba(40,70,40,.25)'; g.fillRect(Math.round(x - 9), Math.round(y - 2), 18, 3);
+      // 반응 소품 (뒤쪽)
+      const rt = p.rt;
+      if (p.state === 'react' && rt >= 0 && p.item === 'chair') g.drawImage(dfItemPic('chair'), Math.round(x - 22), Math.round(y - 38), 44, 44);
+      if (p.state === 'react' && rt >= 0 && p.item === 'bed') {
+        g.drawImage(dfItemPic('bed'), Math.round(x - 20), Math.round(y - 30), 40, 32);
+        g.drawImage(dfSpr('kun', 'idle', p.scarf), 0, 0, 16, 11, Math.round(x - 17), Math.round(y - 31), 24, 16);
+        R(x - 3, y - 17, 21, 7, '#9a7ae0'); R(x - 3, y - 17, 21, 1, '#c4a8ff'); R(x + 3, y - 14, 1, 1, '#ffd23f'); R(x + 11, y - 12, 1, 1, '#ffd23f');
+        over.push({ kind: 'zzz', x: x + 4, y: y - 30, t: rt });
+      } else {
+        const spr = dfSpr(head, body, p.scarf), dy = body === 'sit' ? 4 : 0;
+        g.save(); g.translate(Math.round(x), 0); g.scale(face, 1); g.drawImage(spr, -16, Math.round(y - 32 + bob + dy), 32, 32); g.restore();
+      }
+      // 1라운드: 기분 효과 (땀 · 꼬르륵 · Zzz · 반짝)
+      if ((p.state === 'walk' || p.state === 'wait') && strong) {
+        if (p.mood === 'lei') { const k = (T * 1.2 + p.id) % 1; R(x + 9, y - 28 + k * 6, 2, 3, '#62aefc'); R(x + 9, y - 28 + k * 6, 1, 1, '#d6f1ff'); }
+        if (p.mood === 'e') over.push({ kind: 'growl', x: x + 12, y: y - 10, t: p.t });
+        if (p.mood === 'kun') over.push({ kind: 'zzz', x: x + 8, y: y - 32, t: p.t });
+        if (p.mood === 'kx') { for (let k = 0; k < 2; k++) { const a = Math.sin(T * 5 + k * 3 + p.id); if (a > 0.3) { const sx2 = x + (k ? 12 : -13), sy2 = y - 26 + k * 6; R(sx2, sy2 - 2, 1, 5, '#ffe58a'); R(sx2 - 2, sy2, 5, 1, '#ffe58a'); } } }
+      }
+      // 반응 소품 (앞쪽): 꽃다발 · 사과 · 하트
+      if (p.state === 'react' && rt >= 0) {
+        if (p.item === 'flower') { g.drawImage(dfItemPic('flower'), Math.round(x - 2), Math.round(y - 20), 16, 16); for (let k = 0; k < 3; k++) { const hy = y - 34 - ((rt * 18 + k * 8) % 22), hx = x - 8 + k * 8 + Math.sin(rt * 4 + k) * 2; R(hx, hy, 2, 2, '#ff6b8b'); R(hx + 3, hy, 2, 2, '#ff6b8b'); R(hx, hy + 1, 5, 2, '#ff6b8b'); R(hx + 1, hy + 3, 3, 1, '#ff6b8b'); R(hx + 2, hy + 4, 1, 1, '#ff6b8b'); } }
+        if (p.item === 'snack') { const bites = Math.min(3, Math.floor(rt / 0.45)); g.drawImage(dfItemPic('snack'), 0, 0, 16 - bites * 4, 16, Math.round(x + 2), Math.round(y - 22), (16 - bites * 4) * 0.75, 12); if (bites > 0) over.push({ kind: 'nom', x: x + 10, y: y - 30, t: rt }); }
+        if (p.item === 'chair') over.push({ kind: 'ahh', x: x + 12, y: y - 30, t: rt });
+      }
+      if (p.state === 'leave') { const hy = y - 40 - Math.sin(p.rt * 4) * 2; R(x - 3, hy, 2, 2, '#ff6b8b'); R(x + 1, hy, 2, 2, '#ff6b8b'); R(x - 3, hy + 1, 6, 2, '#ff6b8b'); R(x - 2, hy + 3, 4, 1, '#ff6b8b'); R(x - 1, hy + 4, 2, 1, '#ff6b8b'); }
+      // 고른 판다 표시
+      if (p === DF.target) { g.strokeStyle = '#ffd23f'; g.lineWidth = 1.2; g.beginPath(); g.ellipse(x, y - 1, 14, 5, 0, 0, Math.PI * 2); g.stroke(); }
+      g.restore();
+      for (const o of over) if (!o.sc && o.x !== undefined) { o.x = x + (o.x - x) * 1.25; o.y = y + (o.y - y) * 1.25; o.sc = 1; }
+      g.globalAlpha = 1;
+    }
+    // 오른쪽 숲 앞쪽 대나무 (판다가 숲에서 나오는 느낌)
+    for (let k = 0; k < 4; k++) { const x = 388 + k * 3.5; for (let y = 12; y < DFH; y += 6) { R(x, y, 2, 5, k % 2 ? '#5fb867' : '#7ccf7a'); R(x, y + 5, 2, 1, '#3f8f4a'); } }
+    // 날아가는 선물
+    for (const f of DF.fx) if (f.kind === 'fly') { const k = Math.min(1, f.t / f.life), x = f.x0 + (f.x1 - f.x0) * k, y = f.y0 + (f.y1 - f.y0) * k - Math.sin(k * Math.PI) * 30; g.drawImage(dfItemPic(f.item), Math.round(x - 8), Math.round(y - 8), 16, 16); R(x - 10 - k * 4, y + 6, 2, 2, 'rgba(255,240,160,.8)'); }
+    // ----- 글씨 (캔버스 해상도로 선명하게) -----
+    g.setTransform(1, 0, 0, 1, 0, 0); g.textAlign = 'center'; g.textBaseline = 'middle';
+    const S = (wx, wy) => [Math.round(wx * Z), Math.round(wy * Z)];
+    // 마을 간판
+    { const [sx, sy] = S(25, 22); g.fillStyle = '#fff4d6'; g.strokeStyle = '#5a3a22'; g.lineWidth = 3; const w = 56 * Z / 1.4, h = 9 * Z; g.fillRect(sx - w / 2, sy - h / 2, w, h); g.strokeRect(sx - w / 2, sy - h / 2, w, h); g.fillStyle = '#3b2a20'; g.font = `${Math.round(5.6 * Z)}px Jua, "Gowun Dodum", sans-serif`; g.fillText('판다 마을', sx, sy + 1); }
+    // 효과 글씨: Zzz · 꼬르륵 · 냠냠 · 후~
+    for (const o of over) {
+      const [sx, sy] = S(o.x, o.y);
+      if (o.kind === 'zzz') { g.fillStyle = '#5b6fd6'; for (let k = 0; k < 3; k++) { const ph = ((o.t * 0.8 + k / 3) % 1); g.globalAlpha = 1 - ph; g.font = `900 ${Math.round((4 + k) * Z)}px "Noto Sans", Arial, sans-serif`; g.fillText('Z', sx + ph * 10 * Z / 2 + k * 3 * Z, sy - ph * 12 * Z); } g.globalAlpha = 1; }
+      if (o.kind === 'growl') { const a = (Math.sin(o.t * 4) + 1) / 2; g.globalAlpha = 0.5 + a * 0.5; g.fillStyle = '#c96a10'; g.font = `700 ${Math.round(4.2 * Z)}px Jua, sans-serif`; g.fillText('꼬르륵~', sx + 4 * Z, sy); g.globalAlpha = 1; }
+      if (o.kind === 'nom') { g.fillStyle = '#e5484d'; g.font = `700 ${Math.round(4.6 * Z)}px Jua, sans-serif`; g.fillText('냠냠!', sx, sy - Math.sin(o.t * 8) * 2); }
+      if (o.kind === 'ahh') { g.fillStyle = '#3d7bd9'; g.font = `700 ${Math.round(4.6 * Z)}px Jua, sans-serif`; g.fillText('후~ 편안해', sx, sy); }
+    }
+    // 말풍선: 중국어(크게) + 병음 · 3라운드는 인사 + 기분
+    DF.bubbles = [];
+    for (const p of list) {
+      if (p.state !== 'walk' && p.state !== 'wait') continue;
+      const M = DF_MOODS[p.mood], two = p.r === 2;
+      const zh = p.r === 0 ? M.h : M.s, py = p.r === 0 ? M.p : M.sp;
+      const [cx, by] = S(p.x, p.y - 45);
+      const zf = Math.round((p.r === 0 ? 10.5 : 8.4) * Z), pf = Math.round(4.6 * Z), gf = Math.round(5 * Z);
+      g.font = `700 ${zf}px "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif`; const zw = g.measureText(zh).width;
+      g.font = `600 ${pf}px "Noto Sans", Arial, sans-serif`; const pw = g.measureText(py).width;
+      const w = Math.max(zw, pw, two ? 34 * Z : 0) + 7 * Z, h = zf + pf + (two ? gf + 2 * Z : 0) + 4 * Z;
+      let x0 = clamp(cx - w / 2, 2, c.width - w - 2); const y0 = by - h;
+      g.globalAlpha = p.alpha;
+      g.fillStyle = p.gated ? '#fff3c4' : '#ffffff'; g.strokeStyle = p === DF.target ? '#f0a800' : '#2b2838'; g.lineWidth = p === DF.target ? 4 : 2.5;
+      const rr = 3 * Z; g.beginPath(); g.moveTo(x0 + rr, y0); g.arcTo(x0 + w, y0, x0 + w, y0 + h, rr); g.arcTo(x0 + w, y0 + h, x0, y0 + h, rr); g.lineTo(cx + 3 * Z, y0 + h); g.lineTo(cx, y0 + h + 3 * Z); g.lineTo(cx - 3 * Z, y0 + h); g.arcTo(x0, y0 + h, x0, y0, rr); g.arcTo(x0, y0, x0 + w, y0, rr); g.closePath(); g.fill(); g.stroke();
+      let ty = y0 + 2 * Z;
+      if (two) { g.fillStyle = '#7a6a8a'; g.font = `700 ${gf}px "Noto Sans SC", sans-serif`; g.fillText('好久不见！', x0 + w / 2, ty + gf / 2); ty += gf + 2 * Z; }
+      g.fillStyle = '#2b2838'; g.font = `700 ${zf}px "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif`; g.fillText(zh, x0 + w / 2, ty + zf / 2 + 1); ty += zf;
+      g.fillStyle = '#1d7a6a'; g.font = `600 ${pf}px "Noto Sans", Arial, sans-serif`; g.fillText(py, x0 + w / 2, ty + pf / 2 + 1);
+      g.globalAlpha = 1;
+      DF.bubbles.push({ id: p.id, x0, y0, x1: x0 + w, y1: y0 + h });
+      // 안내 (오답 · 마을 도착): 판다 아래 노란 상자
+      if (p.fb && p.fbT > 0) {
+        g.font = `700 ${Math.round(4.6 * Z)}px Jua, "Gowun Dodum", sans-serif`;
+        const lines = p.fb.length > 26 ? [p.fb.slice(0, p.fb.indexOf(' ', 18) > 0 ? p.fb.indexOf(' ', 18) : 26), p.fb.slice(p.fb.indexOf(' ', 18) > 0 ? p.fb.indexOf(' ', 18) + 1 : 26)] : [p.fb];
+        const fw = Math.max(...lines.map(l => g.measureText(l).width)) + 6 * Z, fh = lines.length * 5.6 * Z + 3 * Z;
+        const [fx, fy] = S(p.x, p.y + 2); const fx0 = clamp(fx - fw / 2, 2, c.width - fw - 2);
+        g.fillStyle = 'rgba(255,248,200,.97)'; g.strokeStyle = '#c98f12'; g.lineWidth = 2; g.fillRect(fx0, fy, fw, fh); g.strokeRect(fx0, fy, fw, fh);
+        g.fillStyle = '#5a3a10'; lines.forEach((l, k) => g.fillText(l, fx0 + fw / 2, fy + 1.5 * Z + 5.6 * Z * (k + 0.5)));
+      }
+    }
+    // 정답 글씨 떠오르기
+    for (const f of DF.fx) if (f.kind === 'txt' && f.t > 0) {
+      const k = f.t / f.life, [sx, sy] = S(f.x, f.y - k * 10);
+      g.globalAlpha = Math.min(1, (1 - k) * 2); g.font = `700 ${Math.round(5.4 * Z)}px Jua, "Noto Sans SC", sans-serif`;
+      const w = g.measureText(f.text).width + 6 * Z; g.fillStyle = 'rgba(79,208,140,.95)'; g.fillRect(sx - w / 2, sy - 4 * Z, w, 8 * Z); g.fillStyle = '#ffffff'; g.fillText(f.text, sx, sy + 1); g.globalAlpha = 1;
+    }
+  }
+  $('dfHome').addEventListener('click', () => { if (mode === 'defense') dfHome(); });
+  $('dfPause').addEventListener('click', () => dfPause(!DF.paused));
+  $('dfResume').addEventListener('click', () => dfPause(false));
+  $('dfPopGo').addEventListener('click', () => { if (DF.popFn) DF.popFn(); });
+  $('dfCanvas').addEventListener('pointerdown', dfCanvasTap);
+
   // ================= 시작 · 지역 선택 =================
   function initialStage() {
     const h = (location.hash || '').slice(1).toLowerCase().replace(/^preview-?/, '');
-    const alias = { s1: 'bamboo', lesson1: 'bamboo', '1': 'bamboo', s2: 'greet', lesson2: 'greet', '2': 'greet', s3: 'name', lesson3: 'name', '3': 'name', s4: 'nation', lesson4: 'nation', '4': 'nation', s5: 'number', lesson5: 'number', '5': 'number', num: 'number', numbers: 'number', s6: 'birthday', lesson6: 'birthday', '6': 'birthday', bd: 'birthday', s7: 'family', lesson7: 'family', '7': 'family', s8: 'gift', lesson8: 'gift', '8': 'gift', s9: 'food', lesson9: 'food', '9': 'food', s10: 'diner', lesson10: 'diner', '10': 'diner', s12: 'grad', lesson12: 'grad', '12': 'grad', graduation: 'grad' };
+    const alias = { s1: 'bamboo', lesson1: 'bamboo', '1': 'bamboo', s2: 'greet', lesson2: 'greet', '2': 'greet', s3: 'name', lesson3: 'name', '3': 'name', s4: 'nation', lesson4: 'nation', '4': 'nation', s5: 'number', lesson5: 'number', '5': 'number', num: 'number', numbers: 'number', s6: 'birthday', lesson6: 'birthday', '6': 'birthday', bd: 'birthday', s7: 'family', lesson7: 'family', '7': 'family', s8: 'gift', lesson8: 'gift', '8': 'gift', s9: 'food', lesson9: 'food', '9': 'food', s10: 'diner', lesson10: 'diner', '10': 'diner', s11: 'mood', lesson11: 'mood', '11': 'mood', defense: 'mood', s12: 'grad', lesson12: 'grad', '12': 'grad', graduation: 'grad' };
     const id = alias[h] || h;
     // 준비 중 지역은 학생 주소로 열리지 않아요 → 공개된 첫 지역으로
     return STAGE_ORDER.includes(id) ? id : STAGE_ORDER[0];
@@ -9122,6 +9783,7 @@
       run.hello = run.hello || 0;
       if (!run.hello) { run.hello = 1; report('start'); }
       if (STAGE.arcade === 'grad') { grOpen(); return; }
+      if (STAGE.arcade === 'defense') { dfOpen(); return; }
       arcOpen(); return;
     }
     mode = 'play'; focusStage();
@@ -9239,6 +9901,7 @@
     for (const id of ['quiz', 'cardPop', 'speak', 'lesson', 'result', 'help', 'homeAsk', 'intro', 'faint', 'settings', 'confirmReset', 'nameAsk', 'talk', 'basket', 'slab', 'cake', 'cal', 'bcard', 'qpick', 'wardrobe']) $(id).hidden = true;
     if (AR.on || !$('arc').hidden) arClose();
     if (GR.on || !$('grad').hidden) grClose();
+    if (DF.on || !$('df').hidden) dfClose();
     quick.on = false; quiz.lock = false; releaseAll(); closeMissionPanel();
     try { if (window.speechSynthesis) window.speechSynthesis.cancel(); } catch (e) {}
     clearTimeout(Voice.chk); clearTimeout(toastTimer); $('toast').hidden = true; $('focusHint').hidden = true;
@@ -9394,14 +10057,16 @@
       else if (mode === 'cut') updateFx(dt);
       else if (mode === 'arcade') arcUpdate(dt);
       else if (mode === 'grad') grUpdate(dt);
+      else if (mode === 'defense') dfUpdate(dt);
       const [song, vol] = musicWanted(); BGM.sync(song, vol);
-      if ($('arc').hidden && $('grad').hidden) render();   // 아케이드 화면이 덮고 있을 때는 맵을 그리지 않아요
+      if ($('arc').hidden && $('grad').hidden && $('df').hidden) render();   // 아케이드 화면이 덮고 있을 때는 맵을 그리지 않아요
       questSyncUI();
       requestAnimationFrame(frame);
     }
     requestAnimationFrame(frame);
     $('startScreen').querySelector('.card').focus({ preventScroll: true });
     window.__panda = {
+      get DF() { return DF; }, DF_MOODS, DF_ITEMS, DF_LANES, dfOpen, dfGive, dfPickItem, dfSpawn, dfRoundDone, dfPause, dfItemPic, dfSpr, get runNow() { return run; },
       get GR() { return GR; }, get GN() { return GN; }, GR_VIEW: { w: GVW, h: GVH }, GR_SOLID, grGoTo, grRoute, GR_STAGE_ZONE, grNextTarget, GR_NPC, GR_ACT, MOODS, grOpen, grClose, grTalkOpen, grActStart, grMissionDone, grCeremony, grCount, gnJoin, gnSingle, gnState, grSolidHit, grStay, grResult,
       SHOP_ITEMS, buyItem, equipItem, unequipItem, openWardrobe, closeWardrobe, drawWear, drawPandaWith, get PET() { return PET; }, get wd() { return wd; },
       questInteract, openBasket, BD_NPC, BD_CANDLES, BD_CAKE_X, BD_BOARD_X, BD_DESK_X, BD_TABLE_X, bdValid, dateZh, bdSent, openCake, cakeAdd, cakeDel, cakeDone, closeCake, openCal, calOk, closeCal, openBCard, bcOk, closeBCard, bdPlace, openPick, closePick, pickOk, FAM, famOf, famSent, FM_NPC, GIFT, giftOf, gfSent, GF_NPC, GF_FR, FM_BOARD_X, famFace, giftURL, drawGift, FOOD, foodOf, foodSent, FD_MC, DN_NPC, priceZh, priceSay, drawFood, foodURL, questDone, payOnce, arRoundDone, FURNITURE, buyFurniture, homeCanPlace, homeFreeSpot, openHouse, closeHouse, get HS() { return HS; }, hsConfirm, hsUse, hsWake, AR, arcOpen, arPopGo, arHint, arKey, PRICES, FD_GUEST, DN_CU, get arDbg() { return { belt: AR.belt, held: AR.held, tray: AR.tray, want: AR.want, r: AR.r, paused: AR.paused, combo: AR.combo }; }, beltGrab, beltPut, fsPut, fsServe, fsGive1, fmNewTest: () => fmNew(), gfNewTest: () => gfNew(), get qp() { return qp; }, bdNewTest: () => bdNew(), bdBonus: () => bdBonusLater, basketDrop, closeBasket, zhNum, tokVal, testSpawn: (kind, n, set) => { const q = run.q, list = set ? q.m4.items : q.m3.items; spawnItems(list, kind, n, Q_SPOTS[set]); }, testOpenSlab: (rounds) => openSlab({ title: 'test', rounds, start: 0, tag: 'test', key: (i) => 'test' + i, onRound() {}, onAll() {} }), slabTap, slabKey, ruleHints, boxNums, closeTalk, closeSlab, questRecall, NPC_DEF, useSkill, canSkill, BGM, josa, BUILD, forestBuild, basicQuestion, MA, GREET, NW, P, save, quiz, quick, NQ, numQ, numQueue, NUMS, openQuiz, answer, closeQuiz, closeSpeak, selectStage, startPlay, goHome, askHome, resumeFromPause, loadStage, closeHelp, closeIntro, startNewRun, THEMES, SKINS, STAGES,
